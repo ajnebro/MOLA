@@ -1,0 +1,44 @@
+# Conda environment for MOLA's Python core: the landscape-feature engine, the
+# jMetalPy adapter, and the statistical-analysis companion script (Shapiro-Wilk
+# normality checks across repeated characterizations, in the spirit of
+# MOORPHOLOGY's statistical_analysis.py).
+#
+# Unlike Evolver's environment.yml (Evolver's core is Java; that file only
+# supports OPTIONAL plotting/reporting tooling), Python IS MOLA's core — this
+# environment is required to run MOLA at all, not optional. It does NOT cover
+# the jMetal (Java) sampling adapter, which needs Java 21+ and Maven instead
+# (see JAVA_CODING_GUIDELINES.md).
+#
+#   Create:   conda env create -f environment.yml
+#   Activate: conda activate MOLA
+#   Update:   conda env update -f environment.yml --prune
+#
+# jmetalpy and moocore are not on conda-forge (checked via the anaconda.org
+# API, 2026-07-24) — both are installed from PyPI via the pip: subsection
+# below, into the same conda-managed environment. Every other dependency here
+# resolves from conda-forge directly.
+name: MOLA
+channels:
+  - conda-forge
+dependencies:
+  - python>=3.11
+  - pip
+  - numpy>=2.2.5
+  - pandas>=2.2.3
+  - scipy>=1.15.3
+  # dev/lint, per PYTHON_CODING_GUIDELINES.md's Enforcement section
+  - pytest>=7.0
+  - ruff>=0.6.0
+  - pip:
+      # NOTE (license): moocore is LGPL-2.1-or-later — unlike every other
+      # dependency here (all MIT/BSD-family) — and becomes an unavoidable
+      # transitive dependency the moment jmetalpy is installed (it's imported
+      # at module level in jmetalpy's own quality_indicator.py, not an
+      # optional extra). Also used directly by MOLA's core for every
+      # hypervolume-based feature (hv, hv_avg_neig, hvd_avg_neig,
+      # nhv_avg_neig, and their _cor_neig pairs). MOLA has no chosen license
+      # yet — see CLAUDE.md's "Not yet decided" section. This needs the
+      # project owner's decision before release; it is intentionally NOT
+      # resolved here.
+      - jmetalpy>=1.9.0
+      - moocore>=0.1.9
