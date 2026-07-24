@@ -11,7 +11,7 @@ sampled solutions in variable/objective space, neighbourhood dominance structure
 non-dominated-sorting rank statistics (entropy, average, max).
 
 ## Origin
-Evolved from **MOORPHOLOGY** (`$HOME/Softw/moorphology`, GitLab jfaldanam-phd/moorphology) — a
+Evolved from **MOORPHOLOGY** (https://gitlab.com/jfaldanam-phd/moorphology) — a
 jMetal-6.1 Java implementation of the same feature set. This is a **from-scratch rewrite, not a
 fork**, prompted by an EMO2027-program analysis session (2026-07-23) that found: (a) several real
 correctness bugs in MOORPHOLOGY's feature computations, uncaught because none of its tests
