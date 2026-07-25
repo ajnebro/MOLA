@@ -36,9 +36,9 @@ dependencies:
       # at module level in jmetalpy's own quality_indicator.py, not an
       # optional extra). Also used directly by MOLA's core for every
       # hypervolume-based feature (hv, hv_avg_neig, hvd_avg_neig,
-      # nhv_avg_neig, and their _cor_neig pairs). MOLA has no chosen license
-      # yet — see CLAUDE.md's "Not yet decided" section. This needs the
-      # project owner's decision before release; it is intentionally NOT
-      # resolved here.
+      # nhv_avg_neig, and their _cor_neig pairs). This places no obligation on
+      # MOLA's own MIT terms: the LGPL is designed to be linked from any
+      # license, and moocore is installed separately here rather than
+      # vendored — see CLAUDE.md's "License" decision.
       - jmetalpy>=1.9.0
       - moocore>=0.1.9

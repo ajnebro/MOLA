@@ -55,8 +55,9 @@ plus pytest/ruff for development).
 This doesn't cover the jMetal (Java) sampling adapter, which needs Java 21+ and Maven instead.
 
 Note: `moocore` (used directly for hypervolume-based features, and pulled in transitively via
-`jmetalpy`) is LGPL-2.1-or-later, unlike the rest of MOLA's MIT/BSD-family dependencies — see
-[`CLAUDE.md`](CLAUDE.md) for the license-compatibility note.
+`jmetalpy`) is LGPL-2.1-or-later, unlike the rest of MOLA's MIT/BSD-family dependencies. As a
+separately-installed dependency this places no obligation on MOLA's own MIT terms — see
+[`CLAUDE.md`](CLAUDE.md) for the details.
 
 ## Development
 
@@ -67,3 +68,7 @@ This project follows:
   jMetalPy adapter)
 
 See [`CLAUDE.md`](CLAUDE.md) for the full architecture, feature set, and design decisions.
+
+## License
+
+[MIT](LICENSE), matching jMetal and jMetalPy.

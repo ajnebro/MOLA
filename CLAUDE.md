@@ -366,6 +366,19 @@ Three more, resolved 2026-07-25 — the last structural questions blocking imple
   jMetal nor jMetalPy currently ships Latin Hypercube sampling (verified 2026-07-25 — jMetal has
   only generic `util/pseudorandom` and `util/sequencegenerator`), so the adapter implements LHS
   itself either way; there is no existing utility to reuse or extend.
+- **License: MIT** (resolved 2026-07-25), matching jMetal and jMetalPy — the projects MOLA depends
+  on and is designed to be used alongside. Chosen over GPL-3.0/LGPL-3.0 on adoption grounds: MOLA's
+  value is as *the* reference implementation of these 49 features (MOORPHOLOGY's are buggy and
+  cover ~19), so it should be importable without friction from pymoo (Apache-2.0), PlatEMO, or
+  industrial pipelines. This also matches the permissive norm of the scientific Python stack
+  (numpy/scipy/pandas are BSD). Note that `moocore`'s **LGPL-2.1-or-later** never constrained this:
+  the LGPL is explicitly designed to be linked from any license, and `moocore` is a separate
+  pip/conda dependency, not vendored into MOLA's source — so MIT is unaffected. The one nuance
+  worth recording: anyone bundling MOLA *and* `moocore` into a single distributable artifact (a
+  frozen binary, say) takes on LGPL obligations for the `moocore` portion; normal pip/conda
+  installation does not. Copyleft would in any case have been mostly moot for the dominant use
+  case — running MOLA as a tool over a sample and consuming its CSV/JSON output places no
+  obligations on the caller's code under any of the three licenses.
 
 ## Not yet decided (settle in the implementation session)
 - Test strategy: hand-computed fixture front(s) with known landscape stats, one per feature, from
@@ -373,11 +386,8 @@ Three more, resolved 2026-07-25 — the last structural questions blocking imple
   down what each fixture must assert (e.g. exact `k`, exact normalizer, minimization-only
   dominance). Now spans 49 fixtures' worth of assertions, not ~19 — see "Feature implementation
   matrix" above for the full list.
-- **License.** MOLA has no chosen license yet. `moocore` (required once any hypervolume-based
-  feature is implemented — `hv`, `hv_avg_neig`, `hvd_avg_neig`, `nhv_avg_neig`, and their
-  `_cor_neig` pairs, plus a required transitive dependency of `jmetalpy` regardless) is
-  **LGPL-2.1-or-later**, unlike every other dependency here (numpy/scipy/pandas/jmetalpy are all
-  MIT/BSD-family). Flagged for the project owner's decision — not resolved here.
+
+This is now the only open item — license was the other, resolved 2026-07-25 (see above).
 
 ## Coding, testing, and Git guidelines
 MOLA adopts the jMetal/Evolver-family conventions; the guides are vendored in this repo (keep them
