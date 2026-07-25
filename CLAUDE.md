@@ -81,7 +81,10 @@ does.
 ## Feature implementation matrix (added 2026-07-24)
 Per-feature design/porting status against the paper's Table 1. Status vocabulary: `reliable` =
 correct in MOORPHOLOGY, port mechanically; `buggy` = MOORPHOLOGY has it but wrong, redesign (see
-Audit below); `new` = not in MOORPHOLOGY, design resolved this session (see Design decisions).
+Audit below); `new` = not in MOORPHOLOGY, design resolved this session (see Design decisions);
+`implemented` = built and tested in MOLA itself, Notes points at the module. Update a row to
+`implemented` in the same commit as the feature, not as a separate pass — that's what let this
+column go stale the one time it was skipped (`dist_x_avg`, caught and fixed 2026-07-25).
 Difficulty is engineering effort, not importance. Totals: **21 Low, 25 Medium, 3 High** — only
 `supp_n`, `length_aws`, `eval_aws` are genuinely hard (convex hull + adaptive-walk simulation);
 everything else is either a direct port or mechanical given the neighbourhood graph/per-solution
@@ -92,7 +95,7 @@ arrays other features already build.
 | Feature | Difficulty | Status | Notes |
 |---|---|---|---|
 | `f_cor` | Low | new | Spearman over objective columns; M>2 = mean pairwise (MOLA's own extension) |
-| `dist_x_avg` | Low | reliable | |
+| `dist_x_avg` | Low | implemented | `mola.features.dist_x_avg` |
 | `dist_x_max` | Low | reliable | raw, not normalized |
 | `dist_f_avg` | Medium | buggy | wrong normalizer source (var-space min used for F) |
 | `dist_f_max` | Low | reliable | raw, not normalized |
