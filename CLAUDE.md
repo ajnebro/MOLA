@@ -38,18 +38,17 @@ in-process (no file on disk needed), but it still hands the core the same struct
 problem object never crosses into the core. Any framework that can produce the schema can be
 characterized — jMetal (Java), jMetalPy (Python), pymoo, PlatEMO, ... — without touching the core.
 
-## Recommended architecture (confirm/revise in the implementation session — not locked in)
+## Architecture (confirmed 2026-07-25)
 - **Core engine: Python** (numpy/scipy/pandas, plus `jmetalpy` and `moocore` — see "Reuse map" in
   Design decisions) — natural fit for jMetalPy (no interchange *file* needed: the adapter imports
   and evaluates a jMetalPy problem in-process, then hands the core the same structured sample) and
   for a companion statistical-analysis script in the same spirit as MOORPHOLOGY's existing
   `statistical_analysis.py` (Shapiro-Wilk normality check across repeated characterizations).
   Dependencies are pinned in [`environment.yml`](environment.yml) (Conda env `MOLA`).
-- **Interchange format**: CSV or Parquet, columns `[problem, sample_id, x_1..x_d, f_1..f_m]`, plus
-  a small metadata JSON (bounds, problem name, M, D) — exact schema TBD in the dev session.
-  `f_1..f_m` must already be in minimization form (see "Optimization sense" in Design decisions).
+- **Interchange format**: CSV + a sidecar metadata JSON — full schema in "Interchange schema" under
+  Design decisions. `f_1..f_m` must already be in minimization form (see "Optimization sense").
 - **jMetal (Java) adapter**: minimal — Latin Hypercube sample, evaluate, write to the interchange
-  file. No feature computation in Java at all.
+  file. No feature computation in Java at all. Lives in this repo (see "Java adapter location").
 - **jMetalPy adapter**: same, in Python — a thin wrapper (or an "import a problem class and sample
   it" CLI mode), emitting the in-memory interchange record rather than a file since both ends are
   already Python. It still owns evaluation; the core still receives only the structured sample.
@@ -326,11 +325,49 @@ Table 1; judgment calls the paper doesn't fully specify are marked explicitly):
   see above). `moocore` is a **required transitive dependency of jmetalpy** (imported at module
   level in `jmetal/core/quality_indicator.py`), not an optional extra.
 
+Three more, resolved 2026-07-25 — the last structural questions blocking implementation:
+
+- **Interchange schema.** **CSV**, not Parquet: writable from Java with no extra dependency
+  (Parquet would mean pulling `parquet-mr` into the adapter purely for serialization, against the
+  "adapters stay thin" principle), inspectable by eye, and at this scale (`n = 200·D` rows) the
+  performance difference is irrelevant. One sample file plus a **sidecar metadata JSON** sharing its
+  basename. CSV columns: `problem, sample_id, x_1..x_D, f_1..f_M` — `problem` is redundant within a
+  single file but makes concatenating several problems' samples into one DataFrame trivial for the
+  repeated-run statistical workflow, without joining against the JSON. Metadata JSON keys:
+  `schema_version` (so the format can evolve without breaking old files), `problem`,
+  `number_of_variables`, `number_of_objectives`, `lower_bounds`, `upper_bounds`, `sample_size`,
+  `sampler`, `seed`. Bounds are carried for traceability only — no feature computation reads them,
+  since every normalizer is empirical over the sample (see "Normalization reference" above).
+  Constraint values are **out of scope**: none of the 49 features uses them, and the paper's
+  benchmark is unconstrained by construction. Reopen if constrained problems are ever targeted.
+- **Sampling strategy.** Latin Hypercube, `n = 200·D` (paper §4.1/§4.2). The justification is
+  **comparability, not technical superiority**: the 49 features are statistics *of the sample*, not
+  invariants of the problem, so changing the design changes every value and breaks comparison with
+  the paper's own results — and LHS is also the prevailing convention in continuous landscape
+  analysis (flacco/ELA, cited by the paper), which matters if MOLA features are ever combined with
+  ELA features over a shared sample. Secondary but decisive for MOLA specifically: the Java and
+  Python adapters must produce statistically equivalent samples or cross-ecosystem feature
+  comparison — MOLA's whole premise — breaks; plain LHS is a few lines in both, whereas matching a
+  scrambled Sobol' sequence bit-for-bit across scipy and a hand-written Java implementation is
+  fiddly. **Implementation detail worth pinning**: the paper uses R `lhs::randomLHS`, which places
+  points *uniformly at random within* each stratum; the scipy equivalent is
+  `scipy.stats.qmc.LatinHypercube(d, scramble=True)` — the default. `scramble=False` centres points
+  in their strata and is **not** what the paper does; an easy silent divergence. Known limitation,
+  documented rather than solved: plain LHS only guarantees 1-D marginal stratification (a "diagonal"
+  LHS is a valid LHS with poor coverage), and at `D=30` a 6000-point sample in 30 dimensions is
+  sparse enough that the `k=D` nearest-neighbour graph underpinning 35 of the 49 features is
+  weakly meaningful — inherited from the paper's feature set, not fixable by changing sampler.
+  Recording `sampler` in the metadata JSON keeps the choice reversible at near-zero cost, since
+  sampling lives entirely adapter-side and the core never sees it.
+- **Java adapter location.** A subdirectory of **this** repository (monorepo), not a separate
+  project and not a contribution to jMetal. Keeps the interchange contract and both of its
+  producers in one place, and matches this repo already vendoring
+  [`JAVA_CODING_GUIDELINES.md`](JAVA_CODING_GUIDELINES.md) specifically for that code. Note neither
+  jMetal nor jMetalPy currently ships Latin Hypercube sampling (verified 2026-07-25 — jMetal has
+  only generic `util/pseudorandom` and `util/sequencegenerator`), so the adapter implements LHS
+  itself either way; there is no existing utility to reuse or extend.
+
 ## Not yet decided (settle in the implementation session)
-- Exact interchange file schema/format (column names/types, file format) — constrained by the
-  decisions above (one sample per record, `f_1..f_m` minimization-form) but not yet pinned down.
-- Core language confirmation (Python is the working recommendation, not locked in).
-- Whether the jMetal-side adapter is its own tiny project or a small addition to an existing one.
 - Test strategy: hand-computed fixture front(s) with known landscape stats, one per feature, from
   the start — this is exactly the gap that let MOORPHOLOGY's bugs ship. The decisions above pin
   down what each fixture must assert (e.g. exact `k`, exact normalizer, minimization-only
@@ -358,5 +395,9 @@ CI must run the tests from day one — both `pytest` and, for the Java adapter, 
 MOORPHOLOGY's CI never ran `mvn test`, which is exactly why its feature bugs shipped.
 
 ## Status
-Empty scaffold as of 2026-07-23. No code yet — implementation happens in a dedicated future
-session.
+Design complete as of 2026-07-25, no code yet. Every structural question is settled — feature set
+(49), per-feature semantics, neighbourhood, normalizers, interchange schema, sampling, and repo
+layout — leaving only the two items under "Not yet decided" (test fixtures, license), neither of
+which blocks starting implementation. Next step: the shared substrate the feature table's "Low"
+rows all assume (neighbourhood graph, non-dominated ranking, the two normalizers), with its own
+tests, then features one at a time by difficulty within each class.
