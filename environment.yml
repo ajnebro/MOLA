@@ -29,6 +29,12 @@ dependencies:
   # dev/lint, per PYTHON_CODING_GUIDELINES.md's Enforcement section
   - pytest>=7.0
   - ruff>=0.6.0
+  # docs: one notebook per feature class under notebooks/ (see CLAUDE.md), illustrating each
+  # feature's definition against a real, executed example rather than hand-typed numbers.
+  # Outputs are committed as-is (not stripped) so they render on GitHub without needing a
+  # local kernel; matches jMetalPy's own use of "jupyter" as the package name.
+  - jupyter
+  - matplotlib>=3.5
   - pip:
       # NOTE (license): moocore is LGPL-2.1-or-later — unlike every other
       # dependency here (all MIT/BSD-family) — and becomes an unavoidable

@@ -19,6 +19,9 @@ venv/
 # Java adapter (Maven)
 target/
 
+# Jupyter
+.ipynb_checkpoints/
+
 # OS / editor
 .DS_Store
 .idea/
