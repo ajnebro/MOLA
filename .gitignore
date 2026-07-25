@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.eggs/
+
+# Testing / tooling caches
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Environments
+.venv/
+venv/
+
+# Java adapter (Maven)
+target/
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
+
+# Reference material kept locally, not distributed
+*.pdf

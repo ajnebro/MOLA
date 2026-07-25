@@ -1,0 +1,53 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mola"
+version = "0.1.0"
+description = "Multi-Objective Landscape Analyzer: landscape features of continuous MOPs"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+authors = [{ name = "Antonio J. Nebro", email = "ajnebro@uma.es" }]
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+    "numpy>=2.2.5",
+    "pandas>=2.2.3",
+    "scipy>=1.15.3",
+    "jmetalpy>=1.9.0",
+    "moocore>=0.1.9",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=7.0", "ruff>=0.6.0"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+addopts = ["--import-mode=importlib"]
+testpaths = ["tests"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.ruff.lint]
+# Greenfield codebase — no legacy carve-outs. Unlike jMetalPy (whose ruff
+# config carries a long ignore list for 6-year-old code), MOLA starts clean and
+# should stay that way; do not add ignores here to silence new findings.
+select = ["E", "F", "W", "I", "UP", "B", "C4", "C90", "SIM", "D"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.mccabe]
+# PYTHON_CODING_GUIDELINES.md §2: cognitive complexity <= 10.
+max-complexity = 10
