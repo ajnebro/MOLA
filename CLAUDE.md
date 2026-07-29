@@ -96,9 +96,9 @@ arrays other features already build.
 |---|---|---|---|
 | `f_cor` | Low | new | Spearman over objective columns; M>2 = mean pairwise (MOLA's own extension) |
 | `dist_x_avg` | Low | implemented | `mola.features.dist_x_avg` |
-| `dist_x_max` | Low | reliable | raw, not normalized |
+| `dist_x_max` | Low | implemented | `mola.features.dist_x_max` — raw, not normalized |
 | `dist_f_avg` | Medium | buggy | wrong normalizer source (var-space min used for F) |
-| `dist_f_max` | Low | reliable | raw, not normalized |
+| `dist_f_max` | Low | implemented | `mola.features.dist_f_max` — raw, not normalized |
 | `nd_n` | Low | reliable | |
 | `supp_n` | High | new | ConvexHull on ND subset; degenerate-case fallback |
 | `hv` | Medium | new | `moocore.hypervolume`; shared whole-sample ref point |

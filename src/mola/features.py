@@ -28,3 +28,33 @@ def dist_x_avg(variables: np.ndarray, normalizer: Normalizer) -> float:
         The normalized average pairwise variable-space distance, in [0, 1].
     """
     return normalizer.normalize(pairwise_distance_stats(variables).mean)
+
+
+def dist_x_max(variables: np.ndarray) -> float:
+    """Maximum pairwise distance among sampled solutions in variable space (Table 1: dist_x_max).
+
+    Reported raw, not normalized — every `*_MAX` feature stays raw (Design decisions,
+    "Normalization reference").
+
+    Args:
+        variables: Decision vectors, shape (n, D), with n >= 2.
+
+    Returns:
+        The raw maximum pairwise variable-space distance.
+    """
+    return pairwise_distance_stats(variables).maximum
+
+
+def dist_f_max(objectives: np.ndarray) -> float:
+    """Maximum pairwise distance among sampled solutions in objective space (Table 1: dist_f_max).
+
+    Reported raw, not normalized — every `*_MAX` feature stays raw (Design decisions,
+    "Normalization reference").
+
+    Args:
+        objectives: Objective vectors, shape (n, M), with n >= 2.
+
+    Returns:
+        The raw maximum pairwise objective-space distance.
+    """
+    return pairwise_distance_stats(objectives).maximum
