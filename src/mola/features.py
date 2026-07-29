@@ -7,6 +7,7 @@ feature belongs here once enough features exist to justify one.
 """
 
 import numpy as np
+from scipy.stats import entropy
 
 from mola.distance import pairwise_distance_stats
 from mola.normalization import Normalizer
@@ -85,3 +86,36 @@ def rank_avg(ranking: Ranking) -> float:
         The mean per-solution rank.
     """
     return float(ranking.rank.mean())
+
+
+def rank_max(ranking: Ranking) -> float:
+    """Maximum rank with respect to non-dominated sorting (Table 1: rank_max).
+
+    Rank is zero-based — rank 0 is the non-dominated front — following
+    `mola.ranking.rank_solutions`'s own convention.
+
+    Args:
+        ranking: The sample's non-dominated ranking.
+
+    Returns:
+        The largest per-solution rank, equivalently `ranking.number_of_fronts - 1`.
+    """
+    return float(ranking.rank.max())
+
+
+def rank_ent(ranking: Ranking) -> float:
+    """Entropy of the distribution of solutions per rank (Table 1: rank_ent).
+
+    Shannon entropy, base 2 (bits), of the front-size proportions. The paper does not state a
+    log base; this matches MOORPHOLOGY's `getRankEntropy` exactly
+    (`ProblemCharacterization.java:384-403`, confirmed by reading its source, not assumed).
+
+    Args:
+        ranking: The sample's non-dominated ranking.
+
+    Returns:
+        The base-2 entropy of the front-size distribution, in bits. Zero when every solution
+        falls in a single front.
+    """
+    front_sizes = [front.size for front in ranking.fronts]
+    return float(entropy(front_sizes, base=2))

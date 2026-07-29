@@ -106,8 +106,8 @@ arrays other features already build.
 | `dist_x_nd_max` | Low | buggy | same pair-filter bug, max itself otherwise fine |
 | `fdc` | Medium | new | Spearman over ND-subset pairwise X/F distance |
 | `rank_avg` | Low | implemented | `mola.features.rank_avg` |
-| `rank_max` | Low | reliable | |
-| `rank_ent` | Low | reliable | |
+| `rank_max` | Low | implemented | `mola.features.rank_max` |
+| `rank_ent` | Low | implemented | `mola.features.rank_ent` — base-2 entropy, confirmed against MOORPHOLOGY's source |
 
 **Multimodality (9)** — 4 Low, 3 Medium, 2 High
 
