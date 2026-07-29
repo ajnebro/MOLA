@@ -99,13 +99,13 @@ arrays other features already build.
 | `dist_x_max` | Low | implemented | `mola.features.dist_x_max` — raw, not normalized |
 | `dist_f_avg` | Medium | buggy | wrong normalizer source (var-space min used for F) |
 | `dist_f_max` | Low | implemented | `mola.features.dist_f_max` — raw, not normalized |
-| `nd_n` | Low | reliable | |
+| `nd_n` | Low | implemented | `mola.features.nd_n` |
 | `supp_n` | High | new | ConvexHull on ND subset; degenerate-case fallback |
 | `hv` | Medium | new | `moocore.hypervolume`; shared whole-sample ref point |
 | `dist_x_nd_avg` | Medium | buggy | pair-filter checks `i,i` not `i,j`; wrong divisor |
 | `dist_x_nd_max` | Low | buggy | same pair-filter bug, max itself otherwise fine |
 | `fdc` | Medium | new | Spearman over ND-subset pairwise X/F distance |
-| `rank_avg` | Low | reliable | |
+| `rank_avg` | Low | implemented | `mola.features.rank_avg` |
 | `rank_max` | Low | reliable | |
 | `rank_ent` | Low | reliable | |
 

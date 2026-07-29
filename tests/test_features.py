@@ -3,8 +3,9 @@
 import numpy as np
 import pytest
 
-from mola.features import dist_f_max, dist_x_avg, dist_x_max
+from mola.features import dist_f_max, dist_x_avg, dist_x_max, nd_n, rank_avg
 from mola.normalization import Normalizer
+from mola.ranking import rank_solutions
 
 
 class TestDistXAvg:
@@ -85,3 +86,60 @@ class TestDistFMax:
 
         # Assert: raw, not normalized
         assert value == pytest.approx(5.0)
+
+
+class TestNdN:
+    """Unit tests for nd_n."""
+
+    def test_should_return_the_hand_verified_non_dominated_proportion(self):
+        """Given a mix of non-dominated and dominated solutions, returns their proportion."""
+        # Arrange: A(1,3), B(2,2), C(3,1) mutually incomparable -> front 0
+        #          D(2,3) dominated by both A (1<2, 3<=3) and B (2<=2, 2<3) -> front 1
+        objectives = np.array([[1.0, 3.0], [2.0, 2.0], [3.0, 1.0], [2.0, 3.0]])
+        ranking = rank_solutions(objectives)
+
+        # Act
+        value = nd_n(ranking)
+
+        # Assert: |front 0| / n = 3 / 4
+        assert value == pytest.approx(0.75)
+
+    def test_should_return_one_when_every_solution_is_non_dominated(self):
+        """Given a mutually incomparable set, every solution is non-dominated."""
+        # Arrange: A(1,3), B(2,2), C(3,1) mutually incomparable -> single front
+        objectives = np.array([[1.0, 3.0], [2.0, 2.0], [3.0, 1.0]])
+        ranking = rank_solutions(objectives)
+
+        # Act
+        value = nd_n(ranking)
+
+        # Assert
+        assert value == pytest.approx(1.0)
+
+
+class TestRankAvg:
+    """Unit tests for rank_avg."""
+
+    def test_should_return_the_hand_verified_mean_rank(self):
+        """Given a mix of non-dominated and dominated solutions, returns their mean rank."""
+        # Arrange: same fixture as TestNdN -- ranks [0, 0, 0, 1]
+        objectives = np.array([[1.0, 3.0], [2.0, 2.0], [3.0, 1.0], [2.0, 3.0]])
+        ranking = rank_solutions(objectives)
+
+        # Act
+        value = rank_avg(ranking)
+
+        # Assert: (0 + 0 + 0 + 1) / 4
+        assert value == pytest.approx(0.25)
+
+    def test_should_return_zero_when_every_solution_is_non_dominated(self):
+        """Given a mutually incomparable set, every solution has rank 0."""
+        # Arrange: A(1,3), B(2,2), C(3,1) mutually incomparable -> single front
+        objectives = np.array([[1.0, 3.0], [2.0, 2.0], [3.0, 1.0]])
+        ranking = rank_solutions(objectives)
+
+        # Act
+        value = rank_avg(ranking)
+
+        # Assert
+        assert value == pytest.approx(0.0)
