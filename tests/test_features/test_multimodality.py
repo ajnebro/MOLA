@@ -8,6 +8,8 @@ import pytest
 from mola.distance import Neighbourhood
 from mola.dominance import neighbourhood_dominance
 from mola.features import (
+    eval_aws,
+    length_aws,
     nd_per_plo,
     plo_dist_avg,
     plo_dist_max,
@@ -16,6 +18,7 @@ from mola.features import (
     slo_dist_max,
     slo_n,
 )
+from mola.multimodality import AdaptiveWalks
 from mola.normalization import Normalizer
 from mola.ranking import rank_solutions
 
@@ -293,3 +296,37 @@ class TestSloDistMax:
 
         # Assert
         assert math.isnan(value)
+
+
+class TestLengthAws:
+    """Unit tests for length_aws."""
+
+    def test_should_return_the_mean_walk_length(self):
+        """Given the five hand-traced walks, returns their mean length."""
+        # Arrange: lengths from the chain fixture in test_multimodality.py: 0, 1, 2, 3, 4
+        walks = AdaptiveWalks(
+            lengths=np.array([0, 1, 2, 3, 4]), evaluations=np.array([2, 3, 4, 6, 7])
+        )
+
+        # Act
+        value = length_aws(walks)
+
+        # Assert: (0 + 1 + 2 + 3 + 4) / 5 = 2.0
+        assert value == pytest.approx(2.0)
+
+
+class TestEvalAws:
+    """Unit tests for eval_aws."""
+
+    def test_should_return_the_mean_evaluation_count(self):
+        """Given the five hand-traced walks, returns their mean evaluation count."""
+        # Arrange: same walks as TestLengthAws
+        walks = AdaptiveWalks(
+            lengths=np.array([0, 1, 2, 3, 4]), evaluations=np.array([2, 3, 4, 6, 7])
+        )
+
+        # Act
+        value = eval_aws(walks)
+
+        # Assert: (2 + 3 + 4 + 6 + 7) / 5 = 22 / 5 = 4.4
+        assert value == pytest.approx(4.4)

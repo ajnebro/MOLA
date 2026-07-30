@@ -10,7 +10,7 @@ import numpy as np
 from mola.distance import Neighbourhood, pairwise_distance_stats
 from mola.dominance import NeighbourhoodDominance
 from mola.features.global_ import nd_n
-from mola.multimodality import single_objective_local_optima
+from mola.multimodality import AdaptiveWalks, single_objective_local_optima
 from mola.normalization import Normalizer
 from mola.ranking import Ranking
 
@@ -168,3 +168,33 @@ def slo_dist_max(
         if subset.shape[0] >= 2:
             per_objective[m] = pairwise_distance_stats(subset).maximum
     return float(np.nanmean(per_objective))
+
+
+def length_aws(walks: AdaptiveWalks) -> float:
+    """Average length of adaptive walks (Table 1: length_aws).
+
+    Args:
+        walks: The outcome of several independent adaptive walks, from
+            `mola.multimodality.adaptive_walks`.
+
+    Returns:
+        The mean walk length.
+    """
+    return float(walks.lengths.mean())
+
+
+def eval_aws(walks: AdaptiveWalks) -> float:
+    """Average number of calls to the evaluation function performed by adaptive walks (Table 1).
+
+    Despite the name (matching Table 1's own wording), these are lookups against the precomputed
+    sample, not real `evaluate()` calls — the paper is explicit the walk needs no additional
+    evaluations (`mola.multimodality.adaptive_walk`, Design decisions).
+
+    Args:
+        walks: The outcome of several independent adaptive walks, from
+            `mola.multimodality.adaptive_walks`.
+
+    Returns:
+        The mean evaluation count.
+    """
+    return float(walks.evaluations.mean())

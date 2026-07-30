@@ -35,6 +35,8 @@ from mola.features.global_ import (
     supp_n,
 )
 from mola.features.multimodality import (
+    eval_aws,
+    length_aws,
     nd_per_plo,
     plo_dist_avg,
     plo_dist_max,
@@ -74,6 +76,7 @@ __all__ = [
     "dist_x_max",
     "dist_x_nd_avg",
     "dist_x_nd_max",
+    "eval_aws",
     "f_cor",
     "fdc",
     "hv",
@@ -85,6 +88,7 @@ __all__ = [
     "inc_cor_neig",
     "inf_avg_neig",
     "inf_cor_neig",
+    "length_aws",
     "nd_n",
     "nd_per_plo",
     "nhv_avg_neig",
