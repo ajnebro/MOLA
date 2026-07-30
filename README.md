@@ -77,7 +77,7 @@ Every command prints its result as plain `key: value` lines; add `--output resul
 `.csv`) to also save the full 52-field result to a file. See [`examples/`](examples/) — split into
 [`getting_started/`](examples/getting_started/) (a runnable script and a narrated walkthrough of
 both the CLI and the Python API) and [`benchmarks/`](examples/benchmarks/) (ready-made scripts
-that characterize a whole jMetalPy benchmark suite in one CSV — RE, RWA, and DTLZ) — and
+that characterize a whole jMetalPy benchmark suite in one CSV — RE, RWA, DTLZ, and ZCAT) — and
 [`llms.txt`](llms.txt) for a short summary aimed at AI-agent tooling.
 
 ## Java (jMetal) adapter

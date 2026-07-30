@@ -36,7 +36,7 @@ the format itself.
 - [examples/getting_started/getting_started.ipynb](examples/getting_started/getting_started.ipynb):
   a narrated first-five-minutes walkthrough covering both the CLI and the Python API.
 - [examples/benchmarks/](examples/benchmarks/): scripts applying MOLA to every problem in a
-  jMetalPy benchmark suite (RE, RWA, DTLZ), each writing one CSV row per problem.
+  jMetalPy benchmark suite (RE, RWA, DTLZ, ZCAT), each writing one CSV row per problem.
 - [notebooks/](notebooks/): one notebook per feature class (global, multimodality, evolvability,
   ruggedness), pairing each of the 49 features' definition with a real, executed example.
 

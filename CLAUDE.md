@@ -395,8 +395,9 @@ Three more, resolved 2026-07-25 — the last structural questions blocking imple
   distinct from `notebooks/`, which documents what each of the 49 features *means*; `examples/`
   never re-explains a feature's definition, only points to `notebooks/` for that.
   `examples/benchmarks/` is a second, later-added group — `characterize_re_benchmark.py`,
-  `characterize_rwa_benchmark.py`, and `characterize_dtlz_benchmark.py`, applying MOLA to every
-  problem in a jMetalPy benchmark suite and writing one CSV row per problem — kept in its own
+  `characterize_rwa_benchmark.py`, `characterize_dtlz_benchmark.py`, and
+  `characterize_zcat_benchmark.py`, applying MOLA to every problem in a jMetalPy benchmark suite
+  and writing one CSV row per problem — kept in its own
   subdirectory rather than the flat top level once `examples/` grew past the original onboarding
   pair, so the folder's two purposes (first-five-minutes onboarding vs. worked benchmark-suite use
   cases) stay visually and structurally separate. The RE/RWA scripts go through the Python API
@@ -406,10 +407,21 @@ Three more, resolved 2026-07-25 — the last structural questions blocking imple
   defaulting to 3 objectives), so `characterize_dtlz_benchmark.py` exists purely for the
   whole-suite-in-one-CSV convenience — any single DTLZ problem also runs directly via `mola run
   DTLZ2`. RE91 is skipped by the RE script with a printed reason: 4 of its 11 "variables" have
-  infinite bounds
-  and are overwritten with fresh Gaussian noise inside its own `evaluate()` regardless of what's
-  sampled — a quirk of that one jMetalPy problem's implementation, not something a general-purpose
-  LHS sampler can honor, discovered by actually running the script against all 16 RE problems.
+  infinite bounds and are overwritten with fresh Gaussian noise inside its own `evaluate()`
+  regardless of what's sampled — a quirk of that one jMetalPy problem's implementation, not
+  something a general-purpose LHS sampler can honor, discovered by actually running the script
+  against all 16 RE problems. `characterize_zcat_benchmark.py` characterizes ZCAT1-ZCAT20 twice,
+  once at 2 objectives and once at 3 (everything else — `number_of_variables=30`,
+  `complicated_pareto_set=False`, `level=1`, `bias=False`, `imbalance=False` — left at its
+  default), into two separate CSVs. ZCAT is also in the flat `jmetal.problem` namespace, but
+  **isn't published in the `jmetalpy` release on PyPI yet** (confirmed: 1.9.0 on PyPI lacks
+  `zcat.py`, even though both the installed package and the project's local jMetalPy source
+  checkout at `/Users/ajnebro/Softw/jMetal/jMetalPy` report the same "1.9.0" version string —
+  ZCAT support is committed there but not yet re-released) — running this script requires
+  installing jMetalPy from that source checkout (`pip install -e <path-to-jMetalPy>`) into the
+  `MOLA` environment first, overriding the `environment.yml`-pinned PyPI package locally. This is
+  a one-off local override for generating this analysis, not a change to MOLA's own declared
+  dependency.
 
 ## Not yet decided
 Nothing left. Test strategy — hand-computed fixture front(s) with known landscape stats, one per
@@ -458,7 +470,7 @@ negation is a genuine correctness step, not a formality. An end-to-end integrati
 The CLI (`mola`, `src/mola/cli.py`) is also done: three Typer commands (`sample`, `characterize`,
 `run`, see the "CLI" Design decision), each documented in depth via its own `--help`.
 `examples/getting_started/` (a runnable script, a narrated onboarding notebook, a checked-in
-interchange-format example), `examples/benchmarks/` (RE, RWA, and DTLZ benchmark-suite
+interchange-format example), `examples/benchmarks/` (RE, RWA, DTLZ, and ZCAT benchmark-suite
 characterization scripts), and a root-level `llms.txt` cover onboarding and worked use cases for
 human users and AI-agent tooling respectively (see the "AI-agent discoverability" and
 "`examples/` vs `notebooks/`" Design decisions).
