@@ -120,8 +120,8 @@ arrays other features already build.
 | `plo_dist_avg` | Low | implemented | `mola.features.multimodality.plo_dist_avg` — NaN if \|PLO\| < 2 |
 | `plo_dist_max` | Low | implemented | `mola.features.multimodality.plo_dist_max` — raw; NaN if \|PLO\| < 2 |
 | `nd_per_plo` | Low | implemented | `mola.features.multimodality.nd_per_plo` = `nd_n / plo_n` |
-| `length_aws` | High | new | adaptive-walk simulation, genuinely new algorithm |
-| `eval_aws` | High | new | byproduct of the same walk |
+| `length_aws` | High | implemented | `mola.features.multimodality.length_aws` — adaptive-walk simulation, genuinely new algorithm |
+| `eval_aws` | High | implemented | `mola.features.multimodality.eval_aws` — byproduct of the same walk |
 
 **Evolvability (13)** — 6 Low, 7 Medium
 
