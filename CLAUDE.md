@@ -113,9 +113,9 @@ arrays other features already build.
 
 | Feature | Difficulty | Status | Notes |
 |---|---|---|---|
-| `slo_n` | Medium | new | per-objective, mean across M |
-| `slo_dist_avg` | Medium | new | per-objective avg distance, mean across M |
-| `slo_dist_max` | Medium | new | per-objective max distance, mean across M |
+| `slo_n` | Medium | implemented | `mola.features.multimodality.slo_n` — `mola.multimodality.single_objective_local_optima` |
+| `slo_dist_avg` | Medium | implemented | `mola.features.multimodality.slo_dist_avg` — NaN if every objective has \|S_m\| < 2 |
+| `slo_dist_max` | Medium | implemented | `mola.features.multimodality.slo_dist_max` — raw; same NaN rule |
 | `plo_n` | Low | implemented | `mola.features.multimodality.plo_n` |
 | `plo_dist_avg` | Low | implemented | `mola.features.multimodality.plo_dist_avg` — NaN if \|PLO\| < 2 |
 | `plo_dist_max` | Low | implemented | `mola.features.multimodality.plo_dist_max` — raw; NaN if \|PLO\| < 2 |
