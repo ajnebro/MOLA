@@ -4,7 +4,7 @@ import numpy as np
 import pytest
 
 from mola.distance import Neighbourhood
-from mola.dominance import neighbourhood_dominance
+from mola.dominance import local_nondominance, neighbourhood_dominance
 from mola.features import (
     diff_f_cor_neig,
     diff_f_dist_x_cor_neig,
@@ -15,6 +15,8 @@ from mola.features import (
     hvd_cor_neig,
     inc_cor_neig,
     inf_cor_neig,
+    lnd_cor_neig,
+    lsupp_cor_neig,
     nhv_cor_neig,
     sup_cor_neig,
 )
@@ -247,3 +249,62 @@ class TestNhvCorNeig:
 
         # Assert
         assert value == pytest.approx(-0.4472135954999579)
+
+
+class TestLndCorNeig:
+    """Unit tests for lnd_cor_neig."""
+
+    def test_should_correlate_the_per_solution_locally_non_dominated_proportion(self):
+        """Given the notch fixture, correlates each solution's locally-non-dominated share."""
+        # Arrange: R(10,10) dominated by everyone; A, B, D on the local hull; C(3,1.8) is a
+        # "notch" (same fixture as mola.dominance's own notch test). Per-solution
+        # locally-nondominated proportions [4, 3, 3, 3, 3] / 4 (verified against scipy directly)
+        objectives = np.array([[10.0, 10.0], [1.0, 5.0], [2.0, 2.0], [3.0, 1.8], [5.0, 1.0]])
+        indices = np.array(
+            [
+                [1, 2, 3, 4],
+                [0, 2, 3, 4],
+                [0, 1, 3, 4],
+                [0, 1, 2, 4],
+                [0, 1, 2, 3],
+            ]
+        )
+        neighbourhood = Neighbourhood(
+            indices=indices, distances=np.zeros_like(indices, dtype=float)
+        )
+        local = local_nondominance(objectives, neighbourhood)
+
+        # Act
+        value = lnd_cor_neig(local, neighbourhood)
+
+        # Assert
+        assert value == pytest.approx(-0.25)
+
+
+class TestLsuppCorNeig:
+    """Unit tests for lsupp_cor_neig."""
+
+    def test_should_correlate_the_per_solution_locally_supported_proportion(self):
+        """Given the notch fixture, correlates each solution's locally-supported share."""
+        # Arrange: same fixture as TestLndCorNeig -- per-solution locally-supported proportions
+        # [3, 2, 2, 3, 2] / 4 (verified against scipy directly)
+        objectives = np.array([[10.0, 10.0], [1.0, 5.0], [2.0, 2.0], [3.0, 1.8], [5.0, 1.0]])
+        indices = np.array(
+            [
+                [1, 2, 3, 4],
+                [0, 2, 3, 4],
+                [0, 1, 3, 4],
+                [0, 1, 2, 4],
+                [0, 1, 2, 3],
+            ]
+        )
+        neighbourhood = Neighbourhood(
+            indices=indices, distances=np.zeros_like(indices, dtype=float)
+        )
+        local = local_nondominance(objectives, neighbourhood)
+
+        # Act
+        value = lsupp_cor_neig(local, neighbourhood)
+
+        # Assert
+        assert value == pytest.approx(-0.25)

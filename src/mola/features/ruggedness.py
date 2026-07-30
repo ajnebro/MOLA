@@ -8,7 +8,7 @@ procedure, §4.1.4) — "the larger the correlation, the smoother the landscape.
 import numpy as np
 
 from mola.distance import Neighbourhood, neighbour_diff_f, neighbour_distances
-from mola.dominance import NeighbourhoodDominance
+from mola.dominance import LocalNondominance, NeighbourhoodDominance
 from mola.hypervolume import (
     neighbour_hypervolume_difference,
     neighbourhood_hypervolume,
@@ -95,6 +95,40 @@ def inc_cor_neig(dominance: NeighbourhoodDominance, neighbourhood: Neighbourhood
         per-solution measure).
     """
     measure = dominance.incomparable / neighbourhood.size
+    return neighbour_correlation(measure, neighbourhood)
+
+
+def lnd_cor_neig(local: LocalNondominance, neighbourhood: Neighbourhood) -> float:
+    """Neighbour's correlation of the proportion of locally non-dominated neighbours.
+
+    Args:
+        local: Per-solution locally-non-dominated and locally-supported neighbour counts, built
+            from this same `neighbourhood`.
+        neighbourhood: The sample's neighbourhood graph.
+
+    Returns:
+        The Spearman correlation, over every directed neighbour edge, of each solution's
+        proportion of locally non-dominated neighbours
+        (`mola.features.evolvability.lnd_avg_neig`'s per-solution measure).
+    """
+    measure = local.locally_nondominated / neighbourhood.size
+    return neighbour_correlation(measure, neighbourhood)
+
+
+def lsupp_cor_neig(local: LocalNondominance, neighbourhood: Neighbourhood) -> float:
+    """Neighbour's correlation of the proportion of supported locally non-dominated neighbours.
+
+    Args:
+        local: Per-solution locally-non-dominated and locally-supported neighbour counts, built
+            from this same `neighbourhood`.
+        neighbourhood: The sample's neighbourhood graph.
+
+    Returns:
+        The Spearman correlation, over every directed neighbour edge, of each solution's
+        proportion of supported locally non-dominated neighbours
+        (`mola.features.evolvability.lsupp_avg_neig`'s per-solution measure).
+    """
+    measure = local.locally_supported / neighbourhood.size
     return neighbour_correlation(measure, neighbourhood)
 
 

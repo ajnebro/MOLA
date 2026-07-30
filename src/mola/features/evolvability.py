@@ -8,7 +8,7 @@ pattern as the global class.
 import numpy as np
 
 from mola.distance import Neighbourhood, neighbour_diff_f, neighbour_distances
-from mola.dominance import NeighbourhoodDominance
+from mola.dominance import LocalNondominance, NeighbourhoodDominance
 from mola.hypervolume import (
     neighbour_hypervolume_difference,
     neighbourhood_hypervolume,
@@ -59,6 +59,51 @@ def inc_avg_neig(dominance: NeighbourhoodDominance, neighbourhood: Neighbourhood
         The mean, over the sample, of each solution's proportion of incomparable neighbours.
     """
     return float(np.mean(dominance.incomparable / neighbourhood.size))
+
+
+def lnd_avg_neig(local: LocalNondominance, neighbourhood: Neighbourhood) -> float:
+    """Average proportion of locally non-dominated neighbours (Table 1: lnd_avg_neig).
+
+    The local analogue of the global `nd_n`: a neighbour is "locally non-dominated" iff it is
+    non-dominated within the local group `{i} ∪ N(i)`, not the whole sample (Design decisions,
+    "lnd/lsupp") — **not** MOORPHOLOGY's comparison of the neighbour's local rank against the
+    reference's own rank.
+
+    Args:
+        local: Per-solution locally-non-dominated and locally-supported neighbour counts, built
+            from this same `neighbourhood`.
+        neighbourhood: The sample's neighbourhood graph. Only `.size` is used, as the
+            proportion's denominator.
+
+    Returns:
+        The mean, over the sample, of each solution's proportion of locally non-dominated
+        neighbours.
+    """
+    return float(np.mean(local.locally_nondominated / neighbourhood.size))
+
+
+def lsupp_avg_neig(local: LocalNondominance, neighbourhood: Neighbourhood) -> float:
+    """Average proportion of supported locally non-dominated neighbours (Table 1).
+
+    The local analogue of the global `supp_n`: among a solution's locally non-dominated
+    neighbours, the proportion that are also "supported" — on a minimizing-direction facet of
+    the local non-dominated subset's convex hull (`mola.hull.supported_mask`), the identical test
+    `supp_n` applies globally. MOORPHOLOGY's equivalent never applied this convex-hull concept to
+    `lsupp` at all, despite sharing supp_n's "supported" terminology (Design decisions).
+
+    Args:
+        local: Per-solution locally-non-dominated and locally-supported neighbour counts, built
+            from this same `neighbourhood`.
+        neighbourhood: The sample's neighbourhood graph. Only `.size` is used, as the
+            proportion's denominator — matching `lnd_avg_neig`'s convention, not
+            `supp_n`'s `|ND|` denominator (Table 1: "proportion... of neighbours", not "...
+            therein").
+
+    Returns:
+        The mean, over the sample, of each solution's proportion of supported locally
+        non-dominated neighbours.
+    """
+    return float(np.mean(local.locally_supported / neighbourhood.size))
 
 
 def dist_x_avg_neig(variables: np.ndarray, neighbourhood: Neighbourhood) -> float:

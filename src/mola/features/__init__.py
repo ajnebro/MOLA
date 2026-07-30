@@ -15,6 +15,8 @@ from mola.features.evolvability import (
     hvd_avg_neig,
     inc_avg_neig,
     inf_avg_neig,
+    lnd_avg_neig,
+    lsupp_avg_neig,
     nhv_avg_neig,
     sup_avg_neig,
 )
@@ -55,6 +57,8 @@ from mola.features.ruggedness import (
     hvd_cor_neig,
     inc_cor_neig,
     inf_cor_neig,
+    lnd_cor_neig,
+    lsupp_cor_neig,
     nhv_cor_neig,
     sup_cor_neig,
 )
@@ -89,6 +93,10 @@ __all__ = [
     "inf_avg_neig",
     "inf_cor_neig",
     "length_aws",
+    "lnd_avg_neig",
+    "lnd_cor_neig",
+    "lsupp_avg_neig",
+    "lsupp_cor_neig",
     "nd_n",
     "nd_per_plo",
     "nhv_avg_neig",

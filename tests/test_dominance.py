@@ -3,7 +3,7 @@
 import numpy as np
 
 from mola.distance import Neighbourhood
-from mola.dominance import neighbourhood_dominance
+from mola.dominance import local_nondominance, neighbourhood_dominance
 
 
 class TestNeighbourhoodDominance:
@@ -67,3 +67,69 @@ class TestNeighbourhoodDominance:
         assert np.array_equal(result.dominating, [0, 0, 0])
         assert np.array_equal(result.dominated, [0, 0, 0])
         assert np.array_equal(result.incomparable, [2, 2, 2])
+
+
+class TestLocalNondominance:
+    """Unit tests for local_nondominance."""
+
+    def test_should_count_locally_non_dominated_and_supported_neighbours(self):
+        """Given a reference solution whose local group has a dominated member, counts both."""
+        # Arrange: A(1,5), B(2,2), C(5,1) mutually incomparable; D(3,3) dominated by B
+        # (2<=3, 2<=3, strict). A's local group {A,B,C,D} ranks front0={A,B,C}, front1={D}.
+        objectives = np.array([[1.0, 5.0], [2.0, 2.0], [5.0, 1.0], [3.0, 3.0], [10.0, 10.0]])
+        indices = np.array(
+            [
+                [1, 2, 3],  # A -> B, C, D
+                [0, 2, 3],  # B -> A, C, D
+                [0, 1, 3],  # C -> A, B, D
+                [0, 1, 2],  # D -> A, B, C
+                [0, 1, 2],  # E -> unused as reference here
+            ]
+        )
+        neighbourhood = Neighbourhood(
+            indices=indices, distances=np.zeros_like(indices, dtype=float)
+        )
+
+        # Act
+        result = local_nondominance(objectives, neighbourhood)
+
+        # Assert: A's locally-nd neighbours are B and C (not D, dominated locally) -> 2;
+        # the local ND subset {A, B, C} is a proper triangle -- all 3 supported, so both of A's
+        # locally-nd neighbours (B, C) are also locally supported -> 2
+        assert result.locally_nondominated[0] == 2
+        assert result.locally_supported[0] == 2
+
+        # Assert: D itself is locally dominated (excluded from the local ND subset entirely),
+        # so all three of its neighbours (A, B, C) are locally non-dominated *and* supported
+        assert result.locally_nondominated[3] == 3
+        assert result.locally_supported[3] == 3
+
+    def test_should_exclude_a_locally_non_dominated_notch_neighbour_from_the_supported_count(
+        self,
+    ):
+        """A neighbour can be locally non-dominated yet still not locally supported."""
+        # Arrange: R(10,10) dominated by everyone; A(1,5), B(2,2), D(5,1) on the local hull;
+        # C(3,1.8) is a "notch" -- locally non-dominated but not on the hull (same fixture as
+        # mola.hull's own notch test, embedded here as R's neighbourhood)
+        objectives = np.array([[10.0, 10.0], [1.0, 5.0], [2.0, 2.0], [3.0, 1.8], [5.0, 1.0]])
+        indices = np.array(
+            [
+                [1, 2, 3, 4],  # R -> A, B, C, D
+                [0, 2, 3, 4],  # A -> unused as reference here
+                [0, 1, 3, 4],
+                [0, 1, 2, 4],
+                [0, 1, 2, 3],
+            ]
+        )
+        neighbourhood = Neighbourhood(
+            indices=indices, distances=np.zeros_like(indices, dtype=float)
+        )
+
+        # Act
+        result = local_nondominance(objectives, neighbourhood)
+
+        # Assert: R itself is dominated by all four neighbours, so none of them are excluded
+        # from the local ND subset by R's own presence -- all four (A, B, C, D) are locally
+        # non-dominated, but only three (A, B, D) sit on the hull -- C, the notch, does not
+        assert result.locally_nondominated[0] == 4
+        assert result.locally_supported[0] == 3

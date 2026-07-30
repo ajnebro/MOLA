@@ -4,7 +4,7 @@ import numpy as np
 import pytest
 
 from mola.distance import Neighbourhood
-from mola.dominance import neighbourhood_dominance
+from mola.dominance import local_nondominance, neighbourhood_dominance
 from mola.features import (
     diff_f_avg_neig,
     diff_f_dist_x_avg_neig,
@@ -15,6 +15,8 @@ from mola.features import (
     hvd_avg_neig,
     inc_avg_neig,
     inf_avg_neig,
+    lnd_avg_neig,
+    lsupp_avg_neig,
     nhv_avg_neig,
     sup_avg_neig,
 )
@@ -290,3 +292,77 @@ class TestNhvAvgNeig:
 
         # Assert
         assert value == pytest.approx(17.5)
+
+
+class TestLndAvgNeig:
+    """Unit tests for lnd_avg_neig."""
+
+    def test_should_return_the_hand_verified_mean_proportion(self):
+        """Given a dominance chain, returns the mean proportion of locally non-dominated ones."""
+        # Arrange: A(1,5), B(2,2), C(5,1) mutually incomparable; D(3,3) dominated by B locally.
+        # Per-solution locally-nd counts: [2, 2, 2, 3] (out of k=3 each) -- verified against
+        # local_nondominance directly
+        objectives = np.array([[1.0, 5.0], [2.0, 2.0], [5.0, 1.0], [3.0, 3.0]])
+        indices = np.array([[1, 2, 3], [0, 2, 3], [0, 1, 3], [0, 1, 2]])
+        neighbourhood = Neighbourhood(
+            indices=indices, distances=np.zeros_like(indices, dtype=float)
+        )
+        local = local_nondominance(objectives, neighbourhood)
+
+        # Act
+        value = lnd_avg_neig(local, neighbourhood)
+
+        # Assert: (2/3 + 2/3 + 2/3 + 3/3) / 4 = 0.75
+        assert value == pytest.approx(0.75)
+
+
+class TestLsuppAvgNeig:
+    """Unit tests for lsupp_avg_neig."""
+
+    def test_should_return_the_hand_verified_mean_proportion(self):
+        """Given a dominance chain, returns the mean proportion of locally supported ones."""
+        # Arrange: same fixture as TestLndAvgNeig -- here lnd and lsupp happen to coincide since
+        # every locally non-dominated point also sits on its local hull (no notch)
+        objectives = np.array([[1.0, 5.0], [2.0, 2.0], [5.0, 1.0], [3.0, 3.0]])
+        indices = np.array([[1, 2, 3], [0, 2, 3], [0, 1, 3], [0, 1, 2]])
+        neighbourhood = Neighbourhood(
+            indices=indices, distances=np.zeros_like(indices, dtype=float)
+        )
+        local = local_nondominance(objectives, neighbourhood)
+
+        # Act
+        value = lsupp_avg_neig(local, neighbourhood)
+
+        # Assert: (2/3 + 2/3 + 2/3 + 3/3) / 4 = 0.75
+        assert value == pytest.approx(0.75)
+
+    def test_should_be_strictly_less_than_lnd_avg_neig_when_a_notch_point_exists(self):
+        """A locally non-dominated notch point lowers lsupp_avg_neig but not lnd_avg_neig."""
+        # Arrange: R(10,10) dominated by everyone; A, B, D on the local hull; C(3,1.8) is a
+        # "notch" -- locally non-dominated but not locally supported (same fixture as
+        # mola.dominance's own notch test). Per-solution counts, verified against
+        # local_nondominance directly: locally_nondominated=[4,3,3,3,3] (mean 0.8 over k=4),
+        # locally_supported=[3,2,2,3,2] (mean 0.6 over k=4)
+        objectives = np.array([[10.0, 10.0], [1.0, 5.0], [2.0, 2.0], [3.0, 1.8], [5.0, 1.0]])
+        indices = np.array(
+            [
+                [1, 2, 3, 4],
+                [0, 2, 3, 4],
+                [0, 1, 3, 4],
+                [0, 1, 2, 4],
+                [0, 1, 2, 3],
+            ]
+        )
+        neighbourhood = Neighbourhood(
+            indices=indices, distances=np.zeros_like(indices, dtype=float)
+        )
+        local = local_nondominance(objectives, neighbourhood)
+
+        # Act
+        lnd_value = lnd_avg_neig(local, neighbourhood)
+        lsupp_value = lsupp_avg_neig(local, neighbourhood)
+
+        # Assert
+        assert lnd_value == pytest.approx(0.8)
+        assert lsupp_value == pytest.approx(0.6)
+        assert lsupp_value < lnd_value
