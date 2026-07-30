@@ -9,12 +9,16 @@ feature belongs here once enough features exist to justify one.
 from itertools import combinations
 
 import numpy as np
+from scipy.spatial import ConvexHull, QhullError
 from scipy.spatial.distance import pdist
 from scipy.stats import entropy, spearmanr
 
 from mola.distance import pairwise_distance_stats
 from mola.normalization import Normalizer
 from mola.ranking import Ranking
+
+_SUPPORTED_FACET_TOLERANCE = 1e-9
+"""Floating-point slack for `supp_n`'s "outward normal entirely <= 0" facet test."""
 
 
 def f_cor(objectives: np.ndarray) -> float:
@@ -239,3 +243,42 @@ def fdc(variables: np.ndarray, objectives: np.ndarray, ranking: Ranking) -> floa
     x_distances = pdist(variables[nondominated])
     f_distances = pdist(objectives[nondominated])
     return float(spearmanr(x_distances, f_distances).statistic)
+
+
+def supp_n(objectives: np.ndarray, ranking: Ranking) -> float:
+    """Proportion of supported non-dominated solutions (Table 1: supp_n).
+
+    Supported = on the convex hull of the non-dominated subset's objective vectors, findable by
+    minimizing some linear scalarization (classical definition, Ehrgott [10], §4.1.1). The
+    denominator is `|ND|`, not `n` — §4.1.1's "proportion of supported points **therein**" refers
+    back to "non-dominated solutions", distinct from `nd_n`'s "among the sample" (Design
+    decisions).
+
+    A point is supported iff it lies on a facet of the convex hull whose outward normal is
+    entirely <= 0 (the minimizing-direction facet) — not merely on the hull at all, since a facet
+    can face away from the minimizing orthant. If `|ND| <= M`, every non-dominated solution is
+    supported by construction (too few points to span a dominating simplex) — `ConvexHull` is
+    skipped.
+
+    Args:
+        objectives: Objective vectors in minimization form, shape (n, M).
+        ranking: The sample's non-dominated ranking.
+
+    Returns:
+        |supported| / |ND|. Falls back to 1.0 on `QhullError` (a coplanar/rank-deficient ND set
+        with `|ND| > M`) — a **documented approximation**, not exact, expected to be practically
+        unreachable for continuous, LHS-sampled objectives (Design decisions).
+    """
+    nondominated = ranking.nondominated
+    number_of_objectives = objectives.shape[1]
+    if nondominated.size <= number_of_objectives:
+        return 1.0
+
+    try:
+        hull = ConvexHull(objectives[nondominated])
+    except QhullError:
+        return 1.0
+
+    minimizing_facets = np.all(hull.equations[:, :-1] <= _SUPPORTED_FACET_TOLERANCE, axis=1)
+    supported = np.unique(hull.simplices[minimizing_facets])
+    return supported.size / nondominated.size

@@ -18,6 +18,7 @@ from mola.features import (
     rank_avg,
     rank_ent,
     rank_max,
+    supp_n,
 )
 from mola.normalization import Normalizer
 from mola.ranking import rank_solutions
@@ -361,3 +362,57 @@ class TestFdc:
 
         # Assert
         assert math.isnan(value)
+
+
+class TestSuppN:
+    """Unit tests for supp_n."""
+
+    def test_should_exclude_a_non_dominated_notch_point_from_the_convex_hull(self):
+        """Given a non-dominated point not reachable by any linear scalarization, excludes it."""
+        # Arrange: A(1,5), B(2,2), D(5,1) form the convex hull's minimizing facets; C(3,1.8) is
+        # non-dominated (incomparable to all three) but sits in the "notch" between B and D, off
+        # the hull entirely (verified against scipy.spatial.ConvexHull directly)
+        objectives = np.array([[1.0, 5.0], [2.0, 2.0], [3.0, 1.8], [5.0, 1.0]])
+        ranking = rank_solutions(objectives)
+
+        # Act
+        value = supp_n(objectives, ranking)
+
+        # Assert: supported = {A, B, D}, not C -> 3 / 4
+        assert value == pytest.approx(0.75)
+
+    def test_should_return_one_for_a_proper_convex_front(self):
+        """Given a non-degenerate convex front, every non-dominated solution is supported."""
+        # Arrange: A(1,4), B(2,2), C(4,1), a proper (non-collinear) triangle
+        objectives = np.array([[1.0, 4.0], [2.0, 2.0], [4.0, 1.0]])
+        ranking = rank_solutions(objectives)
+
+        # Act
+        value = supp_n(objectives, ranking)
+
+        # Assert
+        assert value == pytest.approx(1.0)
+
+    def test_should_return_one_when_the_non_dominated_set_is_collinear(self):
+        """Given a degenerate (collinear) non-dominated set, falls back to the documented 1.0."""
+        # Arrange: A(1,3), B(2,2), C(3,1) are exactly collinear -> ConvexHull raises QhullError
+        objectives = np.array([[1.0, 3.0], [2.0, 2.0], [3.0, 1.0]])
+        ranking = rank_solutions(objectives)
+
+        # Act
+        value = supp_n(objectives, ranking)
+
+        # Assert: documented approximation, not exact
+        assert value == pytest.approx(1.0)
+
+    def test_should_return_one_when_at_most_m_solutions_are_non_dominated(self):
+        """Given |ND| <= M, every non-dominated solution is supported by construction."""
+        # Arrange: A(1,2), B(2,1), |ND| = 2 = M -> ConvexHull is skipped entirely
+        objectives = np.array([[1.0, 2.0], [2.0, 1.0]])
+        ranking = rank_solutions(objectives)
+
+        # Act
+        value = supp_n(objectives, ranking)
+
+        # Assert
+        assert value == pytest.approx(1.0)

@@ -30,6 +30,7 @@ from mola.features.global_ import (
     rank_avg,
     rank_ent,
     rank_max,
+    supp_n,
 )
 from mola.features.multimodality import (
     nd_per_plo,
@@ -93,4 +94,5 @@ __all__ = [
     "slo_n",
     "sup_avg_neig",
     "sup_cor_neig",
+    "supp_n",
 ]
