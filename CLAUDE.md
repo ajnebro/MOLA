@@ -100,7 +100,7 @@ arrays other features already build.
 | `dist_f_avg` | Medium | implemented | `mola.features.dist_f_avg` — correct F-space normalizer |
 | `dist_f_max` | Low | implemented | `mola.features.dist_f_max` — raw, not normalized |
 | `nd_n` | Low | implemented | `mola.features.nd_n` |
-| `supp_n` | High | new | ConvexHull on ND subset; degenerate-case fallback |
+| `supp_n` | High | implemented | `mola.features.supp_n` — ConvexHull on ND subset; QhullError/`\|ND\|<=M` fall back to 1.0 |
 | `hv` | Medium | new | `moocore.hypervolume`; shared whole-sample ref point |
 | `dist_x_nd_avg` | Medium | implemented | `mola.features.dist_x_nd_avg` — pair-filter + divisor fixed |
 | `dist_x_nd_max` | Low | implemented | `mola.features.dist_x_nd_max` — raw; NaN if \|ND\| < 2 |
