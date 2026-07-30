@@ -9,7 +9,7 @@ import numpy as np
 
 from mola.distance import Neighbourhood, neighbour_diff_f, neighbour_distances
 from mola.dominance import NeighbourhoodDominance
-from mola.hypervolume import singleton_hypervolume
+from mola.hypervolume import neighbour_hypervolume_difference, singleton_hypervolume
 
 
 def sup_avg_neig(dominance: NeighbourhoodDominance, neighbourhood: Neighbourhood) -> float:
@@ -167,5 +167,4 @@ def hvd_avg_neig(objectives: np.ndarray, neighbourhood: Neighbourhood, ref: np.n
         The mean, over the sample, of each solution's average |hv(i) - hv(j)| with its
         neighbours.
     """
-    hv = singleton_hypervolume(objectives, ref)
-    return float(np.abs(hv[:, None] - hv[neighbourhood.indices]).mean())
+    return float(neighbour_hypervolume_difference(objectives, neighbourhood, ref).mean())

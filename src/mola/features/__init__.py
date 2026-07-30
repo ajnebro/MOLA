@@ -29,14 +29,28 @@ from mola.features.global_ import (
     rank_max,
 )
 from mola.features.multimodality import nd_per_plo, plo_dist_avg, plo_dist_max, plo_n
-from mola.features.ruggedness import dist_f_cor_neig, dist_x_cor_neig
+from mola.features.ruggedness import (
+    diff_f_cor_neig,
+    diff_f_dist_x_cor_neig,
+    dist_f_cor_neig,
+    dist_f_dist_x_cor_neig,
+    dist_x_cor_neig,
+    hv_cor_neig,
+    hvd_cor_neig,
+    inc_cor_neig,
+    inf_cor_neig,
+    sup_cor_neig,
+)
 
 __all__ = [
     "diff_f_avg_neig",
+    "diff_f_cor_neig",
     "diff_f_dist_x_avg_neig",
+    "diff_f_dist_x_cor_neig",
     "dist_f_avg_neig",
     "dist_f_cor_neig",
     "dist_f_dist_x_avg_neig",
+    "dist_f_dist_x_cor_neig",
     "dist_f_max",
     "dist_x_avg",
     "dist_x_avg_neig",
@@ -45,9 +59,13 @@ __all__ = [
     "dist_x_nd_max",
     "f_cor",
     "hv_avg_neig",
+    "hv_cor_neig",
     "hvd_avg_neig",
+    "hvd_cor_neig",
     "inc_avg_neig",
+    "inc_cor_neig",
     "inf_avg_neig",
+    "inf_cor_neig",
     "nd_n",
     "nd_per_plo",
     "plo_dist_avg",
@@ -57,4 +75,5 @@ __all__ = [
     "rank_ent",
     "rank_max",
     "sup_avg_neig",
+    "sup_cor_neig",
 ]

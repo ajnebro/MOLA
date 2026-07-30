@@ -3,7 +3,12 @@
 import numpy as np
 import pytest
 
-from mola.hypervolume import reference_point, singleton_hypervolume
+from mola.distance import Neighbourhood
+from mola.hypervolume import (
+    neighbour_hypervolume_difference,
+    reference_point,
+    singleton_hypervolume,
+)
 
 
 class TestReferencePoint:
@@ -47,3 +52,28 @@ class TestSingletonHypervolume:
 
         # Assert
         assert result[0] == pytest.approx(0.0)
+
+
+class TestNeighbourHypervolumeDifference:
+    """Unit tests for neighbour_hypervolume_difference."""
+
+    def test_should_return_the_hand_computed_per_neighbour_hypervolume_difference(self):
+        """Given three objective vectors, returns |hv(i) - hv(j)| for each neighbour pair."""
+        # Arrange: objectives (0,0), (3,4), (0,8) -> ref=(3,8) -> hv = [24, 0, 0]
+        # everyone else is a neighbour (k=2)
+        objectives = np.array([[0.0, 0.0], [3.0, 4.0], [0.0, 8.0]])
+        indices = np.array([[1, 2], [0, 2], [0, 1]])
+        neighbourhood = Neighbourhood(
+            indices=indices, distances=np.zeros_like(indices, dtype=float)
+        )
+        ref = reference_point(objectives)
+
+        # Act
+        result = neighbour_hypervolume_difference(objectives, neighbourhood, ref)
+
+        # Assert: solution 0 (hv=24) vs 1 (hv=0) and 2 (hv=0): |24-0|=24 both
+        np.testing.assert_allclose(result[0], [24.0, 24.0])
+        # solution 1 (hv=0) vs 0 (hv=24) and 2 (hv=0): 24, 0
+        np.testing.assert_allclose(result[1], [24.0, 0.0])
+        # solution 2 (hv=0) vs 0 (hv=24) and 1 (hv=0): 24, 0
+        np.testing.assert_allclose(result[2], [24.0, 0.0])

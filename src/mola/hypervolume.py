@@ -8,6 +8,8 @@ maximum of the whole sample's objectives, no padding — rather than each recomp
 
 import numpy as np
 
+from mola.distance import Neighbourhood
+
 
 def reference_point(objectives: np.ndarray) -> np.ndarray:
     """The shared hypervolume reference point: element-wise maximum over the whole sample.
@@ -43,3 +45,24 @@ def singleton_hypervolume(objectives: np.ndarray, ref: np.ndarray) -> np.ndarray
         Per-solution hypervolume, shape (n,): ``prod_m max(0, ref_m - f_m(i))``.
     """
     return np.prod(np.maximum(0.0, ref - objectives), axis=1)
+
+
+def neighbour_hypervolume_difference(
+    objectives: np.ndarray, neighbourhood: Neighbourhood, ref: np.ndarray
+) -> np.ndarray:
+    """Per-solution, per-neighbour absolute difference in singleton hypervolume.
+
+    Shared by `hvd_avg_neig` (its sample-wide mean) and `hvd_cor_neig` (its own per-solution mean,
+    correlated across neighbour pairs) — both reuse the same `singleton_hypervolume` array rather
+    than each recomputing it.
+
+    Args:
+        objectives: Objective vectors in minimization form, shape (n, M).
+        neighbourhood: The sample's neighbourhood graph.
+        ref: The shared reference point, shape (M,), from :func:`reference_point`.
+
+    Returns:
+        Per-solution, per-neighbour ``|hv(i) - hv(j)|``, shape ``(n, neighbourhood.size)``.
+    """
+    hv = singleton_hypervolume(objectives, ref)
+    return np.abs(hv[:, None] - hv[neighbourhood.indices])
