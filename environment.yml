@@ -25,6 +25,8 @@ dependencies:
   - numpy>=2.2.5
   - pandas>=2.2.3
   - scipy>=1.15.3
+  # the mola CLI entry point (src/mola/cli.py) — on conda-forge, unlike jmetalpy/moocore below
+  - typer>=0.12
   # dev/lint, per PYTHON_CODING_GUIDELINES.md's Enforcement section
   - pytest>=7.0
   - ruff>=0.6.0

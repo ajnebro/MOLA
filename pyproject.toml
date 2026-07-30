@@ -23,10 +23,14 @@ dependencies = [
     "scipy>=1.15.3",
     "jmetalpy>=1.9.0",
     "moocore>=0.1.9",
+    "typer>=0.12",
 ]
 
 [project.optional-dependencies]
 dev = ["pytest>=7.0", "ruff>=0.6.0"]
+
+[project.scripts]
+mola = "mola.cli:app"
 
 [tool.setuptools.packages.find]
 where = ["src"]
@@ -47,6 +51,12 @@ select = ["E", "F", "W", "I", "UP", "B", "C4", "C90", "SIM", "D"]
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"
+
+[tool.ruff.lint.flake8-bugbear]
+# Typer's own idiom is `param: T = typer.Option(...)` / `typer.Argument(...)` in the signature
+# itself (src/mola/cli.py) -- not the mutable-default-argument pitfall B008 otherwise guards
+# against, since Typer never mutates or reuses these values, it only reads them to build the CLI.
+extend-immutable-calls = ["typer.Argument", "typer.Option"]
 
 [tool.ruff.lint.mccabe]
 # PYTHON_CODING_GUIDELINES.md §2: cognitive complexity <= 10.
