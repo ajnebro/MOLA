@@ -10,16 +10,13 @@ from itertools import combinations
 
 import moocore
 import numpy as np
-from scipy.spatial import ConvexHull, QhullError
 from scipy.spatial.distance import pdist
 from scipy.stats import entropy, spearmanr
 
 from mola.distance import pairwise_distance_stats
+from mola.hull import supported_mask
 from mola.normalization import Normalizer
 from mola.ranking import Ranking
-
-_SUPPORTED_FACET_TOLERANCE = 1e-9
-"""Floating-point slack for `supp_n`'s "outward normal entirely <= 0" facet test."""
 
 
 def f_cor(objectives: np.ndarray) -> float:
@@ -261,6 +258,9 @@ def supp_n(objectives: np.ndarray, ranking: Ranking) -> float:
     supported by construction (too few points to span a dominating simplex) — `ConvexHull` is
     skipped.
 
+    Uses `mola.hull.supported_mask`, shared with `lsupp_avg_neig`'s local version of the same
+    test.
+
     Args:
         objectives: Objective vectors in minimization form, shape (n, M).
         ranking: The sample's non-dominated ranking.
@@ -270,19 +270,7 @@ def supp_n(objectives: np.ndarray, ranking: Ranking) -> float:
         with `|ND| > M`) — a **documented approximation**, not exact, expected to be practically
         unreachable for continuous, LHS-sampled objectives (Design decisions).
     """
-    nondominated = ranking.nondominated
-    number_of_objectives = objectives.shape[1]
-    if nondominated.size <= number_of_objectives:
-        return 1.0
-
-    try:
-        hull = ConvexHull(objectives[nondominated])
-    except QhullError:
-        return 1.0
-
-    minimizing_facets = np.all(hull.equations[:, :-1] <= _SUPPORTED_FACET_TOLERANCE, axis=1)
-    supported = np.unique(hull.simplices[minimizing_facets])
-    return supported.size / nondominated.size
+    return float(supported_mask(objectives[ranking.nondominated]).mean())
 
 
 def hv(objectives: np.ndarray, ranking: Ranking, ref: np.ndarray) -> float:
