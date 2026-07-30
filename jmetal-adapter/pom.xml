@@ -1,0 +1,116 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.uma.mola</groupId>
+  <artifactId>jmetal-adapter</artifactId>
+  <version>0.2.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <name>MOLA jMetal adapter</name>
+  <description>
+    Latin Hypercube samples and evaluates a jMetal (Java) DoubleProblem, writing the result as an
+    interchange sample file (CSV + sidecar metadata JSON) that MOLA's Python core can characterize.
+    No feature computation happens here -- see the repository root CLAUDE.md, "Java adapter
+    location".
+  </description>
+
+  <properties>
+    <maven.compiler.release>21</maven.compiler.release>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <jmetal.version>7.6-SNAPSHOT</jmetal.version>
+    <junit.version>6.1.0</junit.version>
+    <checkstyle.plugin.version>3.3.1</checkstyle.plugin.version>
+    <surefire.plugin.version>3.5.3</surefire.plugin.version>
+    <assembly.plugin.version>3.7.1</assembly.plugin.version>
+  </properties>
+
+  <!-- jMetal itself has no stable release past 6.6 on Maven Central; the current development line
+       (7.x, matching Evolver's own dependency) is only published to Sonatype's snapshots
+       repository, the same one Evolver already relies on. -->
+  <repositories>
+    <repository>
+      <id>sonatype-snapshots</id>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.uma.jmetal</groupId>
+      <artifactId>jmetal-core</artifactId>
+      <version>${jmetal.version}</version>
+    </dependency>
+    <!-- Bundled (not test-scoped) so the adapter can resolve jMetal's built-in problem catalog
+         (ZDT1, DTLZ2, ...) by class name out of the box, mirroring how the Python adapter's own
+         jmetalpy dependency gives `mola sample ZDT1 ...` the same problems for free. -->
+    <dependency>
+      <groupId>org.uma.jmetal</groupId>
+      <artifactId>jmetal-problem</artifactId>
+      <version>${jmetal.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>${checkstyle.plugin.version}</version>
+        <configuration>
+          <configLocation>google_checks.xml</configLocation>
+          <consoleOutput>true</consoleOutput>
+          <failsOnError>false</failsOnError>
+          <linkXRef>false</linkXRef>
+        </configuration>
+        <executions>
+          <execution>
+            <id>validate</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>${surefire.plugin.version}</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>${assembly.plugin.version}</version>
+        <configuration>
+          <descriptorRefs>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+          </descriptorRefs>
+          <archive>
+            <manifest>
+              <mainClass>org.uma.mola.adapter.jmetal.Main</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>

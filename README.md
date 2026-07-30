@@ -2,9 +2,9 @@
 
 **🚧 Work in progress.** The landscape-feature engine is complete — all 49 features implemented
 and tested, tied together by an orchestrator that computes all of them for a sample in one call.
-The jMetalPy sampling adapter and a documented CLI are done too, so problems already defined in
-jMetalPy can be characterized end to end with a single command. The jMetal (Java) adapter is still
-to come. See [`CLAUDE.md`](CLAUDE.md) for the full design brief.
+Both sampling adapters (jMetalPy and jMetal/Java) and a documented CLI are done too, so problems
+defined in either ecosystem can be characterized end to end. See [`CLAUDE.md`](CLAUDE.md) for the
+full design brief.
 
 ## What it does
 
@@ -49,7 +49,8 @@ conda activate MOLA
 repository root (installs numpy, pandas, scipy, jmetalpy, moocore, typer — everything listed in
 [`environment.yml`](environment.yml) — plus registers the `mola` command below).
 
-This doesn't cover the jMetal (Java) sampling adapter, which needs Java 21+ and Maven instead.
+This doesn't cover the jMetal (Java) sampling adapter, which needs Java 21+ and Maven instead —
+see "Java (jMetal) adapter" below.
 
 Note: `moocore` (used directly for hypervolume-based features, and pulled in transitively via
 `jmetalpy`) is LGPL-2.1-or-later, unlike the rest of MOLA's MIT/BSD-family dependencies. As a
@@ -76,6 +77,28 @@ Every command prints its result as plain `key: value` lines; add `--output resul
 `.csv`) to also save the full 52-field result to a file. See
 [`examples/`](examples/) for a runnable script and a narrated walkthrough of both the CLI and the
 Python API, and [`llms.txt`](llms.txt) for a short summary aimed at AI-agent tooling.
+
+## Java (jMetal) adapter
+
+[`jmetal-adapter/`](jmetal-adapter/) is a standalone Maven module (Java 21+) that Latin-Hypercube-
+samples and evaluates any jMetal `DoubleProblem`, writing the same interchange file format the
+Python CLI reads — the whole point being that `mola characterize` doesn't care which adapter
+produced its input. Build and run it directly:
+
+```bash
+cd jmetal-adapter
+mvn package
+java -jar target/jmetal-adapter-*-jar-with-dependencies.jar \
+    org.uma.jmetal.problem.multiobjective.zdt.ZDT1 sample.csv \
+    --variables 5 --sample-size 1000 --seed 42
+
+# Back on the Python side:
+mola characterize sample.csv
+```
+
+The first positional argument is a jMetal problem's fully-qualified class name (Java has no
+enumerable module namespace to look up a short name in, unlike jMetalPy). Run the jar with no
+arguments, or `--help`, for the full option list.
 
 ## Development
 

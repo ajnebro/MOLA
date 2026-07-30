@@ -312,6 +312,45 @@ Three more, resolved 2026-07-25 — the last structural questions blocking imple
   jMetal nor jMetalPy currently ships Latin Hypercube sampling (verified 2026-07-25 — jMetal has
   only generic `util/pseudorandom` and `util/sequencegenerator`), so the adapter implements LHS
   itself either way; there is no existing utility to reuse or extend.
+- **Java adapter implementation** (resolved 2026-07-30). Lives in
+  [`jmetal-adapter/`](jmetal-adapter/) — a standalone Maven module (`org.uma.mola:jmetal-adapter`),
+  not part of a multi-module aggregator, since MOLA's root is a Python project. Depends on jMetal
+  7.6-SNAPSHOT (`jmetal-core` + `jmetal-problem`, the latter bundled — not test-scoped — so built-in
+  problems like ZDT1 resolve out of the box, mirroring how `jmetalpy` gives the Python adapter the
+  same problems for free) from Sonatype's snapshots repository, `https://oss.sonatype.org/content/
+  repositories/snapshots` — the same dependency and repository Evolver already relies on, since
+  jMetal has no stable release past 6.6 on Maven Central. Key implementation choices:
+  - **No MAXIMIZE/MINIMIZE negation needed.** Confirmed by grepping jMetal's `jmetal-core` and
+    `jmetal-problem` source for `MAXIMIZE`: zero hits anywhere. Unlike jMetalPy's `obj_directions`
+    convention (Python adapter's "Optimization sense" negation step), Java jMetal has no
+    per-objective direction concept at all — every `Problem.evaluate()` is assumed to already write
+    minimization-form objectives. The Java adapter is simpler here by construction, not by
+    oversight.
+  - **Problem resolution: reflection over a fully-qualified class name**
+    (`org.uma.mola.adapter.jmetal.ProblemResolver`), e.g.
+    `org.uma.jmetal.problem.multiobjective.zdt.ZDT1`. Java has no equivalent of Python's flat,
+    enumerable module namespace (`getattr(jmetal.problem, name)`), so this is the natural fit
+    rather than a hand-maintained name registry. `--variables N` is passed as the sole constructor
+    argument only when given, since not every problem accepts it (ZDT1/ZDT4 do; most RE/RWA
+    problems, fixed-dimension by construction, only have a no-arg constructor).
+  - **LHS algorithm**: independent per-dimension stratum permutation (via `Collections.shuffle`,
+    not a hand-rolled Fisher-Yates) plus a random offset within each stratum — the same "scrambled"
+    design as the Python side's `scipy.stats.qmc.LatinHypercube(scramble=True)` (Design decisions,
+    "Sampling strategy"). Bit-for-bit matching across the two implementations was never the goal,
+    only a statistically equivalent one.
+  - **CSV/JSON writing is hand-rolled**, not a library dependency (`InterchangeSampleWriter`): the
+    schema is small, fixed, and fully known ahead of time, so adding a JSON library for it would
+    cut against the adapter's explicitly "minimal" design (Architecture, above). Verified end to
+    end, not just by construction: a file written by the Java adapter was read directly by `mola
+    characterize` (the Python CLI) and produced a correct 49-feature result — the actual, executed
+    proof the interchange contract holds across the language boundary, not merely two
+    independently-written schemas that happen to agree on paper.
+  - **No CLI argument-parsing library** (`Main`/`CommandLineOptions` hand-parse `--variables`/
+    `--sample-size`/`--seed`): matches the jMetal/Evolver ecosystem's own convention (grepped both
+    repos for picocli/JCommander/commons-cli — zero hits; example "runner" classes there use plain
+    positional args or none), and the surface is small enough (one command, three optional flags)
+    that a library would be net overhead. `Main.run(String[]) -> int` is kept separate from
+    `Main.main` specifically so tests can invoke it without triggering `System.exit`.
 - **License: MIT** (resolved 2026-07-25), matching jMetal and jMetalPy — the projects MOLA depends
   on and is designed to be used alongside. Chosen over GPL-3.0/LGPL-3.0 on adoption grounds: MOLA's
   value is as *the* reference implementation of all 49 of the paper's features, so it should be
@@ -412,5 +451,16 @@ synthetic mixed-direction problem that isolates the MAXIMIZE-negation logic; one
 integration test; CLI tests covering every command's success and failure paths via Typer's
 `CliRunner`).
 
-Not yet started: the jMetal (Java) sampling adapter; the statistical-analysis companion script
-(Shapiro-Wilk normality check across repeated runs).
+The jMetal (Java) sampling adapter (`jmetal-adapter/`, see the "Java adapter implementation" Design
+decision) is also done: Latin Hypercube samples and evaluates any jMetal `DoubleProblem` resolved
+by fully-qualified class name, writing the same CSV + sidecar JSON interchange format the Python
+side reads — verified by an actual executed round trip, not just a schema comparison: a file
+written by `jmetal-adapter`'s `Main` was read directly by `mola characterize` and produced a
+correct 49-feature result. 32 passing JUnit 6 tests (Given-When-Then naming, `@Nested`/
+`@DisplayName`, AAA), covering the LHS algorithm's stratification property, reflection-based
+problem resolution (including its failure paths), the interchange writer, and `Main`'s argument
+handling. `mvn package` produces a runnable fat jar (`jmetal-adapter-<version>-jar-with-
+dependencies.jar`, `Main` as its manifest entry point).
+
+Not yet started: the statistical-analysis companion script (Shapiro-Wilk normality check across
+repeated runs) is the only piece of the original architecture left.
