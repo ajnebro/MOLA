@@ -259,8 +259,9 @@ class TestDistXNdMax:
     def test_should_return_the_hand_computed_maximum_excluding_the_dominated_solution(self):
         """Given a dominated solution with an extreme variable value, excludes it from the max."""
         # Arrange: same objectives as TestNdN -- front 0 = {A, B, C}, D is dominated.
-        # D's variable (100) is deliberately extreme: including it (MOORPHOLOGY's pair-filter
-        # bug) would give a very different, wrong maximum.
+        # D's variable (100) is deliberately extreme: including it by mistake (e.g. pairing a
+        # solution against itself instead of the other pair member) would give a very different,
+        # wrong maximum.
         objectives = np.array([[1.0, 3.0], [2.0, 2.0], [3.0, 1.0], [2.0, 3.0]])
         variables = np.array([[0.0], [5.0], [2.0], [100.0]])
         ranking = rank_solutions(objectives)
@@ -307,8 +308,9 @@ class TestDistXNdAvg:
     def test_should_normalize_the_mean_distance_excluding_the_dominated_solution(self):
         """Given a dominated solution with an extreme variable value, excludes it from the mean."""
         # Arrange: same objectives as TestNdN -- front 0 = {A, B, C}, D is dominated.
-        # D's variable (100) is deliberately extreme: including it (MOORPHOLOGY's pair-filter
-        # and wrong-divisor bugs) would give a very different, wrong mean.
+        # D's variable (100) is deliberately extreme: including it by mistake (e.g. pairing a
+        # solution against itself, or dividing by the wrong count) would give a very different,
+        # wrong mean.
         objectives = np.array([[1.0, 3.0], [2.0, 2.0], [3.0, 1.0], [2.0, 3.0]])
         variables = np.array([[0.0], [6.0], [3.0], [100.0]])
         ranking = rank_solutions(objectives)

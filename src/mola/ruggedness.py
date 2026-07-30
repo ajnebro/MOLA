@@ -3,9 +3,9 @@
 For each of the thirteen evolvability measures, the paper computes one Spearman correlation of
 that measure over every directed neighbour edge in the sample — one procedure, applied uniformly
 to whichever per-solution measure is given, not thirteen bespoke implementations (Design
-decisions, "Ruggedness's missing eleven"). This is also what makes it structurally immune to
-MOORPHOLOGY's `||`-vs-`&&` length-guard bug: the two correlated arrays are built from one shared
-edge loop below and cannot disagree in length by construction, so no length check is needed at all.
+decisions, "Ruggedness's per-measure correlation procedure"). The two correlated arrays are built
+from one shared edge loop below and cannot disagree in length by construction, so no length check
+is ever needed.
 """
 
 import numpy as np

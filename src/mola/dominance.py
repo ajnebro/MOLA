@@ -7,9 +7,7 @@ Two related but distinct notions:
   neighbours individually — deliberately **not** a comparison of global non-dominated ranks. The
   two are not equivalent: two solutions can sit in different global fronts without either
   directly dominating the other, since front assignment reflects the whole sample's structure,
-  not just the pair in question. MOORPHOLOGY's `averageProportionOfDominatingNeighbours` and its
-  two siblings compare global ranks instead — a bug found by reading its source directly while
-  building this module (see `CLAUDE.md`'s Audit section), not inherited here.
+  not just the pair in question.
 * **Local** non-dominance (`local_nondominance`) — whether a neighbour is non-dominated, and
   separately "supported" (`mola.hull.supported_mask`), *within the local group* `{i} ∪ N(i)`
   rather than the whole sample — the local analogue of the global `nd_n`/`supp_n` pair (Design
@@ -99,9 +97,8 @@ def local_nondominance(objectives: np.ndarray, neighbourhood: Neighbourhood) -> 
     `Ranking`, just restricted to this local group — and counts how many of `i`'s neighbours (not
     `i` itself) land in that local front 0 (`lnd`). Of those, further counts how many are also
     "supported" within the local non-dominated subset, via the same convex-hull facet test as the
-    global `supp_n` (`lsupp`) — **not** MOORPHOLOGY's relative rank-position comparison, which
-    never applied the "supported" (convex-hull) concept to `lsupp` at all despite the shared
-    terminology with `supp_n` (Design decisions, "lnd/lsupp").
+    global `supp_n` (`lsupp`) — a genuine convex-hull test, not a rank-position comparison
+    (Design decisions, "lnd/lsupp").
 
     Args:
         objectives: Objective vectors in minimization form, shape (n, M).

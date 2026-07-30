@@ -1,9 +1,11 @@
 # MOLA — Multi-Objective Landscape Analyzer
 
-**🚧 Work in progress.** MOLA is currently in the design phase — no code has been implemented yet.
-See [`CLAUDE.md`](CLAUDE.md) for the full design brief driving the initial implementation.
+**🚧 Work in progress.** The landscape-feature engine is complete — all 49 features implemented
+and tested. The jMetal (Java) and jMetalPy sampling adapters, a CLI, and an orchestrator tying a
+sample to all 49 features in one call are still to come. See [`CLAUDE.md`](CLAUDE.md) for the
+full design brief.
 
-## What it will do
+## What it does
 
 MOLA characterizes the landscape features of continuous multi-objective optimization problems,
 independent of the framework the problem is implemented in. It extracts the full feature set
@@ -19,22 +21,16 @@ ruggedness — covering distances among sampled solutions in variable/objective 
 and evolvability measures (including hypervolume-based ones), neighbourhood dominance structure,
 non-dominated-sorting rank statistics, and landscape ruggedness (neighbour-to-neighbour
 correlations). See [`CLAUDE.md`](CLAUDE.md)'s "Feature implementation matrix" for the full,
-per-feature breakdown.
+per-feature breakdown, and [`notebooks/`](notebooks/) for a worked example of every feature against
+real, executed data.
 
 ## Design principle
 
-MOLA's core will be a framework-independent analyzer: it never calls a problem's `evaluate()`
-directly, only ever consuming a documented structured sample (decision vectors + objective vectors
-+ minimal problem metadata). Thin per-framework **adapters** — jMetal (Java), jMetalPy (Python),
+MOLA's core is a framework-independent analyzer: it never calls a problem's `evaluate()` directly,
+only ever consuming a documented structured sample (decision vectors + objective vectors +
+minimal problem metadata). Thin per-framework **adapters** — jMetal (Java), jMetalPy (Python),
 and potentially others — sample and evaluate problems in their native ecosystem and hand the result
 to the core in that shared format.
-
-## Origin
-
-MOLA is a from-scratch rewrite of [MOORPHOLOGY](https://gitlab.com/jfaldanam-phd/moorphology), a
-jMetal-6.1 Java implementation of a subset of the same feature set (~19 of the paper's 49). The
-rewrite fixes several correctness bugs found in MOORPHOLOGY's feature computations, removes its
-hard coupling to a single framework, and implements the paper's full feature set.
 
 ## Setup
 

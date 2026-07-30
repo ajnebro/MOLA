@@ -80,9 +80,8 @@ def dist_f_avg(objectives: np.ndarray, normalizer: Normalizer) -> float:
     """Average pairwise distance among sampled solutions in objective space (Table 1: dist_f_avg).
 
     Normalized against the whole sample's own OBJECTIVE-space distance range — `normalizer` must
-    be the F-space one. MOORPHOLOGY's equivalent normalizes this with a minimum derived from
-    variable-space distance instead (`ProblemCharacterization.java:160`) — redesigned here on the
-    correct normalizer, not ported (Audit section).
+    be the F-space one, never a variable-space-derived range (Design decisions, "Normalization
+    reference").
 
     Args:
         objectives: Objective vectors, shape (n, M), with n >= 2.
@@ -126,10 +125,9 @@ def dist_x_nd_avg(variables: np.ndarray, ranking: Ranking, normalizer: Normalize
 
     Normalized against the whole sample's own variable-space distance range — never a range
     recomputed over the non-dominated subset (Design decisions, "Normalization reference").
-    MOORPHOLOGY's equivalent (`distanceXNonDominatedAverage`) has the same pair-filter bug as
-    `distanceXNonDominatedMaximum`, plus a wrong divisor (a per-solution count instead of a pair
-    count, line 173) — redesigned here directly on `ranking.nondominated`, not ported (Audit
-    section).
+    Computed directly on `ranking.nondominated`: the pair of non-dominated solutions being
+    measured is never confused with a solution paired against itself, and the mean divides by the
+    actual pair count, not a per-solution count.
 
     Args:
         variables: Decision vectors, shape (n, D).
@@ -150,9 +148,8 @@ def dist_x_nd_max(variables: np.ndarray, ranking: Ranking) -> float:
     """Maximum pairwise distance among non-dominated solutions in variable space (Table 1).
 
     Reported raw, not normalized — every `*_MAX` feature stays raw (Design decisions,
-    "Normalization reference"). MOORPHOLOGY's equivalent (`distanceXNonDominatedMaximum`) has a
-    pair-filter bug (checks the same sample index against itself, not against the other member of
-    the pair) — redesigned here directly on `ranking.nondominated`, not ported (Audit section).
+    "Normalization reference"). Computed directly on `ranking.nondominated`, so a solution is
+    never paired against itself when forming the non-dominated pairs being measured.
 
     Args:
         variables: Decision vectors, shape (n, D).
@@ -202,9 +199,9 @@ def rank_max(ranking: Ranking) -> float:
 def rank_ent(ranking: Ranking) -> float:
     """Entropy of the distribution of solutions per rank (Table 1: rank_ent).
 
-    Shannon entropy, base 2 (bits), of the front-size proportions. The paper does not state a
-    log base; this matches MOORPHOLOGY's `getRankEntropy` exactly
-    (`ProblemCharacterization.java:384-403`, confirmed by reading its source, not assumed).
+    Shannon entropy, base 2 (bits), of the front-size proportions. **Judgment call**: the paper
+    does not state a log base; base 2 (the standard information-theoretic convention) is used
+    here.
 
     Args:
         ranking: The sample's non-dominated ranking.

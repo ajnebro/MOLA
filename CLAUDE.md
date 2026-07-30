@@ -10,20 +10,6 @@ optimisation problems," GECCO 2021 (https://doi.org/10.1145/3449639.3459353): di
 sampled solutions in variable/objective space, neighbourhood dominance structure, and
 non-dominated-sorting rank statistics (entropy, average, max).
 
-## Origin
-Evolved from **MOORPHOLOGY** (https://gitlab.com/jfaldanam-phd/moorphology) — a
-jMetal-6.1 Java implementation of a subset of the same feature set (~19 of the paper's 49 landscape
-features; see "Feature implementation matrix" below — confirmed 2026-07-24 by reading the actual
-paper, not just MOORPHOLOGY's own README). This is a **from-scratch rewrite, not a fork**, prompted
-by an EMO2027-program analysis session (2026-07-23) that found: (a) several real correctness bugs
-in MOORPHOLOGY's feature computations, uncaught because none of its tests exercise the landscape
-features themselves (only static problem info + 2 helper functions); (b) a hard coupling to jMetal
-6.1 Java, unable to characterize problems from other ecosystems (notably jMetalPy); (c) MOORPHOLOGY
-covers only a fraction of the paper's actual feature set, entirely missing the multimodality class
-and every hypervolume-based feature — which the paper's own predictive-importance analysis ranks
-among the most informative. See the bug audit below — it is the concrete starting checklist for
-this rewrite.
-
 ## Design principle: framework-independent via an interchange contract
 The core engine's only input is a **structured sample** — decision vectors + objective vectors +
 minimal problem metadata (name/bounds/M/D) — conforming to the documented interchange schema. It
@@ -42,9 +28,9 @@ characterized — jMetal (Java), jMetalPy (Python), pymoo, PlatEMO, ... — with
 - **Core engine: Python** (numpy/scipy/pandas, plus `jmetalpy` and `moocore` — see "Reuse map" in
   Design decisions) — natural fit for jMetalPy (no interchange *file* needed: the adapter imports
   and evaluates a jMetalPy problem in-process, then hands the core the same structured sample) and
-  for a companion statistical-analysis script in the same spirit as MOORPHOLOGY's existing
-  `statistical_analysis.py` (Shapiro-Wilk normality check across repeated characterizations).
-  Dependencies are pinned in [`environment.yml`](environment.yml) (Conda env `MOLA`).
+  for a companion statistical-analysis script (Shapiro-Wilk normality check across repeated
+  characterizations). Dependencies are pinned in [`environment.yml`](environment.yml) (Conda env
+  `MOLA`).
 - **Interchange format**: CSV + a sidecar metadata JSON — full schema in "Interchange schema" under
   Design decisions. `f_1..f_m` must already be in minimization form (see "Optimization sense").
 - **jMetal (Java) adapter**: minimal — Latin Hypercube sample, evaluate, write to the interchange
@@ -53,17 +39,13 @@ characterized — jMetal (Java), jMetalPy (Python), pymoo, PlatEMO, ... — with
   it" CLI mode), emitting the in-memory interchange record rather than a file since both ends are
   already Python. It still owns evaluation; the core still receives only the structured sample.
 
-## Feature set (the paper's full 49-feature set — corrected 2026-07-24)
+## Feature set (the paper's full 49-feature set)
 MOLA implements all **49 landscape features** defined by Liefooghe et al. 2021's Table 1, across
 four classes: **Global (14)**, **Multimodality (9)**, **Evolvability (13)**, **Ruggedness (13)**.
 Feature-by-feature status, difficulty, and notes are in "Feature implementation matrix" below —
-that table is the authoritative per-feature reference; this section only summarises.
-
-This supersedes an earlier, narrower reading of "Feature set" that listed ~19 names matching only
-MOORPHOLOGY's own coverage (including `NEIGH_DIST_X_MAX`/`NEIGH_DIST_F_MAX`, which turned out not
-to be paper features at all — the paper's Table 1 only defines the `_AVG` neighbour-distance
-variant, MOORPHOLOGY invented the `_MAX` one by analogy). See "Feature set scope" in Design
-decisions for the correction history.
+that table is the authoritative per-feature reference; this section only summarises. Note the
+paper's Table 1 only defines the `_AVG` neighbour-distance variant for each space — there is no
+`NEIGH_DIST_X_MAX`/`NEIGH_DIST_F_MAX` in the paper's own feature set.
 
 Also always reported, but not "landscape features" in the paper's sense (basic sample metadata,
 zero design ambiguity): **SAMPLE_SIZE**, **NUM_OBJ**, **NUM_VAR**. The paper's 5 problem-dependent
@@ -74,21 +56,17 @@ of variables) is already covered by NUM_VAR.
 
 Normalization: every `*_MAX` feature (DIST_X_MAX, DIST_F_MAX, DIST_X_ND_MAX) is reported **raw**;
 every `*_AVG` distance feature is max-min **normalized** against its space's global empirical
-range. Full rule and rationale in "Normalization reference" below — broader than MOORPHOLOGY's own
-README wording ("except DIST_X_MAX and DIST_F_MAX"), which doesn't match what its code actually
-does.
+range. Full rule and rationale in "Normalization reference" below.
 
-## Feature implementation matrix (added 2026-07-24)
-Per-feature design/porting status against the paper's Table 1. Status vocabulary: `reliable` =
-correct in MOORPHOLOGY, port mechanically; `buggy` = MOORPHOLOGY has it but wrong, redesign (see
-Audit below); `new` = not in MOORPHOLOGY, design resolved this session (see Design decisions);
-`implemented` = built and tested in MOLA itself, Notes points at the module. Update a row to
-`implemented` in the same commit as the feature, not as a separate pass — that's what let this
-column go stale the one time it was skipped (`dist_x_avg`, caught and fixed 2026-07-25).
-Difficulty is engineering effort, not importance. Totals: **21 Low, 25 Medium, 3 High** — only
-`supp_n`, `length_aws`, `eval_aws` are genuinely hard (convex hull + adaptive-walk simulation);
-everything else is either a direct port or mechanical given the neighbourhood graph/per-solution
-arrays other features already build.
+## Feature implementation matrix
+Per-feature reference against the paper's Table 1: implementation difficulty and the module each
+feature lives in. `implemented` = built and tested in MOLA itself, Notes points at the module.
+Update a row to `implemented` in the same commit as the feature, not as a separate pass — that's
+what let this column go stale the one time it was skipped (`dist_x_avg`, caught and fixed
+2026-07-25). Difficulty is engineering effort, not importance. Totals: **21 Low, 25 Medium, 3
+High** — only `supp_n`, `length_aws`, `eval_aws` are genuinely hard (convex hull + adaptive-walk
+simulation); everything else is either a direct port or mechanical given the neighbourhood
+graph/per-solution arrays other features already build.
 
 **Global (14)** — 9 Low, 4 Medium, 1 High
 
@@ -107,7 +85,7 @@ arrays other features already build.
 | `fdc` | Medium | implemented | `mola.features.fdc` |
 | `rank_avg` | Low | implemented | `mola.features.rank_avg` |
 | `rank_max` | Low | implemented | `mola.features.rank_max` |
-| `rank_ent` | Low | implemented | `mola.features.rank_ent` — base-2 entropy, confirmed against MOORPHOLOGY's source |
+| `rank_ent` | Low | implemented | `mola.features.rank_ent` — base-2 entropy (judgment call, paper doesn't state a log base) |
 
 **Multimodality (9)** — 4 Low, 3 Medium, 2 High
 
@@ -127,11 +105,11 @@ arrays other features already build.
 
 | Feature | Difficulty | Status | Notes |
 |---|---|---|---|
-| `sup_avg_neig` | Low | implemented | `mola.features.evolvability.sup_avg_neig` — genuine pairwise dominance via `mola.dominance`, not MOORPHOLOGY's rank comparison |
+| `sup_avg_neig` | Low | implemented | `mola.features.evolvability.sup_avg_neig` — genuine pairwise dominance via `mola.dominance` |
 | `inf_avg_neig` | Low | implemented | `mola.features.evolvability.inf_avg_neig` |
 | `inc_avg_neig` | Low | implemented | `mola.features.evolvability.inc_avg_neig` |
 | `lnd_avg_neig` | Medium | implemented | `mola.features.evolvability.lnd_avg_neig` — local/global rank mismatch fixed |
-| `lsupp_avg_neig` | Medium | implemented | `mola.features.evolvability.lsupp_avg_neig` — now uses `mola.hull.supported_mask`, unlike MOORPHOLOGY |
+| `lsupp_avg_neig` | Medium | implemented | `mola.features.evolvability.lsupp_avg_neig` — uses `mola.hull.supported_mask` |
 | `dist_x_avg_neig` | Medium | implemented | `mola.features.evolvability.dist_x_avg_neig` — redesigned on `mola.distance.neighbour_distances`, not ported |
 | `dist_f_avg_neig` | Medium | implemented | `mola.features.evolvability.dist_f_avg_neig` |
 | `dist_f_dist_x_avg_neig` | Low | implemented | `mola.features.evolvability.dist_f_dist_x_avg_neig` — ratio of the two rows above |
@@ -145,7 +123,7 @@ arrays other features already build.
 
 | Feature | Difficulty | Status | Notes |
 |---|---|---|---|
-| `dist_x_cor_neig` | Low | implemented | `mola.features.ruggedness.dist_x_cor_neig` — `mola.ruggedness.neighbour_correlation`, not MOORPHOLOGY's `\|\|`/`&&` guard |
+| `dist_x_cor_neig` | Low | implemented | `mola.features.ruggedness.dist_x_cor_neig` — `mola.ruggedness.neighbour_correlation` |
 | `dist_f_cor_neig` | Low | implemented | `mola.features.ruggedness.dist_f_cor_neig` |
 | `sup_cor_neig` | Medium | implemented | `mola.features.ruggedness.sup_cor_neig` |
 | `inf_cor_neig` | Medium | implemented | `mola.features.ruggedness.inf_cor_neig` |
@@ -164,84 +142,36 @@ arrays other features already build.
 `d`, `k`, `seed_n`, `nd_seed_n`, `dom_seed_n` — all MO-ICOP-generator-specific, don't generalize to
 arbitrary problems. `d` (number of variables) is already covered by MOLA's `NUM_VAR` metadata field.
 
-## Audit of MOORPHOLOGY's current implementation (carried over, 2026-07-23)
-**Reliable as-is — safe to port with only mechanical translation:**
-- `proportionOfNonDominated` (ND%), `rankMaximum`, `rankAverage`, `rankEntropy` — global-ranking
-  only, no bug found.
-- `distanceXMaximum`, `distanceXAverage`, `distanceFMaximum` — correct accumulation.
-- `neighbourDistanceXMaximum`, `neighbourDistanceFMaximum` — correct (`Math.max`-accumulated, not
-  touched by the sum-accumulator bug below).
-- `neighboursCorrelationOfAverageDistanceX/F` (Spearman) — has a `||`-instead-of-`&&` length-check
-  bug, but it's a non-issue once the neighbourhood size is more than 1-2 (i.e. any problem with a
-  handful of decision variables or more).
-
-**Broken in MOORPHOLOGY — redesign, don't mechanically port this logic:**
-- `averageProportionOfDominatingNeighbours` / `...DominatedNeighbours` / `...IncomparableNeighbours`
-  — **correction, 2026-07-30**: previously listed as reliable ("compares reference vs. neighbour on
-  the same global ranking throughout") — that description undersold the bug. It compares *global
-  ranks* (`ranking.getRank(reference)` vs. `ranking.getRank(neighbour)`, lines 220-233), not
-  pairwise dominance between the two. These are not equivalent: two solutions can sit in different
-  global fronts without either directly dominating the other, since front assignment reflects the
-  whole sample's structure, not just the pair. The paper is explicit this is pairwise ("proportions
-  of dominating, dominated, and incomparable **neighbours**", §4.1.3) — found by reading
-  MOORPHOLOGY's source directly (not assumed) while building MOLA's own version; see `sup_avg_neig`
-  in Design decisions for the fix (genuine pairwise `DominanceComparator.dominance_test`, not rank
-  comparison).
-- `distanceFAverage` — normalized using a "DIST_F_MIN" that is actually computed from
-  variable-space distance, not objective-space (`ProblemCharacterization.java:160`).
-- `distanceXNonDominatedMaximum`/`Average` — the "both non-dominated" pair filter checks the same
-  sample index twice (`i` and `i`, not `i` and `j`, line 163); the average also divides a pairwise
-  sum by a per-solution count instead of a pair count (line 173).
-- `neighbourDistanceXAverage`/`FAverage` — the accumulator uses `=` instead of `+=` (lines 217,
-  219): the "average" is actually just the last-processed sample's neighbourhood mean.
-- `averageProportionOfLocallyNonDominatedNeighbours` / `...SupportedLocallyNonDominated...` —
-  mixes a *local* sub-ranking's rank for the reference solution with the *global* ranking's rank
-  for its neighbours (lines 246-253) — an internally inconsistent comparison.
-- `getNeighbours` (off-by-one): the loop "spends" its first iteration on the self-distance-0 point
-  before excluding it, so it returns `d-1` neighbours, not `d`.
-- Complexity: the non-dominated-pair check uses `List.contains()` inside an O(n²) loop → O(n³)
-  with `n = 200*d`; use a hash-set/boolean array instead.
-- CI (`.gitlab-ci.yml`) only runs `mvn assembly:single`, never `mvn test` — none of the above were
-  ever caught by CI. MOLA should run its tests in CI from the start.
-
 ## Design decisions (resolved 2026-07-24)
 Five questions raised in the first design pass are now settled:
 
-- **Neighbourhood definition.** Neighbourhood size `k = D` (number of decision variables),
-  matching MOORPHOLOGY (`ProblemCharacterization.java:108`); neighbours are the `k` nearest
-  samples by distance in **decision** space. Two bugs get fixed regardless of this choice:
-  `getNeighbours`'s off-by-one (it spends its first pick on the self-point and returns `k-1`
-  neighbours, not `k`) and the SUP/INF/INC/LND/LSUP proportions dividing by `k` instead of the
-  actual neighbour count.
+- **Neighbourhood definition.** Neighbourhood size `k = D` (number of decision variables);
+  neighbours are the `k` nearest samples by distance in **decision** space, excluding the
+  solution itself by index (not by zero-distance position, so duplicate decision vectors can't
+  displace it). The SUP/INF/INC/LND/LSUP proportions always divide by the actual neighbour count,
+  never an assumed `k`.
 - **Normalization reference.** Two normalizers, each the global empirical min/max of pairwise
   distances across the whole sample in their own space: `(DIST_X_MIN, DIST_X_MAX)` for decision
   space, `(DIST_F_MIN, DIST_F_MAX)` for objective space. `(DIST_X_MIN, DIST_X_MAX)` normalizes
   DIST_X_AVG, DIST_X_ND_AVG, and NEIGH_DIST_X_AVG; `(DIST_F_MIN, DIST_F_MAX)` normalizes
   DIST_F_AVG and NEIGH_DIST_F_AVG — always the whole-sample range, never a range recomputed over
-  a subset (non-dominated pairs, a neighbourhood). Fixes the `distanceFAverage` bug: the F
-  normalizer must accumulate from objective-space distance, not variable-space
-  (`ProblemCharacterization.java:160`). Every `*_MAX` feature stays raw (see "Feature set" above).
-  **Clarified 2026-07-30**: this list predates the full 49-feature scope and reads as exhaustive,
-  but "Feature set" above states the rule generally ("every `*_AVG` distance feature is max-min
-  normalized") — the general rule is what's intended. It extends unchanged to the multimodality
-  class's `slo_dist_avg`/`plo_dist_avg` (`(DIST_X_MIN, DIST_X_MAX)`, same as `dist_x_nd_avg`, since
-  they're all distances among a subset of the sample in variable space) and their `*_dist_max`
-  siblings stay raw, consistent with every other `*_MAX`.
-- **Feature set scope — corrected 2026-07-24.** MOLA implements the paper's **full 49-feature
-  set** (see "Feature set" and "Feature implementation matrix" above), not the ~19-feature subset
-  originally assumed here. **Correction**: this decision originally also excluded the Spearman
-  `neighboursCorrelationOfAverageDistanceX/F` as "not in the paper's set" — that was wrong, decided
-  before reading the actual paper text. They *are* paper features (`dist_x_cor_neig`/
-  `dist_f_cor_neig`, ruggedness class, Table 1), now in scope along with their 11 ruggedness
-  siblings. The other half of the original exclusion stays correct: DIST_X_MAX_ANALYTICALLY (the
-  box-diagonal bound — documented in MOORPHOLOGY's README, but it's a static problem-geometry
-  constant, not a sample-based landscape statistic) is confirmed absent from the paper's Table 1
-  and stays **out of scope**, alongside the 5 problem-dependent features (see "Feature set" above).
+  a subset (non-dominated pairs, a neighbourhood). The F normalizer always accumulates from
+  objective-space distance, never variable-space. Every `*_MAX` feature stays raw (see "Feature
+  set" above). This rule applies uniformly across every class, including the multimodality
+  class's `slo_dist_avg`/`plo_dist_avg` (`(DIST_X_MIN, DIST_X_MAX)`, same as `dist_x_nd_avg`,
+  since they're all distances among a subset of the sample in variable space) and their
+  `*_dist_max` siblings, which stay raw like every other `*_MAX`.
+- **Feature set scope.** MOLA implements the paper's **full 49-feature set** (see "Feature set"
+  and "Feature implementation matrix" above). The Spearman correlations
+  (`dist_x_cor_neig`/`dist_f_cor_neig`, ruggedness class, Table 1) are genuine paper features, in
+  scope along with their 11 ruggedness siblings. DIST_X_MAX_ANALYTICALLY (the box-diagonal bound —
+  a static problem-geometry constant, not a sample-based landscape statistic) is confirmed absent
+  from the paper's Table 1 and stays **out of scope**, alongside the 5 problem-dependent features
+  (see "Feature set" above).
 - **Stochasticity & reproducibility.** One characterization run = one LHS sample = one interchange
   record = one feature vector; the core has no repetition logic. Repeated-sampling workflows
-  (e.g. a Shapiro-Wilk normality check in the spirit of MOORPHOLOGY's `statistical_analysis.py`)
-  are an outer loop over independent invocations, each with its own seed — mirrors MOORPHOLOGY's
-  own shell-loop workflow (its README) rather than baking repetition into the schema or the core.
+  (e.g. a Shapiro-Wilk normality check across independent runs) are an outer loop over independent
+  invocations, each with its own seed, rather than baking repetition into the schema or the core.
 - **Optimization sense.** The interchange contract mandates minimization: `f_1..f_m` must already
   be in minimization form when written. Adapters negate natively-maximized objectives during
   evaluation (jMetal and jMetalPy already normalize to minimization by convention, so this is
@@ -318,14 +248,13 @@ Table 1; judgment calls the paper doesn't fully specify are marked explicitly):
   `nhv_avg_neig` ("hypervolume from the **whole neighbourhood**") is genuinely set-based, unlike
   the singleton `hv_avg_neig`: `moocore.hypervolume(F[N(i)], ref)`, the joint HV of `i`'s neighbours
   (excluding `i` itself).
-- **Ruggedness's missing eleven.** Same Spearman-over-neighbour-pairs procedure MOORPHOLOGY already
-  has (buggily) for 2 of the 13 evolvability measures, applied uniformly to all 13 (§4.1.4: "for
-  each of the thirteen measures, we compute the Spearman correlation coefficient over each pair of
-  neighbours"): for every directed edge `(i, j)` with `j∈N(i)`, append `(measure[i], measure[j])`
-  to two parallel arrays, then one `scipy.stats.spearmanr` call per measure over the whole edge set.
-  Structurally immune to MOORPHOLOGY's `||`-vs-`&&` length-guard bug — the two arrays come from one
-  shared edge loop and cannot disagree in length by construction, so no length check is needed at
-  all. Applies without exception to the new hv-trio, `diff_f`, and `dist_f_dist_x` measures too.
+- **Ruggedness's per-measure correlation procedure.** One generic procedure, applied uniformly to
+  all 13 evolvability measures (§4.1.4: "for each of the thirteen measures, we compute the
+  Spearman correlation coefficient over each pair of neighbours"): for every directed edge
+  `(i, j)` with `j∈N(i)`, append `(measure[i], measure[j])` to two parallel arrays, then one
+  `scipy.stats.spearmanr` call per measure over the whole edge set. The two arrays come from one
+  shared edge loop and cannot disagree in length by construction, so no length check is ever
+  needed. Applies without exception to the hv-trio, `diff_f`, and `dist_f_dist_x` measures too.
 - **Reuse map — jmetalpy/moocore vs. new MOLA logic.** Confirmed by direct inspection of jMetalPy
   (`/Users/ajnebro/Softw/jMetal/jMetalPy`, MIT-licensed): non-dominated sorting/ranking (feeds
   `dist_x_nd_avg/max`, `supp_n`, `hv`, `fdc`, `rank_*`) → `jmetal.util.ranking
@@ -385,9 +314,9 @@ Three more, resolved 2026-07-25 — the last structural questions blocking imple
   itself either way; there is no existing utility to reuse or extend.
 - **License: MIT** (resolved 2026-07-25), matching jMetal and jMetalPy — the projects MOLA depends
   on and is designed to be used alongside. Chosen over GPL-3.0/LGPL-3.0 on adoption grounds: MOLA's
-  value is as *the* reference implementation of these 49 features (MOORPHOLOGY's are buggy and
-  cover ~19), so it should be importable without friction from pymoo (Apache-2.0), PlatEMO, or
-  industrial pipelines. This also matches the permissive norm of the scientific Python stack
+  value is as *the* reference implementation of all 49 of the paper's features, so it should be
+  importable without friction from pymoo (Apache-2.0), PlatEMO, or industrial pipelines. This also
+  matches the permissive norm of the scientific Python stack
   (numpy/scipy/pandas are BSD). Note that `moocore`'s **LGPL-2.1-or-later** never constrained this:
   the LGPL is explicitly designed to be linked from any license, and `moocore` is a separate
   pip/conda dependency, not vendored into MOLA's source — so MIT is unaffected. The one nuance
@@ -414,17 +343,17 @@ in sync with their upstreams — edit upstream first, then re-vendor):
   [`PYTHON_CODING_GUIDELINES.md`](PYTHON_CODING_GUIDELINES.md): Python 3.11+, ruff-enforced, pytest
   AAA testing. From jMetalPy.
 
-CI must run the tests from day one — both `pytest` and, for the Java adapter, `mvn test`.
-MOORPHOLOGY's CI never ran `mvn test`, which is exactly why its feature bugs shipped.
+CI must run the tests from day one — both `pytest` and, for the Java adapter, `mvn test`. Untested
+feature logic is exactly the kind of thing that ships silent bugs.
 
 ## Status
 All 49 landscape features implemented and tested (129 passing tests, hand-computed fixtures
-throughout — the discipline this whole rewrite exists to enforce), documented across four
-per-class Jupyter notebooks (`notebooks/`) with real, executed examples rather than hand-typed
-numbers. This closes out the feature-computation core.
+throughout — a discipline enforced from the very first feature), documented across four per-class
+Jupyter notebooks (`notebooks/`) with real, executed examples rather than hand-typed numbers. This
+closes out the feature-computation core.
 
 Not yet started: an orchestrator that takes a `Sample` and computes all 49 features in one call
 (by design, each feature function currently takes exactly the substrate pieces it needs — nothing
 yet builds that substrate once per sample and calls every feature); the jMetal (Java) sampling
 adapter; the jMetalPy adapter; a CLI entry point; the statistical-analysis companion script
-(Shapiro-Wilk normality check across repeated runs, in the spirit of MOORPHOLOGY's own script).
+(Shapiro-Wilk normality check across repeated runs).

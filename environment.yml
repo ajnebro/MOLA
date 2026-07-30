@@ -1,7 +1,6 @@
 # Conda environment for MOLA's Python core: the landscape-feature engine, the
 # jMetalPy adapter, and the statistical-analysis companion script (Shapiro-Wilk
-# normality checks across repeated characterizations, in the spirit of
-# MOORPHOLOGY's statistical_analysis.py).
+# normality checks across repeated characterizations).
 #
 # Unlike Evolver's environment.yml (Evolver's core is Java; that file only
 # supports OPTIONAL plotting/reporting tooling), Python IS MOLA's core — this

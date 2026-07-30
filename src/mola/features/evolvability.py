@@ -66,8 +66,7 @@ def lnd_avg_neig(local: LocalNondominance, neighbourhood: Neighbourhood) -> floa
 
     The local analogue of the global `nd_n`: a neighbour is "locally non-dominated" iff it is
     non-dominated within the local group `{i} ∪ N(i)`, not the whole sample (Design decisions,
-    "lnd/lsupp") — **not** MOORPHOLOGY's comparison of the neighbour's local rank against the
-    reference's own rank.
+    "lnd/lsupp").
 
     Args:
         local: Per-solution locally-non-dominated and locally-supported neighbour counts, built
@@ -88,8 +87,7 @@ def lsupp_avg_neig(local: LocalNondominance, neighbourhood: Neighbourhood) -> fl
     The local analogue of the global `supp_n`: among a solution's locally non-dominated
     neighbours, the proportion that are also "supported" — on a minimizing-direction facet of
     the local non-dominated subset's convex hull (`mola.hull.supported_mask`), the identical test
-    `supp_n` applies globally. MOORPHOLOGY's equivalent never applied this convex-hull concept to
-    `lsupp` at all, despite sharing supp_n's "supported" terminology (Design decisions).
+    `supp_n` applies globally (Design decisions).
 
     Args:
         local: Per-solution locally-non-dominated and locally-supported neighbour counts, built
