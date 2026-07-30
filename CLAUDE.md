@@ -326,6 +326,36 @@ Three more, resolved 2026-07-25 — the last structural questions blocking imple
   case — running MOLA as a tool over a sample and consuming its CSV/JSON output places no
   obligations on the caller's code under any of the three licenses.
 
+- **CLI: Typer, three commands** (resolved 2026-07-30). `src/mola/cli.py` exposes `mola sample`
+  (write an interchange file from a jMetalPy problem), `mola characterize` (compute the 49
+  features from an existing interchange file, from any adapter), and `mola run` (the two combined,
+  no intermediate file — the most convenient entry point for scripted or AI-agent use). Typer was
+  chosen over plain `argparse` specifically because it renders rich `--help` text straight from
+  type hints and docstrings with very little code — the project's own explicit "very well
+  documented CLI" requirement made concrete, at the cost of one new dependency (on `conda-forge`,
+  unlike `jmetalpy`/`moocore`). `--output`'s format (`.json` vs `.csv`) is inferred from the
+  path's suffix rather than a separate `--format` flag — one less thing to keep in sync, and an
+  unrecognized suffix is a clear CLI error rather than a silent guess. Errors expected at this I/O
+  boundary (unknown problem name, malformed sample file, bad `--output` suffix) are caught and
+  reported as a one-line message with a non-zero exit code via Typer's own mechanism
+  (`typer.echo(..., err=True)` + `typer.Exit`), not the `Ok[T] | Err` pattern
+  `PYTHON_CODING_GUIDELINES.md` §4 reserves for I/O-boundary code — that type doesn't exist
+  anywhere in the codebase yet, and three commands don't justify introducing it.
+- **AI-agent discoverability: `llms.txt`, not `--json`/not an MCP server** (resolved 2026-07-30,
+  via `AskUserQuestion`). A root-level [`llms.txt`](llms.txt) follows the `llmstxt.org` convention:
+  short, link-heavy, leads with the single most useful copy-pasteable command (`mola run PROBLEM
+  --variables N`). Two adjacent options were explicitly declined for now: a dedicated `--json`
+  output flag (already redundant — `mola run`/`mola characterize --output result.json` already
+  produce a machine-parseable result) and an MCP server exposing MOLA as a directly-callable agent
+  tool (a standalone subproject with its own process/dependencies/maintenance surface, out of
+  proportion to what was asked here).
+- **`examples/` vs `notebooks/`** (resolved 2026-07-30). `examples/` is onboarding —
+  `quickstart.py` (the Python API, no CLI, no Jupyter) and `getting_started.ipynb` (a narrated
+  "install → run → read the result" walkthrough covering both the CLI and the Python API) — plus
+  `sample.csv`/`sample.json`, a small checked-in interchange-format example. Deliberately distinct
+  from `notebooks/`, which documents what each of the 49 features *means*; `examples/` never
+  re-explains a feature's definition, only points to `notebooks/` for that.
+
 ## Not yet decided
 Nothing left. Test strategy — hand-computed fixture front(s) with known landscape stats, one per
 feature — was the last open item; it's now been carried out for all 49 features (129 passing
@@ -370,10 +400,17 @@ negation is a genuine correctness step, not a formality. An end-to-end integrati
 (`tests/test_integration.py`) samples a real `ZDT1` instance and feeds it straight through
 `characterize()`.
 
-143 passing tests total (hand-computed fixtures throughout; orchestrator wiring tests that
+The CLI (`mola`, `src/mola/cli.py`) is also done: three Typer commands (`sample`, `characterize`,
+`run`, see the "CLI" Design decision), each documented in depth via its own `--help`. `examples/`
+(a runnable script, a narrated onboarding notebook, a checked-in interchange-format example) and a
+root-level `llms.txt` cover onboarding for human users and AI-agent tooling respectively (see the
+"AI-agent discoverability" and "`examples/` vs `notebooks/`" Design decisions).
+
+152 passing tests total (hand-computed fixtures throughout; orchestrator wiring tests that
 independently rebuild the substrate to catch argument-order mistakes; adapter tests including a
 synthetic mixed-direction problem that isolates the MAXIMIZE-negation logic; one end-to-end
-integration test).
+integration test; CLI tests covering every command's success and failure paths via Typer's
+`CliRunner`).
 
-Not yet started: the jMetal (Java) sampling adapter; a CLI entry point; the statistical-analysis
-companion script (Shapiro-Wilk normality check across repeated runs).
+Not yet started: the jMetal (Java) sampling adapter; the statistical-analysis companion script
+(Shapiro-Wilk normality check across repeated runs).

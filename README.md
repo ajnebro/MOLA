@@ -2,9 +2,9 @@
 
 **🚧 Work in progress.** The landscape-feature engine is complete — all 49 features implemented
 and tested, tied together by an orchestrator that computes all of them for a sample in one call.
-The jMetalPy sampling adapter is done too, so problems already defined in jMetalPy can be
-characterized end to end. The jMetal (Java) adapter and a CLI are still to come. See
-[`CLAUDE.md`](CLAUDE.md) for the full design brief.
+The jMetalPy sampling adapter and a documented CLI are done too, so problems already defined in
+jMetalPy can be characterized end to end with a single command. The jMetal (Java) adapter is still
+to come. See [`CLAUDE.md`](CLAUDE.md) for the full design brief.
 
 ## What it does
 
@@ -45,9 +45,9 @@ conda env create -f environment.yml
 conda activate MOLA
 ```
 
-**venv:** create and activate a Python 3.11+ virtual environment, then `pip install` the same
-packages listed in [`environment.yml`](environment.yml) (numpy, pandas, scipy, jmetalpy, moocore,
-plus pytest/ruff for development).
+**venv:** create and activate a Python 3.11+ virtual environment, then `pip install -e .` from the
+repository root (installs numpy, pandas, scipy, jmetalpy, moocore, typer — everything listed in
+[`environment.yml`](environment.yml) — plus registers the `mola` command below).
 
 This doesn't cover the jMetal (Java) sampling adapter, which needs Java 21+ and Maven instead.
 
@@ -55,6 +55,27 @@ Note: `moocore` (used directly for hypervolume-based features, and pulled in tra
 `jmetalpy`) is LGPL-2.1-or-later, unlike the rest of MOLA's MIT/BSD-family dependencies. As a
 separately-installed dependency this places no obligation on MOLA's own MIT terms — see
 [`CLAUDE.md`](CLAUDE.md) for the details.
+
+## CLI usage
+
+Once installed, the `mola` command has three subcommands — each documented in full via its own
+`mola <command> --help`, including a copy-pasteable example:
+
+```bash
+# Sample, evaluate, and characterize a jMetalPy problem in one step -- no file needed.
+mola run ZDT1 --variables 5 --sample-size 1000 --seed 42
+
+# ...or split it in two: write a reusable interchange sample file first...
+mola sample ZDT1 sample.csv --variables 5 --sample-size 1000 --seed 42
+
+# ...then compute its features (works on a sample file from any adapter, not just this one).
+mola characterize sample.csv --output result.json
+```
+
+Every command prints its result as plain `key: value` lines; add `--output result.json` (or
+`.csv`) to also save the full 52-field result to a file. See
+[`examples/`](examples/) for a runnable script and a narrated walkthrough of both the CLI and the
+Python API, and [`llms.txt`](llms.txt) for a short summary aimed at AI-agent tooling.
 
 ## Development
 

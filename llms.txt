@@ -1,0 +1,50 @@
+# MOLA
+
+> MOLA (Multi-Objective Landscape Analyzer) characterizes the landscape of a continuous
+> multi-objective optimization problem: sample it, evaluate it, and compute 49 landscape
+> features (distances, multimodality, evolvability, ruggedness) describing its structure --
+> independent of the framework the problem is implemented in.
+
+MOLA is a Python package with a CLI (`mola`). The fastest way to get a result is one command:
+
+```bash
+mola run ZDT1 --variables 5 --sample-size 200 --seed 42
+```
+
+This samples the jMetalPy problem `ZDT1`, evaluates it, and prints 52 `key: value` lines: 3
+metadata fields (`sample_size`, `num_obj`, `num_var`) plus the 49 landscape features. Add
+`--output result.json` (or `.csv`) to also save the full result to a file. Run `mola --help`, or
+`mola <command> --help` for any of `sample` / `characterize` / `run`, for the complete reference --
+every command's `--help` includes a copy-pasteable example.
+
+If you already have a `problem`+`decision vectors`+`objective vectors` from somewhere else (not
+jMetalPy), MOLA's core still applies: it never touches a problem object, only the **interchange
+format** -- a CSV (`problem, sample_id, x_1..x_D, f_1..f_M`, objectives in minimization form) plus
+a sidecar JSON with the same basename holding problem metadata. Write a file matching that shape
+and `mola characterize your_sample.csv` computes all 49 features from it, regardless of what
+produced it. `examples/sample.csv` + `examples/sample.json` is a small worked example of the
+format itself.
+
+## Key resources
+
+- [README.md](README.md): setup (Conda or venv), CLI usage section, license.
+- [CLAUDE.md](CLAUDE.md): the full design brief -- architecture, the interchange schema in detail,
+  every design decision (with rationale), and the complete 49-feature implementation matrix
+  (one row per feature: name, difficulty, status, the module it lives in).
+- [examples/quickstart.py](examples/quickstart.py): the Python API (`sample_problem` +
+  `characterize`) as a minimal, directly-runnable script -- no CLI.
+- [examples/getting_started.ipynb](examples/getting_started.ipynb): a narrated first-five-minutes
+  walkthrough covering both the CLI and the Python API.
+- [notebooks/](notebooks/): one notebook per feature class (global, multimodality, evolvability,
+  ruggedness), pairing each of the 49 features' definition with a real, executed example.
+
+## Notes for automated / agent use
+
+- `mola run` and `mola characterize --output result.json` are the two commands that produce a
+  machine-parseable result (a flat JSON object of 52 numeric fields); everything else is either
+  human-readable stdout or a `--help` string.
+- Values may be `NaN` for some features on degenerate inputs (e.g. a sample with fewer than 2
+  non-dominated solutions) -- this is documented, expected behavior, not a bug; see CLAUDE.md's
+  per-feature notes for exactly when.
+- MOLA's own MIT license does not cover `moocore`, a separate dependency under
+  LGPL-2.1-or-later -- see CLAUDE.md's "License" decision if this matters for your use case.

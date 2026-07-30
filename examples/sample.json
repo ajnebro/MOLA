@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "problem": "ZDT1",
+  "number_of_variables": 3,
+  "number_of_objectives": 2,
+  "lower_bounds": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "upper_bounds": [
+    1.0,
+    1.0,
+    1.0
+  ],
+  "sample_size": 20,
+  "sampler": "lhs",
+  "seed": 42
+}
