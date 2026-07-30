@@ -132,21 +132,21 @@ arrays other features already build.
 | `inc_avg_neig` | Low | implemented | `mola.features.evolvability.inc_avg_neig` |
 | `lnd_avg_neig` | Medium | buggy | local/global rank mismatch |
 | `lsupp_avg_neig` | Medium | buggy | same mismatch |
-| `dist_x_avg_neig` | Medium | buggy | accumulator uses `=` not `+=` |
-| `dist_f_avg_neig` | Medium | buggy | same accumulator bug |
-| `dist_f_dist_x_avg_neig` | Low | new | ratio of the two rows above |
-| `diff_f_avg_neig` | Medium | new | new per-neighbour arithmetic |
-| `diff_f_dist_x_avg_neig` | Low | new | ratio |
-| `hv_avg_neig` | Medium | new | singleton box-hypervolume vs. `ref` — **not** `moocore.hv_contributions` |
-| `hvd_avg_neig` | Low | new | difference over the `hv_avg_neig` array |
+| `dist_x_avg_neig` | Medium | implemented | `mola.features.evolvability.dist_x_avg_neig` — redesigned on `mola.distance.neighbour_distances`, not ported |
+| `dist_f_avg_neig` | Medium | implemented | `mola.features.evolvability.dist_f_avg_neig` |
+| `dist_f_dist_x_avg_neig` | Low | implemented | `mola.features.evolvability.dist_f_dist_x_avg_neig` — ratio of the two rows above |
+| `diff_f_avg_neig` | Medium | implemented | `mola.features.evolvability.diff_f_avg_neig` — `mola.distance.neighbour_diff_f` |
+| `diff_f_dist_x_avg_neig` | Low | implemented | `mola.features.evolvability.diff_f_dist_x_avg_neig` — ratio |
+| `hv_avg_neig` | Medium | implemented | `mola.features.evolvability.hv_avg_neig` — `mola.hypervolume.singleton_hypervolume`, **not** `moocore.hv_contributions` |
+| `hvd_avg_neig` | Low | implemented | `mola.features.evolvability.hvd_avg_neig` — difference over the `hv_avg_neig` array |
 | `nhv_avg_neig` | Medium | new | `moocore.hypervolume` per neighbourhood |
 
 **Ruggedness (13)** — 2 Low, 11 Medium
 
 | Feature | Difficulty | Status | Notes |
 |---|---|---|---|
-| `dist_x_cor_neig` | Low | reliable | port via the new generic ruggedness procedure |
-| `dist_f_cor_neig` | Low | reliable | same |
+| `dist_x_cor_neig` | Low | implemented | `mola.features.ruggedness.dist_x_cor_neig` — `mola.ruggedness.neighbour_correlation`, not MOORPHOLOGY's `\|\|`/`&&` guard |
+| `dist_f_cor_neig` | Low | implemented | `mola.features.ruggedness.dist_f_cor_neig` |
 | `sup_cor_neig` | Medium | new | generic ruggedness procedure — see Design decisions |
 | `inf_cor_neig` | Medium | new | " |
 | `inc_cor_neig` | Medium | new | " |
