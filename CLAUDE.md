@@ -147,17 +147,17 @@ arrays other features already build.
 |---|---|---|---|
 | `dist_x_cor_neig` | Low | implemented | `mola.features.ruggedness.dist_x_cor_neig` — `mola.ruggedness.neighbour_correlation`, not MOORPHOLOGY's `\|\|`/`&&` guard |
 | `dist_f_cor_neig` | Low | implemented | `mola.features.ruggedness.dist_f_cor_neig` |
-| `sup_cor_neig` | Medium | new | generic ruggedness procedure — see Design decisions |
-| `inf_cor_neig` | Medium | new | " |
-| `inc_cor_neig` | Medium | new | " |
-| `lnd_cor_neig` | Medium | new | " |
-| `lsupp_cor_neig` | Medium | new | " |
-| `dist_f_dist_x_cor_neig` | Medium | new | " |
-| `diff_f_cor_neig` | Medium | new | " |
-| `diff_f_dist_x_cor_neig` | Medium | new | " |
-| `hv_cor_neig` | Medium | new | " |
-| `hvd_cor_neig` | Medium | new | " |
-| `nhv_cor_neig` | Medium | new | " |
+| `sup_cor_neig` | Medium | implemented | `mola.features.ruggedness.sup_cor_neig` |
+| `inf_cor_neig` | Medium | implemented | `mola.features.ruggedness.inf_cor_neig` |
+| `inc_cor_neig` | Medium | implemented | `mola.features.ruggedness.inc_cor_neig` |
+| `lnd_cor_neig` | Medium | new | blocked on `lnd_avg_neig`, not yet implemented |
+| `lsupp_cor_neig` | Medium | new | blocked on `lsupp_avg_neig`, not yet implemented |
+| `dist_f_dist_x_cor_neig` | Medium | implemented | `mola.features.ruggedness.dist_f_dist_x_cor_neig` — per-solution ratio, then correlated (unlike the evolvability namesake) |
+| `diff_f_cor_neig` | Medium | implemented | `mola.features.ruggedness.diff_f_cor_neig` |
+| `diff_f_dist_x_cor_neig` | Medium | implemented | `mola.features.ruggedness.diff_f_dist_x_cor_neig` — same per-solution-ratio pattern |
+| `hv_cor_neig` | Medium | implemented | `mola.features.ruggedness.hv_cor_neig` |
+| `hvd_cor_neig` | Medium | implemented | `mola.features.ruggedness.hvd_cor_neig` — `mola.hypervolume.neighbour_hypervolume_difference` |
+| `nhv_cor_neig` | Medium | new | blocked on `nhv_avg_neig`, not yet implemented (needs `moocore`) |
 
 **Problem-dependent (5) — out of scope**
 
