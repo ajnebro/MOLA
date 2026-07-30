@@ -2,10 +2,10 @@
 
 No CLI, no interchange file -- just the two Python API calls MOLA is built around. Run directly:
 
-    python examples/quickstart.py
+    python examples/getting_started/quickstart.py
 
 For the CLI equivalent of this same workflow, see `mola run --help`; for a narrated walkthrough
-covering both, see `examples/getting_started.ipynb`.
+covering both, see `examples/getting_started/getting_started.ipynb`.
 """
 
 from jmetal.problem import ZDT1

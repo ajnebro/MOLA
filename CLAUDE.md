@@ -388,12 +388,24 @@ Three more, resolved 2026-07-25 — the last structural questions blocking imple
   produce a machine-parseable result) and an MCP server exposing MOLA as a directly-callable agent
   tool (a standalone subproject with its own process/dependencies/maintenance surface, out of
   proportion to what was asked here).
-- **`examples/` vs `notebooks/`** (resolved 2026-07-30). `examples/` is onboarding —
-  `quickstart.py` (the Python API, no CLI, no Jupyter) and `getting_started.ipynb` (a narrated
-  "install → run → read the result" walkthrough covering both the CLI and the Python API) — plus
-  `sample.csv`/`sample.json`, a small checked-in interchange-format example. Deliberately distinct
-  from `notebooks/`, which documents what each of the 49 features *means*; `examples/` never
-  re-explains a feature's definition, only points to `notebooks/` for that.
+- **`examples/` vs `notebooks/`** (resolved 2026-07-30). `examples/getting_started/` is
+  onboarding — `quickstart.py` (the Python API, no CLI, no Jupyter) and `getting_started.ipynb` (a
+  narrated "install → run → read the result" walkthrough covering both the CLI and the Python API)
+  — plus `sample.csv`/`sample.json`, a small checked-in interchange-format example. Deliberately
+  distinct from `notebooks/`, which documents what each of the 49 features *means*; `examples/`
+  never re-explains a feature's definition, only points to `notebooks/` for that.
+  `examples/benchmarks/` is a second, later-added group — `characterize_re_benchmark.py` and
+  `characterize_rwa_benchmark.py`, applying MOLA to every problem in jMetalPy's RE/RWA real-world
+  suites and writing one CSV row per problem — kept in its own subdirectory rather than the flat
+  top level once `examples/` grew past the original onboarding pair, so the folder's two purposes
+  (first-five-minutes onboarding vs. worked real-world use cases) stay visually and structurally
+  separate. Both scripts go through the Python API directly, not the CLI: neither RE nor RWA is in
+  jMetalPy's flat `jmetal.problem` namespace the CLI's problem resolver searches (only in
+  `jmetal.problem.multiobjective.re`/`.rwa`), confirmed by direct lookup rather than assumed. RE91
+  is skipped by both scripts with a printed reason: 4 of its 11 "variables" have infinite bounds
+  and are overwritten with fresh Gaussian noise inside its own `evaluate()` regardless of what's
+  sampled — a quirk of that one jMetalPy problem's implementation, not something a general-purpose
+  LHS sampler can honor, discovered by actually running the script against all 16 RE problems.
 
 ## Not yet decided
 Nothing left. Test strategy — hand-computed fixture front(s) with known landscape stats, one per
@@ -440,10 +452,12 @@ negation is a genuine correctness step, not a formality. An end-to-end integrati
 `characterize()`.
 
 The CLI (`mola`, `src/mola/cli.py`) is also done: three Typer commands (`sample`, `characterize`,
-`run`, see the "CLI" Design decision), each documented in depth via its own `--help`. `examples/`
-(a runnable script, a narrated onboarding notebook, a checked-in interchange-format example) and a
-root-level `llms.txt` cover onboarding for human users and AI-agent tooling respectively (see the
-"AI-agent discoverability" and "`examples/` vs `notebooks/`" Design decisions).
+`run`, see the "CLI" Design decision), each documented in depth via its own `--help`.
+`examples/getting_started/` (a runnable script, a narrated onboarding notebook, a checked-in
+interchange-format example), `examples/benchmarks/` (RE/RWA real-world benchmark-suite
+characterization scripts), and a root-level `llms.txt` cover onboarding and worked use cases for
+human users and AI-agent tooling respectively (see the "AI-agent discoverability" and
+"`examples/` vs `notebooks/`" Design decisions).
 
 152 passing tests total (hand-computed fixtures throughout; orchestrator wiring tests that
 independently rebuild the substrate to catch argument-order mistakes; adapter tests including a

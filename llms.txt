@@ -22,8 +22,8 @@ jMetalPy), MOLA's core still applies: it never touches a problem object, only th
 format** -- a CSV (`problem, sample_id, x_1..x_D, f_1..f_M`, objectives in minimization form) plus
 a sidecar JSON with the same basename holding problem metadata. Write a file matching that shape
 and `mola characterize your_sample.csv` computes all 49 features from it, regardless of what
-produced it. `examples/sample.csv` + `examples/sample.json` is a small worked example of the
-format itself.
+produced it. `examples/getting_started/sample.csv` + `sample.json` is a small worked example of
+the format itself.
 
 ## Key resources
 
@@ -31,10 +31,12 @@ format itself.
 - [CLAUDE.md](CLAUDE.md): the full design brief -- architecture, the interchange schema in detail,
   every design decision (with rationale), and the complete 49-feature implementation matrix
   (one row per feature: name, difficulty, status, the module it lives in).
-- [examples/quickstart.py](examples/quickstart.py): the Python API (`sample_problem` +
-  `characterize`) as a minimal, directly-runnable script -- no CLI.
-- [examples/getting_started.ipynb](examples/getting_started.ipynb): a narrated first-five-minutes
-  walkthrough covering both the CLI and the Python API.
+- [examples/getting_started/quickstart.py](examples/getting_started/quickstart.py): the Python API
+  (`sample_problem` + `characterize`) as a minimal, directly-runnable script -- no CLI.
+- [examples/getting_started/getting_started.ipynb](examples/getting_started/getting_started.ipynb):
+  a narrated first-five-minutes walkthrough covering both the CLI and the Python API.
+- [examples/benchmarks/](examples/benchmarks/): two scripts applying MOLA to every problem in
+  jMetalPy's RE and RWA real-world benchmark suites, each writing one CSV row per problem.
 - [notebooks/](notebooks/): one notebook per feature class (global, multimodality, evolvability,
   ruggedness), pairing each of the 49 features' definition with a real, executed example.
 

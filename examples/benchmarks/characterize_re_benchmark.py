@@ -6,7 +6,7 @@ aren't in jMetalPy's flat `jmetal.problem` namespace (only in `jmetal.problem.mu
 so this goes through the Python API directly rather than the CLI, which only resolves names from
 that flat namespace. Run directly:
 
-    python examples/characterize_re_benchmark.py
+    python examples/benchmarks/characterize_re_benchmark.py
 """
 
 import inspect

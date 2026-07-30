@@ -6,7 +6,7 @@ with its 49 features plus sample_size/num_obj/num_var. These problems aren't in 
 Python API directly rather than the CLI, which only resolves names from that flat namespace. Run
 directly:
 
-    python examples/characterize_rwa_benchmark.py
+    python examples/benchmarks/characterize_rwa_benchmark.py
 """
 
 import inspect
