@@ -5,7 +5,18 @@ class module a given feature lives in — `from mola.features import dist_x_avg,
 the same regardless of how many classes are behind it.
 """
 
-from mola.features.evolvability import inc_avg_neig, inf_avg_neig, sup_avg_neig
+from mola.features.evolvability import (
+    diff_f_avg_neig,
+    diff_f_dist_x_avg_neig,
+    dist_f_avg_neig,
+    dist_f_dist_x_avg_neig,
+    dist_x_avg_neig,
+    hv_avg_neig,
+    hvd_avg_neig,
+    inc_avg_neig,
+    inf_avg_neig,
+    sup_avg_neig,
+)
 from mola.features.global_ import (
     dist_f_max,
     dist_x_avg,
@@ -18,13 +29,23 @@ from mola.features.global_ import (
     rank_max,
 )
 from mola.features.multimodality import nd_per_plo, plo_dist_avg, plo_dist_max, plo_n
+from mola.features.ruggedness import dist_f_cor_neig, dist_x_cor_neig
 
 __all__ = [
+    "diff_f_avg_neig",
+    "diff_f_dist_x_avg_neig",
+    "dist_f_avg_neig",
+    "dist_f_cor_neig",
+    "dist_f_dist_x_avg_neig",
     "dist_f_max",
     "dist_x_avg",
+    "dist_x_avg_neig",
+    "dist_x_cor_neig",
     "dist_x_max",
     "dist_x_nd_max",
     "f_cor",
+    "hv_avg_neig",
+    "hvd_avg_neig",
     "inc_avg_neig",
     "inf_avg_neig",
     "nd_n",
