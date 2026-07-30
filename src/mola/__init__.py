@@ -4,4 +4,4 @@ Computes the landscape features of continuous multi-objective optimization probl
 structured sample, independently of the framework the problem is implemented in.
 """
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"

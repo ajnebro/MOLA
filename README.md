@@ -1,9 +1,9 @@
 # MOLA — Multi-Objective Landscape Analyzer
 
 **🚧 Work in progress.** The landscape-feature engine is complete — all 49 features implemented
-and tested. The jMetal (Java) and jMetalPy sampling adapters, a CLI, and an orchestrator tying a
-sample to all 49 features in one call are still to come. See [`CLAUDE.md`](CLAUDE.md) for the
-full design brief.
+and tested, tied together by an orchestrator that computes all of them for a sample in one call.
+The jMetal (Java) and jMetalPy sampling adapters and a CLI are still to come. See
+[`CLAUDE.md`](CLAUDE.md) for the full design brief.
 
 ## What it does
 

@@ -347,13 +347,20 @@ CI must run the tests from day one — both `pytest` and, for the Java adapter, 
 feature logic is exactly the kind of thing that ships silent bugs.
 
 ## Status
-All 49 landscape features implemented and tested (129 passing tests, hand-computed fixtures
-throughout — a discipline enforced from the very first feature), documented across four per-class
-Jupyter notebooks (`notebooks/`) with real, executed examples rather than hand-typed numbers. This
-closes out the feature-computation core.
+All 49 landscape features implemented and tested, documented across four per-class Jupyter
+notebooks (`notebooks/`) with real, executed examples rather than hand-typed numbers. This closes
+out the feature-computation core.
 
-Not yet started: an orchestrator that takes a `Sample` and computes all 49 features in one call
-(by design, each feature function currently takes exactly the substrate pieces it needs — nothing
-yet builds that substrate once per sample and calls every feature); the jMetal (Java) sampling
-adapter; the jMetalPy adapter; a CLI entry point; the statistical-analysis companion script
-(Shapiro-Wilk normality check across repeated runs).
+The orchestrator (`mola.characterize.characterize(sample) -> dict[str, float]`) is also done: it
+builds the shared substrate exactly once per sample (neighbourhood graph, ranking, pairwise/local
+neighbourhood dominance, the two normalizers, the shared hypervolume reference point, one batch of
+seeded adaptive walks) and calls every one of the 49 feature functions with explicit keyword
+arguments — deliberately, since a couple of the ruggedness `*_cor_neig` functions don't share a
+consistent `ref`/`neighbourhood` argument order, and positional calls across 49 near-identical
+signatures would be a real, silent way to wire the wrong value into the wrong slot. Returns the 49
+feature values plus the 3 always-reported metadata fields (`sample_size`, `num_obj`, `num_var`).
+135 passing tests total (hand-computed fixtures throughout, plus orchestrator wiring tests that
+independently rebuild the substrate to catch exactly that class of argument-order mistake).
+
+Not yet started: the jMetal (Java) sampling adapter; the jMetalPy adapter; a CLI entry point; the
+statistical-analysis companion script (Shapiro-Wilk normality check across repeated runs).

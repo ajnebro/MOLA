@@ -2,8 +2,8 @@
 
 Each function takes exactly the precomputed substrate pieces it needs (a normalizer, a ranking, a
 neighbourhood, ...) rather than a whole Sample, so it stays testable and reasoned about in
-isolation. An orchestrator that builds the shared substrate once per sample and calls every
-feature belongs here once enough features exist to justify one.
+isolation. `mola.characterize.characterize` builds that shared substrate once per sample and
+calls every feature.
 """
 
 from itertools import combinations
