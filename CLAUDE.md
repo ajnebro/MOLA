@@ -130,8 +130,8 @@ arrays other features already build.
 | `sup_avg_neig` | Low | implemented | `mola.features.evolvability.sup_avg_neig` — genuine pairwise dominance via `mola.dominance`, not MOORPHOLOGY's rank comparison |
 | `inf_avg_neig` | Low | implemented | `mola.features.evolvability.inf_avg_neig` |
 | `inc_avg_neig` | Low | implemented | `mola.features.evolvability.inc_avg_neig` |
-| `lnd_avg_neig` | Medium | buggy | local/global rank mismatch |
-| `lsupp_avg_neig` | Medium | buggy | same mismatch |
+| `lnd_avg_neig` | Medium | implemented | `mola.features.evolvability.lnd_avg_neig` — local/global rank mismatch fixed |
+| `lsupp_avg_neig` | Medium | implemented | `mola.features.evolvability.lsupp_avg_neig` — now uses `mola.hull.supported_mask`, unlike MOORPHOLOGY |
 | `dist_x_avg_neig` | Medium | implemented | `mola.features.evolvability.dist_x_avg_neig` — redesigned on `mola.distance.neighbour_distances`, not ported |
 | `dist_f_avg_neig` | Medium | implemented | `mola.features.evolvability.dist_f_avg_neig` |
 | `dist_f_dist_x_avg_neig` | Low | implemented | `mola.features.evolvability.dist_f_dist_x_avg_neig` — ratio of the two rows above |
@@ -150,8 +150,8 @@ arrays other features already build.
 | `sup_cor_neig` | Medium | implemented | `mola.features.ruggedness.sup_cor_neig` |
 | `inf_cor_neig` | Medium | implemented | `mola.features.ruggedness.inf_cor_neig` |
 | `inc_cor_neig` | Medium | implemented | `mola.features.ruggedness.inc_cor_neig` |
-| `lnd_cor_neig` | Medium | new | blocked on `lnd_avg_neig`, not yet implemented |
-| `lsupp_cor_neig` | Medium | new | blocked on `lsupp_avg_neig`, not yet implemented |
+| `lnd_cor_neig` | Medium | implemented | `mola.features.ruggedness.lnd_cor_neig` |
+| `lsupp_cor_neig` | Medium | implemented | `mola.features.ruggedness.lsupp_cor_neig` |
 | `dist_f_dist_x_cor_neig` | Medium | implemented | `mola.features.ruggedness.dist_f_dist_x_cor_neig` — per-solution ratio, then correlated (unlike the evolvability namesake) |
 | `diff_f_cor_neig` | Medium | implemented | `mola.features.ruggedness.diff_f_cor_neig` |
 | `diff_f_dist_x_cor_neig` | Medium | implemented | `mola.features.ruggedness.diff_f_dist_x_cor_neig` — same per-solution-ratio pattern |
@@ -397,14 +397,10 @@ Three more, resolved 2026-07-25 — the last structural questions blocking imple
   case — running MOLA as a tool over a sample and consuming its CSV/JSON output places no
   obligations on the caller's code under any of the three licenses.
 
-## Not yet decided (settle in the implementation session)
-- Test strategy: hand-computed fixture front(s) with known landscape stats, one per feature, from
-  the start — this is exactly the gap that let MOORPHOLOGY's bugs ship. The decisions above pin
-  down what each fixture must assert (e.g. exact `k`, exact normalizer, minimization-only
-  dominance). Now spans 49 fixtures' worth of assertions, not ~19 — see "Feature implementation
-  matrix" above for the full list.
-
-This is now the only open item — license was the other, resolved 2026-07-25 (see above).
+## Not yet decided
+Nothing left. Test strategy — hand-computed fixture front(s) with known landscape stats, one per
+feature — was the last open item; it's now been carried out for all 49 features (129 passing
+tests), not just decided. License was the other, resolved 2026-07-25 (see above).
 
 ## Coding, testing, and Git guidelines
 MOLA adopts the jMetal/Evolver-family conventions; the guides are vendored in this repo (keep them
@@ -422,9 +418,13 @@ CI must run the tests from day one — both `pytest` and, for the Java adapter, 
 MOORPHOLOGY's CI never ran `mvn test`, which is exactly why its feature bugs shipped.
 
 ## Status
-Design complete as of 2026-07-25, no code yet. Every structural question is settled — feature set
-(49), per-feature semantics, neighbourhood, normalizers, interchange schema, sampling, and repo
-layout — leaving only the two items under "Not yet decided" (test fixtures, license), neither of
-which blocks starting implementation. Next step: the shared substrate the feature table's "Low"
-rows all assume (neighbourhood graph, non-dominated ranking, the two normalizers), with its own
-tests, then features one at a time by difficulty within each class.
+All 49 landscape features implemented and tested (129 passing tests, hand-computed fixtures
+throughout — the discipline this whole rewrite exists to enforce), documented across four
+per-class Jupyter notebooks (`notebooks/`) with real, executed examples rather than hand-typed
+numbers. This closes out the feature-computation core.
+
+Not yet started: an orchestrator that takes a `Sample` and computes all 49 features in one call
+(by design, each feature function currently takes exactly the substrate pieces it needs — nothing
+yet builds that substrate once per sample and calls every feature); the jMetal (Java) sampling
+adapter; the jMetalPy adapter; a CLI entry point; the statistical-analysis companion script
+(Shapiro-Wilk normality check across repeated runs, in the spirit of MOORPHOLOGY's own script).
