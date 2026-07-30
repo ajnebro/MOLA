@@ -143,3 +143,42 @@ def build_neighbourhood(variables: np.ndarray, neighbours: int) -> Neighbourhood
         indices=indices[kept].reshape(count, effective),
         distances=distances[kept].reshape(count, effective),
     )
+
+
+def neighbour_distances(points: np.ndarray, neighbourhood: Neighbourhood) -> np.ndarray:
+    """Per-solution, per-neighbour distances, measured in whichever space `points` is given in.
+
+    Unlike :attr:`Neighbourhood.distances` — always decision-space, fixed by how the
+    neighbourhood graph itself was built — this measures distance in `points`' own space. Passing
+    the same `variables` the neighbourhood was built from reproduces
+    `neighbourhood.distances`; passing `objectives` instead gives the distances `dist_f_avg_neig`
+    needs, over the same decision-space neighbour relation.
+
+    Args:
+        points: Per-solution vectors in any space, shape ``(n, dimensions)``, aligned by index
+            with the solutions `neighbourhood` was built over.
+        neighbourhood: The sample's neighbourhood graph.
+
+    Returns:
+        Per-solution, per-neighbour distances, shape ``(n, neighbourhood.size)``.
+    """
+    return np.linalg.norm(points[neighbourhood.indices] - points[:, None, :], axis=2)
+
+
+def neighbour_diff_f(objectives: np.ndarray, neighbourhood: Neighbourhood) -> np.ndarray:
+    """Per-solution, per-neighbour mean absolute difference across objectives.
+
+    Table 1's `diff_f_avg_neig`: "average difference **per objective** with neighbours" — the
+    mean of ``|f_m(i) - f_m(j)|`` over objectives ``m``, for each neighbour ``j`` (Design
+    decisions). Distinct from :func:`neighbour_distances` on `objectives`, which is Euclidean
+    (L2), not a mean absolute (L1-flavoured) difference.
+
+    Args:
+        objectives: Objective vectors, shape ``(n, M)``.
+        neighbourhood: The sample's neighbourhood graph.
+
+    Returns:
+        Per-solution, per-neighbour mean absolute objective difference, shape
+        ``(n, neighbourhood.size)``.
+    """
+    return np.abs(objectives[neighbourhood.indices] - objectives[:, None, :]).mean(axis=2)
