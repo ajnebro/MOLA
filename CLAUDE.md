@@ -127,9 +127,9 @@ arrays other features already build.
 
 | Feature | Difficulty | Status | Notes |
 |---|---|---|---|
-| `sup_avg_neig` | Low | reliable | |
-| `inf_avg_neig` | Low | reliable | |
-| `inc_avg_neig` | Low | reliable | |
+| `sup_avg_neig` | Low | buggy | MOORPHOLOGY compares global ranks, not pairwise dominance — see Audit |
+| `inf_avg_neig` | Low | buggy | same bug |
+| `inc_avg_neig` | Low | buggy | same bug |
 | `lnd_avg_neig` | Medium | buggy | local/global rank mismatch |
 | `lsupp_avg_neig` | Medium | buggy | same mismatch |
 | `dist_x_avg_neig` | Medium | buggy | accumulator uses `=` not `+=` |
@@ -171,14 +171,22 @@ arbitrary problems. `d` (number of variables) is already covered by MOLA's `NUM_
 - `distanceXMaximum`, `distanceXAverage`, `distanceFMaximum` — correct accumulation.
 - `neighbourDistanceXMaximum`, `neighbourDistanceFMaximum` — correct (`Math.max`-accumulated, not
   touched by the sum-accumulator bug below).
-- `averageProportionOfDominatingNeighbours` / `...DominatedNeighbours` / `...IncomparableNeighbours`
-  — correct `+=` accumulation, and compares reference vs. neighbour on the *same* global ranking
-  throughout (unlike the LND/LSUP pair below).
 - `neighboursCorrelationOfAverageDistanceX/F` (Spearman) — has a `||`-instead-of-`&&` length-check
   bug, but it's a non-issue once the neighbourhood size is more than 1-2 (i.e. any problem with a
   handful of decision variables or more).
 
 **Broken in MOORPHOLOGY — redesign, don't mechanically port this logic:**
+- `averageProportionOfDominatingNeighbours` / `...DominatedNeighbours` / `...IncomparableNeighbours`
+  — **correction, 2026-07-30**: previously listed as reliable ("compares reference vs. neighbour on
+  the same global ranking throughout") — that description undersold the bug. It compares *global
+  ranks* (`ranking.getRank(reference)` vs. `ranking.getRank(neighbour)`, lines 220-233), not
+  pairwise dominance between the two. These are not equivalent: two solutions can sit in different
+  global fronts without either directly dominating the other, since front assignment reflects the
+  whole sample's structure, not just the pair. The paper is explicit this is pairwise ("proportions
+  of dominating, dominated, and incomparable **neighbours**", §4.1.3) — found by reading
+  MOORPHOLOGY's source directly (not assumed) while building MOLA's own version; see `sup_avg_neig`
+  in Design decisions for the fix (genuine pairwise `DominanceComparator.dominance_test`, not rank
+  comparison).
 - `distanceFAverage` — normalized using a "DIST_F_MIN" that is actually computed from
   variable-space distance, not objective-space (`ProblemCharacterization.java:160`).
 - `distanceXNonDominatedMaximum`/`Average` — the "both non-dominated" pair filter checks the same
