@@ -127,9 +127,9 @@ arrays other features already build.
 
 | Feature | Difficulty | Status | Notes |
 |---|---|---|---|
-| `sup_avg_neig` | Low | buggy | MOORPHOLOGY compares global ranks, not pairwise dominance — see Audit |
-| `inf_avg_neig` | Low | buggy | same bug |
-| `inc_avg_neig` | Low | buggy | same bug |
+| `sup_avg_neig` | Low | implemented | `mola.features.evolvability.sup_avg_neig` — genuine pairwise dominance via `mola.dominance`, not MOORPHOLOGY's rank comparison |
+| `inf_avg_neig` | Low | implemented | `mola.features.evolvability.inf_avg_neig` |
+| `inc_avg_neig` | Low | implemented | `mola.features.evolvability.inc_avg_neig` |
 | `lnd_avg_neig` | Medium | buggy | local/global rank mismatch |
 | `lsupp_avg_neig` | Medium | buggy | same mismatch |
 | `dist_x_avg_neig` | Medium | buggy | accumulator uses `=` not `+=` |
