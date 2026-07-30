@@ -9,7 +9,11 @@ import numpy as np
 
 from mola.distance import Neighbourhood, neighbour_diff_f, neighbour_distances
 from mola.dominance import NeighbourhoodDominance
-from mola.hypervolume import neighbour_hypervolume_difference, singleton_hypervolume
+from mola.hypervolume import (
+    neighbour_hypervolume_difference,
+    neighbourhood_hypervolume,
+    singleton_hypervolume,
+)
 
 
 def sup_avg_neig(dominance: NeighbourhoodDominance, neighbourhood: Neighbourhood) -> float:
@@ -168,3 +172,21 @@ def hvd_avg_neig(objectives: np.ndarray, neighbourhood: Neighbourhood, ref: np.n
         neighbours.
     """
     return float(neighbour_hypervolume_difference(objectives, neighbourhood, ref).mean())
+
+
+def nhv_avg_neig(objectives: np.ndarray, neighbourhood: Neighbourhood, ref: np.ndarray) -> float:
+    """Average hypervolume from the whole neighbourhood (Table 1: nhv_avg_neig).
+
+    Genuinely set-based, unlike `hv_avg_neig`'s singleton score: the joint hypervolume of each
+    solution's `k` neighbours (excluding the solution itself) against the shared reference point
+    (`mola.hypervolume.neighbourhood_hypervolume`, via `moocore.hypervolume`).
+
+    Args:
+        objectives: Objective vectors in minimization form, shape (n, M).
+        neighbourhood: The sample's neighbourhood graph.
+        ref: The shared hypervolume reference point, from `mola.hypervolume.reference_point`.
+
+    Returns:
+        The mean, over the sample, of each solution's neighbourhood hypervolume.
+    """
+    return float(neighbourhood_hypervolume(objectives, neighbourhood, ref).mean())

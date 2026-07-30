@@ -14,6 +14,7 @@ from mola.features import (
     dist_x_nd_max,
     f_cor,
     fdc,
+    hv,
     nd_n,
     rank_avg,
     rank_ent,
@@ -416,3 +417,22 @@ class TestSuppN:
 
         # Assert
         assert value == pytest.approx(1.0)
+
+
+class TestHv:
+    """Unit tests for hv."""
+
+    def test_should_return_the_hand_computed_hypervolume_of_the_non_dominated_subset(self):
+        """Given three mutually incomparable objectives, returns their hypervolume against ref."""
+        # Arrange: A(1,4), B(2,2), C(4,1), ref=(5,5). Hand-computed via the standard 2-D sweep:
+        # (2-1)*(5-4) + (4-2)*(5-2) + (5-4)*(5-1) = 1 + 6 + 4 = 11 (cross-checked against
+        # moocore.hypervolume directly)
+        objectives = np.array([[1.0, 4.0], [2.0, 2.0], [4.0, 1.0]])
+        ranking = rank_solutions(objectives)
+        ref = np.array([5.0, 5.0])
+
+        # Act
+        value = hv(objectives, ranking, ref)
+
+        # Assert
+        assert value == pytest.approx(11.0)

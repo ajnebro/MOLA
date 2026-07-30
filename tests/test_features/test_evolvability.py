@@ -15,6 +15,7 @@ from mola.features import (
     hvd_avg_neig,
     inc_avg_neig,
     inf_avg_neig,
+    nhv_avg_neig,
     sup_avg_neig,
 )
 from mola.hypervolume import reference_point
@@ -267,3 +268,25 @@ class TestHvdAvgNeig:
 
         # Assert
         assert value == pytest.approx(16.0)
+
+
+class TestNhvAvgNeig:
+    """Unit tests for nhv_avg_neig."""
+
+    def test_should_return_the_moocore_verified_mean_neighbourhood_hypervolume(self):
+        """Given four objective vectors, returns the mean joint hypervolume of each's neighbours."""
+        # Arrange: A(1,4), B(2,2), C(4,1), D(6,6) -> ref=(6,6). Neighbourhoods hand-picked:
+        # A->{B,C}, B->{A,C}, C->{A,B}, D->{A,B}. Per-solution hypervolumes [18, 16, 18, 18]
+        # (cross-checked against moocore.hypervolume directly on each subset) -> mean 17.5
+        objectives = np.array([[1.0, 4.0], [2.0, 2.0], [4.0, 1.0], [6.0, 6.0]])
+        indices = np.array([[1, 2], [0, 2], [0, 1], [0, 1]])
+        neighbourhood = Neighbourhood(
+            indices=indices, distances=np.zeros_like(indices, dtype=float)
+        )
+        ref = reference_point(objectives)
+
+        # Act
+        value = nhv_avg_neig(objectives, neighbourhood, ref)
+
+        # Assert
+        assert value == pytest.approx(17.5)

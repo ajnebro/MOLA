@@ -15,6 +15,7 @@ from mola.features import (
     hvd_cor_neig,
     inc_cor_neig,
     inf_cor_neig,
+    nhv_cor_neig,
     sup_cor_neig,
 )
 from mola.hypervolume import reference_point
@@ -225,3 +226,24 @@ class TestHvdCorNeig:
 
         # Assert
         assert value == pytest.approx(-0.5)
+
+
+class TestNhvCorNeig:
+    """Unit tests for nhv_cor_neig."""
+
+    def test_should_correlate_the_per_solution_neighbourhood_hypervolume(self):
+        """Given the nhv_avg_neig fixture, correlates each solution's neighbourhood hypervolume."""
+        # Arrange: same fixture as TestNhvAvgNeig -- per-solution neighbourhood hypervolumes
+        # [18, 16, 18, 18] (verified against scipy directly)
+        objectives = np.array([[1.0, 4.0], [2.0, 2.0], [4.0, 1.0], [6.0, 6.0]])
+        indices = np.array([[1, 2], [0, 2], [0, 1], [0, 1]])
+        neighbourhood = Neighbourhood(
+            indices=indices, distances=np.zeros_like(indices, dtype=float)
+        )
+        ref = reference_point(objectives)
+
+        # Act
+        value = nhv_cor_neig(objectives, neighbourhood, ref)
+
+        # Assert
+        assert value == pytest.approx(-0.4472135954999579)

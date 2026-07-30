@@ -6,6 +6,7 @@ import pytest
 from mola.distance import Neighbourhood
 from mola.hypervolume import (
     neighbour_hypervolume_difference,
+    neighbourhood_hypervolume,
     reference_point,
     singleton_hypervolume,
 )
@@ -77,3 +78,25 @@ class TestNeighbourHypervolumeDifference:
         np.testing.assert_allclose(result[1], [24.0, 0.0])
         # solution 2 (hv=0) vs 0 (hv=24) and 1 (hv=0): 24, 0
         np.testing.assert_allclose(result[2], [24.0, 0.0])
+
+
+class TestNeighbourhoodHypervolume:
+    """Unit tests for neighbourhood_hypervolume."""
+
+    def test_should_return_the_moocore_verified_per_neighbourhood_hypervolume(self):
+        """Given four objective vectors, returns the joint hypervolume of each one's neighbours."""
+        # Arrange: A(1,4), B(2,2), C(4,1), D(6,6) -> ref=(6,6). Neighbourhoods hand-picked
+        # (not spatial): A->{B,C}, B->{A,C}, C->{A,B}, D->{A,B}. Expected values cross-checked
+        # against moocore.hypervolume directly on each 2-point subset: [18, 16, 18, 18]
+        objectives = np.array([[1.0, 4.0], [2.0, 2.0], [4.0, 1.0], [6.0, 6.0]])
+        indices = np.array([[1, 2], [0, 2], [0, 1], [0, 1]])
+        neighbourhood = Neighbourhood(
+            indices=indices, distances=np.zeros_like(indices, dtype=float)
+        )
+        ref = reference_point(objectives)
+
+        # Act
+        result = neighbourhood_hypervolume(objectives, neighbourhood, ref)
+
+        # Assert
+        np.testing.assert_allclose(result, [18.0, 16.0, 18.0, 18.0])

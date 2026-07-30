@@ -8,6 +8,7 @@ feature belongs here once enough features exist to justify one.
 
 from itertools import combinations
 
+import moocore
 import numpy as np
 from scipy.spatial import ConvexHull, QhullError
 from scipy.spatial.distance import pdist
@@ -282,3 +283,22 @@ def supp_n(objectives: np.ndarray, ranking: Ranking) -> float:
     minimizing_facets = np.all(hull.equations[:, :-1] <= _SUPPORTED_FACET_TOLERANCE, axis=1)
     supported = np.unique(hull.simplices[minimizing_facets])
     return supported.size / nondominated.size
+
+
+def hv(objectives: np.ndarray, ranking: Ranking, ref: np.ndarray) -> float:
+    """Hypervolume of the non-dominated solutions (Table 1: hv).
+
+    The paper never states a reference point for this feature (§3.3's hypervolume is a different
+    quantity — algorithm-performance normalization against the problem's *known* true Pareto
+    front, not usable here). Uses the same shared reference point as every other hypervolume-
+    based feature (Design decisions, "`hv` and the shared hypervolume reference point").
+
+    Args:
+        objectives: Objective vectors in minimization form, shape (n, M).
+        ranking: The sample's non-dominated ranking, over the same solutions as `objectives`.
+        ref: The shared reference point, shape (M,), from `mola.hypervolume.reference_point`.
+
+    Returns:
+        The hypervolume of the non-dominated subset against `ref`, via `moocore.hypervolume`.
+    """
+    return float(moocore.hypervolume(objectives[ranking.nondominated], ref=ref))

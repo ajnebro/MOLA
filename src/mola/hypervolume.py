@@ -6,6 +6,7 @@ maximum of the whole sample's objectives, no padding — rather than each recomp
 (Design decisions, "`hv` and the shared hypervolume reference point").
 """
 
+import moocore
 import numpy as np
 
 from mola.distance import Neighbourhood
@@ -66,3 +67,29 @@ def neighbour_hypervolume_difference(
     """
     hv = singleton_hypervolume(objectives, ref)
     return np.abs(hv[:, None] - hv[neighbourhood.indices])
+
+
+def neighbourhood_hypervolume(
+    objectives: np.ndarray, neighbourhood: Neighbourhood, ref: np.ndarray
+) -> np.ndarray:
+    """Per-solution hypervolume of the whole neighbourhood (excluding the solution itself).
+
+    Table 1's "hypervolume from the **whole neighbourhood**" is genuinely set-based, unlike
+    `singleton_hypervolume`: the joint hypervolume of `i`'s `k` neighbours against the shared
+    `ref`, via `moocore.hypervolume` — no pre-filtering of dominated neighbours needed, since
+    `moocore.hypervolume` already handles overlapping dominated regions correctly.
+
+    Args:
+        objectives: Objective vectors in minimization form, shape (n, M).
+        neighbourhood: The sample's neighbourhood graph.
+        ref: The shared reference point, shape (M,), from :func:`reference_point`.
+
+    Returns:
+        Per-solution hypervolume of ``{objectives[j] : j in N(i)}``, shape ``(n,)``.
+    """
+    return np.array(
+        [
+            moocore.hypervolume(objectives[neighbours], ref=ref)
+            for neighbours in neighbourhood.indices
+        ]
+    )

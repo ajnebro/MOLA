@@ -9,7 +9,11 @@ import numpy as np
 
 from mola.distance import Neighbourhood, neighbour_diff_f, neighbour_distances
 from mola.dominance import NeighbourhoodDominance
-from mola.hypervolume import neighbour_hypervolume_difference, singleton_hypervolume
+from mola.hypervolume import (
+    neighbour_hypervolume_difference,
+    neighbourhood_hypervolume,
+    singleton_hypervolume,
+)
 from mola.ruggedness import neighbour_correlation
 
 
@@ -185,4 +189,21 @@ def hvd_cor_neig(objectives: np.ndarray, neighbourhood: Neighbourhood, ref: np.n
         per-solution measure).
     """
     measure = neighbour_hypervolume_difference(objectives, neighbourhood, ref).mean(axis=1)
+    return neighbour_correlation(measure, neighbourhood)
+
+
+def nhv_cor_neig(objectives: np.ndarray, neighbourhood: Neighbourhood, ref: np.ndarray) -> float:
+    """Neighbour's correlation of the average hypervolume from the whole neighbourhood.
+
+    Args:
+        objectives: Objective vectors in minimization form, shape (n, M).
+        neighbourhood: The sample's neighbourhood graph.
+        ref: The shared hypervolume reference point, from `mola.hypervolume.reference_point`.
+
+    Returns:
+        The Spearman correlation, over every directed neighbour edge, of each solution's own
+        neighbourhood hypervolume (`mola.features.evolvability.nhv_avg_neig`'s per-solution
+        measure).
+    """
+    measure = neighbourhood_hypervolume(objectives, neighbourhood, ref)
     return neighbour_correlation(measure, neighbourhood)
