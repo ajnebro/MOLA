@@ -101,7 +101,7 @@ arrays other features already build.
 | `dist_f_max` | Low | implemented | `mola.features.dist_f_max` — raw, not normalized |
 | `nd_n` | Low | implemented | `mola.features.nd_n` |
 | `supp_n` | High | implemented | `mola.features.supp_n` — ConvexHull on ND subset; QhullError/`\|ND\|<=M` fall back to 1.0 |
-| `hv` | Medium | new | `moocore.hypervolume`; shared whole-sample ref point |
+| `hv` | Medium | implemented | `mola.features.hv` — `moocore.hypervolume`; shared whole-sample ref point |
 | `dist_x_nd_avg` | Medium | implemented | `mola.features.dist_x_nd_avg` — pair-filter + divisor fixed |
 | `dist_x_nd_max` | Low | implemented | `mola.features.dist_x_nd_max` — raw; NaN if \|ND\| < 2 |
 | `fdc` | Medium | implemented | `mola.features.fdc` |
@@ -139,7 +139,7 @@ arrays other features already build.
 | `diff_f_dist_x_avg_neig` | Low | implemented | `mola.features.evolvability.diff_f_dist_x_avg_neig` — ratio |
 | `hv_avg_neig` | Medium | implemented | `mola.features.evolvability.hv_avg_neig` — `mola.hypervolume.singleton_hypervolume`, **not** `moocore.hv_contributions` |
 | `hvd_avg_neig` | Low | implemented | `mola.features.evolvability.hvd_avg_neig` — difference over the `hv_avg_neig` array |
-| `nhv_avg_neig` | Medium | new | `moocore.hypervolume` per neighbourhood |
+| `nhv_avg_neig` | Medium | implemented | `mola.features.nhv_avg_neig` — `mola.hypervolume.neighbourhood_hypervolume` |
 
 **Ruggedness (13)** — 2 Low, 11 Medium
 
@@ -157,7 +157,7 @@ arrays other features already build.
 | `diff_f_dist_x_cor_neig` | Medium | implemented | `mola.features.ruggedness.diff_f_dist_x_cor_neig` — same per-solution-ratio pattern |
 | `hv_cor_neig` | Medium | implemented | `mola.features.ruggedness.hv_cor_neig` |
 | `hvd_cor_neig` | Medium | implemented | `mola.features.ruggedness.hvd_cor_neig` — `mola.hypervolume.neighbour_hypervolume_difference` |
-| `nhv_cor_neig` | Medium | new | blocked on `nhv_avg_neig`, not yet implemented (needs `moocore`) |
+| `nhv_cor_neig` | Medium | implemented | `mola.features.nhv_cor_neig` |
 
 **Problem-dependent (5) — out of scope**
 
