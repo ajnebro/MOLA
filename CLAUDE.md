@@ -116,10 +116,10 @@ arrays other features already build.
 | `slo_n` | Medium | new | per-objective, mean across M |
 | `slo_dist_avg` | Medium | new | per-objective avg distance, mean across M |
 | `slo_dist_max` | Medium | new | per-objective max distance, mean across M |
-| `plo_n` | Low | new | reuses the existing dominating-neighbour count (`sup==0`) |
-| `plo_dist_avg` | Low | new | |
-| `plo_dist_max` | Low | new | |
-| `nd_per_plo` | Low | new | = `nd_n / plo_n` |
+| `plo_n` | Low | implemented | `mola.features.multimodality.plo_n` |
+| `plo_dist_avg` | Low | implemented | `mola.features.multimodality.plo_dist_avg` — NaN if \|PLO\| < 2 |
+| `plo_dist_max` | Low | implemented | `mola.features.multimodality.plo_dist_max` — raw; NaN if \|PLO\| < 2 |
+| `nd_per_plo` | Low | implemented | `mola.features.multimodality.nd_per_plo` = `nd_n / plo_n` |
 | `length_aws` | High | new | adaptive-walk simulation, genuinely new algorithm |
 | `eval_aws` | High | new | byproduct of the same walk |
 
@@ -221,6 +221,12 @@ Five questions raised in the first design pass are now settled:
   a subset (non-dominated pairs, a neighbourhood). Fixes the `distanceFAverage` bug: the F
   normalizer must accumulate from objective-space distance, not variable-space
   (`ProblemCharacterization.java:160`). Every `*_MAX` feature stays raw (see "Feature set" above).
+  **Clarified 2026-07-30**: this list predates the full 49-feature scope and reads as exhaustive,
+  but "Feature set" above states the rule generally ("every `*_AVG` distance feature is max-min
+  normalized") — the general rule is what's intended. It extends unchanged to the multimodality
+  class's `slo_dist_avg`/`plo_dist_avg` (`(DIST_X_MIN, DIST_X_MAX)`, same as `dist_x_nd_avg`, since
+  they're all distances among a subset of the sample in variable space) and their `*_dist_max`
+  siblings stay raw, consistent with every other `*_MAX`.
 - **Feature set scope — corrected 2026-07-24.** MOLA implements the paper's **full 49-feature
   set** (see "Feature set" and "Feature implementation matrix" above), not the ~19-feature subset
   originally assumed here. **Correction**: this decision originally also excluded the Spearman

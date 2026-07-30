@@ -15,6 +15,7 @@ from mola.features.global_ import (
     rank_ent,
     rank_max,
 )
+from mola.features.multimodality import nd_per_plo, plo_dist_avg, plo_dist_max, plo_n
 
 __all__ = [
     "dist_f_max",
@@ -23,6 +24,10 @@ __all__ = [
     "inc_avg_neig",
     "inf_avg_neig",
     "nd_n",
+    "nd_per_plo",
+    "plo_dist_avg",
+    "plo_dist_max",
+    "plo_n",
     "rank_avg",
     "rank_ent",
     "rank_max",
