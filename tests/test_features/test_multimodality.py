@@ -7,7 +7,15 @@ import pytest
 
 from mola.distance import Neighbourhood
 from mola.dominance import neighbourhood_dominance
-from mola.features import nd_per_plo, plo_dist_avg, plo_dist_max, plo_n
+from mola.features import (
+    nd_per_plo,
+    plo_dist_avg,
+    plo_dist_max,
+    plo_n,
+    slo_dist_avg,
+    slo_dist_max,
+    slo_n,
+)
 from mola.normalization import Normalizer
 from mola.ranking import rank_solutions
 
@@ -170,3 +178,118 @@ class TestNdPerPlo:
 
         # Assert
         assert value == pytest.approx(1.0)
+
+
+class TestSloN:
+    """Unit tests for slo_n."""
+
+    def test_should_return_the_hand_verified_mean_proportion(self):
+        """Given a complete neighbourhood, returns the mean per-objective local-optimum share."""
+        # Arrange: A(1,5), B(3,2), C(2,4), D(5,1), everyone else is a neighbour (k=3).
+        # A is the sole f_1 local optimum, D the sole f_2 local optimum -> mean(1/4, 1/4) = 0.25
+        objectives = np.array([[1.0, 5.0], [3.0, 2.0], [2.0, 4.0], [5.0, 1.0]])
+        indices = np.array([[1, 2, 3], [0, 2, 3], [0, 1, 3], [0, 1, 2]])
+        neighbourhood = Neighbourhood(
+            indices=indices, distances=np.zeros_like(indices, dtype=float)
+        )
+
+        # Act
+        value = slo_n(objectives, neighbourhood)
+
+        # Assert
+        assert value == pytest.approx(0.25)
+
+    def test_should_allow_more_than_one_local_optimum_per_objective(self):
+        """Given two disconnected neighbour pairs, each can independently be a local optimum."""
+        # Arrange: A(1,9)-B(5,9) and C(2,9)-D(8,9) are disconnected mutual-neighbour pairs.
+        # A and C are both f_1 local optima; f_2 is constant, so everyone is an f_2 local optimum
+        # -> mean(2/4, 4/4) = 0.75
+        objectives = np.array([[1.0, 9.0], [5.0, 9.0], [2.0, 9.0], [8.0, 9.0]])
+        indices = np.array([[1], [0], [3], [2]])
+        neighbourhood = Neighbourhood(
+            indices=indices, distances=np.zeros_like(indices, dtype=float)
+        )
+
+        # Act
+        value = slo_n(objectives, neighbourhood)
+
+        # Assert
+        assert value == pytest.approx(0.75)
+
+
+class TestSloDistAvg:
+    """Unit tests for slo_dist_avg."""
+
+    def test_should_return_the_hand_computed_mean_across_objectives(self):
+        """Given the disconnected-pairs fixture, averages normalized distance across objectives."""
+        # Arrange: same objectives as TestSloN's second case. Variables 0, 1, 10, 11 (A, B, C, D).
+        # f_1 local optima {A, C} = {0, 10} -> mean pairwise distance 10.
+        # f_2 local optima {A, B, C, D} = {0, 1, 10, 11} -> mean pairwise distance 7.0.
+        # Whole-sample range [1, 11]: normalize(10) = 0.9, normalize(7.0) = 0.6 -> mean 0.75
+        objectives = np.array([[1.0, 9.0], [5.0, 9.0], [2.0, 9.0], [8.0, 9.0]])
+        variables = np.array([[0.0], [1.0], [10.0], [11.0]])
+        indices = np.array([[1], [0], [3], [2]])
+        neighbourhood = Neighbourhood(
+            indices=indices, distances=np.zeros_like(indices, dtype=float)
+        )
+        normalizer = Normalizer(minimum=1.0, maximum=11.0)
+
+        # Act
+        value = slo_dist_avg(variables, objectives, neighbourhood, normalizer)
+
+        # Assert
+        assert value == pytest.approx(0.75)
+
+    def test_should_return_nan_when_every_objective_has_fewer_than_two_local_optima(self):
+        """Given the fully-connected fixture, each objective has exactly one local optimum."""
+        # Arrange: same objectives as TestSloN's first case -- both S_1 and S_2 have size 1
+        objectives = np.array([[1.0, 5.0], [3.0, 2.0], [2.0, 4.0], [5.0, 1.0]])
+        variables = np.array([[0.0], [1.0], [2.0], [3.0]])
+        indices = np.array([[1, 2, 3], [0, 2, 3], [0, 1, 3], [0, 1, 2]])
+        neighbourhood = Neighbourhood(
+            indices=indices, distances=np.zeros_like(indices, dtype=float)
+        )
+        normalizer = Normalizer(minimum=1.0, maximum=3.0)
+
+        # Act
+        value = slo_dist_avg(variables, objectives, neighbourhood, normalizer)
+
+        # Assert
+        assert math.isnan(value)
+
+
+class TestSloDistMax:
+    """Unit tests for slo_dist_max."""
+
+    def test_should_return_the_hand_computed_mean_across_objectives(self):
+        """Given the disconnected-pairs fixture, averages the raw maximum across objectives."""
+        # Arrange: same fixture as TestSloDistAvg -- f_1 local optima {0, 10} (max 10),
+        # f_2 local optima {0, 1, 10, 11} (max 11) -> mean(10, 11) = 10.5
+        objectives = np.array([[1.0, 9.0], [5.0, 9.0], [2.0, 9.0], [8.0, 9.0]])
+        variables = np.array([[0.0], [1.0], [10.0], [11.0]])
+        indices = np.array([[1], [0], [3], [2]])
+        neighbourhood = Neighbourhood(
+            indices=indices, distances=np.zeros_like(indices, dtype=float)
+        )
+
+        # Act
+        value = slo_dist_max(variables, objectives, neighbourhood)
+
+        # Assert
+        assert value == pytest.approx(10.5)
+
+    def test_should_return_nan_when_every_objective_has_fewer_than_two_local_optima(self):
+        """Given the fully-connected fixture, each objective has exactly one local optimum."""
+        # Arrange: same objectives as TestSloN's first case -- both S_1 and S_2 have size 1
+        objectives = np.array([[1.0, 5.0], [3.0, 2.0], [2.0, 4.0], [5.0, 1.0]])
+        variables = np.array([[0.0], [1.0], [2.0], [3.0]])
+        indices = np.array([[1, 2, 3], [0, 2, 3], [0, 1, 3], [0, 1, 2]])
+        neighbourhood = Neighbourhood(
+            indices=indices, distances=np.zeros_like(indices, dtype=float)
+        )
+
+        # Act
+        value = slo_dist_max(variables, objectives, neighbourhood)
+
+        # Assert
+        assert math.isnan(value)

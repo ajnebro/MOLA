@@ -7,9 +7,10 @@ dominance machinery.
 
 import numpy as np
 
-from mola.distance import pairwise_distance_stats
+from mola.distance import Neighbourhood, pairwise_distance_stats
 from mola.dominance import NeighbourhoodDominance
 from mola.features.global_ import nd_n
+from mola.multimodality import single_objective_local_optima
 from mola.normalization import Normalizer
 from mola.ranking import Ranking
 
@@ -87,3 +88,83 @@ def nd_per_plo(ranking: Ranking, dominance: NeighbourhoodDominance) -> float:
         nd_n / plo_n. Always well-defined: `plo_n` is always positive.
     """
     return nd_n(ranking) / plo_n(dominance)
+
+
+def slo_n(objectives: np.ndarray, neighbourhood: Neighbourhood) -> float:
+    """Proportion of single-objective local optima per objective (Table 1: slo_n).
+
+    A solution is a single-objective local optimum for objective `m` iff none of its neighbours
+    improves `f_m` (Design decisions, "Multimodality"). Averaged over objectives: since
+    `mask.mean()` over the whole `(n, M)` array is exactly the mean, over `m`, of `|S_m| / n`,
+    no explicit per-objective loop is needed.
+
+    Args:
+        objectives: Objective vectors in minimization form, shape (n, M).
+        neighbourhood: The sample's neighbourhood graph.
+
+    Returns:
+        The mean, over objectives, of the proportion of solutions that are a local optimum for
+        that objective. Always positive: each objective's own sample-wide minimum is trivially a
+        local optimum for it.
+    """
+    return float(single_objective_local_optima(objectives, neighbourhood).mean())
+
+
+def slo_dist_avg(
+    variables: np.ndarray,
+    objectives: np.ndarray,
+    neighbourhood: Neighbourhood,
+    normalizer: Normalizer,
+) -> float:
+    """Average pairwise distance among single-objective local optima (Table 1: slo_dist_avg).
+
+    **Judgment call** (Design decisions): Table 1 doesn't restate "per objective" for this row,
+    but introduces no alternative aggregation either — applies the same per-objective-then-mean-
+    across-M pattern as `slo_n`. Objectives with fewer than 2 local optima (no pair to measure)
+    are skipped via `nanmean` rather than blanking the whole feature.
+
+    Args:
+        variables: Decision vectors, shape (n, D).
+        objectives: Objective vectors in minimization form, shape (n, M).
+        neighbourhood: The sample's neighbourhood graph, built from these same `variables`.
+        normalizer: The variable-space normalizer for this sample.
+
+    Returns:
+        The mean, over objectives with at least 2 local optima, of the normalized average
+        pairwise distance among that objective's local optima. NaN if every objective has fewer
+        than 2.
+    """
+    mask = single_objective_local_optima(objectives, neighbourhood)
+    per_objective = np.full(objectives.shape[1], np.nan)
+    for m in range(objectives.shape[1]):
+        subset = variables[mask[:, m]]
+        if subset.shape[0] >= 2:
+            per_objective[m] = normalizer.normalize(pairwise_distance_stats(subset).mean)
+    return float(np.nanmean(per_objective))
+
+
+def slo_dist_max(
+    variables: np.ndarray, objectives: np.ndarray, neighbourhood: Neighbourhood
+) -> float:
+    """Maximum pairwise distance among single-objective local optima (Table 1: slo_dist_max).
+
+    Reported raw, not normalized, per objective — every `*_MAX` feature stays raw (Design
+    decisions, "Normalization reference") — then averaged across objectives with at least 2
+    local optima, same as `slo_dist_avg`.
+
+    Args:
+        variables: Decision vectors, shape (n, D).
+        objectives: Objective vectors in minimization form, shape (n, M).
+        neighbourhood: The sample's neighbourhood graph, built from these same `variables`.
+
+    Returns:
+        The mean, over objectives with at least 2 local optima, of the raw maximum pairwise
+        distance among that objective's local optima. NaN if every objective has fewer than 2.
+    """
+    mask = single_objective_local_optima(objectives, neighbourhood)
+    per_objective = np.full(objectives.shape[1], np.nan)
+    for m in range(objectives.shape[1]):
+        subset = variables[mask[:, m]]
+        if subset.shape[0] >= 2:
+            per_objective[m] = pairwise_distance_stats(subset).maximum
+    return float(np.nanmean(per_objective))

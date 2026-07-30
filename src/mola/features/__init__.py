@@ -31,7 +31,15 @@ from mola.features.global_ import (
     rank_ent,
     rank_max,
 )
-from mola.features.multimodality import nd_per_plo, plo_dist_avg, plo_dist_max, plo_n
+from mola.features.multimodality import (
+    nd_per_plo,
+    plo_dist_avg,
+    plo_dist_max,
+    plo_n,
+    slo_dist_avg,
+    slo_dist_max,
+    slo_n,
+)
 from mola.features.ruggedness import (
     diff_f_cor_neig,
     diff_f_dist_x_cor_neig,
@@ -80,6 +88,9 @@ __all__ = [
     "rank_avg",
     "rank_ent",
     "rank_max",
+    "slo_dist_avg",
+    "slo_dist_max",
+    "slo_n",
     "sup_avg_neig",
     "sup_cor_neig",
 ]
