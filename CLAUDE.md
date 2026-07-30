@@ -97,14 +97,14 @@ arrays other features already build.
 | `f_cor` | Low | implemented | `mola.features.f_cor` |
 | `dist_x_avg` | Low | implemented | `mola.features.dist_x_avg` |
 | `dist_x_max` | Low | implemented | `mola.features.dist_x_max` — raw, not normalized |
-| `dist_f_avg` | Medium | buggy | wrong normalizer source (var-space min used for F) |
+| `dist_f_avg` | Medium | implemented | `mola.features.dist_f_avg` — correct F-space normalizer |
 | `dist_f_max` | Low | implemented | `mola.features.dist_f_max` — raw, not normalized |
 | `nd_n` | Low | implemented | `mola.features.nd_n` |
 | `supp_n` | High | new | ConvexHull on ND subset; degenerate-case fallback |
 | `hv` | Medium | new | `moocore.hypervolume`; shared whole-sample ref point |
-| `dist_x_nd_avg` | Medium | buggy | pair-filter checks `i,i` not `i,j`; wrong divisor |
+| `dist_x_nd_avg` | Medium | implemented | `mola.features.dist_x_nd_avg` — pair-filter + divisor fixed |
 | `dist_x_nd_max` | Low | implemented | `mola.features.dist_x_nd_max` — raw; NaN if \|ND\| < 2 |
-| `fdc` | Medium | new | Spearman over ND-subset pairwise X/F distance |
+| `fdc` | Medium | implemented | `mola.features.fdc` |
 | `rank_avg` | Low | implemented | `mola.features.rank_avg` |
 | `rank_max` | Low | implemented | `mola.features.rank_max` |
 | `rank_ent` | Low | implemented | `mola.features.rank_ent` — base-2 entropy, confirmed against MOORPHOLOGY's source |
