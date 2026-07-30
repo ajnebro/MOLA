@@ -6,11 +6,14 @@ import numpy as np
 import pytest
 
 from mola.features import (
+    dist_f_avg,
     dist_f_max,
     dist_x_avg,
     dist_x_max,
+    dist_x_nd_avg,
     dist_x_nd_max,
     f_cor,
+    fdc,
     nd_n,
     rank_avg,
     rank_ent,
@@ -275,6 +278,86 @@ class TestDistXNdMax:
 
         # Act
         value = dist_x_nd_max(variables, ranking)
+
+        # Assert
+        assert math.isnan(value)
+
+
+class TestDistFAvg:
+    """Unit tests for dist_f_avg."""
+
+    def test_should_normalize_against_the_objective_space_range(self):
+        """Given three bi-objective vectors, normalizes their mean pairwise distance."""
+        # Arrange: same objectives as TestDistFMax's 2-D case -- distances 5, 4, 3 -> mean 4.0
+        objectives = np.array([[1.0, 1.0], [4.0, 5.0], [1.0, 5.0]])
+        normalizer = Normalizer(minimum=3.0, maximum=5.0)
+
+        # Act
+        value = dist_f_avg(objectives, normalizer)
+
+        # Assert: (4.0 - 3) / (5 - 3) = 0.5
+        assert value == pytest.approx(0.5)
+
+
+class TestDistXNdAvg:
+    """Unit tests for dist_x_nd_avg."""
+
+    def test_should_normalize_the_mean_distance_excluding_the_dominated_solution(self):
+        """Given a dominated solution with an extreme variable value, excludes it from the mean."""
+        # Arrange: same objectives as TestNdN -- front 0 = {A, B, C}, D is dominated.
+        # D's variable (100) is deliberately extreme: including it (MOORPHOLOGY's pair-filter
+        # and wrong-divisor bugs) would give a very different, wrong mean.
+        objectives = np.array([[1.0, 3.0], [2.0, 2.0], [3.0, 1.0], [2.0, 3.0]])
+        variables = np.array([[0.0], [6.0], [3.0], [100.0]])
+        ranking = rank_solutions(objectives)
+        normalizer = Normalizer(minimum=1.0, maximum=9.0)
+
+        # Act
+        value = dist_x_nd_avg(variables, ranking, normalizer)
+
+        # Assert: mean pairwise distance among {0, 6, 3} is 4.0; (4 - 1) / (9 - 1) = 0.375
+        assert value == pytest.approx(0.375)
+
+    def test_should_return_nan_when_fewer_than_two_solutions_are_non_dominated(self):
+        """Given only one non-dominated solution, there is no pair to measure a distance over."""
+        # Arrange: A(1,1) dominates B(5,5) -> front 0 = {A} only
+        objectives = np.array([[1.0, 1.0], [5.0, 5.0]])
+        variables = np.array([[0.0], [1.0]])
+        ranking = rank_solutions(objectives)
+
+        # Act
+        value = dist_x_nd_avg(variables, ranking, Normalizer(minimum=0.0, maximum=1.0))
+
+        # Assert
+        assert math.isnan(value)
+
+
+class TestFdc:
+    """Unit tests for fdc."""
+
+    def test_should_return_the_hand_verified_correlation_among_non_dominated_solutions(self):
+        """Given a non-dominated front with proportional X/F distances, returns correlation 1."""
+        # Arrange: four mutually incomparable objectives on a line, variables increasing in step
+        # -- pairwise F-distance is exactly sqrt(2) times pairwise X-distance for every pair
+        variables = np.array([[0.0], [1.0], [2.0], [3.0]])
+        objectives = np.array([[1.0, 4.0], [2.0, 3.0], [3.0, 2.0], [4.0, 1.0]])
+        ranking = rank_solutions(objectives)
+
+        # Act
+        value = fdc(variables, objectives, ranking)
+
+        # Assert
+        assert value == pytest.approx(1.0)
+
+    def test_should_return_nan_when_fewer_than_two_solutions_are_non_dominated(self):
+        """Given only one non-dominated solution, there is no pair to correlate."""
+        # Arrange: A(1,1) dominates B(5,5) -> front 0 = {A} only
+        variables = np.array([[0.0], [1.0]])
+        objectives = np.array([[1.0, 1.0], [5.0, 5.0]])
+        ranking = rank_solutions(objectives)
+
+        # Act
+        value = fdc(variables, objectives, ranking)
 
         # Assert
         assert math.isnan(value)

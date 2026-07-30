@@ -9,6 +9,7 @@ feature belongs here once enough features exist to justify one.
 from itertools import combinations
 
 import numpy as np
+from scipy.spatial.distance import pdist
 from scipy.stats import entropy, spearmanr
 
 from mola.distance import pairwise_distance_stats
@@ -73,6 +74,24 @@ def dist_x_max(variables: np.ndarray) -> float:
     return pairwise_distance_stats(variables).maximum
 
 
+def dist_f_avg(objectives: np.ndarray, normalizer: Normalizer) -> float:
+    """Average pairwise distance among sampled solutions in objective space (Table 1: dist_f_avg).
+
+    Normalized against the whole sample's own OBJECTIVE-space distance range — `normalizer` must
+    be the F-space one. MOORPHOLOGY's equivalent normalizes this with a minimum derived from
+    variable-space distance instead (`ProblemCharacterization.java:160`) — redesigned here on the
+    correct normalizer, not ported (Audit section).
+
+    Args:
+        objectives: Objective vectors, shape (n, M), with n >= 2.
+        normalizer: The objective-space normalizer for this sample.
+
+    Returns:
+        The normalized average pairwise objective-space distance, in [0, 1].
+    """
+    return normalizer.normalize(pairwise_distance_stats(objectives).mean)
+
+
 def dist_f_max(objectives: np.ndarray) -> float:
     """Maximum pairwise distance among sampled solutions in objective space (Table 1: dist_f_max).
 
@@ -98,6 +117,31 @@ def nd_n(ranking: Ranking) -> float:
         |non-dominated| / n, in the interval (0, 1].
     """
     return ranking.nondominated.size / ranking.rank.size
+
+
+def dist_x_nd_avg(variables: np.ndarray, ranking: Ranking, normalizer: Normalizer) -> float:
+    """Average pairwise distance among non-dominated solutions in variable space (Table 1).
+
+    Normalized against the whole sample's own variable-space distance range — never a range
+    recomputed over the non-dominated subset (Design decisions, "Normalization reference").
+    MOORPHOLOGY's equivalent (`distanceXNonDominatedAverage`) has the same pair-filter bug as
+    `distanceXNonDominatedMaximum`, plus a wrong divisor (a per-solution count instead of a pair
+    count, line 173) — redesigned here directly on `ranking.nondominated`, not ported (Audit
+    section).
+
+    Args:
+        variables: Decision vectors, shape (n, D).
+        ranking: The sample's non-dominated ranking, built from these same `variables`.
+        normalizer: The variable-space normalizer for this sample.
+
+    Returns:
+        The normalized average pairwise distance among non-dominated solutions, or NaN if fewer
+        than 2 solutions are non-dominated (see `dist_x_nd_max`).
+    """
+    nondominated = variables[ranking.nondominated]
+    if nondominated.shape[0] < 2:
+        return float("nan")
+    return normalizer.normalize(pairwise_distance_stats(nondominated).mean)
 
 
 def dist_x_nd_max(variables: np.ndarray, ranking: Ranking) -> float:
@@ -169,3 +213,29 @@ def rank_ent(ranking: Ranking) -> float:
     """
     front_sizes = [front.size for front in ranking.fronts]
     return float(entropy(front_sizes, base=2))
+
+
+def fdc(variables: np.ndarray, objectives: np.ndarray, ranking: Ranking) -> float:
+    """Fitness-distance correlation among non-dominated solutions (Table 1: fdc).
+
+    Spearman correlation between pairwise variable-space distance and pairwise objective-space
+    distance, over all C(k,2) pairs among the k=|ND| solutions (Design decisions; "denoted as
+    fitness-distance-correlation in [18]", §4.1.1). Distinct from ruggedness's
+    `dist_x_cor_neig`/`dist_f_cor_neig` (a per-solution average-distance-to-neighbours measure
+    across neighbour pairs over the *whole* sample) and from evolvability's
+    `dist_f_dist_x_avg_neig` (a ratio, not a correlation).
+
+    Args:
+        variables: Decision vectors, shape (n, D).
+        objectives: Objective vectors, shape (n, M), over the same solutions as `variables`.
+        ranking: The sample's non-dominated ranking.
+
+    Returns:
+        The Spearman correlation between pairwise X-distance and F-distance among non-dominated
+        solutions. NaN if fewer than 2 solutions are non-dominated — zero pairs, propagated from
+        `scipy.stats.spearmanr` rather than special-cased.
+    """
+    nondominated = ranking.nondominated
+    x_distances = pdist(variables[nondominated])
+    f_distances = pdist(objectives[nondominated])
+    return float(spearmanr(x_distances, f_distances).statistic)
