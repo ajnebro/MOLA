@@ -359,8 +359,21 @@ arguments — deliberately, since a couple of the ruggedness `*_cor_neig` functi
 consistent `ref`/`neighbourhood` argument order, and positional calls across 49 near-identical
 signatures would be a real, silent way to wire the wrong value into the wrong slot. Returns the 49
 feature values plus the 3 always-reported metadata fields (`sample_size`, `num_obj`, `num_var`).
-135 passing tests total (hand-computed fixtures throughout, plus orchestrator wiring tests that
-independently rebuild the substrate to catch exactly that class of argument-order mistake).
 
-Not yet started: the jMetal (Java) sampling adapter; the jMetalPy adapter; a CLI entry point; the
-statistical-analysis companion script (Shapiro-Wilk normality check across repeated runs).
+The jMetalPy adapter (`mola.adapters.jmetalpy.sample_problem(problem) -> Sample`) is also done:
+Latin Hypercube samples a jMetalPy `FloatProblem` (`n = 200 * D` by default, `scramble=True`,
+matching Design decisions), evaluates every sampled solution in-process, and negates any objective
+whose `obj_directions[i]` is `MAXIMIZE` so the returned `Sample` is in minimization form —
+confirmed against jMetalPy's own source that concrete problems (ZDT, DTLZ, the RWA suite, ...)
+write *raw* objective values and rely on `obj_directions` for sense, not pre-negated ones, so this
+negation is a genuine correctness step, not a formality. An end-to-end integration test
+(`tests/test_integration.py`) samples a real `ZDT1` instance and feeds it straight through
+`characterize()`.
+
+143 passing tests total (hand-computed fixtures throughout; orchestrator wiring tests that
+independently rebuild the substrate to catch argument-order mistakes; adapter tests including a
+synthetic mixed-direction problem that isolates the MAXIMIZE-negation logic; one end-to-end
+integration test).
+
+Not yet started: the jMetal (Java) sampling adapter; a CLI entry point; the statistical-analysis
+companion script (Shapiro-Wilk normality check across repeated runs).

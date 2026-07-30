@@ -2,7 +2,8 @@
 
 **🚧 Work in progress.** The landscape-feature engine is complete — all 49 features implemented
 and tested, tied together by an orchestrator that computes all of them for a sample in one call.
-The jMetal (Java) and jMetalPy sampling adapters and a CLI are still to come. See
+The jMetalPy sampling adapter is done too, so problems already defined in jMetalPy can be
+characterized end to end. The jMetal (Java) adapter and a CLI are still to come. See
 [`CLAUDE.md`](CLAUDE.md) for the full design brief.
 
 ## What it does
