@@ -94,7 +94,7 @@ arrays other features already build.
 
 | Feature | Difficulty | Status | Notes |
 |---|---|---|---|
-| `f_cor` | Low | new | Spearman over objective columns; M>2 = mean pairwise (MOLA's own extension) |
+| `f_cor` | Low | implemented | `mola.features.f_cor` |
 | `dist_x_avg` | Low | implemented | `mola.features.dist_x_avg` |
 | `dist_x_max` | Low | implemented | `mola.features.dist_x_max` — raw, not normalized |
 | `dist_f_avg` | Medium | buggy | wrong normalizer source (var-space min used for F) |
@@ -103,7 +103,7 @@ arrays other features already build.
 | `supp_n` | High | new | ConvexHull on ND subset; degenerate-case fallback |
 | `hv` | Medium | new | `moocore.hypervolume`; shared whole-sample ref point |
 | `dist_x_nd_avg` | Medium | buggy | pair-filter checks `i,i` not `i,j`; wrong divisor |
-| `dist_x_nd_max` | Low | buggy | same pair-filter bug, max itself otherwise fine |
+| `dist_x_nd_max` | Low | implemented | `mola.features.dist_x_nd_max` — raw; NaN if \|ND\| < 2 |
 | `fdc` | Medium | new | Spearman over ND-subset pairwise X/F distance |
 | `rank_avg` | Low | implemented | `mola.features.rank_avg` |
 | `rank_max` | Low | implemented | `mola.features.rank_max` |

@@ -1,9 +1,21 @@
 """Unit tests for module mola.features."""
 
+import math
+
 import numpy as np
 import pytest
 
-from mola.features import dist_f_max, dist_x_avg, dist_x_max, nd_n, rank_avg, rank_ent, rank_max
+from mola.features import (
+    dist_f_max,
+    dist_x_avg,
+    dist_x_max,
+    dist_x_nd_max,
+    f_cor,
+    nd_n,
+    rank_avg,
+    rank_ent,
+    rank_max,
+)
 from mola.normalization import Normalizer
 from mola.ranking import rank_solutions
 
@@ -201,3 +213,68 @@ class TestRankEnt:
 
         # Assert: -0.5*log2(0.5) - 0.5*log2(0.5) = 1 bit, the maximum for 2 equally-likely outcomes
         assert value == pytest.approx(1.0)
+
+
+class TestFCor:
+    """Unit tests for f_cor."""
+
+    def test_should_return_the_spearman_correlation_for_two_objectives(self):
+        """Given M=2 perfectly rank-correlated objectives, returns their Spearman correlation."""
+        # Arrange: f2 is a monotonic (rank-identical) function of f1
+        objectives = np.array([[1.0, 10.0], [2.0, 20.0], [3.0, 30.0]])
+
+        # Act
+        value = f_cor(objectives)
+
+        # Assert
+        assert value == pytest.approx(1.0)
+
+    def test_should_return_the_mean_pairwise_correlation_for_more_than_two_objectives(self):
+        """Given M=3, returns the mean of the three pairwise Spearman correlations."""
+        # Arrange: f1, f2 rank-identical (corr 1); f3 exactly reverse-ranked vs. both (corr -1)
+        objectives = np.array(
+            [
+                [1.0, 10.0, 40.0],
+                [2.0, 20.0, 30.0],
+                [3.0, 30.0, 20.0],
+                [4.0, 40.0, 10.0],
+            ]
+        )
+
+        # Act
+        value = f_cor(objectives)
+
+        # Assert: (1 + (-1) + (-1)) / 3 = -1/3
+        assert value == pytest.approx(-1.0 / 3.0)
+
+
+class TestDistXNdMax:
+    """Unit tests for dist_x_nd_max."""
+
+    def test_should_return_the_hand_computed_maximum_excluding_the_dominated_solution(self):
+        """Given a dominated solution with an extreme variable value, excludes it from the max."""
+        # Arrange: same objectives as TestNdN -- front 0 = {A, B, C}, D is dominated.
+        # D's variable (100) is deliberately extreme: including it (MOORPHOLOGY's pair-filter
+        # bug) would give a very different, wrong maximum.
+        objectives = np.array([[1.0, 3.0], [2.0, 2.0], [3.0, 1.0], [2.0, 3.0]])
+        variables = np.array([[0.0], [5.0], [2.0], [100.0]])
+        ranking = rank_solutions(objectives)
+
+        # Act
+        value = dist_x_nd_max(variables, ranking)
+
+        # Assert: max pairwise distance among {0, 5, 2} only -> 5
+        assert value == pytest.approx(5.0)
+
+    def test_should_return_nan_when_fewer_than_two_solutions_are_non_dominated(self):
+        """Given only one non-dominated solution, there is no pair to measure a distance over."""
+        # Arrange: A(1,1) dominates B(5,5) -> front 0 = {A} only
+        objectives = np.array([[1.0, 1.0], [5.0, 5.0]])
+        variables = np.array([[0.0], [1.0]])
+        ranking = rank_solutions(objectives)
+
+        # Act
+        value = dist_x_nd_max(variables, ranking)
+
+        # Assert
+        assert math.isnan(value)

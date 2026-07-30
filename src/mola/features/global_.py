@@ -6,12 +6,39 @@ isolation. An orchestrator that builds the shared substrate once per sample and 
 feature belongs here once enough features exist to justify one.
 """
 
+from itertools import combinations
+
 import numpy as np
-from scipy.stats import entropy
+from scipy.stats import entropy, spearmanr
 
 from mola.distance import pairwise_distance_stats
 from mola.normalization import Normalizer
 from mola.ranking import Ranking
+
+
+def f_cor(objectives: np.ndarray) -> float:
+    """Correlation among objective values measured on the sample (Table 1: f_cor).
+
+    For M=2 (the paper's own bi-objective benchmark), a single Spearman correlation between the
+    two objective columns. **MOLA's own extension, beyond the paper's literal scope**: for M>2,
+    the mean of the C(M,2) pairwise Spearman correlations — signed, not `abs()`, since a negative
+    pairwise correlation is a real conflicting-objectives signal that averaging magnitudes would
+    destroy (Design decisions). Reduces to the paper's own definition at M=2.
+
+    Args:
+        objectives: Objective vectors, shape (n, M), with n >= 2 and M >= 2.
+
+    Returns:
+        The (mean pairwise) Spearman correlation. NaN if any objective column is constant
+        (zero variance — the correlation is undefined), propagated from `scipy.stats.spearmanr`
+        rather than special-cased.
+    """
+    number_of_objectives = objectives.shape[1]
+    correlations = [
+        spearmanr(objectives[:, i], objectives[:, j]).statistic
+        for i, j in combinations(range(number_of_objectives), 2)
+    ]
+    return float(np.mean(correlations))
 
 
 def dist_x_avg(variables: np.ndarray, normalizer: Normalizer) -> float:
@@ -71,6 +98,29 @@ def nd_n(ranking: Ranking) -> float:
         |non-dominated| / n, in the interval (0, 1].
     """
     return ranking.nondominated.size / ranking.rank.size
+
+
+def dist_x_nd_max(variables: np.ndarray, ranking: Ranking) -> float:
+    """Maximum pairwise distance among non-dominated solutions in variable space (Table 1).
+
+    Reported raw, not normalized — every `*_MAX` feature stays raw (Design decisions,
+    "Normalization reference"). MOORPHOLOGY's equivalent (`distanceXNonDominatedMaximum`) has a
+    pair-filter bug (checks the same sample index against itself, not against the other member of
+    the pair) — redesigned here directly on `ranking.nondominated`, not ported (Audit section).
+
+    Args:
+        variables: Decision vectors, shape (n, D).
+        ranking: The sample's non-dominated ranking, built from these same `variables`.
+
+    Returns:
+        The raw maximum pairwise distance among non-dominated solutions, or NaN if fewer than 2
+        solutions are non-dominated (no pair to measure — possible in principle, though `nd_n`'s
+        own lower bound makes it very unlikely at the paper's sampling rate).
+    """
+    nondominated = variables[ranking.nondominated]
+    if nondominated.shape[0] < 2:
+        return float("nan")
+    return pairwise_distance_stats(nondominated).maximum
 
 
 def rank_avg(ranking: Ranking) -> float:
