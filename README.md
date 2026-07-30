@@ -76,11 +76,9 @@ mola characterize sample.csv --output result.json
 Every command prints its result as plain `key: value` lines; add `--output result.json` (or
 `.csv`) to also save the full 52-field result to a file. See [`examples/`](examples/) — split into
 [`getting_started/`](examples/getting_started/) (a runnable script and a narrated walkthrough of
-both the CLI and the Python API) and [`benchmarks/`](examples/benchmarks/) (two ready-made
-scripts, [`characterize_re_benchmark.py`](examples/benchmarks/characterize_re_benchmark.py) and
-[`characterize_rwa_benchmark.py`](examples/benchmarks/characterize_rwa_benchmark.py), which
-characterize every problem in jMetalPy's RE and RWA real-world suites and write one CSV row per
-problem) — and [`llms.txt`](llms.txt) for a short summary aimed at AI-agent tooling.
+both the CLI and the Python API) and [`benchmarks/`](examples/benchmarks/) (ready-made scripts
+that characterize a whole jMetalPy benchmark suite in one CSV — RE, RWA, and DTLZ) — and
+[`llms.txt`](llms.txt) for a short summary aimed at AI-agent tooling.
 
 ## Java (jMetal) adapter
 

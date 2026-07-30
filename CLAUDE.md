@@ -394,15 +394,19 @@ Three more, resolved 2026-07-25 — the last structural questions blocking imple
   — plus `sample.csv`/`sample.json`, a small checked-in interchange-format example. Deliberately
   distinct from `notebooks/`, which documents what each of the 49 features *means*; `examples/`
   never re-explains a feature's definition, only points to `notebooks/` for that.
-  `examples/benchmarks/` is a second, later-added group — `characterize_re_benchmark.py` and
-  `characterize_rwa_benchmark.py`, applying MOLA to every problem in jMetalPy's RE/RWA real-world
-  suites and writing one CSV row per problem — kept in its own subdirectory rather than the flat
-  top level once `examples/` grew past the original onboarding pair, so the folder's two purposes
-  (first-five-minutes onboarding vs. worked real-world use cases) stay visually and structurally
-  separate. Both scripts go through the Python API directly, not the CLI: neither RE nor RWA is in
-  jMetalPy's flat `jmetal.problem` namespace the CLI's problem resolver searches (only in
-  `jmetal.problem.multiobjective.re`/`.rwa`), confirmed by direct lookup rather than assumed. RE91
-  is skipped by both scripts with a printed reason: 4 of its 11 "variables" have infinite bounds
+  `examples/benchmarks/` is a second, later-added group — `characterize_re_benchmark.py`,
+  `characterize_rwa_benchmark.py`, and `characterize_dtlz_benchmark.py`, applying MOLA to every
+  problem in a jMetalPy benchmark suite and writing one CSV row per problem — kept in its own
+  subdirectory rather than the flat top level once `examples/` grew past the original onboarding
+  pair, so the folder's two purposes (first-five-minutes onboarding vs. worked benchmark-suite use
+  cases) stay visually and structurally separate. The RE/RWA scripts go through the Python API
+  directly, not the CLI: neither suite is in jMetalPy's flat `jmetal.problem` namespace the CLI's
+  problem resolver searches (only in `jmetal.problem.multiobjective.re`/`.rwa`), confirmed by
+  direct lookup rather than assumed. DTLZ *is* in that flat namespace (`DTLZ1`-`DTLZ7`, all
+  defaulting to 3 objectives), so `characterize_dtlz_benchmark.py` exists purely for the
+  whole-suite-in-one-CSV convenience — any single DTLZ problem also runs directly via `mola run
+  DTLZ2`. RE91 is skipped by the RE script with a printed reason: 4 of its 11 "variables" have
+  infinite bounds
   and are overwritten with fresh Gaussian noise inside its own `evaluate()` regardless of what's
   sampled — a quirk of that one jMetalPy problem's implementation, not something a general-purpose
   LHS sampler can honor, discovered by actually running the script against all 16 RE problems.
@@ -454,7 +458,7 @@ negation is a genuine correctness step, not a formality. An end-to-end integrati
 The CLI (`mola`, `src/mola/cli.py`) is also done: three Typer commands (`sample`, `characterize`,
 `run`, see the "CLI" Design decision), each documented in depth via its own `--help`.
 `examples/getting_started/` (a runnable script, a narrated onboarding notebook, a checked-in
-interchange-format example), `examples/benchmarks/` (RE/RWA real-world benchmark-suite
+interchange-format example), `examples/benchmarks/` (RE, RWA, and DTLZ benchmark-suite
 characterization scripts), and a root-level `llms.txt` cover onboarding and worked use cases for
 human users and AI-agent tooling respectively (see the "AI-agent discoverability" and
 "`examples/` vs `notebooks/`" Design decisions).
