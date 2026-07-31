@@ -28,6 +28,11 @@ the format itself.
 ## Key resources
 
 - [README.md](README.md): setup (Conda or venv), CLI usage section, license.
+- [USE_CASES.md](USE_CASES.md): what the 49-feature vector is *for* -- algorithm selection and
+  performance prediction, benchmark characterization and diversity analysis, cross-framework
+  validation, sampling-cost control. Each use case is marked as either working today with MOLA
+  alone, or needing something MOLA doesn't produce (measured algorithm performance, an ML model).
+  Read this to answer "can MOLA do X?" before assuming either way.
 - [CLAUDE.md](CLAUDE.md): the full design brief -- architecture, the interchange schema in detail,
   every design decision (with rationale), and the complete 49-feature implementation matrix
   (one row per feature: name, difficulty, status, the module it lives in).

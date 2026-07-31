@@ -475,6 +475,15 @@ characterization scripts), and a root-level `llms.txt` cover onboarding and work
 human users and AI-agent tooling respectively (see the "AI-agent discoverability" and
 "`examples/` vs `notebooks/`" Design decisions).
 
+A root-level [`USE_CASES.md`](USE_CASES.md) documents what the feature vector is *for* — the
+paper's own algorithm-selection and performance-prediction uses, plus the benchmark-analysis,
+quality-assurance, and ecosystem uses MOLA enables beyond the paper's MO-ICOP-only scope. It is the
+user-facing "why would I run this", complementing this file's "how it works and why it was designed
+this way". Every entry is marked either as working today with MOLA alone or as needing something
+MOLA deliberately does not produce (measured algorithm performance, an ML model, a projection
+method) — that boundary is the document's main point, since the paper's headline use case
+(algorithm selection) sits on the far side of it.
+
 152 passing tests total (hand-computed fixtures throughout; orchestrator wiring tests that
 independently rebuild the substrate to catch argument-order mistakes; adapter tests including a
 synthetic mixed-direction problem that isolates the MAXIMIZE-negation logic; one end-to-end

@@ -20,4 +20,6 @@ decisions, "`examples/` vs `notebooks/`", for the full rationale.
   `zcat_3obj_features.csv`.
 
 For what each of the 49 landscape features actually *means*, see [`notebooks/`](../notebooks/)
-instead — neither group here repeats that content.
+instead — neither group here repeats that content. The `benchmarks/` scripts are the worked form of
+the benchmark-analysis use cases in [`USE_CASES.md`](../USE_CASES.md) §2, and the CSVs they write
+are the data those use cases start from.

@@ -25,6 +25,10 @@ correlations). See [`CLAUDE.md`](CLAUDE.md)'s "Feature implementation matrix" fo
 per-feature breakdown, and [`notebooks/`](notebooks/) for a worked example of every feature against
 real, executed data.
 
+For what you can *do* with those features — algorithm selection, benchmark characterization,
+cross-framework validation, and more, each marked by whether MOLA covers it end to end — see
+[`USE_CASES.md`](USE_CASES.md).
+
 ## Design principle
 
 MOLA's core is a framework-independent analyzer: it never calls a problem's `evaluate()` directly,
