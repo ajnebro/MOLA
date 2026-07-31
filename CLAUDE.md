@@ -301,8 +301,12 @@ Three more, resolved 2026-07-25 — the last structural questions blocking imple
   in their strata and is **not** what the paper does; an easy silent divergence. Known limitation,
   documented rather than solved: plain LHS only guarantees 1-D marginal stratification (a "diagonal"
   LHS is a valid LHS with poor coverage), and at `D=30` a 6000-point sample in 30 dimensions is
-  sparse enough that the `k=D` nearest-neighbour graph underpinning 35 of the 49 features is
+  sparse enough that the `k=D` nearest-neighbour graph underpinning 34 of the 49 features is
   weakly meaningful — inherited from the paper's feature set, not fixable by changing sampler.
+  (The count was corrected from 35 to 34 on 2026-07-31, verified against `characterize.py`'s own
+  call list: `hv_avg_neig` carries a `_neig` suffix but takes no neighbourhood argument — it is the
+  per-solution singleton hypervolume averaged over the whole sample. See
+  [`FEATURE_ANALYSIS.md`](FEATURE_ANALYSIS.md), Finding 5.)
   Recording `sampler` in the metadata JSON keeps the choice reversible at near-zero cost, since
   sampling lives entirely adapter-side and the core never sees it.
 - **Java adapter location.** A subdirectory of **this** repository (monorepo), not a separate
@@ -483,6 +487,19 @@ this way". Every entry is marked either as working today with MOLA alone or as n
 MOLA deliberately does not produce (measured algorithm performance, an ML model, a projection
 method) — that boundary is the document's main point, since the paper's headline use case
 (algorithm selection) sits on the far side of it.
+
+[`FEATURE_ANALYSIS.md`](FEATURE_ANALYSIS.md) is the companion critical read of the feature set
+itself, measured over the 72 characterized problems and reproducible via
+`examples/benchmarks/analyze_feature_set.py`. Its findings are worth knowing before building
+anything on top of the features: 3 features are exact algebraic functions of others and 23 pairs
+correlate above 0.95, so the effective dimensionality is ~5 (82.6% of variance in 5 PCs, not 49);
+the four X-space-only features (`dist_x_avg`, `dist_x_max`, `dist_x_avg_neig`, `dist_x_cor_neig`)
+are identical across all 20 ZCAT problems and therefore describe the sampling design rather than
+the landscape; 34 of 49 features correlate |rho|>0.5 with `D` or `M` alone, driven by the `k=D`
+coupling; and the adaptive walk is degenerate at this sampling density (`length_aws` median 1.25,
+zero for 3 problems). The document is explicit that it is an internal analysis, not a rebuttal —
+these are boundaries of validity that appear when the features are used outside the paper's own
+bi-objective, shared-variable-space setting, which is exactly what MOLA does.
 
 152 passing tests total (hand-computed fixtures throughout; orchestrator wiring tests that
 independently rebuild the substrate to catch argument-order mistakes; adapter tests including a

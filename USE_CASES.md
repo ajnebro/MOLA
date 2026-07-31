@@ -110,6 +110,8 @@ features is exactly the question this use case answers.
 
 **Needs:** a clustering or dimensionality-reduction step over the feature matrix — light work
 (pandas plus scikit-learn), but not something MOLA does.
+[`FEATURE_ANALYSIS.md`](FEATURE_ANALYSIS.md) is a worked instance of this use case, and
+[`analyze_feature_set.py`](examples/benchmarks/analyze_feature_set.py) the script behind it.
 
 ### 2.3 Placing a real-world problem against synthetic benchmarks ⚙️
 
@@ -236,5 +238,8 @@ that needs it — which is the only place the right reference set is known.
 - [`README.md`](README.md) — installation and CLI usage.
 - [`CLAUDE.md`](CLAUDE.md) — full design brief, the feature-by-feature matrix, and every design
   decision behind the numbers.
+- [`FEATURE_ANALYSIS.md`](FEATURE_ANALYSIS.md) — a critical look at the feature set itself:
+  redundancy, effective dimensionality, and what it does not capture. Read it before treating the
+  49 features as independent descriptors.
 - [`notebooks/`](notebooks/) — what each of the 49 features means, with executed examples.
 - [`examples/benchmarks/`](examples/benchmarks/) — the committed feature CSVs referenced throughout.

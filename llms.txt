@@ -42,6 +42,11 @@ the format itself.
   a narrated first-five-minutes walkthrough covering both the CLI and the Python API.
 - [examples/benchmarks/](examples/benchmarks/): scripts applying MOLA to every problem in a
   jMetalPy benchmark suite (RE, RWA, DTLZ, ZCAT), each writing one CSV row per problem.
+- [FEATURE_ANALYSIS.md](FEATURE_ANALYSIS.md): an internal critical analysis of the 49-feature set
+  measured over the committed benchmark data -- redundancy (effective dimensionality is ~5, not
+  49), four features that describe the sampler rather than the problem, coupling to problem
+  dimension, and the gaps (front geometry, variable separability, constraints). Relevant if you
+  plan to feed the features to a model: do not treat them as 49 independent descriptors.
 - [notebooks/](notebooks/): one notebook per feature class (global, multimodality, evolvability,
   ruggedness), pairing each of the 49 features' definition with a real, executed example.
 

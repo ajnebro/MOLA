@@ -17,7 +17,8 @@ decisions, "`examples/` vs `notebooks/`", for the full rationale.
   objectives and once at 3, everything else at its default — **requires jMetalPy installed from a
   source checkout**, since ZCAT support isn't in the `jmetalpy` release on PyPI yet). Generated
   output: `re_features.csv`, `rwa_features.csv`, `dtlz_features.csv`, `zcat_2obj_features.csv`,
-  `zcat_3obj_features.csv`.
+  `zcat_3obj_features.csv`. `analyze_feature_set.py` then analyses those CSVs as a set, producing
+  every number quoted in [`FEATURE_ANALYSIS.md`](../FEATURE_ANALYSIS.md).
 
 For what each of the 49 landscape features actually *means*, see [`notebooks/`](../notebooks/)
 instead — neither group here repeats that content. The `benchmarks/` scripts are the worked form of

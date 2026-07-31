@@ -27,7 +27,8 @@ real, executed data.
 
 For what you can *do* with those features — algorithm selection, benchmark characterization,
 cross-framework validation, and more, each marked by whether MOLA covers it end to end — see
-[`USE_CASES.md`](USE_CASES.md).
+[`USE_CASES.md`](USE_CASES.md). For a critical look at the feature set itself — how redundant it
+is, what it does not capture — see [`FEATURE_ANALYSIS.md`](FEATURE_ANALYSIS.md).
 
 ## Design principle
 
