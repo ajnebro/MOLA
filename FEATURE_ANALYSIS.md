@@ -177,35 +177,108 @@ Spearman's coefficient is undefined.
 built on these features needs an imputation policy. It is also a reminder that `RE61` itself
 deserves inspection — a 6-objective problem in 3 variables where nothing dominates anything.
 
+### 7. Front geometry is not recoverable from the sample — *empirical, a negative result*
+
+An earlier revision of this document recommended adding features for Pareto front geometry —
+disconnectedness and degeneracy — calling it the most serious gap and asserting the information was
+already in the sample at zero evaluation cost. **That was wrong**, and this section records the test
+that refuted it, since the negative result is more useful than the recommendation was.
+
+The root cause is that the non-dominated subset of an LHS sample is *not* the Pareto front. For
+DTLZ2, whose true front is the unit-sphere octant at radius 1.0, the sampled ND set sits at median
+radius **1.45** — a different surface, 45% further out — and contains only **105 points** out of
+2 400 sampled.
+
+Testing whether front structure survives anyway, using DTLZ because its geometry is known
+analytically (via
+[`test_front_geometry_detectability.py`](examples/benchmarks/test_front_geometry_detectability.py)):
+
+| Problem | \|ND\| | PC1% | components | True geometry |
+|---|---|---|---|---|
+| DTLZ1 | 37 | 49.2% | 2 | linear |
+| DTLZ2 | 105 | 56.5% | 2 | concave |
+| DTLZ3 | 61 | 54.9% | 3 | concave |
+| DTLZ4 | 46 | 60.9% | **19** | concave (connected) |
+| DTLZ5 | 55 | 82.6% | 1 | **degenerate** (curve) |
+| DTLZ6 | 421 | **51.1%** | 2 | **degenerate** (curve) |
+| DTLZ7 | 76 | **96.7%** | **2** | **disconnected** (4 regions) |
+
+Neither property survives:
+
+- **Degeneracy** would show as a high PC1 (a curve needs one component, a surface two). DTLZ6 is
+  degenerate yet scores 51.1%, indistinguishable from the non-degenerate DTLZ2 at 56.5% — while
+  DTLZ7, which is *not* degenerate, scores the highest PC1 of all at 96.7%.
+- **Disconnectedness** would show as multiple components. DTLZ7 has four true regions and yields 2;
+  the connected DTLZ4 yields 19, because its `x^100` bias concentrates solutions and the clustering
+  picks up sampling density rather than topology.
+
+The mechanism behind the failed prediction is worth stating, because the reasoning was superficially
+sound. ZDT and DTLZ are built as `f = g·h(f₁/g)`, so the front's *shape* is preserved across every
+level of `g`, including the level the sample's ND set occupies. That holds for **curvature**, which
+is why the next point works — but not for connectivity or degeneracy, which emerge only near the
+true front.
+
+**Convexity is the exception, and the paper already covers it.** `supp_n` — the proportion of ND
+points on the convex hull — separates the linear front from the concave ones exactly as geometry
+predicts, since a linear front puts nearly all its points on the hull:
+
+```text
+DTLZ1 (linear)    supp_n = 0.514   <- clearly highest
+DTLZ2 (concave)   supp_n = 0.210
+DTLZ4 (concave)   supp_n = 0.217
+DTLZ5 (concave)   supp_n = 0.145
+```
+
+**Implication.** Front geometry beyond convexity requires solutions near the front, which requires
+spending evaluations getting there — precisely the fixed, sampling-only cost model the paper is
+built on. This is a genuine methodological tension, not an oversight by anyone: front geometry
+matters a great deal to decomposition- and indicator-based algorithms, and it is not obtainable
+within this cost model.
+
 ---
 
 ## Is the set complete?
 
-No — and the gaps are systematic rather than incidental. Ordered by how much I think each would
-add (*judgment*, though the first two are widely established in the landscape-analysis literature):
+Not quite — but the gaps divide sharply into those that are *fillable within this cost model* and
+one that is not. That distinction matters more than the ranking, and getting it wrong is what an
+earlier revision of this document did (see Finding 7).
 
-**1. Pareto front geometry.** The most serious gap. Nothing describes the *shape* of the
-approximated front: convexity beyond the coarse proxy `supp_n`, **disconnectedness**, or
-**degeneracy**. This matters concretely — DTLZ5 and DTLZ6 have degenerate fronts, DTLZ7 and ZDT3
-disconnected ones, and decomposition-based algorithms such as MOEA/D are highly sensitive to both.
-The information is already present in the sample; no extra evaluations would be needed.
+### Fillable from the existing sample
 
-**2. Variable interaction and separability.** The dominant driver of difficulty in continuous
+**1. Variable interaction and separability.** The dominant driver of difficulty in continuous
 optimization, and entirely absent. There is a clean historical explanation: the paper states it is
 transferring features from *combinatorial* multi-objective landscape analysis, and separability is
 not a concept that transfers — it would have to be designed for the continuous case from scratch.
+Crucially, ELA-style separability measures are computed over the **whole sample**, not the
+non-dominated subset, so they do not depend on being anywhere near the front — the objection that
+sinks front geometry does not apply.
 
-**3. Per-objective scaling and conditioning.** All objective-space features are aggregates. Nothing
+**2. Per-objective scaling and conditioning.** All objective-space features are aggregates. Nothing
 captures the relative ranges of individual objectives, which determines whether an algorithm needs
-normalization and strongly affects decomposition- and indicator-based methods.
+normalization and strongly affects decomposition- and indicator-based methods. Also whole-sample,
+so also cheap.
 
-**4. Classical ruggedness.** The "ruggedness" class here is the neighbour-correlation of
+**3. Classical ruggedness.** The "ruggedness" class here is the neighbour-correlation of
 evolvability measures — a valid notion, but a different one from the random-walk autocorrelation
-and correlation length used in classical fitness landscape analysis. That family is absent.
+and correlation length used in classical fitness landscape analysis. That family is absent. Note
+this one is only *partly* free: a random walk is a different sampling design, not a statistic over
+the LHS sample.
 
-**5. Constraints.** No feature uses constraint values. `CLAUDE.md` scopes this out deliberately and
+**4. Constraints.** No feature uses constraint values. `CLAUDE.md` scopes this out deliberately and
 that is right for the paper's unconstrained benchmark, but RE and RWA are real-world suites where
 constraints are part of the problem.
+
+### Not fillable within this cost model
+
+**5. Pareto front geometry beyond convexity.** Disconnectedness and degeneracy are genuinely
+important — they drive the behaviour of decomposition- and indicator-based algorithms — but
+Finding 7 shows empirically that they are **not recoverable** from a fixed-cost LHS sample, because
+the sample's non-dominated set is a different surface from the front and too sparse to carry its
+topology. Obtaining them means spending evaluations to approach the front, which abandons the
+sampling-only cost model the whole feature set is built on. The convexity axis is the exception,
+and `supp_n` already covers it.
+
+This is the one gap I would now describe as a **boundary rather than an omission**.
 
 The paper's own conclusions point the same way, proposing that "additional features could be
 considered and combined as well, including single- and multi-objective continuous landscape
@@ -215,15 +288,18 @@ features" — that is, integration with ELA.
 
 *Judgment, in the order I would act on them:*
 
-1. **Add front-geometry features** (disconnectedness, curvature, degeneracy). Best return on
-   effort, and computable from the existing sample at zero evaluation cost.
-2. **Add a small set of per-objective ELA features** (separability, non-linearity) over the same
-   sample. Also free in evaluations, and it is the direction the paper's own conclusions propose.
-3. **Document the redundancy rather than removing it.** Dropping features would break comparability
+1. **Add a small set of per-objective ELA features** (separability, non-linearity, conditioning)
+   over the existing sample. Free in evaluations, computed over the whole sample so unaffected by
+   the front-proximity problem, and it is the direction the paper's own conclusions propose.
+2. **Document the redundancy rather than removing it.** Dropping features would break comparability
    with the paper, which is MOLA's main reason to exist. Recording that the effective
    dimensionality is 5–10 is enough to stop anyone treating the 49 as independent.
-4. **Expose `k` as a parameter.** Keep `k = D` as the default for comparability, but make the
+3. **Expose `k` as a parameter.** Keep `k = D` as the default for comparability, but make the
    coupling between neighbourhood size and dimension visible and adjustable.
+4. **Do not pursue front-geometry features under the current cost model.** Finding 7 tested this
+   and it does not work. If front geometry is wanted, it needs an explicit change of cost model —
+   a front-approaching budget on top of the sample — which is a much larger design decision than a
+   new feature, and would break the "features cost exactly `n` evaluations" property.
 
 ## Limitations of this analysis
 

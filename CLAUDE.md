@@ -501,6 +501,18 @@ zero for 3 problems). The document is explicit that it is an internal analysis, 
 these are boundaries of validity that appear when the features are used outside the paper's own
 bi-objective, shared-variable-space setting, which is exactly what MOLA does.
 
+Its Finding 7 is a **negative result worth knowing before proposing new features**: Pareto front
+geometry beyond convexity (disconnectedness, degeneracy) is *not* recoverable from a fixed-cost LHS
+sample, because the sample's non-dominated subset is a different surface from the front — for
+DTLZ2, median radius 1.45 against a true front at 1.0, with only 105 points. Tested against DTLZ,
+whose geometry is known analytically, and refuted: the degenerate DTLZ6 is indistinguishable from
+the non-degenerate DTLZ2, and the connected DTLZ4 yields more spurious components than the truly
+disconnected DTLZ7 (`examples/benchmarks/test_front_geometry_detectability.py`). An earlier
+revision of `FEATURE_ANALYSIS.md` recommended adding these features as a cheap win; the
+recommendation was withdrawn after this test, and the convexity axis is already covered by
+`supp_n`. Getting front geometry would require abandoning the "features cost exactly `n`
+evaluations" property.
+
 152 passing tests total (hand-computed fixtures throughout; orchestrator wiring tests that
 independently rebuild the substrate to catch argument-order mistakes; adapter tests including a
 synthetic mixed-direction problem that isolates the MAXIMIZE-negation logic; one end-to-end

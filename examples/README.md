@@ -18,7 +18,9 @@ decisions, "`examples/` vs `notebooks/`", for the full rationale.
   source checkout**, since ZCAT support isn't in the `jmetalpy` release on PyPI yet). Generated
   output: `re_features.csv`, `rwa_features.csv`, `dtlz_features.csv`, `zcat_2obj_features.csv`,
   `zcat_3obj_features.csv`. `analyze_feature_set.py` then analyses those CSVs as a set, producing
-  every number quoted in [`FEATURE_ANALYSIS.md`](../FEATURE_ANALYSIS.md).
+  every number quoted in [`FEATURE_ANALYSIS.md`](../FEATURE_ANALYSIS.md), and
+  `test_front_geometry_detectability.py` reproduces that document's Finding 7 — the negative result
+  that front geometry cannot be recovered from a fixed-cost sample.
 
 For what each of the 49 landscape features actually *means*, see [`notebooks/`](../notebooks/)
 instead — neither group here repeats that content. The `benchmarks/` scripts are the worked form of

@@ -45,8 +45,10 @@ the format itself.
 - [FEATURE_ANALYSIS.md](FEATURE_ANALYSIS.md): an internal critical analysis of the 49-feature set
   measured over the committed benchmark data -- redundancy (effective dimensionality is ~5, not
   49), four features that describe the sampler rather than the problem, coupling to problem
-  dimension, and the gaps (front geometry, variable separability, constraints). Relevant if you
-  plan to feed the features to a model: do not treat them as 49 independent descriptors.
+  dimension, and the gaps (variable separability, per-objective scaling, constraints). Relevant if
+  you plan to feed the features to a model: do not treat them as 49 independent descriptors. Also
+  records a negative result: Pareto front geometry beyond convexity is NOT recoverable from a
+  fixed-cost LHS sample -- do not propose adding it as a cheap feature.
 - [notebooks/](notebooks/): one notebook per feature class (global, multimodality, evolvability,
   ruggedness), pairing each of the 49 features' definition with a real, executed example.
 
