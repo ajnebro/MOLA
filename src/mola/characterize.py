@@ -25,6 +25,7 @@ from mola.dominance import (
     local_nondominance,
     neighbourhood_dominance,
 )
+from mola.geometry import DEFAULT_GEOMETRY, Geometry, decision_space
 from mola.hypervolume import reference_point
 from mola.multimodality import DEFAULT_WALK_COUNT, AdaptiveWalks, adaptive_walks
 from mola.normalization import Normalizers, build_normalizers
@@ -179,30 +180,52 @@ def _ruggedness_features(
     }
 
 
-def characterize(sample: Sample, *, walk_samples: int = DEFAULT_WALK_COUNT) -> dict[str, float]:
+def characterize(
+    sample: Sample,
+    *,
+    walk_samples: int = DEFAULT_WALK_COUNT,
+    geometry: Geometry = DEFAULT_GEOMETRY,
+    neighbours: int | None = None,
+) -> dict[str, float]:
     """Compute all 49 landscape features (paper Table 1) for one sample, plus its basic metadata.
 
-    Builds the shared substrate exactly once — the neighbourhood graph (`k = D`, per Design
-    decisions), the non-dominated ranking, pairwise and local neighbourhood dominance, the two
-    whole-sample normalizers, the shared hypervolume reference point, and a batch of adaptive
-    walks (seeded from `sample.seed`, per "Stochasticity & reproducibility") — then calls every
-    feature function with exactly the pieces it needs.
+    Builds the shared substrate exactly once — the neighbourhood graph, the non-dominated
+    ranking, pairwise and local neighbourhood dominance, the two whole-sample normalizers, the
+    shared hypervolume reference point, and a batch of adaptive walks (seeded from `sample.seed`,
+    per "Stochasticity & reproducibility") — then calls every feature function with exactly the
+    pieces it needs.
+
+    The decision vectors are first scaled by `geometry` (`mola.geometry`), and the scaled
+    vectors are used both to build the neighbourhood graph and to measure every decision-space
+    distance.
 
     Args:
         sample: The sample to characterize.
         walk_samples: Number of independent adaptive walks to average over `length_aws`/
             `eval_aws`, capped at `sample.size`. Defaults to `mola.multimodality.
-            DEFAULT_WALK_COUNT` (30, the paper's own choice).
+            DEFAULT_WALK_COUNT` (30, a MOLA judgment call: the paper does not say how many
+            starting points it uses).
+        geometry: Decision-space geometry profile. Defaults to `bound`, which maps each
+            variable to [0, 1] through its declared bounds; `raw` reproduces MOLA 0.2.0's
+            choice.
+        neighbours: Neighbourhood size `k`. Defaults to `D`, the number of decision variables
+            (Design decisions, "Neighbourhood definition"). Capped at `n - 1`.
 
     Returns:
         A dict keyed by each Table 1 feature's own name (`f_cor`, `dist_x_avg`, ..., `nhv_cor_neig`
         — all 49), plus three always-reported metadata fields that are not "landscape features" in
         the paper's sense: `sample_size`, `num_obj`, `num_var`.
+
+    Raises:
+        ValueError: If `geometry` is unknown, or is `bound` while some bound is infinite; or if
+            `neighbours` is not positive.
     """
-    variables = sample.variables
+    variables = decision_space(sample, geometry)
     objectives = sample.objectives
 
-    neighbourhood = build_neighbourhood(variables, neighbours=sample.number_of_variables)
+    neighbourhood = build_neighbourhood(
+        variables, neighbours=sample.number_of_variables if neighbours is None else neighbours
+    )
     substrate = _Substrate(
         neighbourhood=neighbourhood,
         ranking=rank_solutions(objectives),
