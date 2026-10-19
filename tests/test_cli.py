@@ -12,7 +12,18 @@ from mola.sample import Sample, write_sample
 runner = CliRunner()
 
 
-def _make_sample_file(tmp_path, *, size: int = 20, variables: int = 3, objectives: int = 2):
+def _reject_non_standard_constant(name: str) -> None:
+    raise AssertionError(f"report contains the non-standard JSON constant {name}")
+
+
+def _make_sample_file(
+    tmp_path,
+    *,
+    size: int = 20,
+    variables: int = 3,
+    objectives: int = 2,
+    upper_bound: float = 1.0,
+):
     """Write a small interchange sample fixture under tmp_path, return its CSV path."""
     rng = np.random.default_rng(seed=0)
     sample = Sample(
@@ -20,7 +31,7 @@ def _make_sample_file(tmp_path, *, size: int = 20, variables: int = 3, objective
         variables=rng.uniform(size=(size, variables)),
         objectives=rng.uniform(size=(size, objectives)),
         lower_bounds=np.zeros(variables),
-        upper_bounds=np.ones(variables),
+        upper_bounds=np.full(variables, upper_bound),
         sampler="lhs",
         seed=0,
     )
@@ -147,6 +158,79 @@ class TestCharacterizeCommand:
         assert "unrecognized --output suffix" in result.output
         assert not output.exists()
 
+    def test_should_write_the_full_report_as_strict_json(self, tmp_path):
+        """Given --report, writes every feature's status plus provenance, with no NaN."""
+        # Arrange
+        sample_path = _make_sample_file(tmp_path)
+        report = tmp_path / "report.json"
+
+        # Act
+        result = runner.invoke(app, ["characterize", str(sample_path), "--report", str(report)])
+
+        # Assert
+        assert result.exit_code == 0
+        saved = json.loads(report.read_text(), parse_constant=_reject_non_standard_constant)
+        assert saved["geometry"] == "bound"
+        assert saved["neighbours"] == 3
+        assert saved["feature_profile"] == "paper49-v1"
+        assert len(saved["features"]) == 49
+        assert {entry["status"] for entry in saved["features"].values()} <= {
+            "defined",
+            "undefined",
+        }
+
+    def test_should_pass_the_geometry_and_neighbourhood_size_through(self, tmp_path):
+        """Given --geometry raw and -k 2, the report records both."""
+        # Arrange
+        sample_path = _make_sample_file(tmp_path)
+        report = tmp_path / "report.json"
+
+        # Act
+        result = runner.invoke(
+            app,
+            [
+                "characterize",
+                str(sample_path),
+                "--geometry",
+                "raw",
+                "-k",
+                "2",
+                "--report",
+                str(report),
+            ],
+        )
+
+        # Assert
+        assert result.exit_code == 0
+        saved = json.loads(report.read_text())
+        assert saved["geometry"] == "raw"
+        assert saved["neighbours"] == 2
+
+    def test_should_exit_with_error_on_unbounded_variables_under_the_bound_geometry(self, tmp_path):
+        """Given infinite bounds, the default geometry fails cleanly; raw still works."""
+        # Arrange
+        sample_path = _make_sample_file(tmp_path, upper_bound=np.inf)
+
+        # Act
+        bound_result = runner.invoke(app, ["characterize", str(sample_path)])
+        raw_result = runner.invoke(app, ["characterize", str(sample_path), "--geometry", "raw"])
+
+        # Assert
+        assert bound_result.exit_code == 1
+        assert "needs finite bounds" in bound_result.output
+        assert raw_result.exit_code == 0
+
+    def test_should_reject_an_unknown_geometry(self, tmp_path):
+        """Given an unknown --geometry value, exits with Typer's usage error."""
+        # Arrange
+        sample_path = _make_sample_file(tmp_path)
+
+        # Act
+        result = runner.invoke(app, ["characterize", str(sample_path), "--geometry", "sample"])
+
+        # Assert
+        assert result.exit_code == 2
+
 
 class TestRunCommand:
     """Unit tests for `mola run`."""
@@ -172,3 +256,22 @@ class TestRunCommand:
         # Assert
         assert result.exit_code == 1
         assert "not a jMetalPy FloatProblem" in result.output
+
+    def test_should_write_a_report_for_a_jmetalpy_problem(self, tmp_path):
+        """Given --report, `mola run` writes the same report as `mola characterize`."""
+        # Arrange
+        report = tmp_path / "report.json"
+
+        # Act
+        result = runner.invoke(
+            app,
+            ["run", "ZDT1", "--variables", "3", "--sample-size", "10", "--seed", "1"]
+            + ["--report", str(report)],
+        )
+
+        # Assert
+        assert result.exit_code == 0
+        saved = json.loads(report.read_text())
+        assert saved["problem"] == "ZDT1"
+        assert saved["seed"] == 1
+        assert saved["sample_size"] == 10
