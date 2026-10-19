@@ -28,10 +28,10 @@ class Sample:
         problem: Name of the sampled problem.
         variables: Decision vectors, shape ``(n, D)``.
         objectives: Objective vectors in minimization form, shape ``(n, M)``.
-        lower_bounds: Per-variable lower bounds, shape ``(D,)``. Carried for traceability only;
-            no feature computation reads them, since every normalizer is empirical over the
-            sample itself.
-        upper_bounds: Per-variable upper bounds, shape ``(D,)``.
+        lower_bounds: Per-variable lower bounds, shape ``(D,)``. May be infinite, but then no
+            geometry that rescales decision space by its bounds can be used.
+        upper_bounds: Per-variable upper bounds, shape ``(D,)``, each ``>=`` its lower bound. A
+            variable whose two bounds are equal is fixed.
         sampler: Identifier of the sampling design that produced the sample, e.g. ``"lhs"``.
         seed: Seed that produced the sample, or ``None`` if the adapter did not record one.
         schema_version: Version of the interchange schema this record follows.
@@ -51,8 +51,14 @@ class Sample:
 
         Raises:
             ValueError: If the arrays are not two-dimensional, disagree on the number of
-                solutions, are empty, or if the bounds do not match the number of variables.
+                solutions, are empty, or if the bounds do not match the number of variables;
+                if any decision or objective value is NaN or infinite; or if any bound is NaN
+                or a lower bound exceeds its upper bound.
         """
+        self._validate_shapes()
+        self._validate_values()
+
+    def _validate_shapes(self) -> None:
         if self.variables.ndim != 2:
             raise ValueError(f"variables must be 2-dimensional, got {self.variables.ndim}")
         if self.objectives.ndim != 2:
@@ -73,6 +79,22 @@ class Sample:
             raise ValueError(
                 f"upper_bounds must have shape ({self.number_of_variables},), "
                 f"got {self.upper_bounds.shape}"
+            )
+
+    def _validate_values(self) -> None:
+        for name, values in (("variables", self.variables), ("objectives", self.objectives)):
+            non_finite_rows = np.flatnonzero(~np.isfinite(values).all(axis=1))
+            if non_finite_rows.size > 0:
+                raise ValueError(
+                    f"{name} must be finite, but {non_finite_rows.size} solution(s) contain NaN "
+                    f"or infinite values (first at row {non_finite_rows[0]})"
+                )
+        if np.isnan(self.lower_bounds).any() or np.isnan(self.upper_bounds).any():
+            raise ValueError("bounds must not be NaN")
+        inverted = np.flatnonzero(self.lower_bounds > self.upper_bounds)
+        if inverted.size > 0:
+            raise ValueError(
+                f"lower bound exceeds upper bound for variable(s) {(inverted + 1).tolist()}"
             )
 
     @property
