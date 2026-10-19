@@ -374,7 +374,7 @@ class TestSuppN:
         """Given a non-dominated point not reachable by any linear scalarization, excludes it."""
         # Arrange: A(1,5), B(2,2), D(5,1) form the convex hull's minimizing facets; C(3,1.8) is
         # non-dominated (incomparable to all three) but sits in the "notch" between B and D, off
-        # the hull entirely (verified against scipy.spatial.ConvexHull directly)
+        # the hull entirely
         objectives = np.array([[1.0, 5.0], [2.0, 2.0], [3.0, 1.8], [5.0, 1.0]])
         ranking = rank_solutions(objectives)
 
@@ -397,20 +397,20 @@ class TestSuppN:
         assert value == pytest.approx(1.0)
 
     def test_should_return_one_when_the_non_dominated_set_is_collinear(self):
-        """Given a degenerate (collinear) non-dominated set, falls back to the documented 1.0."""
-        # Arrange: A(1,3), B(2,2), C(3,1) are exactly collinear -> ConvexHull raises QhullError
+        """Given collinear non-dominated points on a minimizing edge, all are supported."""
+        # Arrange: A(1,3), B(2,2), C(3,1) all minimize f1 + f2
         objectives = np.array([[1.0, 3.0], [2.0, 2.0], [3.0, 1.0]])
         ranking = rank_solutions(objectives)
 
         # Act
         value = supp_n(objectives, ranking)
 
-        # Assert: documented approximation, not exact
+        # Assert
         assert value == pytest.approx(1.0)
 
-    def test_should_return_one_when_at_most_m_solutions_are_non_dominated(self):
-        """Given |ND| <= M, every non-dominated solution is supported by construction."""
-        # Arrange: A(1,2), B(2,1), |ND| = 2 = M -> ConvexHull is skipped entirely
+    def test_should_return_one_for_two_bi_objective_non_dominated_solutions(self):
+        """Given two mutually non-dominated bi-objective solutions, both are supported."""
+        # Arrange
         objectives = np.array([[1.0, 2.0], [2.0, 1.0]])
         ranking = rank_solutions(objectives)
 
@@ -419,6 +419,18 @@ class TestSuppN:
 
         # Assert
         assert value == pytest.approx(1.0)
+
+    def test_should_exclude_an_unsupported_solution_even_when_at_most_m_are_non_dominated(self):
+        """Given |ND| = M = 3, still excludes the solution dominated by a convex combination."""
+        # Arrange (phase 0, case A): C(0.6,0.6,0.6) is dominated by 0.5*A + 0.5*B
+        objectives = np.array([[0.0, 1.0, 1.0], [1.0, 0.0, 0.0], [0.6, 0.6, 0.6]])
+        ranking = rank_solutions(objectives)
+
+        # Act
+        value = supp_n(objectives, ranking)
+
+        # Assert: supported = {A, B} -> 2 / 3
+        assert value == pytest.approx(2.0 / 3.0)
 
 
 class TestHv:

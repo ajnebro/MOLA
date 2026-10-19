@@ -133,3 +133,23 @@ class TestLocalNondominance:
         # non-dominated, but only three (A, B, D) sit on the hull -- C, the notch, does not
         assert result.locally_nondominated[0] == 4
         assert result.locally_supported[0] == 3
+
+    def test_should_exclude_an_unsupported_neighbour_when_the_local_front_has_at_most_m_points(
+        self,
+    ):
+        """A local front of M points can still contain a neighbour that is not supported."""
+        # Arrange: R(2,2,2) is dominated by its three neighbours A(0,1,1), B(1,0,0) and
+        # C(0.6,0.6,0.6), which form the local front; C is dominated by 0.5*A + 0.5*B. The 0.2.0
+        # shortcut "|front| <= M -> all supported" counted C as supported.
+        objectives = np.array([[2.0, 2.0, 2.0], [0.0, 1.0, 1.0], [1.0, 0.0, 0.0], [0.6, 0.6, 0.6]])
+        indices = np.array([[1, 2, 3], [0, 2, 3], [0, 1, 3], [0, 1, 2]])
+        neighbourhood = Neighbourhood(
+            indices=indices, distances=np.zeros_like(indices, dtype=float)
+        )
+
+        # Act
+        result = local_nondominance(objectives, neighbourhood)
+
+        # Assert
+        assert result.locally_nondominated[0] == 3
+        assert result.locally_supported[0] == 2
