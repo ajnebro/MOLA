@@ -1,9 +1,13 @@
 """Unit tests for module mola.characterize."""
 
+import math
+from dataclasses import replace
+
 import numpy as np
 import pytest
 
-from mola.characterize import characterize
+from mola import __version__
+from mola.characterize import characterize, characterize_report
 from mola.distance import build_neighbourhood
 from mola.features import (
     dist_f_avg_neig,
@@ -14,6 +18,7 @@ from mola.features import (
 )
 from mola.hypervolume import reference_point
 from mola.normalization import build_normalizers
+from mola.report import FEATURE_PROFILE
 from mola.sample import Sample
 
 _ALL_49_FEATURE_NAMES = {
@@ -201,3 +206,120 @@ class TestCharacterize:
         assert result["dist_f_dist_x_avg_neig"] == pytest.approx(
             result["dist_f_avg_neig"] / result["dist_x_avg_neig"]
         )
+
+    def test_should_be_invariant_to_per_variable_affine_maps_under_the_bound_geometry(self):
+        """Given the same sample in other units (bounds included), all 49 features match."""
+        # Arrange
+        sample = _make_sample(size=40, variables=3, objectives=2)
+        scale = np.array([1e-3, 5.0, 250.0])
+        shift = np.array([-4.0, 100.0, 0.5])
+        rescaled = replace(
+            sample,
+            variables=sample.variables * scale + shift,
+            lower_bounds=sample.lower_bounds * scale + shift,
+            upper_bounds=sample.upper_bounds * scale + shift,
+        )
+
+        # Act
+        result = characterize(sample)
+        rescaled_result = characterize(rescaled)
+
+        # Assert
+        for name in _ALL_49_FEATURE_NAMES:
+            assert rescaled_result[name] == pytest.approx(result[name], nan_ok=True), name
+
+    def test_should_depend_on_the_units_under_the_raw_geometry(self):
+        """Given heterogeneous rescaling, the raw geometry changes decision-space features."""
+        # Arrange
+        sample = _make_sample(size=40, variables=3, objectives=2)
+        scale = np.array([1e-3, 5.0, 250.0])
+        rescaled = replace(
+            sample,
+            variables=sample.variables * scale,
+            lower_bounds=sample.lower_bounds * scale,
+            upper_bounds=sample.upper_bounds * scale,
+        )
+
+        # Act
+        result = characterize(sample, geometry="raw")
+        rescaled_result = characterize(rescaled, geometry="raw")
+
+        # Assert
+        assert rescaled_result["dist_x_max"] != pytest.approx(result["dist_x_max"])
+
+    def test_should_use_the_requested_neighbourhood_size(self):
+        """Given neighbours=5, builds the graph with k = 5 instead of D."""
+        # Arrange
+        sample = _make_sample(variables=3)
+        neighbourhood = build_neighbourhood(sample.variables, neighbours=5)
+        normalizers = build_normalizers(sample.variables, sample.objectives)
+
+        # Act
+        result = characterize(sample, neighbours=5)
+
+        # Assert
+        assert result["dist_x_avg_neig"] == pytest.approx(
+            dist_x_avg_neig(sample.variables, neighbourhood, normalizers.variable_space)
+        )
+
+
+class TestCharacterizeReport:
+    """Unit tests for characterize_report()."""
+
+    def test_should_match_the_flat_result_of_characterize(self):
+        """Given a sample, the report's features are characterize()'s 49 values."""
+        # Arrange
+        sample = _make_sample()
+
+        # Act
+        report = characterize_report(sample)
+        flat = characterize(sample)
+
+        # Assert
+        assert set(report.features) == _ALL_49_FEATURE_NAMES
+        for name in _ALL_49_FEATURE_NAMES:
+            assert report.features[name] == pytest.approx(flat[name], nan_ok=True)
+
+    def test_should_record_the_geometry_neighbourhood_size_and_walk_count_used(self):
+        """Given explicit settings, the provenance records what was actually used."""
+        # Arrange: k = 50 and 100 walks are both capped by n = 30
+        sample = _make_sample(size=30)
+
+        # Act
+        report = characterize_report(sample, geometry="raw", neighbours=50, walk_samples=100)
+
+        # Assert
+        assert report.provenance.geometry == "raw"
+        assert report.provenance.neighbours == 29
+        assert report.provenance.walk_samples == 30
+        assert report.provenance.feature_profile == FEATURE_PROFILE
+        assert report.provenance.mola_version == __version__
+
+    def test_should_default_to_k_equal_to_the_number_of_variables(self):
+        """Given no neighbours argument, records k = D."""
+        # Arrange
+        sample = _make_sample(variables=4)
+
+        # Act
+        report = characterize_report(sample)
+
+        # Assert
+        assert report.provenance.neighbours == 4
+        assert report.provenance.geometry == "bound"
+
+    def test_should_give_a_cause_for_every_undefined_feature(self):
+        """Given a sample with a single non-dominated solution, explains each NaN."""
+        # Arrange: solution 0 dominates every other one, so |ND| = 1
+        sample = _make_sample()
+        objectives = sample.objectives + 1.0
+        objectives[0] = 0.0
+        sample = replace(sample, objectives=objectives)
+
+        # Act
+        report = characterize_report(sample)
+
+        # Assert
+        undefined = {name for name, value in report.features.items() if math.isnan(value)}
+        assert undefined == set(report.causes)
+        assert report.causes["dist_x_nd_avg"].startswith("|ND| = 1")
+        assert report.causes["fdc"].startswith("|ND| = 1")
