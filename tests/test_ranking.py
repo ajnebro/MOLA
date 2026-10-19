@@ -2,8 +2,17 @@
 
 import numpy as np
 import pytest
+from jmetal.util.ranking import FastNonDominatedRanking
 
 from mola.ranking import rank_solutions
+
+
+class _JMetalPySolution:
+    """Minimal stand-in exposing the attributes jMetalPy's ranking requires."""
+
+    def __init__(self, objectives: list[float]) -> None:
+        self.objectives = objectives
+        self.attributes: dict[str, int] = {}
 
 
 class TestRankSolutions:
@@ -66,3 +75,31 @@ class TestRankSolutions:
         # Act & Assert
         with pytest.raises(ValueError, match="empty"):
             rank_solutions(objectives)
+
+    def test_should_give_duplicated_solutions_the_same_rank(self):
+        """Given exact duplicates, neither dominates the other, so they share a front."""
+        # Arrange
+        objectives = np.array([[1.0, 2.0], [1.0, 2.0], [2.0, 1.0], [3.0, 3.0], [3.0, 3.0]])
+
+        # Act
+        ranking = rank_solutions(objectives)
+
+        # Assert
+        np.testing.assert_array_equal(ranking.rank, [0, 0, 0, 1, 1])
+
+    @pytest.mark.parametrize("number_of_objectives", [2, 3, 5])
+    def test_should_match_jmetalpy_fast_non_dominated_ranking(self, number_of_objectives):
+        """Given random sets with ties and duplicates, matches the ranking MOLA 0.2.0 used."""
+        # Arrange
+        rng = np.random.default_rng(number_of_objectives)
+        objectives = np.round(rng.random((200, number_of_objectives)), 1)
+        objectives = np.vstack([objectives, objectives[:20]])
+        solutions = [_JMetalPySolution(values) for values in objectives.tolist()]
+        FastNonDominatedRanking().compute_ranking(solutions)
+        expected = [solution.attributes["dominance_ranking"] for solution in solutions]
+
+        # Act
+        ranking = rank_solutions(objectives)
+
+        # Assert
+        np.testing.assert_array_equal(ranking.rank, expected)
