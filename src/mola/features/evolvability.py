@@ -14,6 +14,7 @@ from mola.hypervolume import (
     neighbourhood_hypervolume,
     singleton_hypervolume,
 )
+from mola.normalization import Normalizer
 
 
 def sup_avg_neig(dominance: NeighbourhoodDominance, neighbourhood: Neighbourhood) -> float:
@@ -104,47 +105,84 @@ def lsupp_avg_neig(local: LocalNondominance, neighbourhood: Neighbourhood) -> fl
     return float(np.mean(local.locally_supported / neighbourhood.size))
 
 
-def dist_x_avg_neig(variables: np.ndarray, neighbourhood: Neighbourhood) -> float:
+def dist_x_avg_neig(
+    variables: np.ndarray, neighbourhood: Neighbourhood, normalizer: Normalizer | None = None
+) -> float:
     """Average distance from each solution to its neighbours in variable space (Table 1).
+
+    Normalized against the whole sample's own variable-space distance range, like `dist_x_avg`
+    (Design decisions, "Normalization reference": NEIGH_DIST_X_AVG), never against a range
+    recomputed over the neighbourhoods.
 
     Args:
         variables: Decision vectors, shape (n, D).
         neighbourhood: The sample's neighbourhood graph, built from these same `variables`.
+        normalizer: The variable-space normalizer for this sample, built from these same
+            `variables`. `None` returns the raw average, as MOLA 0.2.0 reported it.
 
     Returns:
-        The mean, over the sample, of each solution's average distance to its neighbours.
+        The mean, over the sample, of each solution's average distance to its neighbours,
+        normalized to [0, 1] when `normalizer` is given.
     """
-    return float(neighbour_distances(variables, neighbourhood).mean())
+    value = float(neighbour_distances(variables, neighbourhood).mean())
+    return value if normalizer is None else normalizer.normalize(value)
 
 
-def dist_f_avg_neig(objectives: np.ndarray, neighbourhood: Neighbourhood) -> float:
+def dist_f_avg_neig(
+    objectives: np.ndarray, neighbourhood: Neighbourhood, normalizer: Normalizer | None = None
+) -> float:
     """Average distance from each solution to its neighbours in objective space (Table 1).
+
+    Normalized against the whole sample's own objective-space distance range, like
+    `dist_f_avg` (Design decisions, "Normalization reference": NEIGH_DIST_F_AVG).
 
     Args:
         objectives: Objective vectors, shape (n, M).
         neighbourhood: The sample's neighbourhood graph (built in decision space; only the
             neighbour *relation* is reused here — distances are measured in objective space).
+        normalizer: The objective-space normalizer for this sample, built from these same
+            `objectives`. `None` returns the raw average, as MOLA 0.2.0 reported it.
 
     Returns:
-        The mean, over the sample, of each solution's average distance to its neighbours.
+        The mean, over the sample, of each solution's average distance to its neighbours,
+        normalized to [0, 1] when `normalizer` is given.
     """
-    return float(neighbour_distances(objectives, neighbourhood).mean())
+    value = float(neighbour_distances(objectives, neighbourhood).mean())
+    return value if normalizer is None else normalizer.normalize(value)
+
+
+def _ratio(numerator: float, denominator: float) -> float:
+    """``numerator / denominator``, or NaN when the denominator is zero."""
+    return float("nan") if denominator == 0.0 else numerator / denominator
 
 
 def dist_f_dist_x_avg_neig(
-    objectives: np.ndarray, variables: np.ndarray, neighbourhood: Neighbourhood
+    objectives: np.ndarray,
+    variables: np.ndarray,
+    neighbourhood: Neighbourhood,
+    *,
+    objective_normalizer: Normalizer | None = None,
+    variable_normalizer: Normalizer | None = None,
 ) -> float:
     """Ratio of dist_f_avg_neig to dist_x_avg_neig (Table 1's own parenthetical formula).
+
+    The ratio of the two features as reported, so both are normalized when their normalizers
+    are given.
 
     Args:
         objectives: Objective vectors, shape (n, M).
         variables: Decision vectors, shape (n, D).
         neighbourhood: The sample's neighbourhood graph, built from these same `variables`.
+        objective_normalizer: Passed to `dist_f_avg_neig`.
+        variable_normalizer: Passed to `dist_x_avg_neig`.
 
     Returns:
-        dist_f_avg_neig / dist_x_avg_neig.
+        dist_f_avg_neig / dist_x_avg_neig, or NaN when dist_x_avg_neig is 0.
     """
-    return dist_f_avg_neig(objectives, neighbourhood) / dist_x_avg_neig(variables, neighbourhood)
+    return _ratio(
+        dist_f_avg_neig(objectives, neighbourhood, objective_normalizer),
+        dist_x_avg_neig(variables, neighbourhood, variable_normalizer),
+    )
 
 
 def diff_f_avg_neig(objectives: np.ndarray, neighbourhood: Neighbourhood) -> float:
@@ -167,19 +205,30 @@ def diff_f_avg_neig(objectives: np.ndarray, neighbourhood: Neighbourhood) -> flo
 
 
 def diff_f_dist_x_avg_neig(
-    objectives: np.ndarray, variables: np.ndarray, neighbourhood: Neighbourhood
+    objectives: np.ndarray,
+    variables: np.ndarray,
+    neighbourhood: Neighbourhood,
+    *,
+    variable_normalizer: Normalizer | None = None,
 ) -> float:
     """Ratio of diff_f_avg_neig to dist_x_avg_neig (Table 1's own parenthetical formula).
+
+    The ratio of the two features as reported: `diff_f_avg_neig` is raw, and `dist_x_avg_neig`
+    is normalized when `variable_normalizer` is given.
 
     Args:
         objectives: Objective vectors, shape (n, M).
         variables: Decision vectors, shape (n, D).
         neighbourhood: The sample's neighbourhood graph, built from these same `variables`.
+        variable_normalizer: Passed to `dist_x_avg_neig`.
 
     Returns:
-        diff_f_avg_neig / dist_x_avg_neig.
+        diff_f_avg_neig / dist_x_avg_neig, or NaN when dist_x_avg_neig is 0.
     """
-    return diff_f_avg_neig(objectives, neighbourhood) / dist_x_avg_neig(variables, neighbourhood)
+    return _ratio(
+        diff_f_avg_neig(objectives, neighbourhood),
+        dist_x_avg_neig(variables, neighbourhood, variable_normalizer),
+    )
 
 
 def hv_avg_neig(objectives: np.ndarray, ref: np.ndarray) -> float:

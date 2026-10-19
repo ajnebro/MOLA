@@ -108,6 +108,7 @@ def _evolvability_features(
     neighbourhood = substrate.neighbourhood
     dominance = substrate.dominance
     local = substrate.local
+    normalizers = substrate.normalizers
     ref = substrate.ref
     return {
         "sup_avg_neig": features.sup_avg_neig(dominance=dominance, neighbourhood=neighbourhood),
@@ -116,19 +117,30 @@ def _evolvability_features(
         "lnd_avg_neig": features.lnd_avg_neig(local=local, neighbourhood=neighbourhood),
         "lsupp_avg_neig": features.lsupp_avg_neig(local=local, neighbourhood=neighbourhood),
         "dist_x_avg_neig": features.dist_x_avg_neig(
-            variables=variables, neighbourhood=neighbourhood
+            variables=variables,
+            neighbourhood=neighbourhood,
+            normalizer=normalizers.variable_space,
         ),
         "dist_f_avg_neig": features.dist_f_avg_neig(
-            objectives=objectives, neighbourhood=neighbourhood
+            objectives=objectives,
+            neighbourhood=neighbourhood,
+            normalizer=normalizers.objective_space,
         ),
         "dist_f_dist_x_avg_neig": features.dist_f_dist_x_avg_neig(
-            objectives=objectives, variables=variables, neighbourhood=neighbourhood
+            objectives=objectives,
+            variables=variables,
+            neighbourhood=neighbourhood,
+            objective_normalizer=normalizers.objective_space,
+            variable_normalizer=normalizers.variable_space,
         ),
         "diff_f_avg_neig": features.diff_f_avg_neig(
             objectives=objectives, neighbourhood=neighbourhood
         ),
         "diff_f_dist_x_avg_neig": features.diff_f_dist_x_avg_neig(
-            objectives=objectives, variables=variables, neighbourhood=neighbourhood
+            objectives=objectives,
+            variables=variables,
+            neighbourhood=neighbourhood,
+            variable_normalizer=normalizers.variable_space,
         ),
         "hv_avg_neig": features.hv_avg_neig(objectives=objectives, ref=ref),
         "hvd_avg_neig": features.hvd_avg_neig(
