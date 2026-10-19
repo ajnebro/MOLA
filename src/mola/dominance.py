@@ -10,8 +10,8 @@ Two related but distinct notions:
   not just the pair in question.
 * **Local** non-dominance (`local_nondominance`) — whether a neighbour is non-dominated, and
   separately "supported" (`mola.hull.supported_mask`), *within the local group* `{i} ∪ N(i)`
-  rather than the whole sample — the local analogue of the global `nd_n`/`supp_n` pair (Design
-  decisions, "lnd/lsupp").
+  rather than the whole sample — the local analogue of the global `nd_n`/`supp_n` pair (Feature
+  implementation matrix, `lnd_avg_neig`/`lsupp_avg_neig`).
 """
 
 from dataclasses import dataclass

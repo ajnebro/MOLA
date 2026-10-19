@@ -66,8 +66,8 @@ def lnd_avg_neig(local: LocalNondominance, neighbourhood: Neighbourhood) -> floa
     """Average proportion of locally non-dominated neighbours (Table 1: lnd_avg_neig).
 
     The local analogue of the global `nd_n`: a neighbour is "locally non-dominated" iff it is
-    non-dominated within the local group `{i} ∪ N(i)`, not the whole sample (Design decisions,
-    "lnd/lsupp").
+    non-dominated within the local group `{i} ∪ N(i)`, not the whole sample
+    (`mola.dominance.local_nondominance`).
 
     Args:
         local: Per-solution locally-non-dominated and locally-supported neighbour counts, built

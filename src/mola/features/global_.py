@@ -231,8 +231,9 @@ def fdc(variables: np.ndarray, objectives: np.ndarray, ranking: Ranking) -> floa
 
     Returns:
         The Spearman correlation between pairwise X-distance and F-distance among non-dominated
-        solutions. NaN if fewer than 2 solutions are non-dominated — zero pairs, propagated from
-        `scipy.stats.spearmanr` rather than special-cased.
+        solutions. NaN if fewer than 3 solutions are non-dominated — fewer than 2 pairs, on
+        which a rank correlation is undefined — or if the distances are constant in one space;
+        propagated from `scipy.stats.spearmanr` rather than special-cased.
     """
     nondominated = ranking.nondominated
     x_distances = pdist(variables[nondominated])
