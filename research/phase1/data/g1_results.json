@@ -1,0 +1,353 @@
+{
+  "mola_version": "0.3.0",
+  "tolerance": 1e-09,
+  "concordance": [
+    {
+      "problem": "RE21",
+      "seed": 42,
+      "n": 800,
+      "M": 2,
+      "D": 4,
+      "geometry": "bound",
+      "k": 4,
+      "mola_method": "chain",
+      "global_nd": 29,
+      "supp_n": {
+        "mola": 0.20689655172413793,
+        "verifier": 0.20689655172413793
+      },
+      "global_disagreements": 0,
+      "lsupp_avg_neig": {
+        "mola": 0.5821875,
+        "verifier": 0.5821875
+      },
+      "lnd_disagreeing_groups": 0,
+      "lsupp_disagreeing_groups": 0,
+      "seconds": {
+        "mola_global": 0.0003806999884545803,
+        "verifier_global": 0.05302960000699386,
+        "mola_local": 0.028323500009719282,
+        "verifier_local": 3.460263900051359
+      }
+    },
+    {
+      "problem": "DTLZ2",
+      "seed": 42,
+      "n": 2400,
+      "M": 3,
+      "D": 12,
+      "geometry": "bound",
+      "k": 12,
+      "mola_method": "dominated hull",
+      "global_nd": 105,
+      "supp_n": {
+        "mola": 0.20952380952380953,
+        "verifier": 0.20952380952380953
+      },
+      "global_disagreements": 0,
+      "lsupp_avg_neig": {
+        "mola": 0.40475694444444443,
+        "verifier": 0.40475694444444443
+      },
+      "lnd_disagreeing_groups": 0,
+      "lsupp_disagreeing_groups": 0,
+      "seconds": {
+        "mola_global": 0.006994099996518344,
+        "verifier_global": 0.16236999997636303,
+        "mola_local": 2.209431900002528,
+        "verifier_local": 28.568250800017267
+      }
+    },
+    {
+      "problem": "RE33",
+      "seed": 42,
+      "n": 800,
+      "M": 3,
+      "D": 4,
+      "geometry": "bound",
+      "k": 4,
+      "mola_method": "dominated hull",
+      "global_nd": 124,
+      "supp_n": {
+        "mola": 0.18548387096774194,
+        "verifier": 0.18548387096774194
+      },
+      "global_disagreements": 0,
+      "lsupp_avg_neig": {
+        "mola": 0.6375,
+        "verifier": 0.6375
+      },
+      "lnd_disagreeing_groups": 0,
+      "lsupp_disagreeing_groups": 0,
+      "seconds": {
+        "mola_global": 0.0030599000165238976,
+        "verifier_global": 0.19741249998332933,
+        "mola_local": 0.7177571000065655,
+        "verifier_local": 4.543840600003023
+      }
+    },
+    {
+      "problem": "RE41",
+      "seed": 42,
+      "n": 1400,
+      "M": 4,
+      "D": 7,
+      "geometry": "bound",
+      "k": 7,
+      "mola_method": "dominated hull",
+      "global_nd": 263,
+      "supp_n": {
+        "mola": 0.8821292775665399,
+        "verifier": 0.8821292775665399
+      },
+      "global_disagreements": 0,
+      "lsupp_avg_neig": {
+        "mola": 0.9041836734693878,
+        "verifier": 0.9041836734693878
+      },
+      "lnd_disagreeing_groups": 0,
+      "lsupp_disagreeing_groups": 0,
+      "seconds": {
+        "mola_global": 0.006834500003606081,
+        "verifier_global": 0.6620026999735273,
+        "mola_local": 1.4077449000324123,
+        "verifier_local": 17.958038700046018
+      }
+    },
+    {
+      "problem": "RE61",
+      "seed": 42,
+      "n": 600,
+      "M": 6,
+      "D": 3,
+      "geometry": "bound",
+      "k": 3,
+      "mola_method": "linear programs",
+      "global_nd": 600,
+      "supp_n": {
+        "mola": 1.0,
+        "verifier": 1.0
+      },
+      "global_disagreements": 0,
+      "lsupp_avg_neig": {
+        "mola": 1.0,
+        "verifier": 1.0
+      },
+      "lnd_disagreeing_groups": 0,
+      "lsupp_disagreeing_groups": 0,
+      "seconds": {
+        "mola_global": 3.0535641000024043,
+        "verifier_global": 2.8828411999857053,
+        "mola_local": 3.4057635000208393,
+        "verifier_local": 3.4924136999761686
+      }
+    },
+    {
+      "problem": "Ahmad2017",
+      "seed": 42,
+      "n": 600,
+      "M": 7,
+      "D": 3,
+      "geometry": "bound",
+      "k": 3,
+      "mola_method": "linear programs",
+      "global_nd": 243,
+      "supp_n": {
+        "mola": 0.13580246913580246,
+        "verifier": 0.13580246913580246
+      },
+      "global_disagreements": 0,
+      "lsupp_avg_neig": {
+        "mola": 0.9294444444444444,
+        "verifier": 0.9294444444444444
+      },
+      "lnd_disagreeing_groups": 0,
+      "lsupp_disagreeing_groups": 0,
+      "seconds": {
+        "mola_global": 0.5284862999687903,
+        "verifier_global": 0.5090364000061527,
+        "mola_local": 3.147525999986101,
+        "verifier_local": 3.6122612000326626
+      }
+    }
+  ],
+  "affine_invariance": [
+    {
+      "problem": "RE25",
+      "seed": 7,
+      "D": 3,
+      "bound": {
+        "changed": [],
+        "number_changed": 0,
+        "max_relative_difference": 1.0257530238163856e-15
+      },
+      "raw": {
+        "changed": [
+          "dist_x_avg",
+          "dist_x_max",
+          "dist_x_nd_avg",
+          "dist_x_nd_max",
+          "fdc",
+          "slo_n",
+          "slo_dist_avg",
+          "slo_dist_max",
+          "plo_n",
+          "plo_dist_avg",
+          "plo_dist_max",
+          "nd_per_plo",
+          "length_aws",
+          "eval_aws",
+          "sup_avg_neig",
+          "inf_avg_neig",
+          "inc_avg_neig",
+          "lnd_avg_neig",
+          "lsupp_avg_neig",
+          "dist_x_avg_neig",
+          "dist_f_avg_neig",
+          "dist_f_dist_x_avg_neig",
+          "diff_f_avg_neig",
+          "diff_f_dist_x_avg_neig",
+          "hvd_avg_neig",
+          "nhv_avg_neig",
+          "dist_x_cor_neig",
+          "dist_f_cor_neig",
+          "sup_cor_neig",
+          "inf_cor_neig",
+          "inc_cor_neig",
+          "lnd_cor_neig",
+          "lsupp_cor_neig",
+          "dist_f_dist_x_cor_neig",
+          "diff_f_cor_neig",
+          "diff_f_dist_x_cor_neig",
+          "hv_cor_neig",
+          "hvd_cor_neig",
+          "nhv_cor_neig"
+        ],
+        "number_changed": 39,
+        "max_relative_difference": 5.833242901131782
+      }
+    },
+    {
+      "problem": "RE33",
+      "seed": 7,
+      "D": 4,
+      "bound": {
+        "changed": [],
+        "number_changed": 0,
+        "max_relative_difference": 7.374868186485481e-16
+      },
+      "raw": {
+        "changed": [
+          "dist_x_avg",
+          "dist_x_max",
+          "dist_x_nd_avg",
+          "dist_x_nd_max",
+          "fdc",
+          "slo_n",
+          "slo_dist_avg",
+          "slo_dist_max",
+          "plo_n",
+          "plo_dist_avg",
+          "plo_dist_max",
+          "nd_per_plo",
+          "length_aws",
+          "eval_aws",
+          "sup_avg_neig",
+          "inf_avg_neig",
+          "inc_avg_neig",
+          "lnd_avg_neig",
+          "lsupp_avg_neig",
+          "dist_x_avg_neig",
+          "dist_f_avg_neig",
+          "dist_f_dist_x_avg_neig",
+          "diff_f_avg_neig",
+          "diff_f_dist_x_avg_neig",
+          "hvd_avg_neig",
+          "nhv_avg_neig",
+          "dist_x_cor_neig",
+          "dist_f_cor_neig",
+          "sup_cor_neig",
+          "inf_cor_neig",
+          "inc_cor_neig",
+          "lnd_cor_neig",
+          "lsupp_cor_neig",
+          "dist_f_dist_x_cor_neig",
+          "diff_f_cor_neig",
+          "diff_f_dist_x_cor_neig",
+          "hv_cor_neig",
+          "hvd_cor_neig",
+          "nhv_cor_neig"
+        ],
+        "number_changed": 39,
+        "max_relative_difference": 39.082715503730974
+      }
+    },
+    {
+      "problem": "RE42",
+      "seed": 7,
+      "D": 6,
+      "bound": {
+        "changed": [],
+        "number_changed": 0,
+        "max_relative_difference": 9.450731448582902e-16
+      },
+      "raw": {
+        "changed": [
+          "dist_x_avg",
+          "dist_x_max",
+          "dist_x_nd_avg",
+          "dist_x_nd_max",
+          "fdc",
+          "slo_n",
+          "slo_dist_avg",
+          "slo_dist_max",
+          "plo_n",
+          "plo_dist_avg",
+          "plo_dist_max",
+          "nd_per_plo",
+          "length_aws",
+          "eval_aws",
+          "sup_avg_neig",
+          "inf_avg_neig",
+          "inc_avg_neig",
+          "lnd_avg_neig",
+          "lsupp_avg_neig",
+          "dist_x_avg_neig",
+          "dist_f_avg_neig",
+          "dist_f_dist_x_avg_neig",
+          "diff_f_avg_neig",
+          "diff_f_dist_x_avg_neig",
+          "hvd_avg_neig",
+          "nhv_avg_neig",
+          "dist_x_cor_neig",
+          "dist_f_cor_neig",
+          "sup_cor_neig",
+          "inf_cor_neig",
+          "inc_cor_neig",
+          "lnd_cor_neig",
+          "lsupp_cor_neig",
+          "dist_f_dist_x_cor_neig",
+          "diff_f_cor_neig",
+          "diff_f_dist_x_cor_neig",
+          "hv_cor_neig",
+          "hvd_cor_neig",
+          "nhv_cor_neig"
+        ],
+        "number_changed": 39,
+        "max_relative_difference": 4.6878066875261135
+      }
+    }
+  ],
+  "evaluations": {
+    "RE21/seed42": 800,
+    "DTLZ2/seed42": 2400,
+    "RE33/seed42": 800,
+    "RE41/seed42": 1400,
+    "RE61/seed42": 600,
+    "Ahmad2017/seed42": 600,
+    "RE25/seed7": 600,
+    "RE33/seed7": 800,
+    "RE42/seed7": 1200
+  },
+  "total_evaluations": 9200
+}

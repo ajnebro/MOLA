@@ -2,7 +2,9 @@
 
 Borrador del 2026-10-19. **La fase 0 se ejecutó el 2026-10-19** en la rama local `research/phase0`;
 los resultados están en `research/phase0/report.md` y el registro actualizado, E1–E25, en
-`research/phase0/claims.csv`. Ese registro sustituye al de §3. La fase 1 no se ha lanzado.
+`research/phase0/claims.csv`. Ese registro sustituye al de §3. **La fase 1 se ejecutó el
+2026-10-19** en la rama `research/phase1` (MOLA 0.3.0). La puerta G1 se superó; el detalle está en
+`research/phase1/report.md`.
 
 ---
 
