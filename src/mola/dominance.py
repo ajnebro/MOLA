@@ -16,12 +16,12 @@ Two related but distinct notions:
 
 from dataclasses import dataclass
 
+import moocore
 import numpy as np
 from jmetal.util.comparator import DominanceComparator
 
 from mola.distance import Neighbourhood
 from mola.hull import supported_mask
-from mola.ranking import rank_solutions
 
 
 @dataclass(slots=True, frozen=True)
@@ -91,14 +91,14 @@ class LocalNondominance:
 
 
 def local_nondominance(objectives: np.ndarray, neighbourhood: Neighbourhood) -> LocalNondominance:
-    """Rank each solution's local group and test which neighbours are non-dominated within it.
+    """Test which neighbours of each solution are non-dominated within its local group.
 
-    For each solution `i`, ranks `{i} ∪ N(i)` — via the same non-dominated sorting as the global
-    `Ranking`, just restricted to this local group — and counts how many of `i`'s neighbours (not
-    `i` itself) land in that local front 0 (`lnd`). Of those, further counts how many are also
-    "supported" within the local non-dominated subset, via the same exact test as the global
-    `supp_n` (`lsupp`, `mola.hull.supported_mask`) — a genuine geometric test, not a
-    rank-position comparison (Design decisions, "lnd/lsupp").
+    For each solution `i`, finds the non-dominated members of `{i} ∪ N(i)` — the local front 0,
+    with `moocore.is_nondominated` keeping duplicates, as the global `Ranking` does — and counts
+    how many of `i`'s neighbours (not `i` itself) belong to it (`lnd`). Of those, further counts
+    how many are also "supported" within the local non-dominated subset, via the same exact test
+    as the global `supp_n` (`lsupp`, `mola.hull.supported_mask`) — a genuine geometric test, not
+    a rank-position comparison (Feature implementation matrix, `lnd_avg_neig`/`lsupp_avg_neig`).
 
     Args:
         objectives: Objective vectors in minimization form, shape (n, M).
@@ -113,8 +113,9 @@ def local_nondominance(objectives: np.ndarray, neighbourhood: Neighbourhood) -> 
 
     for i in range(count):
         local_indices = np.concatenate(([i], neighbourhood.indices[i]))
-        local_rank = rank_solutions(objectives[local_indices]).rank
-        is_locally_nondominated = local_rank == 0
+        is_locally_nondominated = moocore.is_nondominated(
+            objectives[local_indices], keep_weakly=True
+        )
         locally_nondominated[i] = is_locally_nondominated[1:].sum()
 
         local_nd_positions = np.flatnonzero(is_locally_nondominated)
