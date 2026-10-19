@@ -10,8 +10,9 @@ reference; see also README.md's "CLI usage" section and ``examples/``):
 - ``mola run``: sample, evaluate, and characterize a jMetalPy problem in one step, no file needed
   -- the most convenient entry point for a script or an AI agent.
 
-Errors expected at this I/O boundary (an unknown problem name, a malformed sample file, an
-unrecognized ``--output`` extension) are caught here and reported as a clean one-line message plus
+Errors expected at this I/O boundary (an unknown problem name, a malformed sample file, a sample
+with non-finite values, unbounded variables under the ``bound`` geometry, an unrecognized
+``--output`` extension) are caught here and reported as a clean one-line message plus
 a non-zero exit code, per PYTHON_CODING_GUIDELINES.md §4 -- not a new ``Ok[T] | Err`` type, which
 would be overkill for three commands, but Typer's own idiomatic mechanism for the same purpose.
 """
@@ -25,9 +26,10 @@ import typer
 from jmetal.core.problem import FloatProblem
 
 from mola.adapters.jmetalpy import sample_problem
-from mola.characterize import characterize as compute_features
+from mola.characterize import characterize_report
+from mola.geometry import DEFAULT_GEOMETRY, Geometry
 from mola.multimodality import DEFAULT_WALK_COUNT
-from mola.sample import read_sample, write_sample
+from mola.sample import Sample, read_sample, write_sample
 
 app = typer.Typer(
     name="mola",
@@ -46,6 +48,17 @@ _SAMPLE_SIZE_HELP = "Number of solutions to Latin-Hypercube-sample. Defaults to 
 _SEED_HELP = "Seed for the Latin Hypercube sampler."
 _WALK_SAMPLES_HELP = "Number of independent adaptive walks averaged for length_aws/eval_aws."
 _OUTPUT_HELP = "Also save the result here, as .json or .csv (format inferred from the suffix)."
+_GEOMETRY_HELP = (
+    "Decision-space geometry: 'bound' maps each variable to [0, 1] through its declared bounds, "
+    "so the features do not depend on the variables' units; 'raw' uses the variables as they "
+    "are, as MOLA 0.2.0 did."
+)
+_NEIGHBOURS_HELP = "Neighbourhood size k. Defaults to D, the number of decision variables."
+_REPORT_HELP = (
+    "Also save the full report here as JSON: every feature with its status and the cause of "
+    "any undefined one, plus provenance (MOLA version, feature profile, geometry, k). Use it "
+    "whenever results are stored or compared."
+)
 
 
 def _resolve_jmetalpy_problem(name: str, variables: int | None) -> FloatProblem:
@@ -80,6 +93,47 @@ def _resolve_jmetalpy_problem(name: str, variables: int | None) -> FloatProblem:
     except TypeError as error:
         typer.echo(f"Error: could not instantiate '{name}': {error}", err=True)
         raise typer.Exit(code=1) from error
+
+
+def _sample_or_exit(problem: FloatProblem, sample_size: int | None, seed: int | None) -> Sample:
+    """Sample a problem, turning an invalid sample (e.g. non-finite objectives) into a CLI error.
+
+    Raises:
+        typer.Exit: If the sampled values do not form a valid Sample. Prints the reason first.
+    """
+    try:
+        return sample_problem(problem, sample_size=sample_size, seed=seed)
+    except ValueError as error:
+        typer.echo(f"Error: {error}", err=True)
+        raise typer.Exit(code=1) from error
+
+
+def _characterize_and_report(
+    loaded_sample: Sample,
+    *,
+    walk_samples: int,
+    geometry: Geometry,
+    neighbours: int | None,
+    output: Path | None,
+    report: Path | None,
+) -> None:
+    """Characterize a sample, print the result, and save it to ``output``/``report`` if given.
+
+    Raises:
+        typer.Exit: If the sample cannot be characterized under these settings (e.g. unbounded
+            variables under the ``bound`` geometry), or if ``output`` has an unrecognized suffix.
+    """
+    try:
+        characterization = characterize_report(
+            loaded_sample, walk_samples=walk_samples, geometry=geometry, neighbours=neighbours
+        )
+    except ValueError as error:
+        typer.echo(f"Error: {error}", err=True)
+        raise typer.Exit(code=1) from error
+    _report_result(characterization.as_flat_dict(), output)
+    if report is not None:
+        report.write_text(json.dumps(characterization.to_json_dict(), indent=2) + "\n")
+        typer.echo(f"Wrote report to {report}")
 
 
 def _report_result(result: dict[str, float], output: Path | None) -> None:
@@ -134,7 +188,7 @@ def sample(
         mola sample ZDT1 sample.csv --variables 5 --sample-size 1000 --seed 42
     """
     resolved_problem = _resolve_jmetalpy_problem(problem, variables)
-    result_sample = sample_problem(resolved_problem, sample_size=sample_size, seed=seed)
+    result_sample = _sample_or_exit(resolved_problem, sample_size, seed)
     write_sample(result_sample, output)
     typer.echo(
         f"Wrote {result_sample.size} solutions to {output} and {output.with_suffix('.json')}"
@@ -148,6 +202,9 @@ def characterize(
     ),
     output: Path | None = typer.Option(None, "--output", "-o", help=_OUTPUT_HELP),
     walk_samples: int = typer.Option(DEFAULT_WALK_COUNT, "--walk-samples", help=_WALK_SAMPLES_HELP),
+    geometry: Geometry = typer.Option(DEFAULT_GEOMETRY, "--geometry", help=_GEOMETRY_HELP),
+    neighbours: int | None = typer.Option(None, "--neighbours", "-k", min=1, help=_NEIGHBOURS_HELP),
+    report: Path | None = typer.Option(None, "--report", help=_REPORT_HELP),
 ) -> None:
     """Compute the 49 landscape features for an existing interchange sample file.
 
@@ -156,15 +213,21 @@ def characterize(
     -- and prints every feature plus sample_size/num_obj/num_var.
 
     Example:
-        mola characterize sample.csv --output result.json
+        mola characterize sample.csv --output result.json --report report.json
     """
     try:
         loaded_sample = read_sample(sample_path)
     except (FileNotFoundError, ValueError) as error:
         typer.echo(f"Error: {error}", err=True)
         raise typer.Exit(code=1) from error
-    result = compute_features(loaded_sample, walk_samples=walk_samples)
-    _report_result(result, output)
+    _characterize_and_report(
+        loaded_sample,
+        walk_samples=walk_samples,
+        geometry=geometry,
+        neighbours=neighbours,
+        output=output,
+        report=report,
+    )
 
 
 @app.command()
@@ -175,6 +238,9 @@ def run(
     seed: int | None = typer.Option(None, "--seed", help=_SEED_HELP),
     walk_samples: int = typer.Option(DEFAULT_WALK_COUNT, "--walk-samples", help=_WALK_SAMPLES_HELP),
     output: Path | None = typer.Option(None, "--output", "-o", help=_OUTPUT_HELP),
+    geometry: Geometry = typer.Option(DEFAULT_GEOMETRY, "--geometry", help=_GEOMETRY_HELP),
+    neighbours: int | None = typer.Option(None, "--neighbours", "-k", min=1, help=_NEIGHBOURS_HELP),
+    report: Path | None = typer.Option(None, "--report", help=_REPORT_HELP),
 ) -> None:
     """Sample, evaluate, and characterize a jMetalPy problem in one step -- no file needed.
 
@@ -187,9 +253,15 @@ def run(
         mola run ZDT1 --variables 5 --sample-size 1000 --seed 42
     """
     resolved_problem = _resolve_jmetalpy_problem(problem, variables)
-    result_sample = sample_problem(resolved_problem, sample_size=sample_size, seed=seed)
-    result = compute_features(result_sample, walk_samples=walk_samples)
-    _report_result(result, output)
+    result_sample = _sample_or_exit(resolved_problem, sample_size, seed)
+    _characterize_and_report(
+        result_sample,
+        walk_samples=walk_samples,
+        geometry=geometry,
+        neighbours=neighbours,
+        output=output,
+        report=report,
+    )
 
 
 if __name__ == "__main__":
