@@ -63,11 +63,39 @@ alternativas completas para D1–D3 están en [`question1.md`](question1.md).
 
 ## Decisiones técnicas de la fase 1 (tomadas al implementar; reversibles)
 
-- **T1 — Definición de punto soportado:** un punto no dominado es soportado si minimiza alguna suma
-  ponderada con pesos no negativos que sumen 1, admitiendo empates. Es la intención documentada en
-  CLAUDE.md ("findable by minimizing some linear scalarization" y "lies on a facet"), que incluye los
-  puntos soportados no extremos (caso B). La versión 0.2.0 implementaba en la práctica la variante
-  extrema y, además, con los fallos E1 y E3.
+- **T1 — Definición de punto soportado (revisada al implementar):** un punto no dominado es
+  soportado si minimiza alguna suma ponderada con pesos **estrictamente positivos**, admitiendo
+  empates (los puntos soportados de Ehrgott). Equivale a que ninguna combinación convexa del conjunto
+  lo domine. Incluye los puntos soportados no extremos (caso B), que es la intención de CLAUDE.md
+  ("findable by minimizing some linear scalarization", "lies on a facet"). La versión 0.2.0
+  implementaba en la práctica la variante extrema, y además con los fallos E1 y E3.
+  - **Por qué no pesos no negativos, como decía la primera redacción de T1:** con un peso nulo, una
+    meseta en un objetivo hace soportados a todos los puntos empatados en ella. En RE33 hay 17 puntos
+    no dominados con f3 = 0 (la violación de restricciones). Con pesos no negativos, `supp_n` sale
+    0.258, solo por el peso (0, 0, 1); con pesos estrictamente positivos sale 0.185, igual que el
+    extremo. El caso de la meseta (0,6,6), (0,0,10), (0,10,0) es un test.
+  - **Por qué admitir empates:** en RE41, con 213 puntos no dominados empatados en el mínimo de f2,
+    `supp_n` vale 0.882 con empates y 0.008 con soportado extremo. La versión 0.2.0 daba 0.027.
+  - **Implementación:** tres métodos exactos, elegidos por M solo por velocidad: cadena convexa para
+    M = 2; normales de las facetas de conv(P) + R^M_≥ para M = 3 y 4; un programa lineal por punto
+    para M ≥ 5 o si Qhull falla. Los tests comprueban que coinciden en conjuntos aleatorios con
+    empates, mesetas y duplicados. Los objetivos se escalan a [0, 1] en el conjunto y la tolerancia
+    es 1e-9 en esas unidades.
 - **T2 — Contrato de normalización (E5):** `dist_x_avg_neig` y `dist_f_avg_neig` se normalizan con
   el rango global de distancias de su espacio, como establece la decisión "Normalization reference" de
   CLAUDE.md y como hacían la tesis y moorphology. Se corrige el código, no la documentación.
+  - Los dos cocientes son el cociente de las features tal como se reportan:
+    `dist_f_dist_x_avg_neig` divide las dos normalizadas, y `diff_f_dist_x_avg_neig` divide
+    `diff_f_avg_neig` (en bruto) por `dist_x_avg_neig` normalizada. Si el denominador es 0, el
+    resultado es NaN, con causa, en lugar de una excepción.
+  - Las medidas por solución de las correlaciones de rugosidad siguen en bruto, porque la
+    normalización min-max no es monótona sobre un cociente por solución.
+- **T3 — Perfil de features y procedencia:** las definiciones de 0.3.0 se identifican como
+  `paper49-v1` (`mola.report.FEATURE_PROFILE`). `characterize_report()` y `mola ... --report`
+  registran la versión, el perfil, la geometría, el `k` y el número de caminatas usados. Las features
+  indefinidas llevan `value: null`, `status: "undefined"` y una causa, según el contrato del
+  recomendador. `characterize()` y `--output` mantienen el formato plano de 52 campos de 0.2.0.
+- **T4 — Backend de ranking:** `moocore.pareto_rank` sustituye al `FastNonDominatedRanking` de
+  jMetalPy (E10), con un test que compara ambos con empates y duplicados. Una caracterización de ZDT1
+  con D = 30 (n = 6000) pasa de 26 s a 3.9 s. El test de dominancia por pares entre vecinos sigue
+  usando el comparador de jMetalPy, que no es un cuello de botella.
