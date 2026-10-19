@@ -5,8 +5,15 @@ import pytest
 
 from mola.characterize import characterize
 from mola.distance import build_neighbourhood
-from mola.features import hv_cor_neig, hvd_cor_neig, nhv_cor_neig
+from mola.features import (
+    dist_f_avg_neig,
+    dist_x_avg_neig,
+    hv_cor_neig,
+    hvd_cor_neig,
+    nhv_cor_neig,
+)
 from mola.hypervolume import reference_point
+from mola.normalization import build_normalizers
 from mola.sample import Sample
 
 _ALL_49_FEATURE_NAMES = {
@@ -173,3 +180,24 @@ class TestCharacterize:
         # Assert
         assert isinstance(result["length_aws"], float)
         assert isinstance(result["eval_aws"], float)
+
+    def test_should_normalize_the_average_neighbour_distances(self):
+        """Given a sample, the two neighbour-distance features use the whole-sample ranges."""
+        # Arrange
+        sample = _make_sample()
+        neighbourhood = build_neighbourhood(sample.variables, neighbours=sample.number_of_variables)
+        normalizers = build_normalizers(sample.variables, sample.objectives)
+
+        # Act
+        result = characterize(sample)
+
+        # Assert
+        assert result["dist_x_avg_neig"] == pytest.approx(
+            dist_x_avg_neig(sample.variables, neighbourhood, normalizers.variable_space)
+        )
+        assert result["dist_f_avg_neig"] == pytest.approx(
+            dist_f_avg_neig(sample.objectives, neighbourhood, normalizers.objective_space)
+        )
+        assert result["dist_f_dist_x_avg_neig"] == pytest.approx(
+            result["dist_f_avg_neig"] / result["dist_x_avg_neig"]
+        )

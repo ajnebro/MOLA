@@ -1,5 +1,7 @@
 """Unit tests for module mola.features.evolvability."""
 
+import math
+
 import numpy as np
 import pytest
 
@@ -21,6 +23,7 @@ from mola.features import (
     sup_avg_neig,
 )
 from mola.hypervolume import reference_point
+from mola.normalization import build_normalizers
 
 
 class TestSupAvgNeig:
@@ -150,6 +153,23 @@ class TestDistXAvgNeig:
         # Assert
         assert value == pytest.approx(20.0 / 3.0)
 
+    def test_should_normalize_by_the_whole_sample_variable_space_range(self):
+        """Given the variable-space normalizer, returns the mean min-max normalized."""
+        # Arrange: pairwise variable distances 3, 10, 7 -> range [3, 10]
+        variables = np.array([[0.0], [3.0], [10.0]])
+        objectives = np.array([[0.0, 0.0], [3.0, 4.0], [0.0, 8.0]])
+        indices = np.array([[1, 2], [0, 2], [0, 1]])
+        neighbourhood = Neighbourhood(
+            indices=indices, distances=np.zeros_like(indices, dtype=float)
+        )
+        normalizers = build_normalizers(variables, objectives)
+
+        # Act
+        value = dist_x_avg_neig(variables, neighbourhood, normalizers.variable_space)
+
+        # Assert: (20/3 - 3) / (10 - 3) = 11/21
+        assert value == pytest.approx(11.0 / 21.0)
+
 
 class TestDistFAvgNeig:
     """Unit tests for dist_f_avg_neig."""
@@ -170,6 +190,23 @@ class TestDistFAvgNeig:
         # Assert
         assert value == pytest.approx(6.0)
 
+    def test_should_normalize_by_the_whole_sample_objective_space_range(self):
+        """Given the objective-space normalizer, returns the mean min-max normalized."""
+        # Arrange: pairwise objective distances 5, 8, 5 -> range [5, 8]
+        variables = np.array([[0.0], [3.0], [10.0]])
+        objectives = np.array([[0.0, 0.0], [3.0, 4.0], [0.0, 8.0]])
+        indices = np.array([[1, 2], [0, 2], [0, 1]])
+        neighbourhood = Neighbourhood(
+            indices=indices, distances=np.zeros_like(indices, dtype=float)
+        )
+        normalizers = build_normalizers(variables, objectives)
+
+        # Act
+        value = dist_f_avg_neig(objectives, neighbourhood, normalizers.objective_space)
+
+        # Assert: (6 - 5) / (8 - 5) = 1/3
+        assert value == pytest.approx(1.0 / 3.0)
+
 
 class TestDistFDistXAvgNeig:
     """Unit tests for dist_f_dist_x_avg_neig."""
@@ -189,6 +226,50 @@ class TestDistFDistXAvgNeig:
 
         # Assert: 6.0 / (20/3) = 0.9
         assert value == pytest.approx(0.9)
+
+    def test_should_divide_the_normalized_features_when_normalizers_are_given(self):
+        """Given both normalizers, returns the ratio of the two normalized features."""
+        # Arrange
+        variables = np.array([[0.0], [3.0], [10.0]])
+        objectives = np.array([[0.0, 0.0], [3.0, 4.0], [0.0, 8.0]])
+        indices = np.array([[1, 2], [0, 2], [0, 1]])
+        neighbourhood = Neighbourhood(
+            indices=indices, distances=np.zeros_like(indices, dtype=float)
+        )
+        normalizers = build_normalizers(variables, objectives)
+
+        # Act
+        value = dist_f_dist_x_avg_neig(
+            objectives,
+            variables,
+            neighbourhood,
+            objective_normalizer=normalizers.objective_space,
+            variable_normalizer=normalizers.variable_space,
+        )
+
+        # Assert: (1/3) / (11/21) = 7/11
+        assert value == pytest.approx(7.0 / 11.0)
+
+    def test_should_return_nan_when_the_normalized_variable_distance_is_zero(self):
+        """Given every neighbour at the sample's minimum distance, returns NaN, not an error."""
+        # Arrange: points 0, 1, 2, each with its nearest neighbour at distance 1 = minimum
+        variables = np.array([[0.0], [1.0], [2.0]])
+        objectives = np.array([[0.0, 1.0], [1.0, 0.0], [2.0, 2.0]])
+        indices = np.array([[1], [0], [1]])
+        neighbourhood = Neighbourhood(indices=indices, distances=np.ones_like(indices, dtype=float))
+        normalizers = build_normalizers(variables, objectives)
+
+        # Act
+        value = dist_f_dist_x_avg_neig(
+            objectives,
+            variables,
+            neighbourhood,
+            objective_normalizer=normalizers.objective_space,
+            variable_normalizer=normalizers.variable_space,
+        )
+
+        # Assert
+        assert math.isnan(value)
 
 
 class TestDiffFAvgNeig:
@@ -229,6 +310,25 @@ class TestDiffFDistXAvgNeig:
 
         # Assert: (11/3) / (20/3) = 11/20 = 0.55
         assert value == pytest.approx(0.55)
+
+    def test_should_divide_by_the_normalized_variable_distance_when_given(self):
+        """Given the variable-space normalizer, divides the raw diff_f by the normalized dist_x."""
+        # Arrange
+        variables = np.array([[0.0], [3.0], [10.0]])
+        objectives = np.array([[0.0, 0.0], [3.0, 4.0], [0.0, 8.0]])
+        indices = np.array([[1, 2], [0, 2], [0, 1]])
+        neighbourhood = Neighbourhood(
+            indices=indices, distances=np.zeros_like(indices, dtype=float)
+        )
+        normalizers = build_normalizers(variables, objectives)
+
+        # Act
+        value = diff_f_dist_x_avg_neig(
+            objectives, variables, neighbourhood, variable_normalizer=normalizers.variable_space
+        )
+
+        # Assert: (11/3) / (11/21) = 7
+        assert value == pytest.approx(7.0)
 
 
 class TestHvAvgNeig:
