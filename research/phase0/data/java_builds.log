@@ -1,0 +1,9 @@
+
+asis exit=1 seconds=9
+jmetal78 exit=0 seconds=63
+openjdk version "24.0.2" 2025-07-15
+OpenJDK Runtime Environment Temurin-24.0.2+12 (build 24.0.2+12)
+OpenJDK 64-Bit Server VM Temurin-24.0.2+12 (build 24.0.2+12, mixed mode, sharing)
+Apache Maven 3.9.11 (3e54c93a704957b63ee3494413a2b544fd3d825b)
+Maven home: C:\Program Files\JetBrains\IntelliJ IDEA 261.17801.55\plugins\maven\lib\maven3
+Java version: 24.0.2, vendor: Eclipse Adoptium, runtime: C:\Program Files\Eclipse Adoptium\jdk-24.0.2.12-hotspot

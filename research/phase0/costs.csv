@@ -1,0 +1,10 @@
+step;evaluations;wall_seconds;notes
+pytest (152 tests);0;18.8;src+tests at 58bc0ca
+ruff check;0;1.0;all checks passed
+mvn test as-is, empty repo;0;9;fails resolving 7.6-SNAPSHOT
+mvn test jMetal 7.8, empty repo;0;63;"32 tests pass; includes downloads"
+checks.py;3800;179.0;"{""RE25"": 600, ""DTLZ2"": 2400, ""RE33"": 800}"
+moorphology Java runs (orig + instrumented);2400;3.7;ZDT1 D=2 (n=400), D=4 (n=800)
+pilot.py;12200;39.6;"COCO 5x400; RE25/33/42/36 3 x 200D"
+VAMOS static audit (agent);0;404;reading only
+feature-contract agent verification scripts;14000;;"ZDT1 D5 x3 (3000), ZDT1 D30 (6000), DTLZ2 D6 x2 (2400), DTLZ1 D6 (1200), RE33 (800), DTLZ2 n600 (600); cap not passed to the agent -> phase total exceeds the 25 000 cap"

@@ -1,0 +1,52 @@
+feature;scope;thesis_numbers;moody_kg_zenodo;mola_committed_csvs;note
+dist_x_avg;shared;"DIFFERENT DEFINITION: self-pairs force min=0, divisor n(n+1)/2 (E25; e.g. 0.644 vs MOLA 0.509); audit called it reliable";same as thesis (moorphology);"unaffected by bugs; raw-geometry choice (E4) on heterogeneous bounds";
+dist_x_max;shared;reliable;same;"raw (by design); scales with units (E6)";
+dist_f_avg;shared;"DIFFERENT DEFINITION as dist_x_avg (E25); the F-normaliser bug is numerically inert";same;unaffected;
+dist_f_max;shared;reliable;same;raw (by design);
+nd_n;shared;reliable (getSubFront read before overwrite);same;unaffected;
+dist_x_nd_avg;shared;"AFFECTED: pair filter checks i twice; divided by |ND| (E12)";same;raw-geometry choice (E4);"E12/E13 evidence by executing moorphology master; link to thesis version pending"
+dist_x_nd_max;shared;AFFECTED: pair filter (E12);same;"raw (by design); raw-geometry choice";"E12/E13 evidence by executing moorphology master; link to thesis version pending"
+rank_avg;shared;AFFECTED: ranks overwritten by local rankings (E13);same;unaffected;"E12/E13 evidence by executing moorphology master; link to thesis version pending"
+rank_max;shared;AFFECTED (E13);same;unaffected;"E12/E13 evidence by executing moorphology master; link to thesis version pending"
+rank_ent;shared;AFFECTED (E13);same;unaffected;"E12/E13 evidence by executing moorphology master; link to thesis version pending"
+sup_avg_neig;shared;AFFECTED: global-rank comparison, overwritten ranks, d-1 neighbours over d (E12, E13);same;raw-geometry choice (graph);"E12/E13 evidence by executing moorphology master; link to thesis version pending"
+inf_avg_neig;shared;AFFECTED (E12, E13);same;raw-geometry choice (graph);"E12/E13 evidence by executing moorphology master; link to thesis version pending"
+inc_avg_neig;shared;AFFECTED (E12, E13);same;raw-geometry choice (graph);"E12/E13 evidence by executing moorphology master; link to thesis version pending"
+lnd_avg_neig;shared;AFFECTED: local vs overwritten global ranks (E12, E13);same;raw-geometry choice (graph);"E12/E13 evidence by executing moorphology master; link to thesis version pending"
+lsupp_avg_neig;shared;AFFECTED: not a convex-hull test (E12);same;"AFFECTED for M>=3 (E1, E3); raw-geometry choice";"E12/E13 evidence by executing moorphology master; link to thesis version pending"
+dist_x_avg_neig;shared;AFFECTED: '=' accumulator (E12, E14);same;raw, contradicts CLAUDE.md (E5);"E12/E13 evidence by executing moorphology master; link to thesis version pending"
+dist_f_avg_neig;shared;AFFECTED: '=' accumulator (E12, E14);same;raw, contradicts CLAUDE.md (E5);"E12/E13 evidence by executing moorphology master; link to thesis version pending"
+dist_x_cor_neig;shared;AFFECTED: different definition, arbitrary vector order (E21);same;raw-geometry choice (graph);"E12/E13 evidence by executing moorphology master; link to thesis version pending"
+dist_f_cor_neig;shared;AFFECTED: different definition (E21);same;raw-geometry choice (graph);"E12/E13 evidence by executing moorphology master; link to thesis version pending"
+dist_x_max_neig;thesis_only;"thesis-only; d-1 neighbours; max of per-sample mean (not a paper feature)";same;not computed by MOLA;
+dist_f_max_neig;thesis_only;"thesis-only; d-1 neighbours (not a paper feature)";same;not computed by MOLA;
+f_cor;mola_only;n/a (not in thesis);n/a;unaffected by known bugs;
+supp_n;mola_only;n/a (not in thesis);n/a;AFFECTED for M>=3 (E1-E3);
+hv;mola_only;n/a (not in thesis);n/a;unaffected by known bugs;
+fdc;mola_only;n/a (not in thesis);n/a;unaffected by known bugs;
+slo_n;mola_only;n/a (not in thesis);n/a;raw-geometry choice (graph);
+slo_dist_avg;mola_only;n/a (not in thesis);n/a;raw-geometry choice (graph);
+slo_dist_max;mola_only;n/a (not in thesis);n/a;raw-geometry choice (graph);
+plo_n;mola_only;n/a (not in thesis);n/a;raw-geometry choice (graph);
+plo_dist_avg;mola_only;n/a (not in thesis);n/a;raw-geometry choice (graph);
+plo_dist_max;mola_only;n/a (not in thesis);n/a;raw-geometry choice (graph);
+nd_per_plo;mola_only;n/a (not in thesis);n/a;raw-geometry choice (graph);
+length_aws;mola_only;n/a (not in thesis);n/a;raw-geometry choice (graph);
+eval_aws;mola_only;n/a (not in thesis);n/a;raw-geometry choice (graph);
+dist_f_dist_x_avg_neig;mola_only;n/a (not in thesis);n/a;raw-geometry choice (graph);
+diff_f_avg_neig;mola_only;n/a (not in thesis);n/a;raw-geometry choice (graph);
+diff_f_dist_x_avg_neig;mola_only;n/a (not in thesis);n/a;raw-geometry choice (graph);
+hv_avg_neig;mola_only;n/a (not in thesis);n/a;unaffected by known bugs;
+hvd_avg_neig;mola_only;n/a (not in thesis);n/a;raw-geometry choice (graph);
+nhv_avg_neig;mola_only;n/a (not in thesis);n/a;raw-geometry choice (graph);
+sup_cor_neig;mola_only;n/a (not in thesis);n/a;raw-geometry choice (graph);
+inf_cor_neig;mola_only;n/a (not in thesis);n/a;raw-geometry choice (graph);
+inc_cor_neig;mola_only;n/a (not in thesis);n/a;raw-geometry choice (graph);
+lnd_cor_neig;mola_only;n/a (not in thesis);n/a;raw-geometry choice (graph);
+lsupp_cor_neig;mola_only;n/a (not in thesis);n/a;"AFFECTED for M>=3 (E1, E3); raw-geometry choice";
+dist_f_dist_x_cor_neig;mola_only;n/a (not in thesis);n/a;raw-geometry choice (graph);
+diff_f_cor_neig;mola_only;n/a (not in thesis);n/a;raw-geometry choice (graph);
+diff_f_dist_x_cor_neig;mola_only;n/a (not in thesis);n/a;raw-geometry choice (graph);
+hv_cor_neig;mola_only;n/a (not in thesis);n/a;raw-geometry choice (graph);
+hvd_cor_neig;mola_only;n/a (not in thesis);n/a;raw-geometry choice (graph);
+nhv_cor_neig;mola_only;n/a (not in thesis);n/a;raw-geometry choice (graph);

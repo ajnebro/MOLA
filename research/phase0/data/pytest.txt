@@ -1,0 +1,22 @@
+........................................................................ [ 47%]
+........................................................................ [ 94%]
+........                                                                 [100%]
+============================== warnings summary ===============================
+tests/test_features/test_multimodality.py::TestSloDistAvg::test_should_return_nan_when_every_objective_has_fewer_than_two_local_optima
+  C:\Users\nicor\Desktop\MOLA\src\mola\features\multimodality.py:143: RuntimeWarning: Mean of empty slice
+    return float(np.nanmean(per_objective))
+
+tests/test_features/test_multimodality.py::TestSloDistMax::test_should_return_nan_when_every_objective_has_fewer_than_two_local_optima
+  C:\Users\nicor\Desktop\MOLA\src\mola\features\multimodality.py:170: RuntimeWarning: Mean of empty slice
+    return float(np.nanmean(per_objective))
+
+tests/test_ruggedness.py::TestNeighbourCorrelation::test_should_return_nan_for_a_constant_measure
+  C:\Users\nicor\Desktop\MOLA\src\mola\ruggedness.py:36: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+    return float(spearmanr(reference_values, neighbour_values).statistic)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+152 passed, 3 warnings in 16.67s
+
+real	0m18.757s
+user	0m0.000s
+sys	0m0.030s

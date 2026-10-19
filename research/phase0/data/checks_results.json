@@ -1,0 +1,520 @@
+{
+  "6.1_supported_cases": {
+    "A": {
+      "points": [
+        [
+          0.0,
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.6,
+          0.6,
+          0.6
+        ]
+      ],
+      "mutually_nondominated": true,
+      "mola": [
+        true,
+        true,
+        true
+      ],
+      "weak_supported_lp": [
+        true,
+        true,
+        false
+      ],
+      "extreme_supported_lp": [
+        true,
+        true,
+        false
+      ]
+    },
+    "B": {
+      "points": [
+        [
+          0.0,
+          2.0
+        ],
+        [
+          0.5,
+          1.5
+        ],
+        [
+          2.0,
+          0.0
+        ],
+        [
+          1.5,
+          1.0
+        ]
+      ],
+      "mutually_nondominated": true,
+      "mola": [
+        true,
+        false,
+        true,
+        false
+      ],
+      "weak_supported_lp": [
+        true,
+        true,
+        true,
+        false
+      ],
+      "extreme_supported_lp": [
+        true,
+        false,
+        true,
+        false
+      ]
+    },
+    "C": {
+      "points": [
+        [
+          0.4,
+          0.5,
+          0.3
+        ],
+        [
+          0.9,
+          0.2,
+          0.8
+        ],
+        [
+          0.5,
+          0.3,
+          0.7
+        ],
+        [
+          0.8,
+          0.9,
+          0.1
+        ]
+      ],
+      "mutually_nondominated": true,
+      "mola": [
+        true,
+        true,
+        true,
+        false
+      ],
+      "weak_supported_lp": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "extreme_supported_lp": [
+        true,
+        true,
+        true,
+        true
+      ]
+    }
+  },
+  "6.2_mola_ranking_isolation": {
+    "global_rank_unchanged_after_local_rankings": true,
+    "fronts": 16
+  },
+  "6.3_neighbourhood_dominance": {
+    "duplicates_self_excluded_by_index": true,
+    "duplicates_neighbours": [
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        3,
+        1
+      ]
+    ],
+    "requested_k_10_with_n_4_effective_k": 3,
+    "sup_inf_inc_sum_min_max": [
+      1.0,
+      1.0
+    ],
+    "pairwise_vs_global_rank_example": {
+      "y": [
+        0.0,
+        3.0
+      ],
+      "x": [
+        2.0,
+        2.0
+      ],
+      "global_ranks": [
+        0,
+        1
+      ],
+      "pairwise_incomparable": true,
+      "rank_comparison_says": "y dominates x"
+    }
+  },
+  "6.5_degenerate": {
+    "nonfinite_objectives": {
+      "accepted_by_Sample": true,
+      "nan_features": [
+        "diff_f_avg_neig",
+        "diff_f_cor_neig",
+        "diff_f_dist_x_avg_neig",
+        "diff_f_dist_x_cor_neig",
+        "dist_f_avg",
+        "dist_f_avg_neig",
+        "dist_f_cor_neig",
+        "dist_f_dist_x_avg_neig",
+        "dist_f_dist_x_cor_neig",
+        "f_cor",
+        "fdc",
+        "hv_avg_neig",
+        "hv_cor_neig",
+        "hvd_avg_neig",
+        "hvd_cor_neig",
+        "nhv_cor_neig"
+      ],
+      "n_features_finite": 35.0
+    },
+    "degenerate_bounds_upper_eq_lower": "accepted (no check); bound normalisation would divide by zero",
+    "single_nondominated_point_nan_features": [
+      "dist_x_nd_avg",
+      "dist_x_nd_max",
+      "fdc"
+    ],
+    "single_nondominated_point_supp_n": 1.0,
+    "thesis_ratio_term": {
+      "(-0.8,-0.2)": 3.0,
+      "(-0.9,0.1)": 10.0,
+      "(-0.2,0)": Infinity,
+      "(0,0)": NaN,
+      "(0.01,0.02)": 0.5
+    }
+  },
+  "6.6_moocore_pareto_rank": {
+    "M2_random": {
+      "identical": true,
+      "jmetalpy_s": 0.026490499963983893,
+      "moocore_s": 0.00014160003047436476
+    },
+    "M2_with_duplicates": {
+      "identical": true,
+      "jmetalpy_s": 0.056411600031424314,
+      "moocore_s": 0.00013179995585232973
+    },
+    "M2_with_ties": {
+      "identical": true,
+      "jmetalpy_s": 0.04257270001107827,
+      "moocore_s": 0.000152900000102818
+    },
+    "M2_integer_grid": {
+      "identical": true,
+      "jmetalpy_s": 0.04566149995662272,
+      "moocore_s": 0.00012670003343373537
+    },
+    "M3_random": {
+      "identical": true,
+      "jmetalpy_s": 0.04219770000781864,
+      "moocore_s": 0.0002546999603509903
+    },
+    "M3_with_duplicates": {
+      "identical": true,
+      "jmetalpy_s": 0.04163049999624491,
+      "moocore_s": 0.0001639999682083726
+    },
+    "M3_with_ties": {
+      "identical": true,
+      "jmetalpy_s": 0.057469200051855296,
+      "moocore_s": 0.0002451999462209642
+    },
+    "M3_integer_grid": {
+      "identical": true,
+      "jmetalpy_s": 0.06271989998640493,
+      "moocore_s": 0.0001936000189743936
+    },
+    "M5_random": {
+      "identical": true,
+      "jmetalpy_s": 0.04868060001172125,
+      "moocore_s": 0.0014776000170968473
+    },
+    "M5_with_duplicates": {
+      "identical": true,
+      "jmetalpy_s": 0.0522425000090152,
+      "moocore_s": 0.00031129998387768865
+    },
+    "M5_with_ties": {
+      "identical": true,
+      "jmetalpy_s": 0.16375579999294132,
+      "moocore_s": 0.0008580000139772892
+    },
+    "M5_integer_grid": {
+      "identical": true,
+      "jmetalpy_s": 0.06968469999264926,
+      "moocore_s": 0.0004121999954804778
+    }
+  },
+  "6.4_scaling": {
+    "problem": "RE25",
+    "evaluations": 600,
+    "D": 3,
+    "graph_only_bound_normalised": {
+      "changed": [
+        "slo_n",
+        "slo_dist_avg",
+        "slo_dist_max",
+        "plo_n",
+        "plo_dist_avg",
+        "plo_dist_max",
+        "nd_per_plo",
+        "length_aws",
+        "eval_aws",
+        "sup_avg_neig",
+        "inf_avg_neig",
+        "inc_avg_neig",
+        "lnd_avg_neig",
+        "lsupp_avg_neig",
+        "dist_x_avg_neig",
+        "dist_f_avg_neig",
+        "dist_f_dist_x_avg_neig",
+        "diff_f_avg_neig",
+        "diff_f_dist_x_avg_neig",
+        "hvd_avg_neig",
+        "nhv_avg_neig",
+        "dist_x_cor_neig",
+        "dist_f_cor_neig",
+        "sup_cor_neig",
+        "inf_cor_neig",
+        "inc_cor_neig",
+        "lnd_cor_neig",
+        "lsupp_cor_neig",
+        "dist_f_dist_x_cor_neig",
+        "diff_f_cor_neig",
+        "diff_f_dist_x_cor_neig",
+        "hv_cor_neig",
+        "hvd_cor_neig",
+        "nhv_cor_neig"
+      ],
+      "ratio_new_over_old": {
+        "slo_n": 0.6382252559726962,
+        "slo_dist_avg": 1.0606086174126226,
+        "slo_dist_max": 0.9854109331687823,
+        "plo_n": 0.6361702127659574,
+        "plo_dist_avg": 1.011804609931817,
+        "plo_dist_max": 0.9852378924337268,
+        "nd_per_plo": 1.57190635451505,
+        "length_aws": 4.5,
+        "eval_aws": 1.3229166666666665,
+        "sup_avg_neig": 2.6797385620915035,
+        "inf_avg_neig": 2.353658536585366,
+        "inc_avg_neig": 0.6770060687795009,
+        "lnd_avg_neig": 0.782114975159688,
+        "lsupp_avg_neig": 0.7602639296187683,
+        "dist_x_avg_neig": 6.8287596188256865,
+        "dist_f_avg_neig": 0.29744868084466786,
+        "dist_f_dist_x_avg_neig": 0.04355822981741138,
+        "diff_f_avg_neig": 0.2974466859992345,
+        "diff_f_dist_x_avg_neig": 0.04355793769328568,
+        "hvd_avg_neig": 0.36525353062205573,
+        "nhv_avg_neig": 0.914709584373526,
+        "dist_x_cor_neig": 0.6966199011415531,
+        "dist_f_cor_neig": 1.6121077507112576,
+        "sup_cor_neig": 2.662078600989815,
+        "inf_cor_neig": -6.812880826556932,
+        "inc_cor_neig": 1.7028239352081143,
+        "lnd_cor_neig": 1.4708165868182936,
+        "lsupp_cor_neig": 1.2812187962517407,
+        "dist_f_dist_x_cor_neig": 1.581090644324509,
+        "diff_f_cor_neig": 1.6144182970078838,
+        "diff_f_dist_x_cor_neig": 1.5838339217024024,
+        "hv_cor_neig": 1.6018449627433369,
+        "hvd_cor_neig": 1.1298263987734896,
+        "nhv_cor_neig": 1.2075700407221874
+      }
+    },
+    "measurement_only_bound_normalised": {
+      "changed": [
+        "dist_x_avg",
+        "dist_x_max",
+        "dist_x_nd_avg",
+        "dist_x_nd_max",
+        "fdc",
+        "slo_dist_avg",
+        "slo_dist_max",
+        "plo_dist_avg",
+        "plo_dist_max",
+        "dist_x_avg_neig",
+        "dist_f_dist_x_avg_neig",
+        "diff_f_dist_x_avg_neig",
+        "dist_x_cor_neig",
+        "dist_f_dist_x_cor_neig",
+        "diff_f_dist_x_cor_neig"
+      ],
+      "ratio_new_over_old": {
+        "dist_x_avg": 1.25891795036246,
+        "dist_x_max": 0.022561264600974153,
+        "dist_x_nd_avg": 16.969318596358278,
+        "dist_x_nd_max": 0.3295764441200339,
+        "fdc": -5.552795031055901,
+        "slo_dist_avg": 1.0994799837268645,
+        "slo_dist_max": 0.020178997056884238,
+        "plo_dist_avg": 1.2279529538039984,
+        "plo_dist_max": 0.022577598431668514,
+        "dist_x_avg_neig": 0.7596591025584439,
+        "dist_f_dist_x_avg_neig": 1.3163799349367573,
+        "diff_f_dist_x_avg_neig": 1.3163799349367575,
+        "dist_x_cor_neig": 0.8234697632203946,
+        "dist_f_dist_x_cor_neig": 1.0396345472316604,
+        "diff_f_dist_x_cor_neig": 1.0394149137882842
+      }
+    },
+    "uniform_scaling_c": 3.7,
+    "uniform_scaling": {
+      "changed": [
+        "dist_x_max",
+        "dist_x_nd_max",
+        "slo_dist_max",
+        "plo_dist_max",
+        "dist_x_avg_neig",
+        "dist_f_dist_x_avg_neig",
+        "diff_f_dist_x_avg_neig"
+      ],
+      "classification": {
+        "dist_x_max": "scales_by_c",
+        "dist_x_nd_max": "scales_by_c",
+        "slo_dist_max": "scales_by_c",
+        "plo_dist_max": "scales_by_c",
+        "dist_x_avg_neig": "scales_by_c",
+        "dist_f_dist_x_avg_neig": "scales_by_1/c",
+        "diff_f_dist_x_avg_neig": "scales_by_1/c"
+      }
+    },
+    "affine_map": {
+      "a": [
+        4.373893440466855,
+        11.916844279145375,
+        40.08359581379921
+      ],
+      "b": [
+        1.6432407212873557,
+        -8.117427155192017,
+        -1.3374611952705244
+      ]
+    },
+    "affine_raw_geometry": {
+      "changed": [
+        "dist_x_avg",
+        "dist_x_max",
+        "dist_x_nd_avg",
+        "dist_x_nd_max",
+        "fdc",
+        "slo_n",
+        "slo_dist_avg",
+        "slo_dist_max",
+        "plo_n",
+        "plo_dist_avg",
+        "plo_dist_max",
+        "nd_per_plo",
+        "length_aws",
+        "eval_aws",
+        "sup_avg_neig",
+        "inf_avg_neig",
+        "inc_avg_neig",
+        "lnd_avg_neig",
+        "lsupp_avg_neig",
+        "dist_x_avg_neig",
+        "dist_f_avg_neig",
+        "dist_f_dist_x_avg_neig",
+        "diff_f_avg_neig",
+        "diff_f_dist_x_avg_neig",
+        "hvd_avg_neig",
+        "nhv_avg_neig",
+        "dist_x_cor_neig",
+        "dist_f_cor_neig",
+        "sup_cor_neig",
+        "inf_cor_neig",
+        "inc_cor_neig",
+        "lnd_cor_neig",
+        "lsupp_cor_neig",
+        "dist_f_dist_x_cor_neig",
+        "diff_f_cor_neig",
+        "diff_f_dist_x_cor_neig",
+        "hv_cor_neig",
+        "hvd_cor_neig",
+        "nhv_cor_neig"
+      ]
+    },
+    "affine_bound_normalised_geometry": {
+      "changed_vs_unmapped_normalised": [],
+      "max_abs_X_difference": 3.3306690738754696e-16
+    }
+  },
+  "6.1_supported_impact": {
+    "DTLZ2": {
+      "n": 2400,
+      "M": 3,
+      "k": 12,
+      "evaluations": 2400,
+      "sampling_seconds": 0.08502719999523833,
+      "global_nd": 105,
+      "supp_n": {
+        "mola": 0.20952380952380953,
+        "weak_lp": 0.20952380952380953,
+        "extreme_lp": 0.20952380952380953
+      },
+      "lsupp_avg_neig": {
+        "mola": 0.36951388888888886,
+        "weak": 0.40475694444444443,
+        "extreme": 0.40475694444444443
+      },
+      "local_sets_using_count_le_M_shortcut": 0.02375,
+      "local_disagreements_by_kind": {
+        "false_negative_missed_vertex": 1074,
+        "false_positive_shortcut_count_le_M": 14
+      }
+    },
+    "RE33": {
+      "n": 800,
+      "M": 3,
+      "k": 4,
+      "evaluations": 800,
+      "sampling_seconds": 0.01253290002932772,
+      "global_nd": 124,
+      "supp_n": {
+        "mola": 0.18548387096774194,
+        "weak_lp": 0.25806451612903225,
+        "extreme_lp": 0.18548387096774194
+      },
+      "lsupp_avg_neig": {
+        "mola": 0.77125,
+        "weak": 0.788125,
+        "extreme": 0.7378125
+      },
+      "local_sets_using_count_le_M_shortcut": 0.335,
+      "local_disagreements_by_kind": {
+        "false_negative_missed_non_vertex": 20,
+        "false_negative_missed_vertex": 47
+      }
+    }
+  },
+  "evaluations_used": {
+    "RE25": 600,
+    "DTLZ2": 2400,
+    "RE33": 800
+  },
+  "wall_seconds": 179.038323100016
+}

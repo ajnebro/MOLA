@@ -1,0 +1,34 @@
+{
+  "evaluations": {
+    "prior_checks_RE25": 600,
+    "prior_checks_DTLZ2": 2400,
+    "prior_checks_RE33": 800,
+    "prior_moorphology_java_ZDT1_D2_D4_x2": 2400,
+    "bbob-biobj_f02_i02_d02": 2000,
+    "RE25": 1800,
+    "RE33": 2400,
+    "RE42": 3600,
+    "RE36": 2400
+  },
+  "evaluations_total": 18400,
+  "wall_seconds": 39.5678871999844,
+  "coco_problem": {
+    "id": "bbob-biobj_f02_i02_d02",
+    "name": "bbob_f001_i03_d02__bbob_f002_i05_d02",
+    "dimension": 2,
+    "objectives": 2,
+    "lower_bounds": [
+      -100.0,
+      -100.0
+    ],
+    "upper_bounds": [
+      100.0,
+      100.0
+    ],
+    "cocoex_version": "2.8.2",
+    "f_at_origin": [
+      -232.6408672,
+      15230382.358891413
+    ]
+  }
+}

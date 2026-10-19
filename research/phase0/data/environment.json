@@ -1,0 +1,30 @@
+{
+  "python": "3.12.3 (tags/v3.12.3:f6650f9, Apr  9 2024, 14:05:25) [MSC v.1938 64 bit (AMD64)]",
+  "python_executable": "C:\\Users\\nicor\\AppData\\Local\\Temp\\claude\\c--Users-nicor-Desktop-MOLA\\b46447c5-9140-40db-99a7-3a5aa63cce61\\scratchpad\\venv\\Scripts\\python.exe",
+  "platform": "Windows-11-10.0.26300-SP0",
+  "mola_repo": {
+    "path": "C:\\Users\\nicor\\Desktop\\MOLA",
+    "branch": "research/phase0",
+    "head": "58bc0ca69f17c1bee2c078360ec7cfa4995e621b",
+    "origin_main": "58bc0ca69f17c1bee2c078360ec7cfa4995e621b",
+    "remote": "https://github.com/ajnebro/MOLA.git",
+    "status_porcelain": "?? plan.md\n?? research/"
+  },
+  "vamos_repo": {
+    "path": "C:\\Users\\nicor\\Desktop\\VAMOS",
+    "head": "0a8bbb02203f92427001b515b89904378c570aa6",
+    "branch": "update/vamos-latest-2026-09-16"
+  },
+  "packages": {
+    "mola": "0.2.0",
+    "numpy": "2.5.4",
+    "scipy": "1.18.1",
+    "pandas": "3.0.6",
+    "jmetalpy": "1.9.0",
+    "moocore": "0.3.2",
+    "typer": "0.27.3",
+    "pytest": "9.1.1",
+    "ruff": "0.17.1",
+    "coco-experiment": "2.8.2"
+  }
+}
