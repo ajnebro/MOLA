@@ -85,9 +85,9 @@ def lsupp_avg_neig(local: LocalNondominance, neighbourhood: Neighbourhood) -> fl
     """Average proportion of supported locally non-dominated neighbours (Table 1).
 
     The local analogue of the global `supp_n`: among a solution's locally non-dominated
-    neighbours, the proportion that are also "supported" — on a minimizing-direction facet of
-    the local non-dominated subset's convex hull (`mola.hull.supported_mask`), the identical test
-    `supp_n` applies globally (Design decisions).
+    neighbours, the proportion that are also "supported" — a minimizer of some strictly positive
+    weighted sum over the local non-dominated subset (`mola.hull.supported_mask`), the identical
+    test `supp_n` applies globally (Design decisions).
 
     Args:
         local: Per-solution locally-non-dominated and locally-supported neighbour counts, built

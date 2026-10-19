@@ -96,9 +96,9 @@ def local_nondominance(objectives: np.ndarray, neighbourhood: Neighbourhood) -> 
     For each solution `i`, ranks `{i} ∪ N(i)` — via the same non-dominated sorting as the global
     `Ranking`, just restricted to this local group — and counts how many of `i`'s neighbours (not
     `i` itself) land in that local front 0 (`lnd`). Of those, further counts how many are also
-    "supported" within the local non-dominated subset, via the same convex-hull facet test as the
-    global `supp_n` (`lsupp`) — a genuine convex-hull test, not a rank-position comparison
-    (Design decisions, "lnd/lsupp").
+    "supported" within the local non-dominated subset, via the same exact test as the global
+    `supp_n` (`lsupp`, `mola.hull.supported_mask`) — a genuine geometric test, not a
+    rank-position comparison (Design decisions, "lnd/lsupp").
 
     Args:
         objectives: Objective vectors in minimization form, shape (n, M).

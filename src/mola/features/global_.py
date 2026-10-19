@@ -243,29 +243,23 @@ def fdc(variables: np.ndarray, objectives: np.ndarray, ranking: Ranking) -> floa
 def supp_n(objectives: np.ndarray, ranking: Ranking) -> float:
     """Proportion of supported non-dominated solutions (Table 1: supp_n).
 
-    Supported = on the convex hull of the non-dominated subset's objective vectors, findable by
-    minimizing some linear scalarization (classical definition, Ehrgott [10], §4.1.1). The
+    Supported = a minimizer, over the non-dominated subset, of some weighted sum of the
+    objectives with strictly positive weights, ties allowed (classical definition, Ehrgott [10],
+    §4.1.1). This includes points inside a minimizing facet, not only its vertices. The
     denominator is `|ND|`, not `n` — §4.1.1's "proportion of supported points **therein**" refers
     back to "non-dominated solutions", distinct from `nd_n`'s "among the sample" (Design
     decisions).
 
-    A point is supported iff it lies on a facet of the convex hull whose outward normal is
-    entirely <= 0 (the minimizing-direction facet) — not merely on the hull at all, since a facet
-    can face away from the minimizing orthant. If `|ND| <= M`, every non-dominated solution is
-    supported by construction (too few points to span a dominating simplex) — `ConvexHull` is
-    skipped.
-
     Uses `mola.hull.supported_mask`, shared with `lsupp_avg_neig`'s local version of the same
-    test.
+    test. The test is exact for every `|ND|` and `M`; there is no small-set shortcut and no
+    degenerate-hull fallback.
 
     Args:
         objectives: Objective vectors in minimization form, shape (n, M).
         ranking: The sample's non-dominated ranking.
 
     Returns:
-        |supported| / |ND|. Falls back to 1.0 on `QhullError` (a coplanar/rank-deficient ND set
-        with `|ND| > M`) — a **documented approximation**, not exact, expected to be practically
-        unreachable for continuous, LHS-sampled objectives (Design decisions).
+        |supported| / |ND|.
     """
     return float(supported_mask(objectives[ranking.nondominated]).mean())
 
