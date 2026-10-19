@@ -1,0 +1,42 @@
+{
+  "reservation_seed": 20261020,
+  "fraction": 0.25,
+  "rule": "whole WFG suite + seeded 25% (>= 1) of ZDT, DTLZ, ZCAT groups; LZ09/UF, RE, RWA development",
+  "reserved_groups": [
+    "dtlz7",
+    "wfg1",
+    "wfg2",
+    "wfg3",
+    "wfg4",
+    "wfg5",
+    "wfg6",
+    "wfg7",
+    "wfg8",
+    "wfg9",
+    "zcat14",
+    "zcat16",
+    "zcat2",
+    "zcat7",
+    "zdt6"
+  ],
+  "reserved_problems": [
+    "dtlz7",
+    "wfg1",
+    "wfg2",
+    "wfg3",
+    "wfg4",
+    "wfg5",
+    "wfg6",
+    "wfg7",
+    "wfg8",
+    "wfg9",
+    "zcat14",
+    "zcat16",
+    "zcat18",
+    "zcat2",
+    "zcat20",
+    "zcat7",
+    "zdt6"
+  ],
+  "sha256": "7c97fa68fb915de316334e78758d27742a6c523f2f1e2ebe60deee3cade9dbe8"
+}

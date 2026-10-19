@@ -1,0 +1,432 @@
+{
+  "objective_identical_pairs": [
+    [
+      "dtlz2",
+      "dtlz5"
+    ],
+    [
+      "zcat3",
+      "zcat4"
+    ],
+    [
+      "zcat5",
+      "zcat17"
+    ],
+    [
+      "zcat7",
+      "zcat18"
+    ],
+    [
+      "zcat7",
+      "zcat20"
+    ],
+    [
+      "zcat8",
+      "zcat9"
+    ],
+    [
+      "zcat12",
+      "zcat15"
+    ],
+    [
+      "zcat18",
+      "zcat20"
+    ]
+  ],
+  "feature_identical_pairs_seed0": [
+    [
+      "dtlz2",
+      "dtlz5"
+    ],
+    [
+      "zcat3",
+      "zcat4"
+    ],
+    [
+      "zcat5",
+      "zcat17"
+    ],
+    [
+      "zcat7",
+      "zcat18"
+    ],
+    [
+      "zcat7",
+      "zcat20"
+    ],
+    [
+      "zcat8",
+      "zcat9"
+    ],
+    [
+      "zcat12",
+      "zcat15"
+    ],
+    [
+      "zcat18",
+      "zcat20"
+    ]
+  ],
+  "excluded": {
+    "zdt5": "binary encoding",
+    "re22": "mixed encoding",
+    "re23": "mixed encoding",
+    "re25": "mixed encoding"
+  },
+  "sampling": [
+    {
+      "problem": "zdt1",
+      "n": 6000,
+      "D": 30,
+      "evaluation_seconds": 0.00019950000569224358
+    },
+    {
+      "problem": "zdt2",
+      "n": 6000,
+      "D": 30,
+      "evaluation_seconds": 0.00017439998919144273
+    },
+    {
+      "problem": "zdt3",
+      "n": 6000,
+      "D": 30,
+      "evaluation_seconds": 0.00027630000840872526
+    },
+    {
+      "problem": "zdt4",
+      "n": 2000,
+      "D": 10,
+      "evaluation_seconds": 0.0003139000036753714
+    },
+    {
+      "problem": "zdt6",
+      "n": 2000,
+      "D": 10,
+      "evaluation_seconds": 0.00015679997159168124
+    },
+    {
+      "problem": "dtlz1",
+      "n": 1200,
+      "D": 6,
+      "evaluation_seconds": 0.00014929997269064188
+    },
+    {
+      "problem": "dtlz2",
+      "n": 2200,
+      "D": 11,
+      "evaluation_seconds": 0.0001406999654136598
+    },
+    {
+      "problem": "dtlz3",
+      "n": 2200,
+      "D": 11,
+      "evaluation_seconds": 0.00039549998473376036
+    },
+    {
+      "problem": "dtlz4",
+      "n": 2200,
+      "D": 11,
+      "evaluation_seconds": 0.0002332000294700265
+    },
+    {
+      "problem": "dtlz5",
+      "n": 2200,
+      "D": 11,
+      "evaluation_seconds": 0.00014349998673424125
+    },
+    {
+      "problem": "dtlz6",
+      "n": 2200,
+      "D": 11,
+      "evaluation_seconds": 0.0003799000405706465
+    },
+    {
+      "problem": "dtlz7",
+      "n": 4200,
+      "D": 21,
+      "evaluation_seconds": 0.00015499995788559318
+    },
+    {
+      "problem": "lz09_f1",
+      "n": 2000,
+      "D": 10,
+      "evaluation_seconds": 0.0004618999664671719
+    },
+    {
+      "problem": "lz09_f2",
+      "n": 6000,
+      "D": 30,
+      "evaluation_seconds": 0.003568099986296147
+    },
+    {
+      "problem": "lz09_f3",
+      "n": 6000,
+      "D": 30,
+      "evaluation_seconds": 0.003203100000973791
+    },
+    {
+      "problem": "lz09_f4",
+      "n": 6000,
+      "D": 30,
+      "evaluation_seconds": 0.003348700003698468
+    },
+    {
+      "problem": "lz09_f5",
+      "n": 6000,
+      "D": 30,
+      "evaluation_seconds": 0.005083099997136742
+    },
+    {
+      "problem": "lz09_f7",
+      "n": 2000,
+      "D": 10,
+      "evaluation_seconds": 0.001586599973961711
+    },
+    {
+      "problem": "lz09_f8",
+      "n": 2000,
+      "D": 10,
+      "evaluation_seconds": 0.0006747000152245164
+    },
+    {
+      "problem": "lz09_f9",
+      "n": 6000,
+      "D": 30,
+      "evaluation_seconds": 0.003481400024611503
+    },
+    {
+      "problem": "cec2009_uf1",
+      "n": 6000,
+      "D": 30,
+      "evaluation_seconds": 0.0029578999965451658
+    },
+    {
+      "problem": "cec2009_uf2",
+      "n": 6000,
+      "D": 30,
+      "evaluation_seconds": 0.008319100015796721
+    },
+    {
+      "problem": "cec2009_uf3",
+      "n": 6000,
+      "D": 30,
+      "evaluation_seconds": 0.010432699986267835
+    },
+    {
+      "problem": "cec2009_uf4",
+      "n": 6000,
+      "D": 30,
+      "evaluation_seconds": 0.005876000039279461
+    },
+    {
+      "problem": "cec2009_uf5",
+      "n": 6000,
+      "D": 30,
+      "evaluation_seconds": 0.007164099952206016
+    },
+    {
+      "problem": "cec2009_uf6",
+      "n": 6000,
+      "D": 30,
+      "evaluation_seconds": 0.0077398999710567296
+    },
+    {
+      "problem": "cec2009_uf7",
+      "n": 6000,
+      "D": 30,
+      "evaluation_seconds": 0.0031151999719440937
+    },
+    {
+      "problem": "wfg1",
+      "n": 4800,
+      "D": 24,
+      "evaluation_seconds": 0.0054490999900735915
+    },
+    {
+      "problem": "wfg2",
+      "n": 4800,
+      "D": 24,
+      "evaluation_seconds": 0.0024985999916680157
+    },
+    {
+      "problem": "wfg3",
+      "n": 4800,
+      "D": 24,
+      "evaluation_seconds": 0.001853100024163723
+    },
+    {
+      "problem": "wfg4",
+      "n": 4800,
+      "D": 24,
+      "evaluation_seconds": 0.0048383999965153635
+    },
+    {
+      "problem": "wfg5",
+      "n": 4800,
+      "D": 24,
+      "evaluation_seconds": 0.00241060002008453
+    },
+    {
+      "problem": "wfg6",
+      "n": 4800,
+      "D": 24,
+      "evaluation_seconds": 0.006842800008598715
+    },
+    {
+      "problem": "wfg7",
+      "n": 4800,
+      "D": 24,
+      "evaluation_seconds": 0.0021046000183559954
+    },
+    {
+      "problem": "wfg8",
+      "n": 4800,
+      "D": 24,
+      "evaluation_seconds": 0.005235800053924322
+    },
+    {
+      "problem": "wfg9",
+      "n": 4800,
+      "D": 24,
+      "evaluation_seconds": 0.012624199967831373
+    },
+    {
+      "problem": "zcat1",
+      "n": 6000,
+      "D": 30,
+      "evaluation_seconds": 0.12792669999180362
+    },
+    {
+      "problem": "zcat2",
+      "n": 6000,
+      "D": 30,
+      "evaluation_seconds": 0.14701930002775043
+    },
+    {
+      "problem": "zcat3",
+      "n": 6000,
+      "D": 30,
+      "evaluation_seconds": 0.1368699999875389
+    },
+    {
+      "problem": "zcat4",
+      "n": 6000,
+      "D": 30,
+      "evaluation_seconds": 0.13946120004402474
+    },
+    {
+      "problem": "zcat5",
+      "n": 6000,
+      "D": 30,
+      "evaluation_seconds": 0.13067990000126883
+    },
+    {
+      "problem": "zcat6",
+      "n": 6000,
+      "D": 30,
+      "evaluation_seconds": 0.13194689998636022
+    },
+    {
+      "problem": "zcat7",
+      "n": 6000,
+      "D": 30,
+      "evaluation_seconds": 0.1190109999733977
+    },
+    {
+      "problem": "zcat8",
+      "n": 6000,
+      "D": 30,
+      "evaluation_seconds": 0.13435830001253635
+    },
+    {
+      "problem": "zcat9",
+      "n": 6000,
+      "D": 30,
+      "evaluation_seconds": 0.12163509998936206
+    },
+    {
+      "problem": "zcat10",
+      "n": 6000,
+      "D": 30,
+      "evaluation_seconds": 0.12511059996904805
+    },
+    {
+      "problem": "zcat11",
+      "n": 6000,
+      "D": 30,
+      "evaluation_seconds": 0.1237587999785319
+    },
+    {
+      "problem": "zcat12",
+      "n": 6000,
+      "D": 30,
+      "evaluation_seconds": 0.12565459997858852
+    },
+    {
+      "problem": "zcat13",
+      "n": 6000,
+      "D": 30,
+      "evaluation_seconds": 0.11782799998763949
+    },
+    {
+      "problem": "zcat14",
+      "n": 6000,
+      "D": 30,
+      "evaluation_seconds": 0.12003439996624365
+    },
+    {
+      "problem": "zcat15",
+      "n": 6000,
+      "D": 30,
+      "evaluation_seconds": 0.12384990003192797
+    },
+    {
+      "problem": "zcat16",
+      "n": 6000,
+      "D": 30,
+      "evaluation_seconds": 0.1272206000285223
+    },
+    {
+      "problem": "zcat17",
+      "n": 6000,
+      "D": 30,
+      "evaluation_seconds": 0.1295094999950379
+    },
+    {
+      "problem": "zcat18",
+      "n": 6000,
+      "D": 30,
+      "evaluation_seconds": 0.1267888000002131
+    },
+    {
+      "problem": "zcat19",
+      "n": 6000,
+      "D": 30,
+      "evaluation_seconds": 0.13506519998190925
+    },
+    {
+      "problem": "zcat20",
+      "n": 6000,
+      "D": 30,
+      "evaluation_seconds": 0.12851740000769496
+    },
+    {
+      "problem": "re21",
+      "n": 800,
+      "D": 4,
+      "evaluation_seconds": 5.859998054802418e-05
+    },
+    {
+      "problem": "re24",
+      "n": 400,
+      "D": 2,
+      "evaluation_seconds": 5.029997555539012e-05
+    },
+    {
+      "problem": "rwa1",
+      "n": 1000,
+      "D": 5,
+      "evaluation_seconds": 0.0003945999778807163
+    }
+  ]
+}
