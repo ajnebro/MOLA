@@ -1,0 +1,9 @@
+pop_size,offspring_ratio,selection,initializer,crossover,crossover_prob,mutation,mutation_prob_factor,repair,wa_alpha,cauchy_gamma,scatter_base_size_factor,blxab_alpha,blxab_beta,power_index,crossover_eta,levy_beta,levy_scale,selection_size,gaussian_sigma,crossover_alpha
+30,0.0,ranking,scatter,whole_arithmetic,0.7482002108432192,cauchy,2.423925176096479,random,0.6358708041446514,0.0074074007010364795,0.2,,,,,,,,,
+54,0.75,random,obl,blx_alpha_beta,0.9498496228768718,power_law,1.9184516108836922,wrap,,,,0.9004495990042221,0.3193418039018624,3.540376502823304,,,,,,
+76,1.0,boltzmann,halton,sbx,0.9176124243102017,levy_flight,1.1479978254809926,round,,,,,,,36.66464253936735,1.507738972584057,0.04924894354117864,,,
+21,1.0,ranking,obl,whole_arithmetic,0.8405528485361604,uniform_reset,2.69876254782412,round,0.5460602299006425,,,,,,,,,,,
+93,1.0,tournament,scatter,blx_alpha_beta,0.6130873512787661,gaussian,1.775616454495393,clip,,,0.5,0.35506101458853867,0.31867896643874516,,,,,10.0,0.10867949746597533,
+80,0.5,boltzmann,random,blx_alpha,0.7412193735132562,gaussian,0.845439629435196,midpoint,,,,,,,,,,,0.12107239486507285,0.2671989318362714
+26,0.75,boltzmann,scatter,blx_alpha_beta,0.7340540150344381,uniform_reset,2.8840653687121214,round,,,0.1,0.8114328725032335,0.2963472178481993,,,,,,,
+161,0.5,tournament,obl,blx_alpha_beta,0.742488656472034,levy_flight,2.043269821381375,wrap,,,,0.07837290492218618,0.21213914882577256,,,1.239404243284931,0.06409865162517958,9.0,,

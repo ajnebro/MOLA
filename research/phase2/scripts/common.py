@@ -87,3 +87,14 @@ def sample_problem(name: str, seed: int, sample_size: int | None = None) -> tupl
 def write_json(path: Path, payload) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(payload, indent=2, default=float) + "\n")
+
+
+def pilot_problems() -> list[str]:
+    """Development problems for the pilot, one representative per set of exact duplicates."""
+    import pandas as pd
+
+    catalogue = pd.read_csv(PHASE / "catalogue.csv")
+    duplicates = json.loads((DATA / "duplicates.json").read_text())["objective_identical_pairs"]
+    redundant = {b for a, b in duplicates}  # keep the first-listed member of each pair
+    development = catalogue.loc[catalogue.role == "development", "problem"].tolist()
+    return [name for name in development if name not in redundant]
