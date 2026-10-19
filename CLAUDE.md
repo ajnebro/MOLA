@@ -78,7 +78,7 @@ graph/per-solution arrays other features already build.
 | `dist_f_avg` | Medium | implemented | `mola.features.dist_f_avg` — correct F-space normalizer |
 | `dist_f_max` | Low | implemented | `mola.features.dist_f_max` — raw, not normalized |
 | `nd_n` | Low | implemented | `mola.features.nd_n` |
-| `supp_n` | High | implemented | `mola.features.supp_n` — ConvexHull on ND subset; QhullError/`\|ND\|<=M` fall back to 1.0 |
+| `supp_n` | High | implemented | `mola.features.supp_n` — exact `mola.hull.supported_mask` (0.3.0); strictly positive weights, ties allowed |
 | `hv` | Medium | implemented | `mola.features.hv` — `moocore.hypervolume`; shared whole-sample ref point |
 | `dist_x_nd_avg` | Medium | implemented | `mola.features.dist_x_nd_avg` — pair-filter + divisor fixed |
 | `dist_x_nd_max` | Low | implemented | `mola.features.dist_x_nd_max` — raw; NaN if \|ND\| < 2 |
@@ -110,11 +110,11 @@ graph/per-solution arrays other features already build.
 | `inc_avg_neig` | Low | implemented | `mola.features.evolvability.inc_avg_neig` |
 | `lnd_avg_neig` | Medium | implemented | `mola.features.evolvability.lnd_avg_neig` — local/global rank mismatch fixed |
 | `lsupp_avg_neig` | Medium | implemented | `mola.features.evolvability.lsupp_avg_neig` — uses `mola.hull.supported_mask` |
-| `dist_x_avg_neig` | Medium | implemented | `mola.features.evolvability.dist_x_avg_neig` — redesigned on `mola.distance.neighbour_distances`, not ported |
-| `dist_f_avg_neig` | Medium | implemented | `mola.features.evolvability.dist_f_avg_neig` |
-| `dist_f_dist_x_avg_neig` | Low | implemented | `mola.features.evolvability.dist_f_dist_x_avg_neig` — ratio of the two rows above |
+| `dist_x_avg_neig` | Medium | implemented | `mola.features.evolvability.dist_x_avg_neig` — redesigned on `mola.distance.neighbour_distances`, not ported; normalized since 0.3.0 |
+| `dist_f_avg_neig` | Medium | implemented | `mola.features.evolvability.dist_f_avg_neig` — normalized since 0.3.0 |
+| `dist_f_dist_x_avg_neig` | Low | implemented | `mola.features.evolvability.dist_f_dist_x_avg_neig` — ratio of the two rows above, both normalized; NaN if the denominator is 0 |
 | `diff_f_avg_neig` | Medium | implemented | `mola.features.evolvability.diff_f_avg_neig` — `mola.distance.neighbour_diff_f` |
-| `diff_f_dist_x_avg_neig` | Low | implemented | `mola.features.evolvability.diff_f_dist_x_avg_neig` — ratio |
+| `diff_f_dist_x_avg_neig` | Low | implemented | `mola.features.evolvability.diff_f_dist_x_avg_neig` — ratio over the normalized `dist_x_avg_neig` |
 | `hv_avg_neig` | Medium | implemented | `mola.features.evolvability.hv_avg_neig` — `mola.hypervolume.singleton_hypervolume`, **not** `moocore.hv_contributions` |
 | `hvd_avg_neig` | Low | implemented | `mola.features.evolvability.hvd_avg_neig` — difference over the `hv_avg_neig` array |
 | `nhv_avg_neig` | Medium | implemented | `mola.features.nhv_avg_neig` — `mola.hypervolume.neighbourhood_hypervolume` |
@@ -149,7 +149,10 @@ Five questions raised in the first design pass are now settled:
   neighbours are the `k` nearest samples by distance in **decision** space, excluding the
   solution itself by index (not by zero-distance position, so duplicate decision vectors can't
   displace it). The SUP/INF/INC/LND/LSUP proportions always divide by the actual neighbour count,
-  never an assumed `k`.
+  never an assumed `k`. Since 0.3.0, `k` can be set explicitly (`neighbours=` in the Python API,
+  `--neighbours`/`-k` in the CLI) and is recorded in every report; `k = D` stays the default.
+  "Decision space" means the vectors as scaled by the geometry profile (see "Decision-space
+  geometry" below), for both the graph and every decision-space distance.
 - **Normalization reference.** Two normalizers, each the global empirical min/max of pairwise
   distances across the whole sample in their own space: `(DIST_X_MIN, DIST_X_MAX)` for decision
   space, `(DIST_F_MIN, DIST_F_MAX)` for objective space. `(DIST_X_MIN, DIST_X_MAX)` normalizes
@@ -188,17 +191,25 @@ Table 1; judgment calls the paper doesn't fully specify are marked explicitly):
   mean of the C(M,2) pairwise Spearman correlations — signed, not `abs()`, since a negative
   pairwise correlation is a real conflicting-objectives signal (the paper itself plots signed
   correlations, Fig. 1) that averaging magnitudes would destroy.
-- **`supp_n` — supported non-dominated solutions.** Supported = on the convex hull of the ND
-  subset's objective vectors (classical linear-scalarization definition, Ehrgott [10], cited
-  directly in §4.1.1). Denominator is `|ND|`, not `n` — §4.1.1 says "proportion of supported points
-  **therein**," referring back to "non-dominated solutions," distinct from `nd_n`'s "among the
-  sample" phrasing. Computed via `scipy.spatial.ConvexHull` on the ND subset's objective vectors; a
-  point is supported iff it lies on a facet whose outward normal is entirely ≤0 (the
-  minimizing-direction facet). If `|ND| ≤ M`, every ND point is supported by construction (too few
-  points to span a dominating simplex) — skip `ConvexHull` and return `1.0`. **Judgment call**: on
-  the rarer `QhullError` case (coplanar/rank-deficient ND set with `|ND| > M`), MOLA also falls back
-  to `1.0`, but documents this sub-case as an approximation, not exact — expected practically
-  unreachable for continuous, LHS-sampled objectives.
+- **`supp_n` — supported non-dominated solutions** (definition made exact in 0.3.0). Supported =
+  a minimizer, over the ND subset, of some weighted sum of the objectives with **strictly
+  positive** weights, ties allowed (Ehrgott's supported efficient solutions, [10], cited directly
+  in §4.1.1). Equivalently, no convex combination of the ND subset dominates the point. Points
+  inside a minimizing facet count, not only its vertices. Denominator is `|ND|`, not `n` — §4.1.1
+  says "proportion of supported points **therein**," referring back to "non-dominated solutions,"
+  distinct from `nd_n`'s "among the sample" phrasing. **Judgment calls**: strictly positive rather
+  than non-negative weights, because with a zero weight a plateau in one objective makes every tied
+  point supported (RE33: 17 ND points share f3 = 0, its constraint-violation objective; `supp_n` is
+  0.258 with non-negative weights and 0.185 with positive ones); and ties allowed, because
+  "extreme" supported points collapse on plateaus (RE41: 0.882 supported, 0.008 extreme).
+  `mola.hull.supported_mask` uses three exact methods, chosen by `M` for speed only and
+  cross-checked against each other in the tests: the lower convex chain for `M = 2`, the facet
+  normals of `conv(ND) + R^M_≥` for `M = 3, 4`, and one linear program per point for `M ≥ 5` or
+  when Qhull fails. MOLA 0.2.0 instead tested the facets of the plain convex hull, skipped the
+  test when `|ND| ≤ M`, and fell back to 1.0 on `QhullError`; that missed supported vertices whose
+  normal cone meets the negative orthant only through several facets, and gave RE41 0.027
+  (research/phase0, E1–E3; research/decisions/decisions.md, T1). The same test feeds
+  `lsupp_avg_neig` on every local front.
 - **`hv` and the shared hypervolume reference point.** The paper defines `hv` (hypervolume of the
   ND subset, §4.1.1) but never states a reference point — genuinely unspecified (§3.3's hypervolume
   is a different quantity: algorithm-performance normalization against the problem's *known* true
@@ -214,8 +225,9 @@ Table 1; judgment calls the paper doesn't fully specify are marked explicitly):
   similarly-shaped features: ruggedness's `dist_x_cor_neig`/`dist_f_cor_neig` correlate a
   per-solution *average*-distance-to-neighbours measure across *neighbour* pairs over the *whole*
   sample, not raw pairwise distances restricted to ND solutions; evolvability's
-  `dist_f_dist_x_avg_neig` is a *ratio*, not a correlation. `k<2` → zero pairs → `NaN` (propagated,
-  not special-cased; confirmed this is `scipy.stats.spearmanr`'s own behaviour on empty input).
+  `dist_f_dist_x_avg_neig` is a *ratio*, not a correlation. `k ≤ 2` → fewer than 2 pairs → `NaN`
+  (propagated, not special-cased; `scipy.stats.spearmanr` returns NaN on empty input and on a single
+  pair alike).
 - **Multimodality (all 9).** `slo` (single-objective local optimum, §4.1.2) is inherently
   per-objective: "no improving neighbour for a given objective." `slo_n` = mean over objectives `m`
   of `|{i : no neighbour of i improves f_m}| / n` (Table 1's own wording: "proportion… per
@@ -235,8 +247,10 @@ Table 1; judgment calls the paper doesn't fully specify are marked explicitly):
   reproducibility" above); `length_aws`/`eval_aws` are the mean over those walks.
 - **Evolvability's missing six.** `dist_f_dist_x_avg_neig = dist_f_avg_neig / dist_x_avg_neig` and
   `diff_f_dist_x_avg_neig = diff_f_avg_neig / dist_x_avg_neig` (Table 1's own parenthetical
-  formulas). **Judgment call**: `diff_f_avg_neig` ("average difference per objective with
-  neighbours") = mean over neighbours `j` of [mean over objectives `m` of `|f_m(i)-f_m(j)|`] —
+  formulas), always the ratio of the features as reported: since 0.3.0 `dist_x_avg_neig` and
+  `dist_f_avg_neig` are normalized ("Normalization reference"), `diff_f_avg_neig` stays raw, and a
+  zero denominator gives NaN. **Judgment call**: `diff_f_avg_neig` ("average difference per
+  objective with neighbours") = mean over neighbours `j` of [mean over objectives `m` of `|f_m(i)-f_m(j)|`] —
   unsigned, matching every other averaged distance-like feature in this family, since the
   neighbour relation is directional (`j∈N(i)` doesn't imply `i∈N(j)`) and a signed average could
   cancel out real structure. `hv_avg_neig` ("average **(single)** solution's hypervolume" — the
@@ -257,15 +271,17 @@ Table 1; judgment calls the paper doesn't fully specify are marked explicitly):
   needed. Applies without exception to the hv-trio, `diff_f`, and `dist_f_dist_x` measures too.
 - **Reuse map — jmetalpy/moocore vs. new MOLA logic.** Confirmed by direct inspection of jMetalPy
   (`/Users/ajnebro/Softw/jMetal/jMetalPy`, MIT-licensed): non-dominated sorting/ranking (feeds
-  `dist_x_nd_avg/max`, `supp_n`, `hv`, `fdc`, `rank_*`) → `jmetal.util.ranking
-  .FastNonDominatedRanking` (`.get_nondominated()`, per-solution rank via `.attributes
-  ["dominance_ranking"]` after `.compute_ranking()`). Pairwise dominance (`plo`, the adaptive walk,
+  `dist_x_nd_avg/max`, `supp_n`, `hv`, `fdc`, `rank_*`) → `moocore.pareto_rank` since 0.3.0, and
+  local fronts (`lnd`/`lsupp`) → `moocore.is_nondominated(..., keep_weakly=True)`. MOLA 0.2.0 used
+  `jmetal.util.ranking.FastNonDominatedRanking`, which returns identical ranks (a test compares the
+  two on ties and duplicates) but spent 22 of 26 seconds of a 30-variable characterization building
+  one Python object per solution. Pairwise dominance (`plo`, the adaptive walk,
   the existing `sup/inf/inc`) → `jmetal.util.comparator.DominanceComparator.dominance_test(v1, v2)`,
   a static method on raw objective vectors. Set-based hypervolume (`hv`, `nhv_avg_neig`,
   `nhv_cor_neig`) → `moocore.hypervolume(data, ref)`, the same call jMetalPy's own
   `jmetal.core.quality_indicator.HyperVolume` delegates to (confirmed: that module imports
   `moocore` and `scipy.spatial` directly). New MOLA-only logic, nothing to reuse: `supp_n`'s
-  `ConvexHull` facet test (grepped jMetalPy for "supported"/"convex hull" — zero hits), every
+  exact supported test (grepped jMetalPy for "supported"/"convex hull" — zero hits), every
   Spearman call (`f_cor`, `fdc`, all 13 `*_cor_neig`), `slo`/adaptive-walk bookkeeping, and the
   singleton `hv_avg_neig`/`hvd_avg_neig` formulas (deliberately not `moocore.hv_contributions` —
   see above). `moocore` is a **required transitive dependency of jmetalpy** (imported at module
@@ -282,8 +298,10 @@ Three more, resolved 2026-07-25 — the last structural questions blocking imple
   repeated-run statistical workflow, without joining against the JSON. Metadata JSON keys:
   `schema_version` (so the format can evolve without breaking old files), `problem`,
   `number_of_variables`, `number_of_objectives`, `lower_bounds`, `upper_bounds`, `sample_size`,
-  `sampler`, `seed`. Bounds are carried for traceability only — no feature computation reads them,
-  since every normalizer is empirical over the sample (see "Normalization reference" above).
+  `sampler`, `seed`. Since 0.3.0 the bounds are read by the default `bound` geometry (see
+  "Decision-space geometry" below); every distance normalizer is still empirical over the sample
+  (see "Normalization reference" above). A `Sample` rejects NaN or infinite decision and objective
+  values and inverted bounds; infinite bounds and fixed variables (lower == upper) are accepted.
   Constraint values are **out of scope**: none of the 49 features uses them, and the paper's
   benchmark is unconstrained by construction. Reopen if constrained problems are ever targeted.
 - **Sampling strategy.** Latin Hypercube, `n = 200·D` (paper §4.1/§4.2). The justification is
@@ -319,11 +337,11 @@ Three more, resolved 2026-07-25 — the last structural questions blocking imple
 - **Java adapter implementation** (resolved 2026-07-30). Lives in
   [`jmetal-adapter/`](jmetal-adapter/) — a standalone Maven module (`org.uma.mola:jmetal-adapter`),
   not part of a multi-module aggregator, since MOLA's root is a Python project. Depends on jMetal
-  7.6-SNAPSHOT (`jmetal-core` + `jmetal-problem`, the latter bundled — not test-scoped — so built-in
-  problems like ZDT1 resolve out of the box, mirroring how `jmetalpy` gives the Python adapter the
-  same problems for free) from Sonatype's snapshots repository, `https://oss.sonatype.org/content/
-  repositories/snapshots` — the same dependency and repository Evolver already relies on, since
-  jMetal has no stable release past 6.6 on Maven Central. Key implementation choices:
+  7.8 from Maven Central (`jmetal-core` + `jmetal-problem`, the latter bundled — not test-scoped — so
+  built-in problems like ZDT1 resolve out of the box, mirroring how `jmetalpy` gives the Python
+  adapter the same problems for free). Until 0.3.0 it depended on 7.6-SNAPSHOT from Sonatype's
+  snapshots repository, which stopped serving it, so a clean build failed. Key implementation
+  choices:
   - **No MAXIMIZE/MINIMIZE negation needed.** Confirmed by grepping jMetal's `jmetal-core` and
     `jmetal-problem` source for `MAXIMIZE`: zero hits anywhere. Unlike jMetalPy's `obj_directions`
     convention (Python adapter's "Optimization sense" negation step), Java jMetal has no
@@ -355,6 +373,17 @@ Three more, resolved 2026-07-25 — the last structural questions blocking imple
     positional args or none), and the surface is small enough (one command, three optional flags)
     that a library would be net overhead. `Main.run(String[]) -> int` is kept separate from
     `Main.main` specifically so tests can invoke it without triggering `System.exit`.
+- **Decision-space geometry** (resolved 2026-10-19, research/decisions/decisions.md D1). Before
+  the neighbourhood graph is built and before any decision-space distance is measured, the decision
+  vectors are scaled by a geometry profile (`mola.geometry`): `bound`, the default, maps each
+  variable to [0, 1] through its declared bounds; `raw` uses them as they are, which is what MOLA
+  0.2.0 did. Under `bound`, a positive affine change of units of any variable (bounds included)
+  leaves all 49 features unchanged; under `raw`, heterogeneous bounds change the graph itself — on
+  RE25/RE33/RE42 the two graphs share only 6–12 % of their neighbours, and 39 features change
+  (research/phase0, E4/E6). Fixed variables map to 0 and unbounded variables are rejected under
+  `bound`. Objective space is never rescaled. The geometry, `k`, the MOLA version and the feature
+  profile (`paper49-v1`, `mola.report.FEATURE_PROFILE`) are recorded by `characterize_report()`
+  and `--report`, together with a cause for every undefined feature.
 - **License: MIT** (resolved 2026-07-25), matching jMetal and jMetalPy — the projects MOLA depends
   on and is designed to be used alongside. Chosen over GPL-3.0/LGPL-3.0 on adoption grounds: MOLA's
   value is as *the* reference implementation of all 49 of the paper's features, so it should be
@@ -445,7 +474,10 @@ in sync with their upstreams — edit upstream first, then re-vendor):
   AAA testing. From jMetalPy.
 
 CI must run the tests from day one — both `pytest` and, for the Java adapter, `mvn test`. Untested
-feature logic is exactly the kind of thing that ships silent bugs.
+feature logic is exactly the kind of thing that ships silent bugs. Since 0.3.0,
+[`.github/workflows/ci.yml`](.github/workflows/ci.yml) runs `ruff check`, `ruff format --check` and
+`pytest` on Python 3.11 and 3.12, and `mvn clean test` on Temurin 21, for every push to `main` or
+`research/**` and every pull request.
 
 ## Status
 All 49 landscape features implemented and tested, documented across four per-class Jupyter
@@ -513,11 +545,26 @@ recommendation was withdrawn after this test, and the convexity axis is already 
 `supp_n`. Getting front geometry would require abandoning the "features cost exactly `n`
 evaluations" property.
 
-152 passing tests total (hand-computed fixtures throughout; orchestrator wiring tests that
-independently rebuild the substrate to catch argument-order mistakes; adapter tests including a
-synthetic mixed-direction problem that isolates the MAXIMIZE-negation logic; one end-to-end
-integration test; CLI tests covering every command's success and failure paths via Typer's
-`CliRunner`).
+**0.3.0 (2026-10-19, research phase 1).** Corrects what phase 0 (`research/phase0/`) found
+before any value is used to compare problems: the exact supported test (E1–E3), input validation
+(E9), the `bound` geometry with an explicit, recorded `k` (E4/E6), the normalization of
+`dist_x_avg_neig`/`dist_f_avg_neig` (E5), the `moocore` ranking backend (E10/E22), the documentation
+slips of E24, jMetal 7.8 from Maven Central (E7) and CI (E8). **Values differ from 0.2.0**:
+`dist_x_avg_neig`, `dist_f_avg_neig` and their two ratios change on every sample; `supp_n`,
+`lsupp_avg_neig` and `lsupp_cor_neig` change wherever 0.2.0's supported test erred, mostly for
+`M >= 3` and on small local fronts; and under the default `bound` geometry, a problem whose bounds
+are not [0, 1] changes in its raw decision-space maxima when every variable shares one range, and
+in most decision-space features when the ranges differ. The committed benchmark CSVs under `examples/benchmarks/`,
+`FEATURE_ANALYSIS.md` and the executed outputs in `notebooks/` still come from MOLA 0.2.0 (commit
+`58bc0ca`); they are deliberately not regenerated until the definitions are frozen. To reproduce
+them, check out that commit.
+
+216 passing Python tests as of 0.3.0, 152 in 0.2.0: hand-computed fixtures throughout;
+orchestrator wiring tests that independently rebuild the substrate to catch argument-order
+mistakes; adapter tests including a synthetic mixed-direction problem that isolates the
+MAXIMIZE-negation logic; one end-to-end integration test; CLI tests covering every command's
+success and failure paths via Typer's `CliRunner`; and, since 0.3.0, the three exact supported
+methods cross-checked against each other, `bound`-geometry invariance, and the report.
 
 The jMetal (Java) sampling adapter (`jmetal-adapter/`, see the "Java adapter implementation" Design
 decision) is also done: Latin Hypercube samples and evaluates any jMetal `DoubleProblem` resolved
