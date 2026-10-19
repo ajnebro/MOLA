@@ -75,11 +75,25 @@ mola run ZDT1 --variables 5 --sample-size 1000 --seed 42
 mola sample ZDT1 sample.csv --variables 5 --sample-size 1000 --seed 42
 
 # ...then compute its features (works on a sample file from any adapter, not just this one).
-mola characterize sample.csv --output result.json
+mola characterize sample.csv --output result.json --report report.json
 ```
 
 Every command prints its result as plain `key: value` lines; add `--output result.json` (or
-`.csv`) to also save the full 52-field result to a file. See [`examples/`](examples/) — split into
+`.csv`) to also save the 52-field result to a file. Add `--report report.json` whenever results
+are stored or compared: it records each feature's status (and, for an undefined one, why), plus
+the MOLA version, the feature-definition profile, the decision-space geometry and the
+neighbourhood size `k` the values were computed with.
+
+Two options change the values themselves. `--geometry bound` (the default) maps each variable to
+[0, 1] through its declared bounds before building the neighbourhood graph and measuring
+decision-space distances, so the features do not depend on the variables' units; `--geometry raw`
+uses them as they are, as MOLA 0.2.0 did. `--neighbours`/`-k` sets `k`, which defaults to the
+number of variables `D`.
+
+**MOLA 0.3.0 changes feature values.** It fixes the supported-point test, normalizes the average
+neighbour distances and defaults to the `bound` geometry (see [`CLAUDE.md`](CLAUDE.md), "Status").
+The benchmark CSVs in [`examples/benchmarks/`](examples/benchmarks/), `FEATURE_ANALYSIS.md` and the
+notebook outputs were produced with 0.2.0 (commit `58bc0ca`) and have not been regenerated yet. See [`examples/`](examples/) — split into
 [`getting_started/`](examples/getting_started/) (a runnable script and a narrated walkthrough of
 both the CLI and the Python API) and [`benchmarks/`](examples/benchmarks/) (ready-made scripts
 that characterize a whole jMetalPy benchmark suite in one CSV — RE, RWA, DTLZ, and ZCAT) — and
@@ -108,6 +122,10 @@ enumerable module namespace to look up a short name in, unlike jMetalPy). Run th
 arguments, or `--help`, for the full option list.
 
 ## Development
+
+CI ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)) runs `ruff check`, `ruff format
+--check` and `pytest` on Python 3.11 and 3.12, and `mvn clean test` for the Java adapter, on every
+push and pull request.
 
 This project follows:
 - [`GIT_GUIDELINES.md`](GIT_GUIDELINES.md) — commit conventions

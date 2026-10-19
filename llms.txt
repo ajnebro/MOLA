@@ -54,11 +54,16 @@ the format itself.
 
 ## Notes for automated / agent use
 
-- `mola run` and `mola characterize --output result.json` are the two commands that produce a
-  machine-parseable result (a flat JSON object of 52 numeric fields); everything else is either
-  human-readable stdout or a `--help` string.
-- Values may be `NaN` for some features on degenerate inputs (e.g. a sample with fewer than 2
-  non-dominated solutions) -- this is documented, expected behavior, not a bug; see CLAUDE.md's
-  per-feature notes for exactly when.
+- `mola run` and `mola characterize` produce machine-parseable results: `--output result.json`
+  writes a flat JSON object of 52 numeric fields, and `--report report.json` writes the full
+  report -- every feature as `{"value", "status"}` (plus a `"cause"` when undefined, with
+  `"value": null`), together with the MOLA version, feature profile, geometry and neighbourhood
+  size `k`. Prefer `--report` when results are stored or compared: values computed under a
+  different geometry, `k` or feature profile are not comparable.
+- Some features are undefined on degenerate inputs (e.g. a sample with fewer than 2 non-dominated
+  solutions). This is expected behavior, not a bug: `--output` writes NaN for them, `--report`
+  writes `null` and the cause.
+- Since 0.3.0 the default `--geometry bound` scales each variable by its declared bounds; a sample
+  with infinite bounds needs `--geometry raw`. A sample with NaN or infinite values is rejected.
 - MOLA's own MIT license does not cover `moocore`, a separate dependency under
   LGPL-2.1-or-later -- see CLAUDE.md's "License" decision if this matters for your use case.
