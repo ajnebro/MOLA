@@ -102,6 +102,65 @@ class TestSampleValidation:
                 **bounds,
             )
 
+    @pytest.mark.parametrize("bad_attr", ["variables", "objectives"])
+    @pytest.mark.parametrize("bad_value", [np.nan, np.inf, -np.inf])
+    def test_should_raise_error_when_values_are_not_finite(self, bad_attr, bad_value):
+        """Given a NaN or infinite decision or objective value, raises ValueError naming it."""
+        # Arrange
+        arrays = {"variables": np.zeros((3, 2)), "objectives": np.zeros((3, 2))}
+        arrays[bad_attr][1, 0] = bad_value
+
+        # Act & Assert
+        with pytest.raises(ValueError, match=rf"{bad_attr} must be finite.*row 1"):
+            Sample(
+                problem="P",
+                lower_bounds=np.zeros(2),
+                upper_bounds=np.ones(2),
+                sampler="lhs",
+                **arrays,
+            )
+
+    def test_should_raise_error_when_a_bound_is_nan(self):
+        """Given a NaN bound, raises ValueError."""
+        # Act & Assert
+        with pytest.raises(ValueError, match="NaN"):
+            Sample(
+                problem="P",
+                variables=np.zeros((3, 2)),
+                objectives=np.zeros((3, 2)),
+                lower_bounds=np.array([0.0, np.nan]),
+                upper_bounds=np.ones(2),
+                sampler="lhs",
+            )
+
+    def test_should_raise_error_when_a_lower_bound_exceeds_its_upper_bound(self):
+        """Given an inverted bound pair, raises ValueError naming the variable (1-based)."""
+        # Act & Assert
+        with pytest.raises(ValueError, match=r"variable\(s\) \[2\]"):
+            Sample(
+                problem="P",
+                variables=np.zeros((3, 2)),
+                objectives=np.zeros((3, 2)),
+                lower_bounds=np.array([0.0, 1.0]),
+                upper_bounds=np.array([1.0, 0.0]),
+                sampler="lhs",
+            )
+
+    def test_should_accept_infinite_bounds_and_fixed_variables(self):
+        """Given an unbounded variable and a fixed one (lower == upper), builds the sample."""
+        # Act
+        sample = Sample(
+            problem="P",
+            variables=np.zeros((3, 2)),
+            objectives=np.zeros((3, 2)),
+            lower_bounds=np.array([-np.inf, 0.0]),
+            upper_bounds=np.array([np.inf, 0.0]),
+            sampler="lhs",
+        )
+
+        # Assert
+        assert sample.number_of_variables == 2
+
 
 class TestSampleInterchange:
     """Unit tests for writing and reading the CSV + sidecar JSON interchange format."""
