@@ -13,11 +13,12 @@ after) — positional calls across 49 near-identical signatures would be a real,
 the wrong value into the wrong slot.
 """
 
+import math
 from dataclasses import dataclass
 
 import numpy as np
 
-from mola import features
+from mola import __version__, features
 from mola.distance import Neighbourhood, build_neighbourhood
 from mola.dominance import (
     LocalNondominance,
@@ -30,6 +31,7 @@ from mola.hypervolume import reference_point
 from mola.multimodality import DEFAULT_WALK_COUNT, AdaptiveWalks, adaptive_walks
 from mola.normalization import Normalizers, build_normalizers
 from mola.ranking import Ranking, rank_solutions
+from mola.report import FEATURE_PROFILE, Characterization, Provenance
 from mola.sample import Sample
 
 
@@ -192,14 +194,40 @@ def _ruggedness_features(
     }
 
 
-def characterize(
+def _undefined_cause(name: str, substrate: _Substrate) -> str:
+    """Explain why feature `name` came out non-finite on this sample."""
+    nondominated = substrate.ranking.nondominated.size
+    pareto_local_optima = int(np.count_nonzero(substrate.dominance.dominating == 0))
+    if name in ("dist_x_nd_avg", "dist_x_nd_max"):
+        return f"|ND| = {nondominated}: at least 2 non-dominated solutions are needed"
+    if name == "fdc":
+        if nondominated < 3:
+            return (
+                f"|ND| = {nondominated}: at least 3 non-dominated solutions (2 distance pairs) "
+                f"are needed"
+            )
+        return "the distances among non-dominated solutions are constant in one space"
+    if name in ("plo_dist_avg", "plo_dist_max"):
+        return f"{pareto_local_optima} Pareto local optima: at least 2 are needed"
+    if name in ("slo_dist_avg", "slo_dist_max"):
+        return "every objective has fewer than 2 single-objective local optima"
+    if name == "f_cor":
+        return "an objective is constant over the sample"
+    if name in ("dist_f_dist_x_avg_neig", "diff_f_dist_x_avg_neig"):
+        return "dist_x_avg_neig is 0: every neighbour lies at the minimum pairwise distance"
+    if name.endswith("_cor_neig"):
+        return "the per-solution measure is constant, or undefined, over the neighbour pairs"
+    return "non-finite value"
+
+
+def characterize_report(
     sample: Sample,
     *,
     walk_samples: int = DEFAULT_WALK_COUNT,
     geometry: Geometry = DEFAULT_GEOMETRY,
     neighbours: int | None = None,
-) -> dict[str, float]:
-    """Compute all 49 landscape features (paper Table 1) for one sample, plus its basic metadata.
+) -> Characterization:
+    """Compute all 49 landscape features (paper Table 1) for one sample, with provenance.
 
     Builds the shared substrate exactly once — the neighbourhood graph, the non-dominated
     ranking, pairwise and local neighbourhood dominance, the two whole-sample normalizers, the
@@ -224,14 +252,14 @@ def characterize(
             (Design decisions, "Neighbourhood definition"). Capped at `n - 1`.
 
     Returns:
-        A dict keyed by each Table 1 feature's own name (`f_cor`, `dist_x_avg`, ..., `nhv_cor_neig`
-        — all 49), plus three always-reported metadata fields that are not "landscape features" in
-        the paper's sense: `sample_size`, `num_obj`, `num_var`.
+        The 49 feature values keyed by their Table 1 names, the cause of each undefined one, and
+        how they were computed (`mola.report.Provenance`).
 
     Raises:
         ValueError: If `geometry` is unknown, or is `bound` while some bound is infinite; or if
             `neighbours` is not positive.
     """
+    geometry = Geometry(geometry)
     variables = decision_space(sample, geometry)
     objectives = sample.objectives
 
@@ -248,12 +276,61 @@ def characterize(
         walks=adaptive_walks(objectives, neighbourhood, samples=walk_samples, seed=sample.seed),
     )
 
-    return {
-        "sample_size": sample.size,
-        "num_obj": sample.number_of_objectives,
-        "num_var": sample.number_of_variables,
+    values = {
         **_global_features(variables, objectives, substrate),
         **_multimodality_features(variables, objectives, substrate),
         **_evolvability_features(variables, objectives, substrate),
         **_ruggedness_features(variables, objectives, substrate),
     }
+    causes = {
+        name: _undefined_cause(name, substrate)
+        for name, value in values.items()
+        if not math.isfinite(value)
+    }
+    provenance = Provenance(
+        mola_version=__version__,
+        feature_profile=FEATURE_PROFILE,
+        geometry=geometry.value,
+        neighbours=neighbourhood.size,
+        walk_samples=int(substrate.walks.lengths.size),
+        problem=sample.problem,
+        sampler=sample.sampler,
+        seed=sample.seed,
+        schema_version=sample.schema_version,
+        sample_size=sample.size,
+        num_obj=sample.number_of_objectives,
+        num_var=sample.number_of_variables,
+    )
+    return Characterization(features=values, causes=causes, provenance=provenance)
+
+
+def characterize(
+    sample: Sample,
+    *,
+    walk_samples: int = DEFAULT_WALK_COUNT,
+    geometry: Geometry = DEFAULT_GEOMETRY,
+    neighbours: int | None = None,
+) -> dict[str, float]:
+    """Compute all 49 landscape features (paper Table 1) for one sample, plus its basic metadata.
+
+    The same computation as :func:`characterize_report`, returned in MOLA 0.2.0's flat form.
+    Prefer :func:`characterize_report` whenever the values are stored or compared, since only it
+    records the geometry, the neighbourhood size and why a feature is undefined.
+
+    Args:
+        sample: The sample to characterize.
+        walk_samples: See :func:`characterize_report`.
+        geometry: See :func:`characterize_report`.
+        neighbours: See :func:`characterize_report`.
+
+    Returns:
+        A dict keyed by each Table 1 feature's own name (`f_cor`, `dist_x_avg`, ..., `nhv_cor_neig`
+        — all 49), plus three always-reported metadata fields that are not "landscape features" in
+        the paper's sense: `sample_size`, `num_obj`, `num_var`. Undefined features are NaN.
+
+    Raises:
+        ValueError: See :func:`characterize_report`.
+    """
+    return characterize_report(
+        sample, walk_samples=walk_samples, geometry=geometry, neighbours=neighbours
+    ).as_flat_dict()
