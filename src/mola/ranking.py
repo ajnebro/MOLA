@@ -1,30 +1,18 @@
 """Non-dominated sorting over a sample's objective vectors.
 
-Thin, index-oriented wrapper over jMetalPy's :class:`~jmetal.util.ranking.FastNonDominatedRanking`.
-Reusing jMetalPy's implementation is deliberate: ad hoc reimplementation of dominance and ranking
-logic is precisely what shipped several silent, untested defects in MOLA's predecessor.
-
-The wrapper exists because jMetalPy's ranking speaks in solution objects, while every landscape
-feature here reasons about *positions in the sample* — a non-dominated mask, a per-solution rank,
-the number of solutions per rank. It also isolates the dependency: the internals can be replaced
-without touching any feature, should the objects-per-solution representation prove too costly at
-the paper's ``n = 200 * D`` sampling rate.
+Thin, index-oriented wrapper over :func:`moocore.pareto_rank`. Reusing a library implementation
+is deliberate: ad hoc reimplementation of dominance and ranking logic is precisely what shipped
+several silent, untested defects in MOLA's predecessor. MOLA 0.2.0 wrapped jMetalPy's
+``FastNonDominatedRanking`` instead; ``moocore`` (already a dependency, through jMetalPy and the
+hypervolume features) returns identical ranks, duplicates included (phase 0, E10), without
+building one Python object per solution, which dominated the run time at ``n = 200 * D``
+(phase 0, E22).
 """
 
 from dataclasses import dataclass
 
+import moocore
 import numpy as np
-from jmetal.util.ranking import FastNonDominatedRanking
-
-
-class _RankableSolution:
-    """Minimal stand-in exposing the attributes jMetalPy's ranking requires."""
-
-    __slots__ = ("attributes", "objectives")
-
-    def __init__(self, objectives: list[float]) -> None:
-        self.objectives = objectives
-        self.attributes: dict[str, int] = {}
 
 
 @dataclass(slots=True, frozen=True)
@@ -70,14 +58,7 @@ def rank_solutions(objectives: np.ndarray) -> Ranking:
     if objectives.shape[0] == 0:
         raise ValueError("cannot rank an empty sample")
 
-    solutions = [_RankableSolution(values) for values in objectives.tolist()]
-    FastNonDominatedRanking().compute_ranking(solutions)
-
-    rank = np.fromiter(
-        (solution.attributes["dominance_ranking"] for solution in solutions),
-        dtype=int,
-        count=len(solutions),
-    )
+    rank = np.asarray(moocore.pareto_rank(objectives), dtype=int)
     fronts = tuple(np.flatnonzero(rank == index) for index in range(int(rank.max()) + 1))
 
     return Ranking(rank=rank, fronts=fronts)
