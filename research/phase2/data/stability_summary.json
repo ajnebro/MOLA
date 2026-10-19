@@ -1,0 +1,69 @@
+{
+  "samples": 185,
+  "problems": 37,
+  "features_defined_everywhere": 46,
+  "features_used_for_distances": 46,
+  "recognition_rate_1nn": 0.6324324324324324,
+  "donor_modal_share_mean": 0.8054054054054053,
+  "problems_with_same_donor_in_all_5": 21,
+  "distinct_donors_per_problem_median": 1.0,
+  "between_share_median": 0.9922549824907487,
+  "features_with_between_share_below_0.5": [],
+  "undefined_causes": {
+    "fdc": {
+      "|ND| = 2: at least 3 non-dominated solutions (2 distance pairs) are needed": 2,
+      "|ND| = 1: at least 3 non-dominated solutions (2 distance pairs) are needed": 3
+    },
+    "dist_x_nd_avg": {
+      "|ND| = 1: at least 2 non-dominated solutions are needed": 3
+    },
+    "dist_x_nd_max": {
+      "|ND| = 1: at least 2 non-dominated solutions are needed": 3
+    }
+  },
+  "nd_count_median_by_problem_min": 1,
+  "cost_by_D": [
+    {
+      "D": 2,
+      "n": 400.0,
+      "evaluation_seconds": 0.0,
+      "characterization_seconds": 0.054
+    },
+    {
+      "D": 4,
+      "n": 800.0,
+      "evaluation_seconds": 0.0,
+      "characterization_seconds": 0.137
+    },
+    {
+      "D": 5,
+      "n": 1000.0,
+      "evaluation_seconds": 0.0,
+      "characterization_seconds": 0.153
+    },
+    {
+      "D": 6,
+      "n": 1200.0,
+      "evaluation_seconds": 0.0,
+      "characterization_seconds": 0.272
+    },
+    {
+      "D": 10,
+      "n": 2000.0,
+      "evaluation_seconds": 0.001,
+      "characterization_seconds": 0.486
+    },
+    {
+      "D": 11,
+      "n": 2200.0,
+      "evaluation_seconds": 0.001,
+      "characterization_seconds": 0.71
+    },
+    {
+      "D": 30,
+      "n": 6000.0,
+      "evaluation_seconds": 0.01,
+      "characterization_seconds": 5.494
+    }
+  ]
+}
