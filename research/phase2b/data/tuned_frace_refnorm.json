@@ -1,0 +1,728 @@
+{
+  "dtlz3": {
+    "problem": "dtlz3",
+    "config": {
+      "pop_size": 20,
+      "offspring_ratio": 0.5,
+      "selection": "sus",
+      "initializer": "obl",
+      "crossover": "simplex",
+      "crossover_prob": 0.6836561332218732,
+      "mutation": "linked_polynomial",
+      "mutation_prob_factor": 0.67415669821142,
+      "mutation_eta": 37.31175481538875,
+      "repair": "reflect",
+      "simplex_epsilon": 0.7130756713655435
+    },
+    "experiments": 60,
+    "seconds": 483.1956815752201,
+    "racing_seed": 7006
+  },
+  "lz09_f1": {
+    "problem": "lz09_f1",
+    "config": {
+      "pop_size": 195,
+      "offspring_ratio": 1.0,
+      "selection": "sus",
+      "initializer": "lhs",
+      "crossover": "fuzzy",
+      "crossover_prob": 0.6487704847477959,
+      "mutation": "non_uniform",
+      "mutation_prob_factor": 2.950661595817785,
+      "repair": "reflect",
+      "fuzzy_d": 0.3789536199852557,
+      "nonuniform_perturbation": 0.05639959787234579
+    },
+    "experiments": 60,
+    "seconds": 524.5251851365902,
+    "racing_seed": 7009
+  },
+  "dtlz1": {
+    "problem": "dtlz1",
+    "config": {
+      "pop_size": 100,
+      "offspring_ratio": 1.0,
+      "selection": "tournament",
+      "selection_size": 2,
+      "initializer": "random",
+      "crossover": "sbx",
+      "crossover_prob": 1.0,
+      "crossover_eta": 20.0,
+      "mutation": "polynomial",
+      "mutation_prob_factor": 1.0,
+      "mutation_eta": 20.0,
+      "repair": "clip"
+    },
+    "experiments": 60,
+    "seconds": 534.9850143771619,
+    "racing_seed": 7004
+  },
+  "zdt3": {
+    "problem": "zdt3",
+    "config": {
+      "pop_size": 197,
+      "offspring_ratio": 0.25,
+      "selection": "random",
+      "initializer": "obl",
+      "crossover": "laplace",
+      "crossover_prob": 0.989751186780704,
+      "mutation": "power_law",
+      "mutation_prob_factor": 0.8672731524998318,
+      "repair": "clip",
+      "laplace_a": -0.6507638003634746,
+      "laplace_b": 0.5616876215309861,
+      "power_index": 4.4474155352697355
+    },
+    "experiments": 60,
+    "seconds": 544.8483323040418,
+    "racing_seed": 7002
+  },
+  "dtlz6": {
+    "problem": "dtlz6",
+    "config": {
+      "pop_size": 63,
+      "offspring_ratio": 0,
+      "selection": "tournament",
+      "initializer": "lhs",
+      "crossover": "sbx",
+      "crossover_prob": 0.8229555392976592,
+      "mutation": "uniform",
+      "mutation_prob_factor": 1.6125043649819026,
+      "repair": "clip",
+      "selection_size": 3,
+      "crossover_eta": 37.324380043811935,
+      "uniform_perturb": 0.1875004441344155
+    },
+    "experiments": 60,
+    "seconds": 646.9916644981131,
+    "racing_seed": 7008
+  },
+  "zdt1": {
+    "problem": "zdt1",
+    "config": {
+      "pop_size": 195,
+      "offspring_ratio": 0.5,
+      "selection": "sus",
+      "initializer": "obl",
+      "crossover": "sbx",
+      "crossover_prob": 0.8197749965519494,
+      "mutation": "uniform",
+      "mutation_prob_factor": 0.5628230862091106,
+      "repair": "clip",
+      "crossover_eta": 9.811942968922793,
+      "uniform_perturb": 0.33831512949253123
+    },
+    "experiments": 60,
+    "seconds": 659.3173052920029,
+    "racing_seed": 7000
+  },
+  "zdt2": {
+    "problem": "zdt2",
+    "config": {
+      "pop_size": 123,
+      "offspring_ratio": 0,
+      "selection": "boltzmann",
+      "initializer": "scatter",
+      "crossover": "blx_alpha_beta",
+      "crossover_prob": 0.9394527066416369,
+      "mutation": "polynomial",
+      "mutation_prob_factor": 1.9820383490362974,
+      "mutation_eta": 28.27175699795346,
+      "repair": "clip",
+      "blxab_alpha": 0.6421332046658375,
+      "blxab_beta": 0.31323087530324134,
+      "scatter_base_size_factor": 0.75
+    },
+    "experiments": 60,
+    "seconds": 660.3522583986633,
+    "racing_seed": 7001
+  },
+  "dtlz4": {
+    "problem": "dtlz4",
+    "config": {
+      "pop_size": 172,
+      "offspring_ratio": 0.75,
+      "selection": "random",
+      "initializer": "scatter",
+      "crossover": "sbx",
+      "crossover_prob": 0.6060243743101767,
+      "mutation": "levy_flight",
+      "mutation_prob_factor": 0.7712121805596298,
+      "repair": "wrap",
+      "crossover_eta": 18.486588823190193,
+      "levy_beta": 1.4964367870468185,
+      "levy_scale": 0.08256544031749452,
+      "scatter_base_size_factor": 1.0
+    },
+    "experiments": 60,
+    "seconds": 677.3234085701406,
+    "racing_seed": 7007
+  },
+  "dtlz2": {
+    "problem": "dtlz2",
+    "config": {
+      "pop_size": 186,
+      "offspring_ratio": 1.0,
+      "selection": "sus",
+      "initializer": "lhs",
+      "crossover": "arithmetic",
+      "crossover_prob": 0.7438852193884339,
+      "mutation": "non_uniform",
+      "mutation_prob_factor": 2.1394980559941734,
+      "repair": "wrap",
+      "nonuniform_perturbation": 0.07082101680235803
+    },
+    "experiments": 60,
+    "seconds": 710.0283286496997,
+    "racing_seed": 7005
+  },
+  "zdt4": {
+    "problem": "zdt4",
+    "config": {
+      "pop_size": 37,
+      "offspring_ratio": 0.25,
+      "selection": "tournament",
+      "initializer": "random",
+      "crossover": "sbx",
+      "crossover_prob": 0.6048777397798527,
+      "mutation": "linked_polynomial",
+      "mutation_prob_factor": 1.3281601921648676,
+      "mutation_eta": 34.59955585389976,
+      "repair": "midpoint",
+      "selection_size": 9,
+      "crossover_eta": 31.37592081157703
+    },
+    "experiments": 60,
+    "seconds": 734.6812143111601,
+    "racing_seed": 7003
+  },
+  "cec2009_uf4": {
+    "problem": "cec2009_uf4",
+    "config": {
+      "pop_size": 100,
+      "offspring_ratio": 1.0,
+      "selection": "tournament",
+      "selection_size": 2,
+      "initializer": "random",
+      "crossover": "sbx",
+      "crossover_prob": 1.0,
+      "crossover_eta": 20.0,
+      "mutation": "polynomial",
+      "mutation_prob_factor": 1.0,
+      "mutation_eta": 20.0,
+      "repair": "clip"
+    },
+    "experiments": 60,
+    "seconds": 515.8257762258872,
+    "racing_seed": 7020
+  },
+  "lz09_f3": {
+    "problem": "lz09_f3",
+    "config": {
+      "pop_size": 49,
+      "offspring_ratio": 0.25,
+      "selection": "tournament",
+      "initializer": "obl",
+      "crossover": "blx_alpha",
+      "crossover_prob": 0.6253964175208645,
+      "mutation": "uniform",
+      "mutation_prob_factor": 2.7565419792181087,
+      "repair": "random",
+      "selection_size": 3,
+      "crossover_alpha": 0.8367499641326899,
+      "uniform_perturb": 0.07775142785576049
+    },
+    "experiments": 60,
+    "seconds": 1233.8077176348306,
+    "racing_seed": 7011
+  },
+  "lz09_f2": {
+    "problem": "lz09_f2",
+    "config": {
+      "pop_size": 83,
+      "offspring_ratio": 0.75,
+      "selection": "sus",
+      "initializer": "random",
+      "crossover": "laplace",
+      "crossover_prob": 0.662464573285106,
+      "mutation": "uniform",
+      "mutation_prob_factor": 2.604827071332928,
+      "repair": "clip",
+      "laplace_a": -0.6114058346480495,
+      "laplace_b": 1.5300659631758677,
+      "uniform_perturb": 0.4355421428616562
+    },
+    "experiments": 60,
+    "seconds": 1266.1464696601033,
+    "racing_seed": 7010
+  },
+  "lz09_f5": {
+    "problem": "lz09_f5",
+    "config": {
+      "pop_size": 162,
+      "offspring_ratio": 0.5,
+      "selection": "sus",
+      "initializer": "sobol",
+      "crossover": "arithmetic",
+      "crossover_prob": 0.7005886197966559,
+      "mutation": "uniform",
+      "mutation_prob_factor": 1.0865884144432634,
+      "repair": "wrap",
+      "uniform_perturb": 0.40031873922860606
+    },
+    "experiments": 60,
+    "seconds": 1339.642936272081,
+    "racing_seed": 7013
+  },
+  "lz09_f4": {
+    "problem": "lz09_f4",
+    "config": {
+      "pop_size": 30,
+      "offspring_ratio": 0.5,
+      "selection": "sus",
+      "initializer": "lhs",
+      "crossover": "fuzzy",
+      "crossover_prob": 0.6460732777651264,
+      "mutation": "linked_polynomial",
+      "mutation_prob_factor": 1.031243118574256,
+      "mutation_eta": 11.235302642409149,
+      "repair": "wrap",
+      "fuzzy_d": 1.9816678243114452
+    },
+    "experiments": 60,
+    "seconds": 1352.8702748906799,
+    "racing_seed": 7012
+  },
+  "cec2009_uf5": {
+    "problem": "cec2009_uf5",
+    "config": {
+      "pop_size": 53,
+      "offspring_ratio": 0,
+      "selection": "random",
+      "initializer": "random",
+      "crossover": "sbx",
+      "crossover_prob": 0.6729063886235733,
+      "mutation": "uniform",
+      "mutation_prob_factor": 0.37612085809299534,
+      "repair": "wrap",
+      "crossover_eta": 39.70919043790928,
+      "uniform_perturb": 0.28026929573126025
+    },
+    "experiments": 60,
+    "seconds": 913.8809399292804,
+    "racing_seed": 7021
+  },
+  "lz09_f8": {
+    "problem": "lz09_f8",
+    "config": {
+      "pop_size": 71,
+      "offspring_ratio": 0.75,
+      "selection": "ranking",
+      "initializer": "scatter",
+      "crossover": "sbx",
+      "crossover_prob": 0.9041950756046859,
+      "mutation": "linked_polynomial",
+      "mutation_prob_factor": 1.9243802363877747,
+      "mutation_eta": 14.22613897589724,
+      "repair": "wrap",
+      "crossover_eta": 37.46015494853179,
+      "scatter_base_size_factor": 0.3
+    },
+    "experiments": 60,
+    "seconds": 1109.0064790560864,
+    "racing_seed": 7015
+  },
+  "cec2009_uf7": {
+    "problem": "cec2009_uf7",
+    "config": {
+      "pop_size": 156,
+      "offspring_ratio": 0,
+      "selection": "random",
+      "initializer": "sobol",
+      "crossover": "blx_alpha",
+      "crossover_prob": 0.7955614121486291,
+      "mutation": "power_law",
+      "mutation_prob_factor": 0.47290990782814724,
+      "repair": "clip",
+      "crossover_alpha": 0.3860909015002534,
+      "power_index": 2.9793397024792068
+    },
+    "experiments": 60,
+    "seconds": 942.4625651203096,
+    "racing_seed": 7023
+  },
+  "lz09_f7": {
+    "problem": "lz09_f7",
+    "config": {
+      "pop_size": 72,
+      "offspring_ratio": 1.0,
+      "selection": "ranking",
+      "initializer": "random",
+      "crossover": "sbx",
+      "crossover_prob": 0.9360209205303397,
+      "mutation": "power_law",
+      "mutation_prob_factor": 1.6792808194771955,
+      "repair": "reflect",
+      "crossover_eta": 11.490418458133593,
+      "power_index": 1.6969086252176266
+    },
+    "experiments": 60,
+    "seconds": 1216.241185951978,
+    "racing_seed": 7014
+  },
+  "cec2009_uf3": {
+    "problem": "cec2009_uf3",
+    "config": {
+      "pop_size": 47,
+      "offspring_ratio": 1.0,
+      "selection": "tournament",
+      "initializer": "lhs",
+      "crossover": "sbx",
+      "crossover_prob": 0.6083873384843111,
+      "mutation": "levy_flight",
+      "mutation_prob_factor": 1.0895494849014873,
+      "repair": "wrap",
+      "selection_size": 5,
+      "crossover_eta": 35.326612786035454,
+      "levy_beta": 0.9198699354345339,
+      "levy_scale": 0.07112948427689943
+    },
+    "experiments": 60,
+    "seconds": 1079.2598653039895,
+    "racing_seed": 7019
+  },
+  "cec2009_uf2": {
+    "problem": "cec2009_uf2",
+    "config": {
+      "pop_size": 197,
+      "offspring_ratio": 1.0,
+      "selection": "sus",
+      "initializer": "scatter",
+      "crossover": "blx_alpha",
+      "crossover_prob": 0.9927199043958541,
+      "mutation": "levy_flight",
+      "mutation_prob_factor": 2.904907461394638,
+      "repair": "wrap",
+      "crossover_alpha": 0.24486516253728352,
+      "levy_beta": 1.828626007896569,
+      "levy_scale": 0.025024661294172967,
+      "scatter_base_size_factor": 0.75
+    },
+    "experiments": 60,
+    "seconds": 1221.4156184527092,
+    "racing_seed": 7018
+  },
+  "cec2009_uf6": {
+    "problem": "cec2009_uf6",
+    "config": {
+      "pop_size": 24,
+      "offspring_ratio": 0,
+      "selection": "ranking",
+      "initializer": "sobol",
+      "crossover": "sbx",
+      "crossover_prob": 0.9935658298812943,
+      "mutation": "uniform_reset",
+      "mutation_prob_factor": 0.26533365959532196,
+      "repair": "midpoint",
+      "crossover_eta": 16.157849926370744
+    },
+    "experiments": 60,
+    "seconds": 1228.1411836068146,
+    "racing_seed": 7022
+  },
+  "zcat1": {
+    "problem": "zcat1",
+    "config": {
+      "pop_size": 150,
+      "offspring_ratio": 0,
+      "selection": "sus",
+      "initializer": "obl",
+      "crossover": "sbx",
+      "crossover_prob": 0.9682282612788102,
+      "mutation": "uniform",
+      "mutation_prob_factor": 1.4391674132799235,
+      "repair": "random",
+      "crossover_eta": 25.594297231083246,
+      "uniform_perturb": 0.21226167350585667
+    },
+    "experiments": 60,
+    "seconds": 849.1922035501339,
+    "racing_seed": 7024
+  },
+  "cec2009_uf1": {
+    "problem": "cec2009_uf1",
+    "config": {
+      "pop_size": 23,
+      "offspring_ratio": 0.75,
+      "selection": "sus",
+      "initializer": "sobol",
+      "crossover": "blx_alpha",
+      "crossover_prob": 0.7167298006266561,
+      "mutation": "non_uniform",
+      "mutation_prob_factor": 0.9601420829840627,
+      "repair": "wrap",
+      "crossover_alpha": 0.5312134846587098,
+      "nonuniform_perturbation": 0.32349558366868536
+    },
+    "experiments": 60,
+    "seconds": 1528.9038355550729,
+    "racing_seed": 7017
+  },
+  "zcat3": {
+    "problem": "zcat3",
+    "config": {
+      "pop_size": 126,
+      "offspring_ratio": 0.5,
+      "selection": "boltzmann",
+      "initializer": "obl",
+      "crossover": "sbx",
+      "crossover_prob": 0.8280640919966928,
+      "mutation": "polynomial",
+      "mutation_prob_factor": 0.3565213388870212,
+      "mutation_eta": 38.08123561761051,
+      "repair": "clip",
+      "crossover_eta": 26.884286056949122
+    },
+    "experiments": 60,
+    "seconds": 883.9556431197561,
+    "racing_seed": 7025
+  },
+  "lz09_f9": {
+    "problem": "lz09_f9",
+    "config": {
+      "pop_size": 33,
+      "offspring_ratio": 1.0,
+      "selection": "tournament",
+      "initializer": "lhs",
+      "crossover": "arithmetic",
+      "crossover_prob": 0.627873395336652,
+      "mutation": "levy_flight",
+      "mutation_prob_factor": 1.1415742314047623,
+      "repair": "midpoint",
+      "selection_size": 10,
+      "levy_beta": 0.880530809059425,
+      "levy_scale": 0.09845387458968806
+    },
+    "experiments": 60,
+    "seconds": 1616.6879428601824,
+    "racing_seed": 7016
+  },
+  "zcat5": {
+    "problem": "zcat5",
+    "config": {
+      "pop_size": 122,
+      "offspring_ratio": 0,
+      "selection": "boltzmann",
+      "initializer": "random",
+      "crossover": "blx_alpha",
+      "crossover_prob": 0.9187104714247173,
+      "mutation": "linked_polynomial",
+      "mutation_prob_factor": 1.35285230047824,
+      "mutation_eta": 25.76300536708966,
+      "repair": "clip",
+      "crossover_alpha": 0.27031970411966755
+    },
+    "experiments": 60,
+    "seconds": 937.7061176761054,
+    "racing_seed": 7026
+  },
+  "zcat8": {
+    "problem": "zcat8",
+    "config": {
+      "pop_size": 124,
+      "offspring_ratio": 0.5,
+      "selection": "boltzmann",
+      "initializer": "random",
+      "crossover": "sbx",
+      "crossover_prob": 0.9965745762547297,
+      "mutation": "levy_flight",
+      "mutation_prob_factor": 1.4867457266173303,
+      "repair": "midpoint",
+      "crossover_eta": 27.642845520557792,
+      "levy_beta": 0.8200206874448629,
+      "levy_scale": 0.024298055285849145
+    },
+    "experiments": 60,
+    "seconds": 887.5580012709834,
+    "racing_seed": 7028
+  },
+  "zcat10": {
+    "problem": "zcat10",
+    "config": {
+      "pop_size": 149,
+      "offspring_ratio": 1.0,
+      "selection": "tournament",
+      "initializer": "sobol",
+      "crossover": "sbx",
+      "crossover_prob": 0.943701541086934,
+      "mutation": "levy_flight",
+      "mutation_prob_factor": 2.8887775160990152,
+      "repair": "reflect",
+      "selection_size": 9,
+      "crossover_eta": 37.15953136777036,
+      "levy_beta": 1.0474532703313726,
+      "levy_scale": 0.014712905447035036
+    },
+    "experiments": 60,
+    "seconds": 700.0637843962759,
+    "racing_seed": 7029
+  },
+  "zcat6": {
+    "problem": "zcat6",
+    "config": {
+      "pop_size": 186,
+      "offspring_ratio": 0,
+      "selection": "random",
+      "initializer": "random",
+      "crossover": "sbx",
+      "crossover_prob": 0.9113116679210949,
+      "mutation": "linked_polynomial",
+      "mutation_prob_factor": 0.635695668646961,
+      "mutation_eta": 30.100764257577545,
+      "repair": "wrap",
+      "crossover_eta": 32.31502174152788
+    },
+    "experiments": 60,
+    "seconds": 968.4904551249929,
+    "racing_seed": 7027
+  },
+  "re21": {
+    "problem": "re21",
+    "config": {
+      "pop_size": 177,
+      "offspring_ratio": 0,
+      "selection": "sus",
+      "initializer": "sobol",
+      "crossover": "blx_alpha_beta",
+      "crossover_prob": 0.8119596049024986,
+      "mutation": "uniform",
+      "mutation_prob_factor": 1.8623354071226037,
+      "repair": "clip",
+      "blxab_alpha": 0.9259973955590997,
+      "blxab_beta": 0.7167623628997123,
+      "uniform_perturb": 0.44660255289302053
+    },
+    "experiments": 60,
+    "seconds": 451.9617388579063,
+    "racing_seed": 7034
+  },
+  "zcat13": {
+    "problem": "zcat13",
+    "config": {
+      "pop_size": 100,
+      "offspring_ratio": 1.0,
+      "selection": "tournament",
+      "selection_size": 2,
+      "initializer": "random",
+      "crossover": "sbx",
+      "crossover_prob": 1.0,
+      "crossover_eta": 20.0,
+      "mutation": "polynomial",
+      "mutation_prob_factor": 1.0,
+      "mutation_eta": 20.0,
+      "repair": "clip"
+    },
+    "experiments": 60,
+    "seconds": 761.9047624599189,
+    "racing_seed": 7032
+  },
+  "zcat11": {
+    "problem": "zcat11",
+    "config": {
+      "pop_size": 100,
+      "offspring_ratio": 1.0,
+      "selection": "tournament",
+      "selection_size": 2,
+      "initializer": "random",
+      "crossover": "sbx",
+      "crossover_prob": 1.0,
+      "crossover_eta": 20.0,
+      "mutation": "polynomial",
+      "mutation_prob_factor": 1.0,
+      "mutation_eta": 20.0,
+      "repair": "clip"
+    },
+    "experiments": 60,
+    "seconds": 876.2529422258958,
+    "racing_seed": 7030
+  },
+  "zcat12": {
+    "problem": "zcat12",
+    "config": {
+      "pop_size": 132,
+      "offspring_ratio": 0.75,
+      "selection": "ranking",
+      "initializer": "random",
+      "crossover": "sbx",
+      "crossover_prob": 0.9780077829528917,
+      "mutation": "levy_flight",
+      "mutation_prob_factor": 1.0501985789535986,
+      "repair": "random",
+      "crossover_eta": 9.989415913788491,
+      "levy_beta": 0.9585734368310568,
+      "levy_scale": 0.040175892568130776
+    },
+    "experiments": 60,
+    "seconds": 876.6561795170419,
+    "racing_seed": 7031
+  },
+  "rwa1": {
+    "problem": "rwa1",
+    "config": {
+      "pop_size": 110,
+      "offspring_ratio": 1.0,
+      "selection": "boltzmann",
+      "initializer": "scatter",
+      "crossover": "whole_arithmetic",
+      "crossover_prob": 0.8262810450501339,
+      "mutation": "power_law",
+      "mutation_prob_factor": 2.2258486685513574,
+      "repair": "clip",
+      "wa_alpha": 0.21457088506048616,
+      "power_index": 3.0794078100098417,
+      "scatter_base_size_factor": 0.75
+    },
+    "experiments": 60,
+    "seconds": 700.8133782111108,
+    "racing_seed": 7036
+  },
+  "zcat19": {
+    "problem": "zcat19",
+    "config": {
+      "pop_size": 100,
+      "offspring_ratio": 1.0,
+      "selection": "tournament",
+      "selection_size": 2,
+      "initializer": "random",
+      "crossover": "sbx",
+      "crossover_prob": 1.0,
+      "crossover_eta": 20.0,
+      "mutation": "polynomial",
+      "mutation_prob_factor": 1.0,
+      "mutation_eta": 20.0,
+      "repair": "clip"
+    },
+    "experiments": 60,
+    "seconds": 1200.9087845408358,
+    "racing_seed": 7033
+  },
+  "re24": {
+    "problem": "re24",
+    "config": {
+      "pop_size": 182,
+      "offspring_ratio": 0.25,
+      "selection": "random",
+      "initializer": "random",
+      "crossover": "simplex",
+      "crossover_prob": 0.7528444790407919,
+      "mutation": "non_uniform",
+      "mutation_prob_factor": 2.7191881868141374,
+      "repair": "clip",
+      "simplex_epsilon": 0.6902126377469326,
+      "nonuniform_perturbation": 0.42240792190103477
+    },
+    "experiments": 60,
+    "seconds": 1072.4114025817253,
+    "racing_seed": 7035
+  }
+}

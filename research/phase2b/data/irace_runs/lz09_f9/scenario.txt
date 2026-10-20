@@ -1,0 +1,11 @@
+parameterFile      = "/home/nico/mola-phase2b/repo/research/phase2b/irace/parameters.txt"
+configurationsFile = "/home/nico/mola-phase2b/repo/research/phase2b/irace/default.txt"
+trainInstancesFile = "/home/nico/mola-phase2b/raw_B/irace/lz09_f9/instances.txt"
+trainInstancesDir  = ""
+execDir            = "/home/nico/mola-phase2b/raw_B/irace/lz09_f9"
+logFile            = "irace.Rdata"
+targetRunner       = "/home/nico/mola-phase2b/repo/research/phase2b/irace/target-runner"
+maxExperiments     = 400
+nbIterations       = 5
+seed               = 7016
+deterministic      = 0

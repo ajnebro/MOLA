@@ -1,0 +1,294 @@
+#------------------------------------------------------------------------------
+# irace: An implementation in R of (Elitist) Iterated Racing
+# Version: 4.5.a705077
+# Copyright (C) 2010-2025
+# Manuel Lopez-Ibanez     <manuel.lopez-ibanez@manchester.ac.uk>
+# Jeremie Dubois-Lacoste
+# Leslie Perez Caceres    <leslie.perez.caceres@ulb.ac.be>
+#
+# This is free software, and you are welcome to redistribute it under certain
+# conditions.  See the GNU General Public License for details. There is NO
+# WARRANTY; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+#
+# irace builds upon previous code from the race package:
+#     race: Racing methods for the selection of the best
+#     Copyright (C) 2003 Mauro Birattari
+#------------------------------------------------------------------------------
+# installed at: /home/nico/R/irace-4.5-lib/irace
+# called with: --scenario /home/nico/mola-phase2b/raw_B/irace/cec2009_uf1/scenario.txt --parallel 4
+# 2026-10-20 05:27:36 UTC: Reading parameter file '/home/nico/mola-phase2b/repo/research/phase2b/irace/parameters.txt'.
+# 2026-10-20 05:27:36 UTC: Read 1 configuration(s) from file '/home/nico/mola-phase2b/repo/research/phase2b/irace/default.txt'
+# 2026-10-20 05:27:36 UTC: Initialization
+# Elitist race
+# Elitist new instances: 1
+# Elitist limit: 2
+# nbIterations: 5
+# minNbSurvival: 6
+# nbParameters: 26
+# seed: 7017
+# confidence level: 0.95
+# budget: 400
+# mu: 5
+# deterministic: FALSE
+
+# 2026-10-20 05:27:36 UTC: Iteration 1 of 5
+# experimentsUsed: 0
+# remainingBudget: 400
+# currentBudget: 80
+# nbConfigurations: 13
+# Markers:
+     x No test is performed.
+     c Configurations are discarded only due to capping.
+     - The test is performed and some configurations are discarded.
+     = The test is performed but no configuration is discarded.
+     ! The test is performed and configurations could be discarded but elite configurations are preserved.
+     . Alive configurations were already evaluated on this instance and nothing is discarded.
+     : All alive configurations are elite, but some need to be evaluated on this instance.
+
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+| |   Instance|      Alive|       Best|       Mean best| Exp so far|  W time|  rho|KenW|  Qvar|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+|x|          1|         13|         13|   -0.7813938278|         13|00:00:12|   NA|  NA|    NA|
+|x|          2|         13|         13|   -0.7613347576|         26|00:00:12|+0.01|0.50|0.6782|
+|x|          3|         13|         13|   -0.7646260889|         39|00:00:12|+0.27|0.51|0.6079|
+|x|          4|         13|         13|   -0.7584788788|         52|00:00:11|+0.29|0.47|0.5863|
+|-|          5|          5|         13|   -0.7621374980|         65|00:00:12|-0.06|0.15|0.6943|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+Best-so-far configuration:          13    mean value:    -0.7621374980
+Description of the best-so-far configuration:
+   .ID. pop_size offspring_ratio selection initializer        crossover crossover_prob    mutation mutation_prob_factor mutation_eta  repair selection_size crossover_eta crossover_alpha blxab_alpha blxab_beta wa_alpha laplace_a laplace_b fuzzy_d simplex_epsilon nonuniform_perturbation uniform_perturb levy_beta levy_scale power_index scatter_base_size_factor .PARENT.
+13   13       42             1.0   ranking       sobol whole_arithmetic         0.8072 non_uniform               2.2817           NA reflect             NA            NA              NA          NA         NA   0.9122        NA        NA      NA              NA                   0.194              NA        NA         NA          NA                     <NA>       NA
+
+# 2026-10-20 05:28:37 UTC: Elite configurations (first number is the configuration ID; listed from best to worst according to the sum of ranks):
+   pop_size offspring_ratio  selection initializer        crossover crossover_prob    mutation mutation_prob_factor mutation_eta  repair selection_size crossover_eta crossover_alpha blxab_alpha blxab_beta wa_alpha laplace_a laplace_b fuzzy_d simplex_epsilon nonuniform_perturbation uniform_perturb levy_beta levy_scale power_index scatter_base_size_factor
+13       42             1.0    ranking       sobol whole_arithmetic         0.8072 non_uniform               2.2817           NA reflect             NA            NA              NA          NA         NA   0.9122        NA        NA      NA              NA                  0.1940              NA        NA         NA          NA                     <NA>
+1       100             1.0 tournament      random              sbx         1.0000  polynomial               1.0000      20.0000    clip              2       20.0000              NA          NA         NA       NA        NA        NA      NA              NA                      NA              NA        NA         NA          NA                     <NA>
+2        87             1.0  boltzmann     scatter            fuzzy         0.6322 non_uniform               1.7661           NA    wrap             NA            NA              NA          NA         NA       NA        NA        NA  0.7225              NA                  0.1096              NA        NA         NA          NA                      0.1
+3        27            0.25        sus      random   blx_alpha_beta         0.8322 levy_flight               0.3911           NA reflect             NA            NA              NA      0.3875     0.1123       NA        NA        NA      NA              NA                      NA              NA    1.3748     0.0505          NA                     <NA>
+5        48            0.75     random         obl              sbx         0.9322  polynomial               1.0786      34.2805    clip             NA        5.5422              NA          NA         NA       NA        NA        NA      NA              NA                      NA              NA        NA         NA          NA                     <NA>
+# 2026-10-20 05:28:37 UTC: Iteration 2 of 5
+# experimentsUsed: 65
+# remainingBudget: 335
+# currentBudget: 83
+# nbConfigurations: 15
+# Markers:
+     x No test is performed.
+     c Configurations are discarded only due to capping.
+     - The test is performed and some configurations are discarded.
+     = The test is performed but no configuration is discarded.
+     ! The test is performed and configurations could be discarded but elite configurations are preserved.
+     . Alive configurations were already evaluated on this instance and nothing is discarded.
+     : All alive configurations are elite, but some need to be evaluated on this instance.
+
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+| |   Instance|      Alive|       Best|       Mean best| Exp so far|  W time|  rho|KenW|  Qvar|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+|x|          6|         15|          2|   -0.8005859217|         15|00:00:09|   NA|  NA|    NA|
+|x|          5|         15|         13|   -0.7679034734|         25|00:00:06|+0.18|0.59|0.8754|
+|x|          3|         15|         13|   -0.7690052328|         35|00:00:06|+0.18|0.45|0.8005|
+|x|          1|         15|         13|   -0.7721023816|         45|00:00:06|+0.34|0.50|0.7500|
+|-|          4|          9|         13|   -0.7656893549|         55|00:00:06|+0.12|0.29|0.6508|
+|=|          2|          9|         13|   -0.7616204103|         59|00:00:03|+0.12|0.27|0.7016|
+|=|          7|          9|         14|   -0.7573360498|         68|00:00:06|+0.15|0.27|0.6511|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+Best-so-far configuration:          14    mean value:    -0.7573360498
+Description of the best-so-far configuration:
+   .ID. pop_size offspring_ratio selection initializer crossover crossover_prob    mutation mutation_prob_factor mutation_eta  repair selection_size crossover_eta crossover_alpha blxab_alpha blxab_beta wa_alpha laplace_a laplace_b fuzzy_d simplex_epsilon nonuniform_perturbation uniform_perturb levy_beta levy_scale power_index scatter_base_size_factor .PARENT.
+14   14       61            0.25    random      random       sbx         0.8005 non_uniform               1.9851           NA reflect             NA       18.0961              NA          NA         NA       NA        NA        NA      NA              NA                   0.457              NA        NA         NA          NA                     <NA>        1
+
+# 2026-10-20 05:29:22 UTC: Elite configurations (first number is the configuration ID; listed from best to worst according to the sum of ranks):
+   pop_size offspring_ratio  selection initializer        crossover crossover_prob          mutation mutation_prob_factor mutation_eta  repair selection_size crossover_eta crossover_alpha blxab_alpha blxab_beta wa_alpha laplace_a laplace_b fuzzy_d simplex_epsilon nonuniform_perturbation uniform_perturb levy_beta levy_scale power_index scatter_base_size_factor
+14       61            0.25     random      random              sbx         0.8005       non_uniform               1.9851           NA reflect             NA       18.0961              NA          NA         NA       NA        NA        NA      NA              NA                  0.4570              NA        NA         NA          NA                     <NA>
+13       42             1.0    ranking       sobol whole_arithmetic         0.8072       non_uniform               2.2817           NA reflect             NA            NA              NA          NA         NA   0.9122        NA        NA      NA              NA                  0.1940              NA        NA         NA          NA                     <NA>
+17       97             1.0 tournament         obl              sbx         0.8984 linked_polynomial               1.2251      30.2109    clip              3       38.8148              NA          NA         NA       NA        NA        NA      NA              NA                      NA              NA        NA         NA          NA                     <NA>
+2        87             1.0  boltzmann     scatter            fuzzy         0.6322       non_uniform               1.7661           NA    wrap             NA            NA              NA          NA         NA       NA        NA        NA  0.7225              NA                  0.1096              NA        NA         NA          NA                      0.1
+20       34            0.25        sus     scatter whole_arithmetic         0.8241           uniform               0.8580           NA reflect             NA            NA              NA          NA         NA   0.1299        NA        NA      NA              NA                      NA           0.327        NA         NA          NA                      1.0
+15       35            0.25        sus         lhs              sbx         0.9082         power_law               2.0458           NA  random             NA       10.4478              NA          NA         NA       NA        NA        NA      NA              NA                      NA              NA        NA         NA      1.2472                     <NA>
+# 2026-10-20 05:29:22 UTC: Iteration 3 of 5
+# experimentsUsed: 133
+# remainingBudget: 267
+# currentBudget: 89
+# nbConfigurations: 16
+# Markers:
+     x No test is performed.
+     c Configurations are discarded only due to capping.
+     - The test is performed and some configurations are discarded.
+     = The test is performed but no configuration is discarded.
+     ! The test is performed and configurations could be discarded but elite configurations are preserved.
+     . Alive configurations were already evaluated on this instance and nothing is discarded.
+     : All alive configurations are elite, but some need to be evaluated on this instance.
+
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+| |   Instance|      Alive|       Best|       Mean best| Exp so far|  W time|  rho|KenW|  Qvar|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+|x|          8|         16|         26|   -0.8064257657|         16|00:00:09|   NA|  NA|    NA|
+|x|          1|         16|         26|   -0.7842435210|         26|00:00:06|+0.24|0.62|0.7070|
+|x|          4|         16|         26|   -0.7742116174|         36|00:00:06|+0.22|0.48|0.8318|
+|x|          2|         16|         26|   -0.7818977469|         46|00:00:06|+0.34|0.50|0.7314|
+|-|          7|          9|         26|   -0.7836956366|         56|00:00:06|+0.21|0.37|0.7638|
+|=|          3|          9|         26|   -0.7820006017|         59|00:00:02|+0.19|0.32|0.7830|
+|=|          6|          9|         26|   -0.7793094910|         62|00:00:02|+0.14|0.26|0.8234|
+|=|          5|          9|         26|   -0.7736817021|         65|00:00:02|+0.08|0.20|0.8650|
+|-|          9|          4|         26|   -0.7776683924|         74|00:00:05|+0.11|0.20|0.6946|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+Best-so-far configuration:          26    mean value:    -0.7776683924
+Description of the best-so-far configuration:
+   .ID. pop_size offspring_ratio  selection initializer crossover crossover_prob      mutation mutation_prob_factor mutation_eta repair selection_size crossover_eta crossover_alpha blxab_alpha blxab_beta wa_alpha laplace_a laplace_b fuzzy_d simplex_epsilon nonuniform_perturbation uniform_perturb levy_beta levy_scale power_index scatter_base_size_factor .PARENT.
+26   26       28             1.0 tournament         obl       sbx         0.6325 uniform_reset               1.2218           NA   clip              4       38.5444              NA          NA         NA       NA        NA        NA      NA              NA                      NA              NA        NA         NA          NA                     <NA>       17
+
+# 2026-10-20 05:30:13 UTC: Elite configurations (first number is the configuration ID; listed from best to worst according to the sum of ranks):
+   pop_size offspring_ratio  selection initializer        crossover crossover_prob      mutation mutation_prob_factor mutation_eta  repair selection_size crossover_eta crossover_alpha blxab_alpha blxab_beta wa_alpha laplace_a laplace_b fuzzy_d simplex_epsilon nonuniform_perturbation uniform_perturb levy_beta levy_scale power_index scatter_base_size_factor
+26       28             1.0 tournament         obl              sbx         0.6325 uniform_reset               1.2218           NA    clip              4       38.5444              NA          NA         NA       NA        NA        NA      NA              NA                      NA              NA        NA         NA          NA                     <NA>
+24       98            0.25        sus         lhs              sbx         0.7672   non_uniform               0.6707           NA    clip             NA       27.0210              NA          NA         NA       NA        NA        NA      NA              NA                  0.4576              NA        NA         NA          NA                     <NA>
+13       42             1.0    ranking       sobol whole_arithmetic         0.8072   non_uniform               2.2817           NA reflect             NA            NA              NA          NA         NA   0.9122        NA        NA      NA              NA                  0.1940              NA        NA         NA          NA                     <NA>
+14       61            0.25     random      random              sbx         0.8005   non_uniform               1.9851           NA reflect             NA       18.0961              NA          NA         NA       NA        NA        NA      NA              NA                  0.4570              NA        NA         NA          NA                     <NA>
+# 2026-10-20 05:30:13 UTC: Iteration 4 of 5
+# experimentsUsed: 207
+# remainingBudget: 193
+# currentBudget: 96
+# nbConfigurations: 13
+# Markers:
+     x No test is performed.
+     c Configurations are discarded only due to capping.
+     - The test is performed and some configurations are discarded.
+     = The test is performed but no configuration is discarded.
+     ! The test is performed and configurations could be discarded but elite configurations are preserved.
+     . Alive configurations were already evaluated on this instance and nothing is discarded.
+     : All alive configurations are elite, but some need to be evaluated on this instance.
+
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+| |   Instance|      Alive|       Best|       Mean best| Exp so far|  W time|  rho|KenW|  Qvar|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+|x|         10|         13|         24|   -0.7946683863|         13|00:00:07|   NA|  NA|    NA|
+|x|          1|         13|         24|   -0.8070270602|         22|00:00:05|+0.33|0.66|0.1622|
+|x|          9|         13|         24|   -0.7995209026|         31|00:00:05|+0.27|0.51|0.3170|
+|x|          6|         13|         24|   -0.7864651204|         40|00:00:05|+0.23|0.43|0.4083|
+|-|          4|         11|         24|   -0.7802240089|         49|00:00:05|-0.14|0.09|1.0123|
+|=|          7|         11|         24|   -0.7805100874|         56|00:00:04|-0.01|0.16|0.9238|
+|=|          5|         11|         26|   -0.7667232761|         63|00:00:04|-0.09|0.07|0.9861|
+|=|          2|         11|         26|   -0.7715023835|         70|00:00:04|-0.04|0.09|0.9556|
+|=|          3|         11|         26|   -0.7717271661|         77|00:00:04|-0.02|0.10|0.9377|
+|=|          8|         11|         26|   -0.7751970261|         84|00:00:04|+0.01|0.10|0.9090|
+|=|         11|         11|         26|   -0.7774948380|         95|00:00:06|+0.03|0.11|0.8807|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+Best-so-far configuration:          26    mean value:    -0.7774948380
+Description of the best-so-far configuration:
+   .ID. pop_size offspring_ratio  selection initializer crossover crossover_prob      mutation mutation_prob_factor mutation_eta repair selection_size crossover_eta crossover_alpha blxab_alpha blxab_beta wa_alpha laplace_a laplace_b fuzzy_d simplex_epsilon nonuniform_perturbation uniform_perturb levy_beta levy_scale power_index scatter_base_size_factor .PARENT.
+26   26       28             1.0 tournament         obl       sbx         0.6325 uniform_reset               1.2218           NA   clip              4       38.5444              NA          NA         NA       NA        NA        NA      NA              NA                      NA              NA        NA         NA          NA                     <NA>       17
+
+# 2026-10-20 05:31:13 UTC: Elite configurations (first number is the configuration ID; listed from best to worst according to the sum of ranks):
+   pop_size offspring_ratio  selection initializer crossover crossover_prob      mutation mutation_prob_factor mutation_eta repair selection_size crossover_eta crossover_alpha blxab_alpha blxab_beta wa_alpha laplace_a laplace_b fuzzy_d simplex_epsilon nonuniform_perturbation uniform_perturb levy_beta levy_scale power_index scatter_base_size_factor
+26       28             1.0 tournament         obl       sbx         0.6325 uniform_reset               1.2218           NA   clip              4       38.5444              NA          NA         NA       NA        NA        NA      NA              NA                      NA              NA        NA         NA          NA                     <NA>
+36       40            0.25 tournament         obl       sbx         0.7015   levy_flight               2.5422           NA   clip              4       21.5491              NA          NA         NA       NA        NA        NA      NA              NA                      NA              NA    1.6787     0.0788          NA                     <NA>
+40       55             1.0    ranking         obl       sbx         0.7151 uniform_reset               0.6164           NA   clip             NA       33.7520              NA          NA         NA       NA        NA        NA      NA              NA                      NA              NA        NA         NA          NA                     <NA>
+42       20             1.0 tournament         obl       sbx         0.8590 uniform_reset               1.4453           NA   clip              3       26.7653              NA          NA         NA       NA        NA        NA      NA              NA                      NA              NA        NA         NA          NA                     <NA>
+24       98            0.25        sus         lhs       sbx         0.7672   non_uniform               0.6707           NA   clip             NA       27.0210              NA          NA         NA       NA        NA        NA      NA              NA                  0.4576              NA        NA         NA          NA                     <NA>
+41       43            0.25        sus         lhs       sbx         0.6360   non_uniform               1.0569           NA random             NA       22.2577              NA          NA         NA       NA        NA        NA      NA              NA                  0.0985              NA        NA         NA          NA                     <NA>
+# 2026-10-20 05:31:13 UTC: Iteration 5 of 5
+# experimentsUsed: 302
+# remainingBudget: 98
+# currentBudget: 98
+# nbConfigurations: 13
+# Markers:
+     x No test is performed.
+     c Configurations are discarded only due to capping.
+     - The test is performed and some configurations are discarded.
+     = The test is performed but no configuration is discarded.
+     ! The test is performed and configurations could be discarded but elite configurations are preserved.
+     . Alive configurations were already evaluated on this instance and nothing is discarded.
+     : All alive configurations are elite, but some need to be evaluated on this instance.
+
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+| |   Instance|      Alive|       Best|       Mean best| Exp so far|  W time|  rho|KenW|  Qvar|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+|x|         12|         13|         26|   -0.7967766473|         13|00:00:07|   NA|  NA|    NA|
+|x|          2|         13|         26|   -0.8008663913|         20|00:00:05|+0.34|0.67|0.5863|
+|x|         10|         13|         36|   -0.7722214976|         27|00:00:05|+0.21|0.47|0.5273|
+|x|          5|         13|         36|   -0.7723261727|         34|00:00:05|+0.17|0.37|0.5976|
+|-|          7|         10|         36|   -0.7733221625|         41|00:00:05|-0.06|0.16|0.9290|
+|=|          9|         10|         26|   -0.7815706337|         45|00:00:02|-0.01|0.16|0.9073|
+|=|         11|         10|         26|   -0.7842709656|         49|00:00:02|+0.04|0.18|0.8544|
+|=|          6|         10|         26|   -0.7816324482|         53|00:00:02|+0.09|0.21|0.8163|
+|=|          4|         10|         49|   -0.7832338993|         57|00:00:02|+0.05|0.16|0.8275|
+|=|          1|         10|         49|   -0.7823529180|         61|00:00:02|-0.00|0.10|0.8688|
+|=|          8|         10|         49|   -0.7850105681|         65|00:00:02|+0.03|0.12|0.8387|
+|=|          3|         10|         49|   -0.7873172906|         69|00:00:02|+0.05|0.13|0.8167|
+|=|         13|         10|         49|   -0.7870453562|         79|00:00:06|+0.06|0.14|0.8098|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+Best-so-far configuration:          49    mean value:    -0.7870453562
+Description of the best-so-far configuration:
+   .ID. pop_size offspring_ratio  selection initializer crossover crossover_prob      mutation mutation_prob_factor mutation_eta repair selection_size crossover_eta crossover_alpha blxab_alpha blxab_beta wa_alpha laplace_a laplace_b fuzzy_d simplex_epsilon nonuniform_perturbation uniform_perturb levy_beta levy_scale power_index scatter_base_size_factor .PARENT.
+49   49       36             1.0 tournament         obl       sbx          0.688 uniform_reset               1.6452           NA   clip              4       23.5635              NA          NA         NA       NA        NA        NA      NA              NA                      NA              NA        NA         NA          NA                     <NA>       26
+
+# 2026-10-20 05:32:09 UTC: Elite configurations (first number is the configuration ID; listed from best to worst according to the sum of ranks):
+   pop_size offspring_ratio  selection initializer crossover crossover_prob      mutation mutation_prob_factor mutation_eta repair selection_size crossover_eta crossover_alpha blxab_alpha blxab_beta wa_alpha laplace_a laplace_b fuzzy_d simplex_epsilon nonuniform_perturbation uniform_perturb levy_beta levy_scale power_index scatter_base_size_factor
+49       36             1.0 tournament         obl       sbx         0.6880 uniform_reset               1.6452           NA   clip              4       23.5635              NA          NA         NA       NA        NA        NA      NA              NA                      NA              NA        NA         NA          NA                     <NA>
+26       28             1.0 tournament         obl       sbx         0.6325 uniform_reset               1.2218           NA   clip              4       38.5444              NA          NA         NA       NA        NA        NA      NA              NA                      NA              NA        NA         NA          NA                     <NA>
+48       53            0.25 tournament         obl       sbx         0.6273 uniform_reset               1.2634           NA   clip              8       38.0034              NA          NA         NA       NA        NA        NA      NA              NA                      NA              NA        NA         NA          NA                     <NA>
+45       84            0.25        sus         lhs       sbx         0.6808   non_uniform               2.4110           NA random             NA       36.1734              NA          NA         NA       NA        NA        NA      NA              NA                  0.1237              NA        NA         NA          NA                     <NA>
+42       20             1.0 tournament         obl       sbx         0.8590 uniform_reset               1.4453           NA   clip              3       26.7653              NA          NA         NA       NA        NA        NA      NA              NA                      NA              NA        NA         NA          NA                     <NA>
+36       40            0.25 tournament         obl       sbx         0.7015   levy_flight               2.5422           NA   clip              4       21.5491              NA          NA         NA       NA        NA        NA      NA              NA                      NA              NA    1.6787     0.0788          NA                     <NA>
+# Total CPU user time: 852.752, CPU sys time: 42.398, Wall-clock time: 272.328
+# 2026-10-20 05:32:09 UTC: Starting post-selection:
+# Configurations selected: 49, 26, 48, 45, 42, 36, 40, 24, 41, 13, 14.
+# Pending instances: 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 3.
+# 2026-10-20 05:32:09 UTC: seed: 7017
+# Configurations: 11
+# Available experiments: 19
+# minSurvival: 1
+# Markers:
+     x No test is performed.
+     c Configurations are discarded only due to capping.
+     - The test is performed and some configurations are discarded.
+     = The test is performed but no configuration is discarded.
+     ! The test is performed and configurations could be discarded but elite configurations are preserved.
+     . Alive configurations were already evaluated on this instance and nothing is discarded.
+     : All alive configurations are elite, but some need to be evaluated on this instance.
+
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+| |   Instance|      Alive|       Best|       Mean best| Exp so far|  W time|  rho|KenW|  Qvar|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+|.|         11|         11|         49|   -0.8027306789|          0|00:00:00|   NA|  NA|    NA|
+|.|          3|         11|         49|   -0.8077109584|          0|00:00:00|+0.39|0.70|0.5771|
+|.|          7|         11|         49|   -0.8074558345|          0|00:00:00|+0.26|0.51|0.6153|
+|.|          6|         11|         49|   -0.8068284032|          0|00:00:00|+0.36|0.52|0.5411|
+|x|         13|         11|         49|   -0.8022191513|          2|00:00:02|+0.38|0.50|0.5618|
+|.|          2|         11|         49|   -0.8034231164|          2|00:00:00|+0.30|0.42|0.6164|
+|.|          8|         11|         49|   -0.8045893954|          2|00:00:00|+0.36|0.45|0.5665|
+|.|          1|         11|         49|   -0.8008187318|          2|00:00:00|+0.25|0.34|0.6704|
+|.|          5|         11|         49|   -0.7955304679|          2|00:00:00|+0.19|0.28|0.7329|
+|.|          9|         11|         49|   -0.7907643827|          2|00:00:00|+0.12|0.21|0.7935|
+|.|         10|         11|         49|   -0.7866820305|          2|00:00:00|+0.09|0.17|0.8237|
+|x|         12|         11|         49|   -0.7851056947|          4|00:00:02|+0.09|0.16|0.8161|
+|.|          4|         11|         49|   -0.7870453562|          4|00:00:00|+0.08|0.15|0.8067|
+|-|         14|          4|         49|   -0.7879816607|         15|00:00:06|+0.07|0.14|0.7345|
+|=|         15|          4|         49|   -0.7881442705|         19|00:00:02|+0.08|0.14|0.7311|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+Best-so-far configuration:          49    mean value:    -0.7881442705
+Description of the best-so-far configuration:
+   .ID. pop_size offspring_ratio  selection initializer crossover crossover_prob      mutation mutation_prob_factor mutation_eta repair selection_size crossover_eta crossover_alpha blxab_alpha blxab_beta wa_alpha laplace_a laplace_b fuzzy_d simplex_epsilon nonuniform_perturbation uniform_perturb levy_beta levy_scale power_index scatter_base_size_factor .PARENT.
+49   49       36             1.0 tournament         obl       sbx          0.688 uniform_reset               1.6452           NA   clip              4       23.5635              NA          NA         NA       NA        NA        NA      NA              NA                      NA              NA        NA         NA          NA                     <NA>       26
+
+# 2026-10-20 05:32:24 UTC: Elite configurations (first number is the configuration ID; listed from best to worst according to the sum of ranks):
+   pop_size offspring_ratio  selection initializer crossover crossover_prob      mutation mutation_prob_factor mutation_eta repair selection_size crossover_eta crossover_alpha blxab_alpha blxab_beta wa_alpha laplace_a laplace_b fuzzy_d simplex_epsilon nonuniform_perturbation uniform_perturb levy_beta levy_scale power_index scatter_base_size_factor
+49       36             1.0 tournament         obl       sbx         0.6880 uniform_reset               1.6452           NA   clip              4       23.5635              NA          NA         NA       NA        NA        NA      NA              NA                      NA              NA        NA         NA          NA                     <NA>
+26       28             1.0 tournament         obl       sbx         0.6325 uniform_reset               1.2218           NA   clip              4       38.5444              NA          NA         NA       NA        NA        NA      NA              NA                      NA              NA        NA         NA          NA                     <NA>
+45       84            0.25        sus         lhs       sbx         0.6808   non_uniform               2.4110           NA random             NA       36.1734              NA          NA         NA       NA        NA        NA      NA              NA                  0.1237              NA        NA         NA          NA                     <NA>
+48       53            0.25 tournament         obl       sbx         0.6273 uniform_reset               1.2634           NA   clip              8       38.0034              NA          NA         NA       NA        NA        NA      NA              NA                      NA              NA        NA         NA          NA                     <NA>
+# Total CPU user time: 892.025, CPU sys time: 44.563, Wall-clock time: 287.499
+# Best configurations (first number is the configuration ID; listed from best to worst according to the sum of ranks):
+   pop_size offspring_ratio  selection initializer crossover crossover_prob      mutation mutation_prob_factor mutation_eta repair selection_size crossover_eta crossover_alpha blxab_alpha blxab_beta wa_alpha laplace_a laplace_b fuzzy_d simplex_epsilon nonuniform_perturbation uniform_perturb levy_beta levy_scale power_index scatter_base_size_factor
+49       36             1.0 tournament         obl       sbx         0.6880 uniform_reset               1.6452           NA   clip              4       23.5635              NA          NA         NA       NA        NA        NA      NA              NA                      NA              NA        NA         NA          NA                     <NA>
+26       28             1.0 tournament         obl       sbx         0.6325 uniform_reset               1.2218           NA   clip              4       38.5444              NA          NA         NA       NA        NA        NA      NA              NA                      NA              NA        NA         NA          NA                     <NA>
+45       84            0.25        sus         lhs       sbx         0.6808   non_uniform               2.4110           NA random             NA       36.1734              NA          NA         NA       NA        NA        NA      NA              NA                  0.1237              NA        NA         NA          NA                     <NA>
+48       53            0.25 tournament         obl       sbx         0.6273 uniform_reset               1.2634           NA   clip              8       38.0034              NA          NA         NA       NA        NA        NA      NA              NA                      NA              NA        NA         NA          NA                     <NA>
+# Best configurations as commandlines (first number is the configuration ID; listed from best to worst according to the sum of ranks):
+49 --pop_size 36 --offspring_ratio 1.0 --selection tournament --initializer obl --crossover sbx --crossover_prob 0.688 --mutation uniform_reset --mutation_prob_factor 1.6452 --repair clip --selection_size 4 --crossover_eta 23.5635
+26 --pop_size 28 --offspring_ratio 1.0 --selection tournament --initializer obl --crossover sbx --crossover_prob 0.6325 --mutation uniform_reset --mutation_prob_factor 1.2218 --repair clip --selection_size 4 --crossover_eta 38.5444
+45 --pop_size 84 --offspring_ratio 0.25 --selection sus --initializer lhs --crossover sbx --crossover_prob 0.6808 --mutation non_uniform --mutation_prob_factor 2.411 --repair random --crossover_eta 36.1734 --nonuniform_perturbation 0.1237
+48 --pop_size 53 --offspring_ratio 0.25 --selection tournament --initializer obl --crossover sbx --crossover_prob 0.6273 --mutation uniform_reset --mutation_prob_factor 1.2634 --repair clip --selection_size 8 --crossover_eta 38.0034
+
+
+# Testing of elite configurations: 1 
+# Testing iteration configurations: FALSE 
+# 2026-10-20 05:32:24 UTC: No test instances, skip testing
