@@ -28,8 +28,9 @@ R_SCRIPT = """
 suppressMessages(library(irace))
 r <- read_logfile(commandArgs(TRUE)[1])
 e <- getFinalElites(r, n = 1)
-e$.experiments <- nrow(r$experimentLog)
-e$.iterations <- r$state$nbIterations
+e$.experiments <- sum(!is.na(r$experiments))  # instances x configurations, NA = not run
+e$.iterations <- length(r$allElites)
+e$.configurations <- ncol(r$experiments)
 write.csv(e, stdout(), row.names = FALSE, na = "NA")
 """
 
@@ -45,7 +46,8 @@ def collect(problem: str) -> dict:
             continue
         arguments += [f"--{name}", value]
     return {"problem": problem, "config": parse_assignment(arguments), "irace_id": int(row[".ID."]),
-            "experiments": int(row[".experiments"]), "iterations": row[".iterations"]}
+            "experiments": int(row[".experiments"]), "iterations": int(row[".iterations"]),
+            "configurations": int(row[".configurations"])}
 
 
 def main() -> None:

@@ -63,6 +63,18 @@ def _normalizer(fronts: list[np.ndarray]):
     return lambda front: _hv((front - ideal) / span, reference) / best
 
 
+HISTORIES = {"C": PHASE2_DATA / "tuning_history", "A": PHASE2B / "data" / "frace_refnorm_history"}
+
+
+def _tuning_runs(arm: str, tuned: dict) -> int:
+    """Target runs spent tuning: from the F-Race histories (per-config `num_evals`) or irace."""
+    if arm in HISTORIES:
+        return int(sum(trial["details"].get("num_evals", 0)
+                       for path in HISTORIES[arm].glob("*.json")
+                       for trial in json.loads(path.read_text())))
+    return int(sum(v["experiments"] for v in tuned.values()))
+
+
 def arm_hvn(arm: str) -> pd.DataFrame:
     """Phase 2's HVn table for one arm: normalization from the arm's own portfolio."""
     configs = [f"tuned__{p}" for p in pilot_problems()] + list(DEFAULTS)
@@ -115,7 +127,7 @@ def main() -> None:
             "distinct_operator_combinations": len(combos),
             "default_selected": sum(tuned[p]["config"].get("crossover") == "sbx" and tuned[p]["config"].get("pop_size") == 100
                                     and tuned[p]["config"].get("mutation") == "polynomial" for p in pilot_problems()),
-            "tuning_runs": int(sum(v.get("experiments", 0) for v in tuned.values())),
+            "tuning_runs": _tuning_runs(arm, tuned),
         }
     pd.concat(per_arm).to_csv(PHASE2B / "data" / "arms_gaps.csv", index=False)
 
