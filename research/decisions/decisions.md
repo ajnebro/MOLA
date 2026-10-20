@@ -114,3 +114,48 @@ alternativas completas para D1–D3 están en [`question1.md`](question1.md).
 - **Resultado de G2 (fase 2):** superada según la regla pre-registrada, con 12 de 36 grupos (33 %)
   frente al umbral del 25 %. El margen se concentra en problemas multimodales. Ver
   `research/phase2/report.md`.
+
+## D4 — Escalado de objetivos `sample` para el recomendador
+
+- **Fecha y autor:** 2026-10-20, decisión del usuario (opción 1 de la consulta sobre cómo medir el
+  parecido entre problemas).
+- **Decisión:** el recomendador caracteriza los problemas con MOLA 0.4.0 y
+  `objective_scaling = "sample"`, que escala cada objetivo a [0, 1] según su mínimo y su máximo en la
+  muestra. MOLA mantiene `raw` por defecto, que son las definiciones del artículo.
+- **Motivo:**
+  - 17 features dependen de las unidades de los objetivos. Las de hipervolumen variaban hasta 7
+    órdenes de magnitud entre problemas y decidían por sí solas el vecino más cercano: en DTLZ3 la
+    distancia al más cercano era de 98 536.
+  - NSGA-II, en todo su espacio de ajuste, y MOEA/D son invariantes bit a bit ante el escalado de
+    los objetivos (`research/phase3/data/objective_invariance.csv`). Como lo que se transfiere no
+    ve las unidades de los objetivos, la representación tampoco debe verlas.
+  - Es la misma lógica que D1 aplica a las variables, y es lo que hace MO-ELA.
+- **Implicaciones:**
+  - Se aplicó como enmienda 1 al pre-registro de la fase 3, antes de que existiera la matriz.
+  - SMS-EMOA por defecto no es invariante: su punto de referencia se desplaza 1.0 en unidades
+    absolutas. Si alguna vez entra en el portafolio, hay que tenerlo en cuenta.
+
+## D5 — Ajuste siempre con irace; NicoVM como máquina de cálculo
+
+- **Fecha y autor:** 2026-10-20, instrucción del usuario: "Usa siempre irace. Usa budget de 20000, o
+  más si lo consideras necesario. Siempre comprueba que NicoVM no está ocupado."
+- **Decisión:**
+  - Todo ajuste de configuraciones usa irace (≥ 4.4.4) con `maxExperiments` ≥ 20 000 por tarea.
+    Cada ejecución sigue haciendo 20 000 evaluaciones.
+  - Sustituye a T6 (F-Race), en línea con la fase 2b, donde irace superó a F-Race en 32 de 37
+    problemas con el mismo presupuesto.
+  - Antes de cada lanzamiento en NicoVM se comprueba que está libre, y nunca se detienen procesos
+    ajenos.
+
+## Decisiones técnicas de la fase 3 (tomadas al implementar; reversibles)
+
+- **T7 — Normalización del objetivo de ajuste por el frente verdadero.** Se usan el ideal y el nadir
+  del frente de Pareto verdadero: analítico en DTLZ, LZ09 y UF6, y el frente de referencia de VAMOS
+  en el resto, contrastado con todos los frentes evaluados.
+  - No se usa la unión de frentes evaluados porque contiene puntos extremos que estiran el nadir: en
+    UF5, el nadir de f2 sería 2.52 en lugar de 1.
+  - Al contrastarlo, el fichero de UF6 de VAMOS resultó incompleto: le falta el punto aislado (0, 1).
+- **T8 — Servidor de ejecución persistente para irace.** El target runner es un cliente mínimo que
+  envía cada experimento a 31 procesos con VAMOS ya cargado. Así se evita ~0.9 s de arranque de
+  Python por experimento, unas 185 h de CPU en la campaña. Los resultados no cambian: misma función
+  y mismas semillas.

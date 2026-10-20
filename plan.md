@@ -1,12 +1,20 @@
 # Plan — Recomendación de configuraciones por similitud de paisajes (continuación de MOLA)
 
-Borrador del 2026-10-19. **La fase 0 se ejecutó el 2026-10-19** en la rama local `research/phase0`;
-los resultados están en `research/phase0/report.md` y el registro actualizado, E1–E25, en
-`research/phase0/claims.csv`. Ese registro sustituye al de §3. **La fase 1 se ejecutó el
-2026-10-19** en la rama `research/phase1` (MOLA 0.3.0). La puerta G1 se superó; el detalle está en
-`research/phase1/report.md`. **La fase 2 (piloto) se ejecutó el 2026-10-20** en la rama
-`research/phase2`: G2 superada por poco (12 de 36 grupos), con el margen concentrado en problemas
-multimodales. Ver `research/phase2/report.md`.
+Borrador del 2026-10-19, actualizado el 2026-10-20.
+
+**Estado:**
+- **Fase 0:** ejecutada el 2026-10-19. Resultados en `research/phase0/report.md`; el registro
+  E1–E25 está en `research/phase0/claims.csv` y sustituye al de §3.
+- **Fase 1:** ejecutada el 2026-10-19 (MOLA 0.3.0). G1 superada; `research/phase1/report.md`.
+- **Fase 2:** ejecutada el 2026-10-20 (piloto). G2 superada por poco, con el margen concentrado en
+  problemas multimodales; `research/phase2/report.md`.
+- **Fase 2b:** irace frente a F-Race, el 2026-10-20. Con el mismo presupuesto, irace da mejores
+  configuraciones en 32 de 37 problemas; `research/phase2b/report.md`.
+- **Fase 3 (transferencia, RQ3):** en curso en la rama `research/phase3`. El ajuste con irace
+  (20 000 experimentos por problema) se ejecuta en NicoVM. El pre-registro y su enmienda 1
+  (escalado de objetivos, D4) se fijaron antes de que existiera la matriz:
+  `research/phase3/preregistration.md`.
+- Las decisiones están en `research/decisions/decisions.md` (D1–D5, T1–T8).
 
 ---
 
@@ -50,7 +58,9 @@ aporta explicación: "tu problema se parece a RE37".
 1. Una recomendación basada en recuperar instancias, que puede abstenerse, evaluada por la calidad
    de la configuración que devuelve.
 2. Particiones agrupadas por formulación, comparadas con particiones aleatorias.
-3. La invariancia frente a cambios de unidades como requisito que se puede comprobar.
+3. La invariancia frente a cambios de unidades, de las variables (D1) y de los objetivos (D4),
+   como requisito que se puede comprobar. Se verifica ejecutando, tanto en las features como en el
+   optimizador.
 
 ## 3. Registro de evidencias (estado a 2026-10-19)
 
@@ -97,7 +107,13 @@ terminar la sesión**; si se quieren conservar, hay que copiarlos a `research/ev
 Están ordenadas según el flujo del recomendador: caracterizar, recuperar, recomendar y decidir.
 
 **RQ1. Invariancia y geometría.** ¿Cambian el vecino recuperado y la configuración recomendada
-cuando se cambian las unidades de las variables sin cambiar el problema?
+cuando se cambian las unidades de las variables o de los objetivos sin cambiar el problema?
+- **Estado (2026-10-20):**
+  - **Variables:** las 49 features con geometría `bound` (fase 1) y el portafolio de NSGA-II de
+    VAMOS sin PCX, UNDX, mutación gaussiana, mutación de Cauchy, reparación `round` ni inicializador
+    Halton (fase 2) son invariantes bit a bit.
+  - **Objetivos:** las 49 features con `objective_scaling = "sample"`, todo el espacio de NSGA-II y
+    MOEA/D son invariantes; SMS-EMOA no lo es (fase 3, D4).
 - **Idea clave.** Si los operadores del optimizador trabajan relativos a las cotas (SBX y mutación
   polinómica), su comportamiento no cambia ante transformaciones afines positivas por variable,
   aplicadas a la vez a puntos, cotas y función. En ese caso la recomendación correcta tampoco debe
@@ -164,8 +180,8 @@ perjudiciales con el mismo presupuesto total?
 | Problemas | Continuos y deterministas, con restricciones solo de caja. Dos objetivos en el estudio principal y tres como validación |
 | Suites | COCO bbob-biobj, que aporta repetibilidad e instancias identificables; DTLZ, WFG y ZDT; UF y LZ09 mediante el adaptador Java; ZCAT; RE y RWA sin duplicados |
 | Particiones | 1. Mismo problema con otro muestreo (reconocimiento). 2. Misma formulación con otra instancia (transferencia próxima). 3. Formulación excluida (generalización). 4. Familia o suite excluida. Los grupos finales se reservan **antes** de ajustar el método; los casos RE/RWA ya inspeccionados son de desarrollo |
-| Portafolio | **Decidido (D2, D3):** una configuración c*_P ajustada con el tuner de VAMOS para cada problema de entrenamiento P; el portafolio es la unión de esas c*_P. Todo se ejecuta en VAMOS, con versión y backend fijados. La configuración por defecto y la generalista (SBS) son comparadores. **La complementariedad entre la mejor c*_P única y el VBS es una puerta** (§6). Ver `research/decisions/decisions.md` |
-| Caracterización | MOLA con el perfil histórico comparable (19 de los 21 descriptores) y con las 49 features, más un método viable basado en MO-ELA o ELA bajo el mismo protocolo |
+| Portafolio | **Decidido (D2, D3, D5):** una configuración c*_P ajustada **con irace** (≥ 20 000 experimentos) para cada problema de entrenamiento P; el portafolio es la unión de esas c*_P. Todo se ejecuta en VAMOS 1.0.0 (`0a8bbb0`, motor numpy), sobre el espacio de NSGA-II invariante. La configuración por defecto y la generalista (SBS) son comparadores. **La complementariedad entre la mejor c*_P única y el VBS es una puerta** (§6). Ver `research/decisions/decisions.md` |
+| Caracterización | MOLA (0.4.0) con geometría `bound`, k = D y escalado de objetivos `sample` (D1, D4), con las 49 features y con el perfil histórico comparable (19 de los 21 descriptores, distancia de la tesis). Como trabajo futuro, un método viable basado en MO-ELA o ELA bajo el mismo protocolo |
 | Presupuesto | B_total = B_caracterización + B_optimización + B_configuración_en_objetivo; el último término es 0 si no se configura sobre el problema nuevo. Las soluciones evaluadas al caracterizar se **conservan** en el archivo final |
 | Controles | La configuración generalista con todo el presupuesto, y **el mismo muestreo inicial con la configuración generalista** y el presupuesto restante. Si la muestra inicializa la población, esa decisión se fija y se controla |
 | Medidas | HV con referencia y normalización fijas por problema (solo para evaluar, nunca como entrada) e IGD+ donde haya un frente defendible. Se guardan trayectorias para cubrir varios presupuestos con una ejecución |
@@ -186,8 +202,19 @@ perjudiciales con el mismo presupuesto total?
 ## 7. Decisiones abiertas y riesgos
 
 - **Decidido el 2026-10-19** (`research/decisions/decisions.md`): geometría `bound` por defecto
-  (D1), portafolio de configuraciones ajustadas por problema (D2) y ejecución en VAMOS (D3). Falta
-  dimensionar el coste cuadrático de D2 con el micro-benchmark de la fase 2.
+  (D1), portafolio de configuraciones ajustadas por problema (D2) y ejecución en VAMOS (D3).
+- **Decidido el 2026-10-20:**
+  - escalado de objetivos `sample` para el recomendador (D4);
+  - ajuste siempre con irace, con ≥ 20 000 experimentos (D5);
+  - el cálculo pesado se hace en NicoVM, comprobando antes que está libre.
+
+  Con los tiempos medidos, el ajuste de los 37 problemas de desarrollo cuesta unas 20 h en NicoVM y
+  la matriz cruzada, unos 30 min.
+- **Fallos de VAMOS 1.0.0 encontrados, a comunicar al proyecto:**
+  - `racing/refill.py:25` falla con parámetros condicionales en el racing iterado;
+  - PCX, UNDX, la mutación gaussiana, la de Cauchy, la reparación `round` y el inicializador Halton
+    no son invariantes ante cambios de unidades;
+  - el frente de referencia de UF6 está incompleto.
 - **Comunicación con Aldana-Martín y Nebro:** al terminar la fase 0, describiendo exactamente lo
   demostrado (E12 y E13) y proponiendo coautoría.
 - **Invariancia de los operadores de VAMOS:** es la condición de la RQ1 y hay que verificarla
