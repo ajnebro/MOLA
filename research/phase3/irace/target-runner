@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# irace target runner (Linux, phase 3): a thin client of run_server.py. irace runs it in execDir:
+#   <configuration id> <instance id> <seed> <instance> <parameters...>
+# The only output is the cost; errors are printed and make irace stop.
+HERE="$(cd "$(dirname "$0")" && pwd)"
+exec python3 -S "$HERE/../scripts/run_client.py" "$@"
