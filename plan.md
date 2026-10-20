@@ -14,7 +14,9 @@ Borrador del 2026-10-19, actualizado el 2026-10-20.
   (20 000 experimentos por problema) se ejecuta en NicoVM. El pre-registro y su enmienda 1
   (escalado de objetivos, D4) se fijaron antes de que existiera la matriz:
   `research/phase3/preregistration.md`.
-- Las decisiones están en `research/decisions/decisions.md` (D1–D5, T1–T8).
+- **Fase 3 en Evolver (D6):** después de la de VAMOS, la fase 3 se repite entera en Evolver/jMetal,
+  con el espacio completo de NSGA-II (`NSGAIIDouble.yaml`) e irace.
+- Las decisiones están en `research/decisions/decisions.md` (D1–D6, T1–T8).
 
 ---
 

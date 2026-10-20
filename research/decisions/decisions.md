@@ -159,3 +159,26 @@ alternativas completas para D1–D3 están en [`question1.md`](question1.md).
   envía cada experimento a 31 procesos con VAMOS ya cargado. Así se evita ~0.9 s de arranque de
   Python por experimento, unas 185 h de CPU en la campaña. Los resultados no cambian: misma función
   y mismas semillas.
+
+## D6 — Réplica de la fase 3 en Evolver (jMetal)
+
+- **Fecha y autor:** 2026-10-20, decisión del usuario: opción 2 ("las dos") y "todo [el] espacio del
+  nsga-ii".
+- **Decisión:**
+  - La fase 3 se completa primero en VAMOS, tal como está pre-registrada.
+  - Después se repite entera en Evolver/jMetal: caracterización con el adaptador Java de MOLA, ajuste
+    con irace (≥ 20 000 experimentos, D5), matriz y el mismo análisis de G3. Así se generan y evalúan
+    las configuraciones en el mismo framework en cada réplica.
+  - El espacio de configuraciones es el de NSGA-II completo de Evolver, `NSGAIIDouble.yaml` (unos 32
+    parámetros, el del artículo de Evolver).
+- **Motivo:**
+  - Es la línea de la tesis y del grupo de Nebro.
+  - Evolver ya trae runners de irace y un servidor de evaluación.
+  - Si la transferencia por paisaje se sostiene en dos frameworks, el resultado es más sólido.
+- **Implicaciones:**
+  - Hay que rehacer el catálogo, los duplicados, los frentes verdaderos y la comprobación de
+    invariancia con las implementaciones de jMetal, que no son idénticas a las de VAMOS.
+  - **Punto abierto:** a diferencia de VAMOS (T5), el espacio completo incluye operadores que
+    probablemente no son invariantes a las unidades: PCX, UNDC, SDX y la reparación `round`. Se
+    medirá su invariancia en jMetal antes del ajuste, y el usuario decide si se mantienen. Si se
+    mantienen, las dos réplicas difieren también en el espacio, y eso se documenta.
