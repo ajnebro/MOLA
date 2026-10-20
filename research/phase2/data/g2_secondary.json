@@ -1,0 +1,55 @@
+{
+  "sbs_counts": {
+    "tuned__zdt1": 34,
+    "tuned__dtlz6": 2,
+    "tuned__cec2009_uf3": 1
+  },
+  "oracle_donor_counts": {
+    "tuned__zcat6": 10,
+    "tuned__zdt3": 3,
+    "tuned__re21": 3,
+    "tuned__cec2009_uf7": 3,
+    "tuned__zcat10": 3,
+    "tuned__lz09_f1": 2,
+    "tuned__cec2009_uf3": 2,
+    "tuned__dtlz1": 1,
+    "tuned__cec2009_uf4": 1,
+    "tuned__cec2009_uf5": 1
+  },
+  "lz09_uf_targets_with_lz09_uf_oracle_donor": "8 of 15",
+  "fraction_bootstrap_over_groups": {
+    "p05": 0.19444444444444445,
+    "p50": 0.3333333333333333,
+    "p95": 0.4722222222222222,
+    "share_at_or_above_0.25": 0.8943
+  },
+  "mean_gap_moead_default_vs_sbs": -0.1421588269738597,
+  "mean_gap_smsemoa_default_vs_sbs": -0.0016403925833433958,
+  "problems_where_smsemoa_default_beats_sbs_by_0.01": [
+    "zdt1",
+    "zdt4",
+    "dtlz1",
+    "dtlz6",
+    "cec2009_uf3",
+    "cec2009_uf6"
+  ],
+  "problems_where_moead_default_beats_sbs_by_0.01": [
+    "dtlz1",
+    "dtlz3",
+    "dtlz6",
+    "cec2009_uf3",
+    "cec2009_uf7"
+  ],
+  "mean_hvn_over_problems": {
+    "tuned__zdt1": 0.8894,
+    "tuned__dtlz6": 0.8793,
+    "tuned__cec2009_uf3": 0.873,
+    "default__nsgaii": 0.871,
+    "tuned__dtlz1": 0.871
+  },
+  "mean_hvn_defaults": {
+    "default__nsgaii": 0.871,
+    "default__moead": 0.715,
+    "default__smsemoa": 0.8555
+  }
+}
