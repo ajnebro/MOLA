@@ -24,7 +24,7 @@ from common import DATA, RAW, pilot_problems
 from runs import CHECKPOINTS, run
 
 BUDGET = 20_000
-EVALUATION_SEEDS = (2001, 2002, 2003, 2004, 2005)
+EVALUATION_SEEDS = tuple(int(s) for s in os.environ.get("PHASE2_EVAL_SEEDS", "2001,2002,2003,2004,2005").split(","))
 WORKERS = int(os.environ.get("PHASE2_WORKERS", 8))
 FRONTS = RAW / "fronts"
 

@@ -52,7 +52,7 @@ def collect(problem: str) -> dict:
 
 def main() -> None:
     tuned = {p: collect(p) for p in pilot_problems()}
-    out = HERE.parent / "data" / "tuned_irace.json"
+    out = Path(os.environ.get("MOLA_IRACE_OUT", HERE.parent / "data" / "tuned_irace.json"))
     out.write_text(json.dumps(tuned, indent=2) + "\n")
     print(f"{len(tuned)} elites -> {out}")
 
