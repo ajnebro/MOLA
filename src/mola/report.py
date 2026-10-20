@@ -26,6 +26,7 @@ class Provenance:
         mola_version: Version of MOLA that computed the features.
         feature_profile: Version of the feature definitions (:data:`FEATURE_PROFILE`).
         geometry: Decision-space geometry profile (`mola.geometry`).
+        objective_scaling: Objective-space scaling profile (`mola.geometry.ObjectiveScaling`).
         neighbours: Neighbourhood size `k` actually used, after capping at `n - 1`.
         walk_samples: Number of adaptive walks actually averaged, after capping at `n`.
         problem: Name of the sampled problem.
@@ -49,6 +50,7 @@ class Provenance:
     sample_size: int
     num_obj: int
     num_var: int
+    objective_scaling: str = "raw"
 
 
 @dataclass(slots=True, frozen=True)

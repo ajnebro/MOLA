@@ -26,7 +26,14 @@ from mola.dominance import (
     local_nondominance,
     neighbourhood_dominance,
 )
-from mola.geometry import DEFAULT_GEOMETRY, Geometry, decision_space
+from mola.geometry import (
+    DEFAULT_GEOMETRY,
+    DEFAULT_OBJECTIVE_SCALING,
+    Geometry,
+    ObjectiveScaling,
+    decision_space,
+    objective_space,
+)
 from mola.hypervolume import reference_point
 from mola.multimodality import DEFAULT_WALK_COUNT, AdaptiveWalks, adaptive_walks
 from mola.normalization import Normalizers, build_normalizers
@@ -226,6 +233,7 @@ def characterize_report(
     walk_samples: int = DEFAULT_WALK_COUNT,
     geometry: Geometry = DEFAULT_GEOMETRY,
     neighbours: int | None = None,
+    objective_scaling: ObjectiveScaling = DEFAULT_OBJECTIVE_SCALING,
 ) -> Characterization:
     """Compute all 49 landscape features (paper Table 1) for one sample, with provenance.
 
@@ -250,6 +258,9 @@ def characterize_report(
             choice.
         neighbours: Neighbourhood size `k`. Defaults to `D`, the number of decision variables
             (Design decisions, "Neighbourhood definition"). Capped at `n - 1`.
+        objective_scaling: Objective-space profile. Defaults to `raw`; `sample` min-max scales
+            each objective over the sample first, so that no feature depends on the units of
+            the objectives (`mola.geometry.ObjectiveScaling`).
 
     Returns:
         The 49 feature values keyed by their Table 1 names, the cause of each undefined one, and
@@ -260,8 +271,9 @@ def characterize_report(
             `neighbours` is not positive.
     """
     geometry = Geometry(geometry)
+    objective_scaling = ObjectiveScaling(objective_scaling)
     variables = decision_space(sample, geometry)
-    objectives = sample.objectives
+    objectives = objective_space(sample, objective_scaling)
 
     neighbourhood = build_neighbourhood(
         variables, neighbours=sample.number_of_variables if neighbours is None else neighbours
@@ -291,6 +303,7 @@ def characterize_report(
         mola_version=__version__,
         feature_profile=FEATURE_PROFILE,
         geometry=geometry.value,
+        objective_scaling=objective_scaling.value,
         neighbours=neighbourhood.size,
         walk_samples=int(substrate.walks.lengths.size),
         problem=sample.problem,
@@ -310,6 +323,7 @@ def characterize(
     walk_samples: int = DEFAULT_WALK_COUNT,
     geometry: Geometry = DEFAULT_GEOMETRY,
     neighbours: int | None = None,
+    objective_scaling: ObjectiveScaling = DEFAULT_OBJECTIVE_SCALING,
 ) -> dict[str, float]:
     """Compute all 49 landscape features (paper Table 1) for one sample, plus its basic metadata.
 
@@ -322,6 +336,7 @@ def characterize(
         walk_samples: See :func:`characterize_report`.
         geometry: See :func:`characterize_report`.
         neighbours: See :func:`characterize_report`.
+        objective_scaling: See :func:`characterize_report`.
 
     Returns:
         A dict keyed by each Table 1 feature's own name (`f_cor`, `dist_x_avg`, ..., `nhv_cor_neig`
@@ -332,5 +347,9 @@ def characterize(
         ValueError: See :func:`characterize_report`.
     """
     return characterize_report(
-        sample, walk_samples=walk_samples, geometry=geometry, neighbours=neighbours
+        sample,
+        walk_samples=walk_samples,
+        geometry=geometry,
+        neighbours=neighbours,
+        objective_scaling=objective_scaling,
     ).as_flat_dict()

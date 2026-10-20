@@ -27,7 +27,7 @@ from jmetal.core.problem import FloatProblem
 
 from mola.adapters.jmetalpy import sample_problem
 from mola.characterize import characterize_report
-from mola.geometry import DEFAULT_GEOMETRY, Geometry
+from mola.geometry import DEFAULT_GEOMETRY, DEFAULT_OBJECTIVE_SCALING, Geometry, ObjectiveScaling
 from mola.multimodality import DEFAULT_WALK_COUNT
 from mola.sample import Sample, read_sample, write_sample
 
@@ -54,6 +54,11 @@ _GEOMETRY_HELP = (
     "are, as MOLA 0.2.0 did."
 )
 _NEIGHBOURS_HELP = "Neighbourhood size k. Defaults to D, the number of decision variables."
+_OBJECTIVE_SCALING_HELP = (
+    "Objective-space scaling: 'raw' keeps the objective values (the paper's definitions); "
+    "'sample' maps each objective to [0, 1] over the sample, so no feature depends on the "
+    "objectives' units."
+)
 _REPORT_HELP = (
     "Also save the full report here as JSON: every feature with its status and the cause of "
     "any undefined one, plus provenance (MOLA version, feature profile, geometry, k). Use it "
@@ -114,6 +119,7 @@ def _characterize_and_report(
     walk_samples: int,
     geometry: Geometry,
     neighbours: int | None,
+    objective_scaling: ObjectiveScaling,
     output: Path | None,
     report: Path | None,
 ) -> None:
@@ -125,7 +131,11 @@ def _characterize_and_report(
     """
     try:
         characterization = characterize_report(
-            loaded_sample, walk_samples=walk_samples, geometry=geometry, neighbours=neighbours
+            loaded_sample,
+            walk_samples=walk_samples,
+            geometry=geometry,
+            neighbours=neighbours,
+            objective_scaling=objective_scaling,
         )
     except ValueError as error:
         typer.echo(f"Error: {error}", err=True)
@@ -204,6 +214,9 @@ def characterize(
     walk_samples: int = typer.Option(DEFAULT_WALK_COUNT, "--walk-samples", help=_WALK_SAMPLES_HELP),
     geometry: Geometry = typer.Option(DEFAULT_GEOMETRY, "--geometry", help=_GEOMETRY_HELP),
     neighbours: int | None = typer.Option(None, "--neighbours", "-k", min=1, help=_NEIGHBOURS_HELP),
+    objective_scaling: ObjectiveScaling = typer.Option(
+        DEFAULT_OBJECTIVE_SCALING, "--objective-scaling", help=_OBJECTIVE_SCALING_HELP
+    ),
     report: Path | None = typer.Option(None, "--report", help=_REPORT_HELP),
 ) -> None:
     """Compute the 49 landscape features for an existing interchange sample file.
@@ -225,6 +238,7 @@ def characterize(
         walk_samples=walk_samples,
         geometry=geometry,
         neighbours=neighbours,
+        objective_scaling=objective_scaling,
         output=output,
         report=report,
     )
@@ -240,6 +254,9 @@ def run(
     output: Path | None = typer.Option(None, "--output", "-o", help=_OUTPUT_HELP),
     geometry: Geometry = typer.Option(DEFAULT_GEOMETRY, "--geometry", help=_GEOMETRY_HELP),
     neighbours: int | None = typer.Option(None, "--neighbours", "-k", min=1, help=_NEIGHBOURS_HELP),
+    objective_scaling: ObjectiveScaling = typer.Option(
+        DEFAULT_OBJECTIVE_SCALING, "--objective-scaling", help=_OBJECTIVE_SCALING_HELP
+    ),
     report: Path | None = typer.Option(None, "--report", help=_REPORT_HELP),
 ) -> None:
     """Sample, evaluate, and characterize a jMetalPy problem in one step -- no file needed.
@@ -259,6 +276,7 @@ def run(
         walk_samples=walk_samples,
         geometry=geometry,
         neighbours=neighbours,
+        objective_scaling=objective_scaling,
         output=output,
         report=report,
     )
