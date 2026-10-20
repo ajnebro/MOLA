@@ -88,7 +88,9 @@ Two options change the values themselves. `--geometry bound` (the default) maps 
 [0, 1] through its declared bounds before building the neighbourhood graph and measuring
 decision-space distances, so the features do not depend on the variables' units; `--geometry raw`
 uses them as they are, as MOLA 0.2.0 did. `--neighbours`/`-k` sets `k`, which defaults to the
-number of variables `D`.
+number of variables `D`. `--objective-scaling sample` (MOLA 0.4.0) maps each objective to [0, 1]
+over the sample first, so no feature depends on the objectives' units; the default, `raw`, keeps
+the paper's definitions.
 
 **MOLA 0.3.0 changes feature values.** It fixes the supported-point test, normalizes the average
 neighbour distances and defaults to the `bound` geometry (see [`CLAUDE.md`](CLAUDE.md), "Status").

@@ -65,5 +65,8 @@ the format itself.
   writes `null` and the cause.
 - Since 0.3.0 the default `--geometry bound` scales each variable by its declared bounds; a sample
   with infinite bounds needs `--geometry raw`. A sample with NaN or infinite values is rejected.
+- Since 0.4.0 `--objective-scaling sample` scales each objective to [0, 1] over the sample, which
+  makes every feature independent of the objectives' units; use it when comparing problems whose
+  objectives are expressed in different units. The default, `raw`, keeps the paper's definitions.
 - MOLA's own MIT license does not cover `moocore`, a separate dependency under
   LGPL-2.1-or-later -- see CLAUDE.md's "License" decision if this matters for your use case.

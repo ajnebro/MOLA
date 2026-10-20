@@ -381,9 +381,21 @@ Three more, resolved 2026-07-25 — the last structural questions blocking imple
   leaves all 49 features unchanged; under `raw`, heterogeneous bounds change the graph itself — on
   RE25/RE33/RE42 the two graphs share only 6–12 % of their neighbours, and 39 features change
   (research/phase0, E4/E6). Fixed variables map to 0 and unbounded variables are rejected under
-  `bound`. Objective space is never rescaled. The geometry, `k`, the MOLA version and the feature
-  profile (`paper49-v1`, `mola.report.FEATURE_PROFILE`) are recorded by `characterize_report()`
-  and `--report`, together with a cause for every undefined feature.
+  `bound`. Objective space has its own profile (next decision). The geometry, `k`, the MOLA
+  version and the feature profile (`paper49-v1`, `mola.report.FEATURE_PROFILE`) are recorded by
+  `characterize_report()` and `--report`, together with a cause for every undefined feature.
+- **Objective scaling** (resolved 2026-10-20, research/decisions/decisions.md D4; MOLA 0.4.0).
+  `characterize(..., objective_scaling=)` and `--objective-scaling` take `raw`, the default and the
+  paper's definitions, or `sample`, which min-max scales each objective over the sample before any
+  feature is computed. Under `sample` all 49 features are unchanged by a positive affine change of
+  units of any objective. Under `raw`, 17 features depend on those units: the four hypervolume
+  features, `dist_f_max`, the `diff_f` measures and the objective-space distances. In the phase 2
+  pilot the hypervolume features spanned seven orders of magnitude between problems and decided
+  which problem looked closest. The recommender uses `sample`, because the configurations it
+  transfers do not see objective units either: NSGA-II over its whole VAMOS tuning space and
+  MOEA/D are bit-identical under per-objective power-of-two rescaling
+  (research/phase3/data/objective_invariance.csv). `raw` stays the default so that existing
+  values do not change. The profile is recorded in the report's provenance.
 - **License: MIT** (resolved 2026-07-25), matching jMetal and jMetalPy — the projects MOLA depends
   on and is designed to be used alongside. Chosen over GPL-3.0/LGPL-3.0 on adoption grounds: MOLA's
   value is as *the* reference implementation of all 49 of the paper's features, so it should be
@@ -559,7 +571,10 @@ in most decision-space features when the ranges differ. The committed benchmark 
 `58bc0ca`); they are deliberately not regenerated until the definitions are frozen. To reproduce
 them, check out that commit.
 
-216 passing Python tests as of 0.3.0, 152 in 0.2.0: hand-computed fixtures throughout;
+**0.4.0 (2026-10-20, research phase 3).** Adds the objective-scaling profile (Design decisions,
+"Objective scaling"); with the defaults, values are identical to 0.3.0.
+
+224 passing Python tests as of 0.4.0, 216 in 0.3.0 and 152 in 0.2.0: hand-computed fixtures throughout;
 orchestrator wiring tests that independently rebuild the substrate to catch argument-order
 mistakes; adapter tests including a synthetic mixed-direction problem that isolates the
 MAXIMIZE-negation logic; one end-to-end integration test; CLI tests covering every command's
