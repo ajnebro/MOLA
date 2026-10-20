@@ -4,7 +4,9 @@ Borrador del 2026-10-19. **La fase 0 se ejecutó el 2026-10-19** en la rama loca
 los resultados están en `research/phase0/report.md` y el registro actualizado, E1–E25, en
 `research/phase0/claims.csv`. Ese registro sustituye al de §3. **La fase 1 se ejecutó el
 2026-10-19** en la rama `research/phase1` (MOLA 0.3.0). La puerta G1 se superó; el detalle está en
-`research/phase1/report.md`.
+`research/phase1/report.md`. **La fase 2 (piloto) se ejecutó el 2026-10-20** en la rama
+`research/phase2`: G2 superada por poco (12 de 36 grupos), con el margen concentrado en problemas
+multimodales. Ver `research/phase2/report.md`.
 
 ---
 

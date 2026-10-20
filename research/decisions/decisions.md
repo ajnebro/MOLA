@@ -99,3 +99,18 @@ alternativas completas para D1–D3 están en [`question1.md`](question1.md).
   jMetalPy (E10), con un test que compara ambos con empates y duplicados. Una caracterización de ZDT1
   con D = 30 (n = 6000) pasa de 26 s a 3.9 s. El test de dominancia por pares entre vecinos sigue
   usando el comparador de jMetalPy, que no es un cuello de botella.
+
+## Decisiones técnicas de la fase 2 (tomadas al implementar; reversibles)
+
+- **T5 — Espacio de configuraciones invariante:** se ajusta sobre el espacio de NSGA-II de VAMOS sin
+  PCX, UNDX, las mutaciones gaussiana y de Cauchy, la reparación `round` y el inicializador Halton.
+  Son los operadores que, ejecutando, rompen la identidad bit a bit ante cambios de unidades por
+  variable (`research/phase2/data/invariance.csv`). Así se mantiene la premisa de la RQ1 para todo el
+  portafolio. El resto del espacio y los algoritmos por defecto sí son invariantes.
+- **T6 — F-Race clásico:** se usa racing sin reinicios elitistas porque `use_elitist_restarts=True`
+  falla en VAMOS 1.0.0 (`racing/refill.py:25`, `KeyError` con parámetros condicionales). Son 60
+  configuraciones iniciales, la por defecto incluida, y 20 bloques de semillas, con un máximo de 400
+  ejecuciones por problema.
+- **Resultado de G2 (fase 2):** superada según la regla pre-registrada, con 12 de 36 grupos (33 %)
+  frente al umbral del 25 %. El margen se concentra en problemas multimodales. Ver
+  `research/phase2/report.md`.
