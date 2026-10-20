@@ -4,8 +4,11 @@ Inputs
 - The performance matrix: each portfolio configuration (the 37 irace-tuned c*_P and the NSGA-II,
   MOEA/D and SMS-EMOA defaults) on each development problem, evaluation seeds 5001-5010,
   20 000 evaluations (MATRIX/<config>__<problem>.npz).
-- MOLA 0.3.0 features of each problem from 5 independent LHS samples (phase2/data/
-  pilot_features.csv; bound geometry, k = D).
+- MOLA features of each problem from 5 independent LHS samples (bound geometry, k = D). Since
+  amendment 1 (preregistration.md section 9) every landscape method uses the features computed
+  with objective scaling `sample` (data/features_sample_scaled.csv, MOLA 0.4.0); the raw-objective
+  features of phase 2 (phase2/data/pilot_features.csv) only feed the secondary
+  landscape_1nn_raw_objectives.
 
 HVn. Fronts are min-max normalized by the problem's true-front ideal and nadir
 (data/tuning_bounds.json), reference point 1.1, and divided by the HV of the union of every final
@@ -25,6 +28,8 @@ problems, the candidates are the c*_P with P in T. HVn(c, Q) is the mean over th
   |z(A) - z(B)| over ordered pairs within T, then the donor with the least predicted loss.
 - knn_selector: the candidate with the best mean HVn over Q's 3 nearest problems in T (same
   distance as landscape_1nn) -- a direct selector using the same features.
+- landscape_1nn_raw_objectives (secondary, amendment 1): landscape_1nn on the raw-objective
+  features, to show what the objective scaling changes.
 References: oracle (best candidate on Q), self (c*_Q), default (NSGA-II default).
 Training problems are represented by the mean of their 5 samples.
 
@@ -63,7 +68,9 @@ FINAL = 20_000
 REFERENCE = 1.1
 DEFAULTS = ("default__nsgaii", "default__moead", "default__smsemoa")
 META = {"problem", "seed", "n", "D", "M", "geometry", "k", "nd_count", "evaluation_seconds",
-        "characterization_seconds", "undefined"}
+        "characterization_seconds", "undefined", "objective_scaling", "mola_version"}
+PRIMARY_FEATURES = PHASE3 / "data" / "features_sample_scaled.csv"
+RAW_OBJECTIVE_FEATURES = PHASE2_DATA / "pilot_features.csv"
 THESIS19 = ["dist_x_avg", "dist_x_max", "dist_f_avg", "dist_f_max", "nd_n", "dist_x_nd_avg",
             "dist_x_nd_max", "rank_avg", "rank_max", "rank_ent", "sup_avg_neig", "inf_avg_neig",
             "inc_avg_neig", "lnd_avg_neig", "lsupp_avg_neig", "dist_x_avg_neig", "dist_f_avg_neig",
@@ -72,7 +79,7 @@ THESIS19 = ["dist_x_avg", "dist_x_max", "dist_f_avg", "dist_f_max", "nd_n", "dis
 RELATIVES = [{"cec2009_uf1", "lz09_f2", "lz09_f9"}, {"cec2009_uf2", "lz09_f5"}, {"lz09_f7", "lz09_f8"}]
 RANDOM_SPLITS, RANDOM_SEED, TRAIN_FRACTION = 100, 20261021, 0.8
 METHODS = ("sbs", "metadata_1nn", "random", "thesis_1nn", "landscape_1nn", "loss_predictor",
-           "knn_selector", "oracle", "self", "default")
+           "knn_selector", "landscape_1nn_raw_objectives", "oracle", "self", "default")
 
 
 # --------------------------------------------------------------------------------------------- data
@@ -124,33 +131,51 @@ def hvn_matrix(problems) -> dict[tuple[str, str], np.ndarray]:
 class Context:
     """Arrays shared by every recommendation (problems indexed in pilot order)."""
 
-    def __init__(self, problems, samples: pd.DataFrame, meta: pd.DataFrame, hvn: dict):
+    def __init__(self, problems, samples: pd.DataFrame, raw_samples: pd.DataFrame,
+                 meta: pd.DataFrame, hvn: dict):
         self.problems = problems
         index = {p: i for i, p in enumerate(problems)}
+        if not (samples[["problem", "seed"]].to_numpy() == raw_samples[["problem", "seed"]].to_numpy()).all():
+            raise ValueError("the two feature tables must list the same samples in the same order")
         self.features = [c for c in samples.columns if c not in META]
         self.thesis_columns = [self.features.index(c) for c in THESIS19]
         self.sample_problem = samples["problem"].map(index).to_numpy()
         self.sample_values = samples[self.features].to_numpy(float)
-        self.means = np.vstack([np.nanmean(self.sample_values[self.sample_problem == i], axis=0)
-                                for i in range(len(problems))])
+        self.raw_values = raw_samples[self.features].to_numpy(float)
+        self.means = self._means(self.sample_values, len(problems))
+        self.raw_means = self._means(self.raw_values, len(problems))
         self.meta = meta.loc[problems].to_numpy(float)
         # score[a, b]: mean HVn of c*_a on problem b; default[b]: NSGA-II default on b.
         self.score = np.array([[hvn[(f"tuned__{a}", b)].mean() for b in problems] for a in problems])
         self.default = np.array([hvn[("default__nsgaii", b)].mean() for b in problems])
 
+    def _means(self, values: np.ndarray, count: int) -> np.ndarray:
+        return np.vstack([np.nanmean(values[self.sample_problem == i], axis=0) for i in range(count)])
 
-def recommend(ctx: Context, target: int, query: np.ndarray, train: np.ndarray) -> dict:
-    """HVn on the target of the configuration each method recommends (mean over seeds)."""
-    on_target = ctx.score[train, target]
-    train_rows = ctx.sample_values[np.isin(ctx.sample_problem, train)]
+
+def _robust_z(values, means, sample_problem, query, train):
+    """Training means and query robust-scaled over T's samples (median, IQR); usable features only."""
+    train_rows = values[np.isin(sample_problem, train)]
     defined = np.isfinite(train_rows).all(axis=0) & np.isfinite(query)
     q75, median, q25 = np.percentile(train_rows[:, defined], [75, 50, 25], axis=0)
     iqr = q75 - q25
     keep = np.flatnonzero(defined)[iqr > 0]
     median, iqr = median[iqr > 0], iqr[iqr > 0]
-    z_train = (ctx.means[train][:, keep] - median) / iqr
-    z_query = (query[keep] - median) / iqr
+    return (means[train][:, keep] - median) / iqr, (query[keep] - median) / iqr
+
+
+def recommend(ctx: Context, target: int, row: int, train: np.ndarray) -> dict:
+    """HVn on the target of the configuration each method recommends (mean over seeds).
+
+    `row` is the target sample's row in the feature tables.
+    """
+    on_target = ctx.score[train, target]
+    query = ctx.sample_values[row]
+    z_train, z_query = _robust_z(ctx.sample_values, ctx.means, ctx.sample_problem, query, train)
     landscape = np.linalg.norm(z_train - z_query, axis=1)
+    raw_train, raw_query = _robust_z(ctx.raw_values, ctx.raw_means, ctx.sample_problem,
+                                     ctx.raw_values[row], train)
+    landscape_raw = np.linalg.norm(raw_train - raw_query, axis=1)
 
     meta_train = ctx.meta[train]
     mu, sd = meta_train.mean(axis=0), meta_train.std(axis=0, ddof=1)
@@ -189,6 +214,7 @@ def recommend(ctx: Context, target: int, query: np.ndarray, train: np.ndarray) -
         "landscape_1nn": on_target[np.argmin(landscape)],
         "loss_predictor": on_target[np.argmin(predicted)],
         "knn_selector": on_target[np.argmax(selector)],
+        "landscape_1nn_raw_objectives": on_target[np.argmin(landscape_raw)],
         "oracle": float(on_target.max()),
         "self": float(ctx.score[target, target]),
         "default": float(ctx.default[target]),
@@ -214,19 +240,20 @@ def splits(problems, group, family):
 def main() -> None:
     problems = pilot_problems()
     group, family = groups_and_families(problems)
-    samples = pd.read_csv(PHASE2_DATA / "pilot_features.csv")
-    ctx = Context(problems, samples, metadata(problems), hvn_matrix(problems))
+    samples = pd.read_csv(PRIMARY_FEATURES)
+    raw_samples = pd.read_csv(RAW_OBJECTIVE_FEATURES)
+    ctx = Context(problems, samples, raw_samples, metadata(problems), hvn_matrix(problems))
     index = {p: i for i, p in enumerate(problems)}
 
     rows = []
     for split, unit, targets, train in splits(problems, group, family):
         train_index = np.array([index[p] for p in train])
         for target in targets:
-            mask = ctx.sample_problem == index[target]
-            for seed, query in zip(samples.loc[mask, "seed"], ctx.sample_values[mask], strict=True):
-                result = recommend(ctx, index[target], query, train_index)
+            for row in np.flatnonzero(ctx.sample_problem == index[target]):
+                result = recommend(ctx, index[target], row, train_index)
                 rows.append({"split": split, "unit": unit, "target": target, "group": group[target],
-                             "family": family[target], "sample": int(seed), **result})
+                             "family": family[target], "sample": int(samples.loc[row, "seed"]),
+                             **result})
     long = pd.DataFrame(rows)
     long.to_csv(PHASE3 / "data" / "transfer_long.csv", index=False)
 

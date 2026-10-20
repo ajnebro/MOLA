@@ -92,3 +92,34 @@ análisis secundarios. No se cambia la representación ni la distancia para repe
   `nice 19`. Estimación: ~20 h.
 - **Matriz:** unas 14 800 ejecuciones, alrededor de 30 min.
 - **Uso de NicoVM:** antes de cada lanzamiento se comprueba que está libre.
+
+## 9. Enmienda 1 (2026-10-20, antes de que exista la matriz)
+
+**Motivo.** El usuario preguntó cómo se decide si un problema se parece a otro. Al calcular los
+vecinos más cercanos con el método principal, aparecieron distancias desproporcionadas: 98 536 para
+DTLZ3, 116 para RE21, frente a 0.5–3 entre problemas comparables. La causa es que 4 features de
+hipervolumen (`hv`, `hv_avg_neig`, `hvd_avg_neig`, `nhv_avg_neig`), además de `dist_f_max` y las
+`diff_f_*`, están en las unidades de los objetivos y varían hasta 7 órdenes de magnitud entre
+problemas. Con ellas, el vecino lo decide la escala de los objetivos, no el paisaje. Esta inspección
+solo usó features, sin ningún dato de rendimiento ni de transferencia.
+
+**Comprobación previa.** Con un escalado exacto de cada objetivo por potencias de dos, NSGA-II
+(todos los operadores del espacio de ajuste) y MOEA/D por defecto producen poblaciones idénticas bit
+a bit (`data/objective_invariance.csv`). SMS-EMOA por defecto no es invariante, porque desplaza su
+punto de referencia 1.0 en unidades absolutas, pero solo es un comparador y no forma parte del
+portafolio. Como las configuraciones que se transfieren no ven las unidades de los objetivos, la
+representación tampoco debe verlas.
+
+**Cambio, decidido por el usuario.** MOLA 0.4.0 añade el perfil `objective_scaling = "sample"`, que
+escala cada objetivo a [0, 1] según su mínimo y su máximo en la muestra (MO-ELA hace lo mismo). Con
+él, las 49 features son invariantes a cambios afines positivos de las unidades de cualquier objetivo.
+Las mismas 185 muestras de la etapa A se vuelven a caracterizar con ese perfil
+(`data/features_sample_scaled.csv`). Cambian 17 features, todas las que dependen de las unidades de
+los objetivos. Las de dominancia, rangos y Spearman no cambian.
+
+- **Todos los métodos de paisaje** (`thesis_1nn`, `landscape_1nn`, `loss_predictor` y
+  `knn_selector`) usan las features escaladas.
+- **Nuevo secundario: `landscape_1nn_raw_objectives`.** Es `landscape_1nn` con las features sin
+  escalar, para mostrar qué cambia la enmienda.
+- **La regla de G3 no cambia** (§6): `landscape_1nn` frente a `metadata_1nn` en LOGO, con Wilcoxon
+  unilateral sobre los grupos y p < 0.05.
