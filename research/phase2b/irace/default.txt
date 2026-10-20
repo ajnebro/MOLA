@@ -1,0 +1,2 @@
+pop_size offspring_ratio selection initializer crossover crossover_prob mutation mutation_prob_factor mutation_eta repair selection_size crossover_eta crossover_alpha blxab_alpha blxab_beta wa_alpha laplace_a laplace_b fuzzy_d simplex_epsilon nonuniform_perturbation uniform_perturb levy_beta levy_scale power_index scatter_base_size_factor
+100 1.0 tournament random sbx 1.0 polynomial 1.0 20.0 clip 2 20.0 NA NA NA NA NA NA NA NA NA NA NA NA NA NA

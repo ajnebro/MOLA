@@ -18,8 +18,6 @@ from pathlib import Path  # noqa: E402
 import numpy as np  # noqa: E402
 from scipy.stats import qmc  # noqa: E402
 
-from mola.sample import Sample  # noqa: E402
-
 REPO = Path(__file__).resolve().parents[3]
 PHASE = REPO / "research" / "phase2"
 DATA = PHASE / "data"
@@ -65,12 +63,17 @@ def evaluate(problem, variables: np.ndarray) -> np.ndarray:
     return np.asarray(out["F"], dtype=float)
 
 
-def sample_problem(name: str, seed: int, sample_size: int | None = None) -> tuple[Sample, float]:
+def sample_problem(name: str, seed: int, sample_size: int | None = None):
     """LHS sample of a VAMOS problem as a MOLA Sample (n = 200 * D by default), and its eval time.
+
+    MOLA is imported here, not at module level, so the optimization scripts also run where MOLA
+    is not installed (NicoVM, phase 2b).
 
     Same design as MOLA's jMetalPy adapter: scipy's scrambled Latin Hypercube, scaled to the
     problem's declared bounds.
     """
+    from mola.sample import Sample
+
     problem = instantiate(name)
     lower, upper = bounds(problem)
     n = sample_size or 200 * problem.n_var

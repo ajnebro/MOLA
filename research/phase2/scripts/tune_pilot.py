@@ -18,6 +18,7 @@ Writes data/calibration.json, data/tuned_configs.json and the tuning histories i
 """
 
 import json
+import os
 import time
 from pathlib import Path
 
@@ -32,14 +33,15 @@ CALIBRATION_SEEDS = (4001, 4002, 4003, 4004, 4005)
 TUNING_SEEDS = tuple(range(3001, 3021))
 MAX_EXPERIMENTS = 400
 INITIAL_CONFIGS = 60
-WORKERS = 8
+WORKERS = int(os.environ.get("PHASE2_WORKERS", 8))
 REFERENCE = 1.1
 BASELINE = {"pop_size": 100, "offspring_ratio": 1.0, "selection": "tournament", "selection_size": 2,
             "initializer": "random", "crossover": "sbx", "crossover_prob": 1.0, "crossover_eta": 20.0,
             "mutation": "polynomial", "mutation_prob_factor": 1.0, "mutation_eta": 20.0,
             "repair": "clip"}
-CALIBRATION = DATA / "calibration.json"
-TUNED = DATA / "tuned_configs.json"
+# Phase 2b reuses this stage with other tuning bounds and output files (environment overrides).
+CALIBRATION = Path(os.environ.get("PHASE2_TUNING_BOUNDS", DATA / "calibration.json"))
+TUNED = Path(os.environ.get("PHASE2_TUNED", DATA / "tuned_configs.json"))
 
 _bounds_cache: dict[str, tuple[np.ndarray, np.ndarray]] = {}
 

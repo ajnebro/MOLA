@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# irace target runner (Linux, phase 2b arm B). irace runs it in execDir with:
+#   <configuration id> <instance id> <seed> <instance> <parameters...>
+# The only output must be the cost: Python's stderr goes to a file, shown only if the run fails.
+HERE="$(cd "$(dirname "$0")" && pwd)"
+PY="${MOLA_PHASE2B_PYTHON:-python3}"
+export OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1
+ERR="c$1-$2-$3.stderr"
+if "$PY" -B -W ignore "$HERE/../scripts/irace_runner.py" "$@" 2> "$ERR"; then
+    rm -f "$ERR"
+    exit 0
+fi
+cat "$ERR"
+exit 1

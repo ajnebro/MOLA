@@ -12,7 +12,9 @@ Run:  python research/phase2/scripts/evaluate_pilot.py
 """
 
 import json
+import os
 import time
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
@@ -23,14 +25,16 @@ from runs import CHECKPOINTS, run
 
 BUDGET = 20_000
 EVALUATION_SEEDS = (2001, 2002, 2003, 2004, 2005)
-WORKERS = 8
+WORKERS = int(os.environ.get("PHASE2_WORKERS", 8))
 FRONTS = RAW / "fronts"
 
 
 def portfolio() -> dict[str, tuple[str, dict | None]]:
     """config id -> (algorithm, NSGA-II assignment or None for that algorithm's defaults)."""
-    tuned = json.loads((DATA / "tuned_configs.json").read_text())
+    tuned = json.loads(Path(os.environ.get("PHASE2_TUNED", DATA / "tuned_configs.json")).read_text())
     configs = {f"tuned__{p}": ("nsgaii", tuned[p]["config"]) for p in pilot_problems()}
+    if os.environ.get("PHASE2_WITH_DEFAULTS", "1") == "0":  # phase 2b arms reuse the defaults
+        return configs
     configs["default__nsgaii"] = ("nsgaii", None)
     configs["default__moead"] = ("moead", None)
     configs["default__smsemoa"] = ("smsemoa", None)
@@ -53,7 +57,7 @@ def _evaluate(config_id: str, algorithm: str, assignment, problem: str) -> list[
 def main() -> None:
     FRONTS.mkdir(parents=True, exist_ok=True)
     configs = portfolio()
-    runs_csv = DATA / "evaluation_runs.csv"
+    runs_csv = Path(os.environ.get("PHASE2_RUNS", DATA / "evaluation_runs.csv"))
     done = pd.read_csv(runs_csv) if runs_csv.exists() else pd.DataFrame()
     pending = [(cid, alg, a, p) for cid, (alg, a) in configs.items() for p in pilot_problems()
                if not (FRONTS / f"{cid}__{p}.npz").exists()]
