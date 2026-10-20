@@ -262,6 +262,33 @@ class TestCharacterize:
             dist_x_avg_neig(sample.variables, neighbourhood, normalizers.variable_space)
         )
 
+    def test_should_be_invariant_to_per_objective_scaling_under_sample_objective_scaling(self):
+        """Given objectives in other units, all 49 features match under the sample profile."""
+        # Arrange: powers of two keep the rescaling exact in floating point
+        sample = _make_sample(size=40, variables=3, objectives=2)
+        rescaled = replace(sample, objectives=sample.objectives * np.array([2.0**-6, 2.0**9]))
+
+        # Act
+        result = characterize(sample, objective_scaling="sample")
+        rescaled_result = characterize(rescaled, objective_scaling="sample")
+
+        # Assert
+        for name in _ALL_49_FEATURE_NAMES:
+            assert rescaled_result[name] == pytest.approx(result[name], nan_ok=True), name
+
+    def test_should_depend_on_objective_units_under_raw_objective_scaling(self):
+        """Given objectives in other units, the raw profile changes the hypervolume."""
+        # Arrange
+        sample = _make_sample(size=40, variables=3, objectives=2)
+        rescaled = replace(sample, objectives=sample.objectives * np.array([2.0**-6, 2.0**9]))
+
+        # Act
+        result = characterize(sample)
+        rescaled_result = characterize(rescaled)
+
+        # Assert
+        assert rescaled_result["hv"] != pytest.approx(result["hv"])
+
 
 class TestCharacterizeReport:
     """Unit tests for characterize_report()."""
@@ -323,3 +350,15 @@ class TestCharacterizeReport:
         assert undefined == set(report.causes)
         assert report.causes["dist_x_nd_avg"].startswith("|ND| = 1")
         assert report.causes["fdc"].startswith("|ND| = 1")
+
+    def test_should_record_the_objective_scaling(self):
+        """Given the sample objective profile, the provenance records it."""
+        # Arrange
+        sample = _make_sample()
+
+        # Act
+        report = characterize_report(sample, objective_scaling="sample")
+
+        # Assert
+        assert report.provenance.objective_scaling == "sample"
+        assert characterize_report(sample).provenance.objective_scaling == "raw"

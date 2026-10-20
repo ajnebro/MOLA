@@ -231,6 +231,29 @@ class TestCharacterizeCommand:
         # Assert
         assert result.exit_code == 2
 
+    def test_should_pass_the_objective_scaling_through(self, tmp_path):
+        """Given --objective-scaling sample, the report records it."""
+        # Arrange
+        sample_path = _make_sample_file(tmp_path)
+        report = tmp_path / "report.json"
+
+        # Act
+        result = runner.invoke(
+            app,
+            [
+                "characterize",
+                str(sample_path),
+                "--objective-scaling",
+                "sample",
+                "--report",
+                str(report),
+            ],
+        )
+
+        # Assert
+        assert result.exit_code == 0
+        assert json.loads(report.read_text())["objective_scaling"] == "sample"
+
 
 class TestRunCommand:
     """Unit tests for `mola run`."""
