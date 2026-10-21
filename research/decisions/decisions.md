@@ -178,7 +178,17 @@ alternativas completas para D1–D3 están en [`question1.md`](question1.md).
 - **Implicaciones:**
   - Hay que rehacer el catálogo, los duplicados, los frentes verdaderos y la comprobación de
     invariancia con las implementaciones de jMetal, que no son idénticas a las de VAMOS.
-  - **Punto abierto:** a diferencia de VAMOS (T5), el espacio completo incluye operadores que
-    probablemente no son invariantes a las unidades: PCX, UNDC, SDX y la reparación `round`. Se
-    medirá su invariancia en jMetal antes del ajuste, y el usuario decide si se mantienen. Si se
-    mantienen, las dos réplicas difieren también en el espacio, y eso se documenta.
+  - **Punto abierto, resuelto el 2026-10-21 por el usuario ("quita esos 4 parámetros").** La
+    invariancia medida en jMetal 7.8 (`research/phase3e/data/jmetal_invariance.csv`) es esta:
+    - **Objetivos:** todas las opciones de `NSGAIIDouble.yaml` son invariantes.
+    - **Variables:** no lo son el cruce PCX, el cruce UNDC, el cruce de Laplace (escala absoluta) y
+      la mutación uniforme (perturbación absoluta).
+    - **Se excluyen esos cuatro operadores y sus parámetros:** `pcxCrossoverZeta`,
+      `pcxCrossoverEta`, `undcCrossoverZeta`, `undcCrossoverEta`, `laplaceCrossoverScale` y
+      `uniformMutationPerturbation`. El resto del espacio se mantiene completo.
+    - **Lo que sí es invariante:** SDX, la reparación `round` (que en Evolver lleva el valor a la cota
+      opuesta) y la inicialización Cauchy.
+    - **La selección Boltzmann** discrepó en 1 de 4 casos, probablemente por el épsilon absoluto
+      (1e-14) del SBX de jMetal con padres casi idénticos. Se mantiene.
+    - **Diferencia con VAMOS:** en Evolver el tamaño de la población está fijo en 100, que es la
+      convención de Evolver y de su artículo; en VAMOS se ajustaba en [20, 200].
