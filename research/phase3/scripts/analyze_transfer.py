@@ -62,15 +62,19 @@ from common import PHASE as PHASE2  # noqa: E402
 from common import bounds, instantiate, pilot_problems  # noqa: E402
 
 PHASE3 = HERE.parent
+# Phase 3e (the Evolver/jMetal replication) runs this same analysis on its own data directory,
+# raw-objective features and defaults; without these variables the phase 3 inputs are used.
+DATA_DIR = Path(os.environ.get("MOLA_TRANSFER_DIR", PHASE3)) / "data"
 MATRIX = Path(os.environ.get("MOLA_PHASE3_MATRIX", r"C:\tmp\mola-phase3\matrix\fronts"))
 SEEDS = tuple(range(5001, 5011))
 FINAL = 20_000
 REFERENCE = 1.1
-DEFAULTS = ("default__nsgaii", "default__moead", "default__smsemoa")
+DEFAULTS = tuple(os.environ.get("MOLA_TRANSFER_DEFAULTS",
+                                "default__nsgaii,default__moead,default__smsemoa").split(","))
 META = {"problem", "seed", "n", "D", "M", "geometry", "k", "nd_count", "evaluation_seconds",
         "characterization_seconds", "undefined", "objective_scaling", "mola_version"}
-PRIMARY_FEATURES = PHASE3 / "data" / "features_sample_scaled.csv"
-RAW_OBJECTIVE_FEATURES = PHASE2_DATA / "pilot_features.csv"
+PRIMARY_FEATURES = DATA_DIR / "features_sample_scaled.csv"
+RAW_OBJECTIVE_FEATURES = Path(os.environ.get("MOLA_RAW_FEATURES", PHASE2_DATA / "pilot_features.csv"))
 THESIS19 = ["dist_x_avg", "dist_x_max", "dist_f_avg", "dist_f_max", "nd_n", "dist_x_nd_avg",
             "dist_x_nd_max", "rank_avg", "rank_max", "rank_ent", "sup_avg_neig", "inf_avg_neig",
             "inc_avg_neig", "lnd_avg_neig", "lsupp_avg_neig", "dist_x_avg_neig", "dist_f_avg_neig",
@@ -106,7 +110,7 @@ def metadata(problems) -> pd.DataFrame:
 
 def hvn_matrix(problems) -> dict[tuple[str, str], np.ndarray]:
     """(config, problem) -> HVn per seed at the final budget."""
-    tuned_bounds = json.loads((PHASE3 / "data" / "tuning_bounds.json").read_text())
+    tuned_bounds = json.loads((DATA_DIR / "tuning_bounds.json").read_text())
     configs = [f"tuned__{p}" for p in problems] + list(DEFAULTS)
     out = {}
     for problem in problems:
@@ -255,11 +259,11 @@ def main() -> None:
                              "family": family[target], "sample": int(samples.loc[row, "seed"]),
                              **result})
     long = pd.DataFrame(rows)
-    long.to_csv(PHASE3 / "data" / "transfer_long.csv", index=False)
+    long.to_csv(DATA_DIR / "transfer_long.csv", index=False)
 
     per_target = long.groupby(["split", "unit", "target", "group"])[list(METHODS)].mean().reset_index()
     summary = per_target.groupby("split")[list(METHODS)].mean().T
-    summary.to_csv(PHASE3 / "data" / "transfer_summary.csv")
+    summary.to_csv(DATA_DIR / "transfer_summary.csv")
 
     logo = per_target[per_target.split == "LOGO"].groupby("group")[list(METHODS)].mean()
     difference = logo["landscape_1nn"] - logo["metadata_1nn"]
@@ -281,7 +285,7 @@ def main() -> None:
                                            - per_target[per_target.split == s]["sbs"]).mean())
                                  for s in ("LOGO", "LOFO", "random")},
     }
-    (PHASE3 / "data" / "g3_result.json").write_text(json.dumps(result, indent=2) + "\n")
+    (DATA_DIR / "g3_result.json").write_text(json.dumps(result, indent=2) + "\n")
     print(json.dumps(result, indent=2))
     print(summary.round(4).to_string())
 

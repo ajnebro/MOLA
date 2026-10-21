@@ -38,7 +38,10 @@ class JWorker:
 
     def __init__(self) -> None:
         classpath = os.pathsep.join([JAR, CLASSES])
-        self.process = subprocess.Popen([JAVA, "-cp", classpath, "org.uma.mola.phase3e.RunWorker"],
+        # One small single-threaded JVM per worker: a bounded heap and the serial collector keep
+        # 31 of them from oversubscribing the machine's memory and cores.
+        options = os.environ.get("MOLA_JVM_OPTIONS", "-Xmx512m -XX:+UseSerialGC -XX:ActiveProcessorCount=1").split()
+        self.process = subprocess.Popen([JAVA, *options, "-cp", classpath, "org.uma.mola.phase3e.RunWorker"],
                                         stdin=subprocess.PIPE, stdout=subprocess.PIPE, text=True,
                                         bufsize=1, encoding="utf-8")
 

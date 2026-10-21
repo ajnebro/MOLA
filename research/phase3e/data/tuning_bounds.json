@@ -1,0 +1,409 @@
+{
+  "zdt1": {
+    "ideal": [
+      0.0,
+      0.0
+    ],
+    "nadir": [
+      1.0,
+      1.0
+    ],
+    "source": "evolver ZDT1.csv"
+  },
+  "zdt2": {
+    "ideal": [
+      0.0,
+      0.0
+    ],
+    "nadir": [
+      1.0,
+      1.0
+    ],
+    "source": "evolver ZDT2.csv"
+  },
+  "zdt3": {
+    "ideal": [
+      0.0,
+      -0.773369012
+    ],
+    "nadir": [
+      0.851832865,
+      1.0
+    ],
+    "source": "evolver ZDT3.csv"
+  },
+  "zdt4": {
+    "ideal": [
+      1e-10,
+      0.0
+    ],
+    "nadir": [
+      1.0,
+      0.999989473
+    ],
+    "source": "evolver ZDT4.csv"
+  },
+  "dtlz1": {
+    "ideal": [
+      0.0,
+      0.0
+    ],
+    "nadir": [
+      0.5,
+      0.5
+    ],
+    "source": "analytic"
+  },
+  "dtlz2": {
+    "ideal": [
+      0.0,
+      0.0
+    ],
+    "nadir": [
+      1.0,
+      1.0
+    ],
+    "source": "analytic"
+  },
+  "dtlz3": {
+    "ideal": [
+      0.0,
+      0.0
+    ],
+    "nadir": [
+      1.0,
+      1.0
+    ],
+    "source": "analytic"
+  },
+  "dtlz4": {
+    "ideal": [
+      0.0,
+      0.0
+    ],
+    "nadir": [
+      1.0,
+      1.0
+    ],
+    "source": "analytic"
+  },
+  "dtlz6": {
+    "ideal": [
+      0.0,
+      0.0
+    ],
+    "nadir": [
+      1.0,
+      1.0
+    ],
+    "source": "analytic"
+  },
+  "lz09_f1": {
+    "ideal": [
+      0.0,
+      0.0
+    ],
+    "nadir": [
+      1.0,
+      1.0
+    ],
+    "source": "analytic"
+  },
+  "lz09_f2": {
+    "ideal": [
+      0.0,
+      0.0
+    ],
+    "nadir": [
+      1.0,
+      1.0
+    ],
+    "source": "analytic"
+  },
+  "lz09_f3": {
+    "ideal": [
+      0.0,
+      0.0
+    ],
+    "nadir": [
+      1.0,
+      1.0
+    ],
+    "source": "analytic"
+  },
+  "lz09_f4": {
+    "ideal": [
+      0.0,
+      0.0
+    ],
+    "nadir": [
+      1.0,
+      1.0
+    ],
+    "source": "analytic"
+  },
+  "lz09_f5": {
+    "ideal": [
+      0.0,
+      0.0
+    ],
+    "nadir": [
+      1.0,
+      1.0
+    ],
+    "source": "analytic"
+  },
+  "lz09_f7": {
+    "ideal": [
+      0.0,
+      0.0
+    ],
+    "nadir": [
+      1.0,
+      1.0
+    ],
+    "source": "analytic"
+  },
+  "lz09_f8": {
+    "ideal": [
+      0.0,
+      0.0
+    ],
+    "nadir": [
+      1.0,
+      1.0
+    ],
+    "source": "analytic"
+  },
+  "lz09_f9": {
+    "ideal": [
+      0.0,
+      0.0
+    ],
+    "nadir": [
+      1.0,
+      1.0
+    ],
+    "source": "analytic"
+  },
+  "cec2009_uf1": {
+    "ideal": [
+      0.0,
+      0.0
+    ],
+    "nadir": [
+      1.0,
+      1.0
+    ],
+    "source": "evolver UF1.csv"
+  },
+  "cec2009_uf2": {
+    "ideal": [
+      0.0,
+      0.0
+    ],
+    "nadir": [
+      1.0,
+      1.0
+    ],
+    "source": "evolver UF2.csv"
+  },
+  "cec2009_uf3": {
+    "ideal": [
+      0.0,
+      0.0
+    ],
+    "nadir": [
+      1.0,
+      1.0
+    ],
+    "source": "evolver UF3.csv"
+  },
+  "cec2009_uf4": {
+    "ideal": [
+      0.0,
+      0.0
+    ],
+    "nadir": [
+      1.0,
+      1.0
+    ],
+    "source": "evolver UF4.csv"
+  },
+  "cec2009_uf5": {
+    "ideal": [
+      0.0,
+      0.0
+    ],
+    "nadir": [
+      1.0,
+      1.0
+    ],
+    "source": "evolver UF5.csv"
+  },
+  "cec2009_uf6": {
+    "ideal": [
+      0.0,
+      0.0
+    ],
+    "nadir": [
+      1.0,
+      1.0
+    ],
+    "source": "analytic"
+  },
+  "cec2009_uf7": {
+    "ideal": [
+      0.0,
+      0.0
+    ],
+    "nadir": [
+      1.0,
+      1.0
+    ],
+    "source": "evolver UF7.csv"
+  },
+  "zcat1": {
+    "ideal": [
+      1.8e-05,
+      0.0
+    ],
+    "nadir": [
+      1.0,
+      3.999927
+    ],
+    "source": "evolver ZCAT1.2D.csv"
+  },
+  "zcat3": {
+    "ideal": [
+      2e-06,
+      6.6e-05
+    ],
+    "nadir": [
+      0.999983,
+      3.999991
+    ],
+    "source": "evolver ZCAT3.2D.csv"
+  },
+  "zcat5": {
+    "ideal": [
+      5e-06,
+      0.0
+    ],
+    "nadir": [
+      0.999957,
+      3.999852
+    ],
+    "source": "evolver ZCAT5.2D.csv"
+  },
+  "zcat6": {
+    "ideal": [
+      2e-05,
+      1.5e-05
+    ],
+    "nadir": [
+      0.999924,
+      3.999996
+    ],
+    "source": "evolver ZCAT6.2D.csv"
+  },
+  "zcat8": {
+    "ideal": [
+      2e-05,
+      0.000186
+    ],
+    "nadir": [
+      1.0,
+      4.0
+    ],
+    "source": "evolver ZCAT8.2D.csv"
+  },
+  "zcat10": {
+    "ideal": [
+      3.9e-05,
+      0.002999
+    ],
+    "nadir": [
+      0.999985,
+      3.999997
+    ],
+    "source": "evolver ZCAT10.2D.csv"
+  },
+  "zcat11": {
+    "ideal": [
+      0.0,
+      4.2e-05
+    ],
+    "nadir": [
+      0.999988,
+      3.999999
+    ],
+    "source": "evolver ZCAT11.2D.csv"
+  },
+  "zcat12": {
+    "ideal": [
+      1.6e-05,
+      3.2e-05
+    ],
+    "nadir": [
+      0.999991,
+      3.999945
+    ],
+    "source": "evolver ZCAT12.2D.csv"
+  },
+  "zcat13": {
+    "ideal": [
+      0.0,
+      4.6e-05
+    ],
+    "nadir": [
+      0.999979,
+      3.997867
+    ],
+    "source": "evolver ZCAT13.2D.csv"
+  },
+  "zcat19": {
+    "ideal": [
+      3.1e-05,
+      0.0
+    ],
+    "nadir": [
+      0.999095,
+      4.0
+    ],
+    "source": "evolver ZCAT19.2D.csv"
+  },
+  "re21": {
+    "ideal": [
+      1237.84142,
+      0.00276142375
+    ],
+    "nadir": [
+      2886.36956,
+      0.04
+    ],
+    "source": "evolver RE21.csv"
+  },
+  "re24": {
+    "ideal": [
+      60.5,
+      0.0
+    ],
+    "nadir": [
+      481.608089,
+      44.2819048
+    ],
+    "source": "evolver RE24.csv"
+  },
+  "rwa1": {
+    "ideal": [
+      -1896.497,
+      -5.34085
+    ],
+    "nadir": [
+      -1147.097,
+      27.90335
+    ],
+    "source": "evolver RWA1.csv"
+  }
+}

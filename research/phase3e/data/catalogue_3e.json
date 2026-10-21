@@ -1,0 +1,634 @@
+{
+  "problems": {
+    "zdt1": {
+      "spec": "ZDT1",
+      "n_var": 30,
+      "n_obj": 2,
+      "same_dimension_and_bounds_as_vamos": true,
+      "max_relative_objective_difference_vs_vamos": 4.0664469100499536e-16,
+      "bounds_source": "evolver ZDT1.csv",
+      "ideal": [
+        0.0,
+        0.0
+      ],
+      "nadir": [
+        1.0,
+        1.0
+      ],
+      "default_runs_beat_ideal_by": -5.117127017934377e-10
+    },
+    "zdt2": {
+      "spec": "ZDT2",
+      "n_var": 30,
+      "n_obj": 2,
+      "same_dimension_and_bounds_as_vamos": true,
+      "max_relative_objective_difference_vs_vamos": 3.844562840762759e-16,
+      "bounds_source": "evolver ZDT2.csv",
+      "ideal": [
+        0.0,
+        0.0
+      ],
+      "nadir": [
+        1.0,
+        1.0
+      ],
+      "default_runs_beat_ideal_by": 0.0
+    },
+    "zdt3": {
+      "spec": "ZDT3",
+      "n_var": 30,
+      "n_obj": 2,
+      "same_dimension_and_bounds_as_vamos": true,
+      "max_relative_objective_difference_vs_vamos": 4.2517019243521803e-16,
+      "bounds_source": "evolver ZDT3.csv",
+      "ideal": [
+        0.0,
+        -0.773369012
+      ],
+      "nadir": [
+        0.851832865,
+        1.0
+      ],
+      "default_runs_beat_ideal_by": -9.462694795908161e-09
+    },
+    "zdt4": {
+      "spec": "ZDT4",
+      "n_var": 10,
+      "n_obj": 2,
+      "same_dimension_and_bounds_as_vamos": true,
+      "max_relative_objective_difference_vs_vamos": 2.0813893330939006e-16,
+      "bounds_source": "evolver ZDT4.csv",
+      "ideal": [
+        1e-10,
+        0.0
+      ],
+      "nadir": [
+        1.0,
+        0.999989473
+      ],
+      "default_runs_beat_ideal_by": 1.0000000001000001e-10
+    },
+    "dtlz1": {
+      "spec": "DTLZ1(6,2)",
+      "n_var": 6,
+      "n_obj": 2,
+      "same_dimension_and_bounds_as_vamos": true,
+      "max_relative_objective_difference_vs_vamos": 1.322457743246757e-16,
+      "bounds_source": "analytic",
+      "ideal": [
+        0.0,
+        0.0
+      ],
+      "nadir": [
+        0.5,
+        0.5
+      ],
+      "default_runs_beat_ideal_by": 0.0
+    },
+    "dtlz2": {
+      "spec": "DTLZ2(11,2)",
+      "n_var": 11,
+      "n_obj": 2,
+      "same_dimension_and_bounds_as_vamos": true,
+      "max_relative_objective_difference_vs_vamos": 3.676665388404561e-16,
+      "bounds_source": "analytic",
+      "ideal": [
+        0.0,
+        0.0
+      ],
+      "nadir": [
+        1.0,
+        1.0
+      ],
+      "default_runs_beat_ideal_by": -6.323652333093667e-16
+    },
+    "dtlz3": {
+      "spec": "DTLZ3(11,2)",
+      "n_var": 11,
+      "n_obj": 2,
+      "same_dimension_and_bounds_as_vamos": true,
+      "max_relative_objective_difference_vs_vamos": 2.107070794523874e-16,
+      "bounds_source": "analytic",
+      "ideal": [
+        0.0,
+        0.0
+      ],
+      "nadir": [
+        1.0,
+        1.0
+      ],
+      "default_runs_beat_ideal_by": 0.0
+    },
+    "dtlz4": {
+      "spec": "DTLZ4(11,2)",
+      "n_var": 11,
+      "n_obj": 2,
+      "same_dimension_and_bounds_as_vamos": true,
+      "max_relative_objective_difference_vs_vamos": 1.73921750393149e-16,
+      "bounds_source": "analytic",
+      "ideal": [
+        0.0,
+        0.0
+      ],
+      "nadir": [
+        1.0,
+        1.0
+      ],
+      "default_runs_beat_ideal_by": 0.0
+    },
+    "dtlz6": {
+      "spec": "DTLZ6(11,2)",
+      "n_var": 11,
+      "n_obj": 2,
+      "same_dimension_and_bounds_as_vamos": true,
+      "max_relative_objective_difference_vs_vamos": 3.3388157693075006e-16,
+      "bounds_source": "analytic",
+      "ideal": [
+        0.0,
+        0.0
+      ],
+      "nadir": [
+        1.0,
+        1.0
+      ],
+      "default_runs_beat_ideal_by": 0.0
+    },
+    "lz09_f1": {
+      "spec": "LZ09F1",
+      "n_var": 10,
+      "n_obj": 2,
+      "same_dimension_and_bounds_as_vamos": true,
+      "max_relative_objective_difference_vs_vamos": 1.5346530402246707e-16,
+      "bounds_source": "analytic",
+      "ideal": [
+        0.0,
+        0.0
+      ],
+      "nadir": [
+        1.0,
+        1.0
+      ],
+      "default_runs_beat_ideal_by": -6.110764680464437e-05
+    },
+    "lz09_f2": {
+      "spec": "LZ09F2",
+      "n_var": 30,
+      "n_obj": 2,
+      "same_dimension_and_bounds_as_vamos": true,
+      "max_relative_objective_difference_vs_vamos": 2.306301549578776e-16,
+      "bounds_source": "analytic",
+      "ideal": [
+        0.0,
+        0.0
+      ],
+      "nadir": [
+        1.0,
+        1.0
+      ],
+      "default_runs_beat_ideal_by": -0.013280923974369988
+    },
+    "lz09_f3": {
+      "spec": "LZ09F3",
+      "n_var": 30,
+      "n_obj": 2,
+      "same_dimension_and_bounds_as_vamos": true,
+      "max_relative_objective_difference_vs_vamos": 3.9515682428549163e-16,
+      "bounds_source": "analytic",
+      "ideal": [
+        0.0,
+        0.0
+      ],
+      "nadir": [
+        1.0,
+        1.0
+      ],
+      "default_runs_beat_ideal_by": -0.0006967881657843366
+    },
+    "lz09_f4": {
+      "spec": "LZ09F4",
+      "n_var": 30,
+      "n_obj": 2,
+      "same_dimension_and_bounds_as_vamos": true,
+      "max_relative_objective_difference_vs_vamos": 2.8419098035535557e-16,
+      "bounds_source": "analytic",
+      "ideal": [
+        0.0,
+        0.0
+      ],
+      "nadir": [
+        1.0,
+        1.0
+      ],
+      "default_runs_beat_ideal_by": -0.0008005401221256083
+    },
+    "lz09_f5": {
+      "spec": "LZ09F5",
+      "n_var": 30,
+      "n_obj": 2,
+      "same_dimension_and_bounds_as_vamos": true,
+      "max_relative_objective_difference_vs_vamos": 4.401611562628356e-16,
+      "bounds_source": "analytic",
+      "ideal": [
+        0.0,
+        0.0
+      ],
+      "nadir": [
+        1.0,
+        1.0
+      ],
+      "default_runs_beat_ideal_by": -0.0006251882710950368
+    },
+    "lz09_f7": {
+      "spec": "LZ09F7",
+      "n_var": 10,
+      "n_obj": 2,
+      "same_dimension_and_bounds_as_vamos": true,
+      "max_relative_objective_difference_vs_vamos": 7.124197421484573e-17,
+      "bounds_source": "analytic",
+      "ideal": [
+        0.0,
+        0.0
+      ],
+      "nadir": [
+        1.0,
+        1.0
+      ],
+      "default_runs_beat_ideal_by": -0.020989506509569433
+    },
+    "lz09_f8": {
+      "spec": "LZ09F8",
+      "n_var": 10,
+      "n_obj": 2,
+      "same_dimension_and_bounds_as_vamos": true,
+      "max_relative_objective_difference_vs_vamos": 4.0502255936623846e-17,
+      "bounds_source": "analytic",
+      "ideal": [
+        0.0,
+        0.0
+      ],
+      "nadir": [
+        1.0,
+        1.0
+      ],
+      "default_runs_beat_ideal_by": -0.027590311034967438
+    },
+    "lz09_f9": {
+      "spec": "LZ09F9",
+      "n_var": 30,
+      "n_obj": 2,
+      "same_dimension_and_bounds_as_vamos": true,
+      "max_relative_objective_difference_vs_vamos": 2.284361725369412e-16,
+      "bounds_source": "analytic",
+      "ideal": [
+        0.0,
+        0.0
+      ],
+      "nadir": [
+        1.0,
+        1.0
+      ],
+      "default_runs_beat_ideal_by": -0.0002057404914078842
+    },
+    "cec2009_uf1": {
+      "spec": "UF1",
+      "n_var": 30,
+      "n_obj": 2,
+      "same_dimension_and_bounds_as_vamos": true,
+      "max_relative_objective_difference_vs_vamos": 2.390951546227834e-16,
+      "bounds_source": "evolver UF1.csv",
+      "ideal": [
+        0.0,
+        0.0
+      ],
+      "nadir": [
+        1.0,
+        1.0
+      ],
+      "default_runs_beat_ideal_by": -0.0026797111692138734
+    },
+    "cec2009_uf2": {
+      "spec": "UF2",
+      "n_var": 30,
+      "n_obj": 2,
+      "same_dimension_and_bounds_as_vamos": true,
+      "max_relative_objective_difference_vs_vamos": 2.1658276208864193e-16,
+      "bounds_source": "evolver UF2.csv",
+      "ideal": [
+        0.0,
+        0.0
+      ],
+      "nadir": [
+        1.0,
+        1.0
+      ],
+      "default_runs_beat_ideal_by": -0.0006992735559728704
+    },
+    "cec2009_uf3": {
+      "spec": "UF3",
+      "n_var": 30,
+      "n_obj": 2,
+      "same_dimension_and_bounds_as_vamos": false,
+      "max_relative_objective_difference_vs_vamos": 8.930597855679878e-17,
+      "bounds_source": "evolver UF3.csv",
+      "ideal": [
+        0.0,
+        0.0
+      ],
+      "nadir": [
+        1.0,
+        1.0
+      ],
+      "default_runs_beat_ideal_by": -0.24749564621245432
+    },
+    "cec2009_uf4": {
+      "spec": "UF4",
+      "n_var": 30,
+      "n_obj": 2,
+      "same_dimension_and_bounds_as_vamos": true,
+      "max_relative_objective_difference_vs_vamos": 1.8241500027321702e-16,
+      "bounds_source": "evolver UF4.csv",
+      "ideal": [
+        0.0,
+        0.0
+      ],
+      "nadir": [
+        1.0,
+        1.0
+      ],
+      "default_runs_beat_ideal_by": -0.030867835736706456
+    },
+    "cec2009_uf5": {
+      "spec": "UF5",
+      "n_var": 30,
+      "n_obj": 2,
+      "same_dimension_and_bounds_as_vamos": true,
+      "max_relative_objective_difference_vs_vamos": 1.9607042461396635e-16,
+      "bounds_source": "evolver UF5.csv",
+      "ideal": [
+        0.0,
+        0.0
+      ],
+      "nadir": [
+        1.0,
+        1.0
+      ],
+      "default_runs_beat_ideal_by": -0.21116445866713368
+    },
+    "cec2009_uf6": {
+      "spec": "UF6",
+      "n_var": 30,
+      "n_obj": 2,
+      "same_dimension_and_bounds_as_vamos": true,
+      "max_relative_objective_difference_vs_vamos": 2.5030111799317976e-16,
+      "bounds_source": "analytic",
+      "ideal": [
+        0.0,
+        0.0
+      ],
+      "nadir": [
+        1.0,
+        1.0
+      ],
+      "default_runs_beat_ideal_by": -0.014081682882007104
+    },
+    "cec2009_uf7": {
+      "spec": "UF7",
+      "n_var": 30,
+      "n_obj": 2,
+      "same_dimension_and_bounds_as_vamos": true,
+      "max_relative_objective_difference_vs_vamos": 3.0244242920531883e-16,
+      "bounds_source": "evolver UF7.csv",
+      "ideal": [
+        0.0,
+        0.0
+      ],
+      "nadir": [
+        1.0,
+        1.0
+      ],
+      "default_runs_beat_ideal_by": -0.0005295300131416686
+    },
+    "zcat1": {
+      "spec": "ZCAT1",
+      "n_var": 30,
+      "n_obj": 2,
+      "same_dimension_and_bounds_as_vamos": true,
+      "max_relative_objective_difference_vs_vamos": 2.2999952526744236e-16,
+      "bounds_source": "evolver ZCAT1.2D.csv",
+      "ideal": [
+        1.8e-05,
+        0.0
+      ],
+      "nadir": [
+        1.0,
+        3.999927
+      ],
+      "default_runs_beat_ideal_by": -0.00020140993823592653
+    },
+    "zcat3": {
+      "spec": "ZCAT3",
+      "n_var": 30,
+      "n_obj": 2,
+      "same_dimension_and_bounds_as_vamos": true,
+      "max_relative_objective_difference_vs_vamos": 2.4315241416402233e-16,
+      "bounds_source": "evolver ZCAT3.2D.csv",
+      "ideal": [
+        2e-06,
+        6.6e-05
+      ],
+      "nadir": [
+        0.999983,
+        3.999991
+      ],
+      "default_runs_beat_ideal_by": -0.00013968217528359265
+    },
+    "zcat5": {
+      "spec": "ZCAT5",
+      "n_var": 30,
+      "n_obj": 2,
+      "same_dimension_and_bounds_as_vamos": true,
+      "max_relative_objective_difference_vs_vamos": 2.473730616960793e-16,
+      "bounds_source": "evolver ZCAT5.2D.csv",
+      "ideal": [
+        5e-06,
+        0.0
+      ],
+      "nadir": [
+        0.999957,
+        3.999852
+      ],
+      "default_runs_beat_ideal_by": -0.00011308432691855904
+    },
+    "zcat6": {
+      "spec": "ZCAT6",
+      "n_var": 30,
+      "n_obj": 2,
+      "same_dimension_and_bounds_as_vamos": true,
+      "max_relative_objective_difference_vs_vamos": 2.3968752913604344e-16,
+      "bounds_source": "evolver ZCAT6.2D.csv",
+      "ideal": [
+        2e-05,
+        1.5e-05
+      ],
+      "nadir": [
+        0.999924,
+        3.999996
+      ],
+      "default_runs_beat_ideal_by": -8.208979429555394e-05
+    },
+    "zcat8": {
+      "spec": "ZCAT8",
+      "n_var": 30,
+      "n_obj": 2,
+      "same_dimension_and_bounds_as_vamos": true,
+      "max_relative_objective_difference_vs_vamos": 2.2046072169900233e-16,
+      "bounds_source": "evolver ZCAT8.2D.csv",
+      "ideal": [
+        2e-05,
+        0.000186
+      ],
+      "nadir": [
+        1.0,
+        4.0
+      ],
+      "default_runs_beat_ideal_by": -0.00018187142273864263
+    },
+    "zcat10": {
+      "spec": "ZCAT10",
+      "n_var": 30,
+      "n_obj": 2,
+      "same_dimension_and_bounds_as_vamos": true,
+      "max_relative_objective_difference_vs_vamos": 2.291395878277214e-16,
+      "bounds_source": "evolver ZCAT10.2D.csv",
+      "ideal": [
+        3.9e-05,
+        0.002999
+      ],
+      "nadir": [
+        0.999985,
+        3.999997
+      ],
+      "default_runs_beat_ideal_by": 0.0006140735218361939
+    },
+    "zcat11": {
+      "spec": "ZCAT11",
+      "n_var": 30,
+      "n_obj": 2,
+      "same_dimension_and_bounds_as_vamos": true,
+      "max_relative_objective_difference_vs_vamos": 2.43041705682284e-16,
+      "bounds_source": "evolver ZCAT11.2D.csv",
+      "ideal": [
+        0.0,
+        4.2e-05
+      ],
+      "nadir": [
+        0.999988,
+        3.999999
+      ],
+      "default_runs_beat_ideal_by": -0.0001035965433618479
+    },
+    "zcat12": {
+      "spec": "ZCAT12",
+      "n_var": 30,
+      "n_obj": 2,
+      "same_dimension_and_bounds_as_vamos": true,
+      "max_relative_objective_difference_vs_vamos": 2.2543532612932186e-16,
+      "bounds_source": "evolver ZCAT12.2D.csv",
+      "ideal": [
+        1.6e-05,
+        3.2e-05
+      ],
+      "nadir": [
+        0.999991,
+        3.999945
+      ],
+      "default_runs_beat_ideal_by": -0.00013716842282979118
+    },
+    "zcat13": {
+      "spec": "ZCAT13",
+      "n_var": 30,
+      "n_obj": 2,
+      "same_dimension_and_bounds_as_vamos": true,
+      "max_relative_objective_difference_vs_vamos": 2.5146018240744296e-16,
+      "bounds_source": "evolver ZCAT13.2D.csv",
+      "ideal": [
+        0.0,
+        4.6e-05
+      ],
+      "nadir": [
+        0.999979,
+        3.997867
+      ],
+      "default_runs_beat_ideal_by": -6.907212551796636e-05
+    },
+    "zcat19": {
+      "spec": "ZCAT19",
+      "n_var": 30,
+      "n_obj": 2,
+      "same_dimension_and_bounds_as_vamos": true,
+      "max_relative_objective_difference_vs_vamos": 2.4186199435285296e-16,
+      "bounds_source": "evolver ZCAT19.2D.csv",
+      "ideal": [
+        3.1e-05,
+        0.0
+      ],
+      "nadir": [
+        0.999095,
+        4.0
+      ],
+      "default_runs_beat_ideal_by": -0.0001111488001746629
+    },
+    "re21": {
+      "spec": "RE21",
+      "n_var": 4,
+      "n_obj": 2,
+      "same_dimension_and_bounds_as_vamos": true,
+      "max_relative_objective_difference_vs_vamos": 0.0,
+      "bounds_source": "evolver RE21.csv",
+      "ideal": [
+        1237.84142,
+        0.00276142375
+      ],
+      "nadir": [
+        2886.36956,
+        0.04
+      ],
+      "default_runs_beat_ideal_by": -1.7737102853781108e-07
+    },
+    "re24": {
+      "spec": "RE24",
+      "n_var": 2,
+      "n_obj": 2,
+      "same_dimension_and_bounds_as_vamos": false,
+      "max_relative_objective_difference_vs_vamos": 0.0,
+      "bounds_source": "evolver RE24.csv",
+      "ideal": [
+        60.5,
+        0.0
+      ],
+      "nadir": [
+        481.608089,
+        44.2819048
+      ],
+      "default_runs_beat_ideal_by": 0.0
+    },
+    "rwa1": {
+      "spec": "RWA1",
+      "n_var": 5,
+      "n_obj": 2,
+      "same_dimension_and_bounds_as_vamos": true,
+      "max_relative_objective_difference_vs_vamos": 12.420727091672635,
+      "bounds_source": "evolver RWA1.csv",
+      "ideal": [
+        -1896.497,
+        -5.34085
+      ],
+      "nadir": [
+        -1147.097,
+        27.90335
+      ],
+      "default_runs_beat_ideal_by": -2.688005906974562e-07
+    }
+  },
+  "jmetal_duplicates": []
+}
