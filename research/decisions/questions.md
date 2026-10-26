@@ -335,6 +335,47 @@ decidió. Al final están las preguntas pendientes. Las decisiones formales est�
 - **Ampliar el portafolio** con MOEA/D y SMS-EMOA ajustados sigue siendo la pregunta pendiente 1.
 - **En la réplica de Evolver (3e)** solo hay NSGA-II por defecto como comparador.
 
+### 31. "Sustituye SMS-EMOA por IBEA donde se use el primero, para la ejecución, o repite donde sea necesario" (2026-10-26)
+- **Fase 3:** la matriz se paró y se relanzó sin SMS-EMOA antes de que llegara a ejecutarlo. Los 259
+  pares ya hechos estaban íntegros.
+  - IBEA se ejecuta aparte, con el VAMOS reparado (pregunta 32).
+  - `analyze_transfer.py` usa NSGA-II, MOEA/D e IBEA por defecto.
+- **Scripts:** el algoritmo por defecto y las salidas son configurables (`PHASE2_DEFAULT_ALGORITHMS`,
+  `MOLA_G2_OUT`, `MOLA_ARMS_OUT` y `MOLA_INVARIANCE_*`). Sin esas variables reproducen exactamente lo
+  ya guardado.
+- **Fases 2 y 2b:** SMS-EMOA entra en la unión que normaliza HVn. Por eso se repetirán G2 y la
+  comparación irace frente a F-Race con IBEA, como análisis de sensibilidad, sin sobrescribir los
+  resultados pre-registrados (pendiente).
+- **Hallazgo:** el IBEA de VAMOS 1.0.0 colapsa en RE21: los 100 puntos del frente final son idénticos.
+
+### 32. "Repara el IBEA en VAMOS" (2026-10-26)
+- **Causa:** en `origin/main` (1.1.0) el desbordamiento ya estaba resuelto, pero el indicador ε se
+  usaba sin escalar ("as in jMetalPy") y con κ = 1. Un objetivo con mucho más rango decide todos los
+  valores.
+- **Arreglo:** rama `fix/ibea-epsilon-scaling` de VAMOS (worktree `C:	mpibea-eps`).
+  - `3089157e`: el escalado adaptativo de Zitzler y Künzli (normalizar los objetivos sobre la
+    población y dividir por max |I|) para los dos indicadores, como en PISA y jMetal.
+  - Segundo commit, pendiente de la validación completa: κ por defecto 0.05.
+- **Validación:** 4 tests de regresión que fallan en main y pasan en la rama. RE21 conserva un frente
+  repartido. IBEA queda invariante bit a bit a las unidades de objetivos y variables.
+- **Coste:** se pierde rendimiento en ZDT4 y DTLZ1 (0.870 → 0.713 y 0.702 → 0.470 con κ = 0.05),
+  por los puntos lejanos que estiran la normalización. Le pasa lo mismo al IBEA de jMetal.
+- **No se ha hecho push**, a la espera de que el usuario lo decida.
+
+### 33. "Escribe el paper con lo que tenemos, dejando en pending lo pendiente, y súbelo a Overleaf" (2026-10-26)
+- **Resultado:** borrador en inglés (16 páginas, clase `article`) en el proyecto de Overleaf
+  `6adfa17c3c5d09ffaa8bddf5`, commit `0cbebd8`.
+  - Ficheros: `main.tex` y `references.bib`.
+  - Contiene RQ1–RQ5, la auditoría de las features, MOLA 0.3.0/0.4.0 (G1), la invariancia y el
+    arreglo de IBEA, el diseño experimental, G2 e irace frente a F-Race, y un apéndice con los fallos
+    de los frameworks.
+- **Marcado como `[PENDING]` o TBD:**
+  - G3 y la réplica en Evolver;
+  - RQ2–RQ5 completas;
+  - la evaluación con los 17 reservados;
+  - los coautores, el destino de publicación y la declaración de uso de IA;
+  - 3 referencias por verificar.
+
 ## Preguntas pendientes
 
 ### Para el usuario
