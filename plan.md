@@ -25,7 +25,7 @@ Borrador del 2026-10-19, actualizado el 2026-10-20 y el 2026-10-26 (orden de las
   - **Referencias:** generalistas ajustados con irace sobre el entrenamiento.
   - **Puertas:** G4 y G5.
   - **Estado:** la campaña de irace corre en NicoVM desde las 21:12 UTC del 2026-10-26 (61
-    ajustes, unas 70 h).
+    ajustes, estimadas en unas 70 h; al ritmo medido en la primera hora, unas 32 h).
 - **Fase 3 en Evolver (D6):** después de la de VAMOS, la fase 3 se repite entera en Evolver/jMetal,
   con el espacio completo de NSGA-II (`NSGAIIDouble.yaml`) e irace.
 - Las decisiones están en `research/decisions/decisions.md` (D1–D9, T1–T8).
