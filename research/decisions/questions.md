@@ -79,6 +79,11 @@ en [`question1.md`](question1.md).
    dominante?
 4. ¿Añado al artículo de Overleaf la comparación con NSGA-II por defecto, la cita de ASlib y la
    métrica de hueco SBS–VBS cerrado?
+4d. ¿Ajusto un generalista "de verdad", es decir, irace sobre todos los problemas de
+    entrenamiento a la vez, como referencia? (2026-10-26)
+    - Es la referencia principal en configuración por instancia (ISAC, Hydra).
+    - Opciones: solo para LOFO (5 ajustes, unas 6 h en NicoVM) o también para LOGO (32 ajustes,
+      unas 37 h).
 
 ### Planteadas antes, sin respuesta
 
