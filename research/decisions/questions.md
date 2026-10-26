@@ -424,6 +424,23 @@ decidió. Al final están las preguntas pendientes. Las decisiones formales est�
     máximo que puede aprovechar cualquier recomendador (lo medía G2).
   - **En la fase 3:** es c*_ZDT3 en 31 de los 32 grupos de LOGO.
 
+### 37. ¿El SBS lo hemos implementado nosotros o es del estado del arte? (2026-10-26)
+- **Respuesta:** el concepto es del estado del arte.
+  - **Origen:** SBS y VBS son los puntos de referencia estándar en selección de algoritmos (marco de
+    Rice, 1976).
+  - **Dónde se usan:**
+    - SATzilla (Xu et al., JAIR 2008);
+    - ASlib (Bischl et al., AIJ 2016), que normaliza la evaluación como fracción del hueco SBS–VBS
+      cerrado;
+    - el survey de Kerschke et al. (ECJ 2019);
+    - MO-ELA.
+  - **Lo nuestro es solo la aplicación:**
+    - el SBS se elige entre las c*_P ajustadas por problema, no entre algoritmos distintos;
+    - se recalcula en cada partición agrupada (LOGO o LOFO), solo con entrenamiento
+      (`analyze_transfer.py`, método `sbs`).
+- **Pendiente:** citar ASlib en el artículo, y quizá informar del "hueco cerrado" (todos los métodos
+  quedan en negativo).
+
 ## Preguntas pendientes
 
 ### Para el usuario
