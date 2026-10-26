@@ -317,6 +317,24 @@ decidió. Al final están las preguntas pendientes. Las decisiones formales est�
   - re21 → rwa1 (11.2);
   - el más lejano siempre es re24 (≈ 40–45).
 
+### 30. ¿Qué portafolio usamos en el que esté SMS-EMOA? (2026-10-26)
+- **Respuesta:** ninguno. SMS-EMOA no está en el portafolio.
+  - **El portafolio (D2)** son las 37 configuraciones de NSGA-II ajustadas con irace (c*_P), una por
+    problema de entrenamiento. Todos los métodos recomiendan una de ellas.
+  - **SMS-EMOA y MOEA/D por defecto** (población 100) solo están en la matriz, como comparadores
+    sin ajustar (pre-registro de la fase 3, §2). Entran en dos sitios:
+    - el denominador de HVn, que es el HV de la unión de todos los frentes de la matriz en cada
+      problema;
+    - las comparaciones descriptivas: ¿mejora NSGA-II ajustado a usar otro algoritmo por defecto?
+  - El método `default` solo usa NSGA-II por defecto.
+- **Motivos para dejarlo fuera:**
+  - el espacio de ajuste es solo el de NSGA-II (D2, D3);
+  - SMS-EMOA de VAMOS no es invariante a las unidades de los objetivos (desplaza su referencia 1.0
+    en unidades absolutas);
+  - es mucho más caro.
+- **Ampliar el portafolio** con MOEA/D y SMS-EMOA ajustados sigue siendo la pregunta pendiente 1.
+- **En la réplica de Evolver (3e)** solo hay NSGA-II por defecto como comparador.
+
 ## Preguntas pendientes
 
 ### Para el usuario
