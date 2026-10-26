@@ -451,6 +451,32 @@ decidió. Al final están las preguntas pendientes. Las decisiones formales est�
     configuración ajustada con irace sobre todos los problemas de entrenamiento a la vez sería un
     generalista distinto, quizá más fuerte. Es el brazo "todos" de la RQ5.
 
+### 39. ¿No tiene más sentido comparar con NSGA-II por defecto que con el SBS? (2026-10-26)
+- **Respuesta:** las dos comparaciones tienen sentido, pero contestan preguntas distintas, y conviene
+  dar las dos.
+  - **Frente a NSGA-II por defecto:** "¿compensa transferir una configuración ajustada en vez de no
+    ajustar?". Es la referencia del usuario práctico.
+  - **Frente al SBS:** "con la misma base de configuraciones ajustadas, ¿mirar las features ayuda a
+    elegir mejor que usar siempre la mejor de media?". Es la referencia estándar en selección de
+    algoritmos (ASlib).
+  - El SBS es justo: solo usa entrenamiento, no cuesta evaluaciones y es la alternativa natural de
+    la RQ4.
+  - G3, lo pre-registrado, no compara con ninguna de las dos, sino paisaje frente a metadatos.
+- **Datos frente a NSGA-II por defecto** (LOGO, 32 grupos, Wilcoxon bilateral, exploratorio):
+
+  | Método | Diferencia media | V/D/E | p |
+  |---|---|---|---|
+  | SBS | +0.051 | 27/5/0 | 0.0007 |
+  | `knn_selector` | +0.032 | 25/7/0 | 0.005 |
+  | `landscape_1nn` | +0.003 (mediana +0.006) | 23/9/0 | 0.5 |
+  | `metadata_1nn` | −0.046 | 23/9/0 | 0.54 |
+
+  En LOFO, `landscape_1nn` queda por debajo del valor por defecto: 0.778 frente a 0.846.
+- **Lectura:** el vecino por paisaje suele mejorar un poco al valor por defecto (en 23 de 32
+  grupos), pero algunas pérdidas grandes anulan la media.
+- **Propuesta:** añadir al artículo la comparación con NSGA-II por defecto y la cita de ASlib.
+  Pendiente de que el usuario lo confirme.
+
 ## Preguntas pendientes
 
 ### Para el usuario
