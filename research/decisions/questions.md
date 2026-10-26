@@ -412,6 +412,18 @@ decidió. Al final están las preguntas pendientes. Las decisiones formales est�
       (0.425 frente a 0.564).
     - El generalista, que no cuesta caracterizar, supera a ambos.
 
+### 36. ¿Qué es el SBS? (2026-10-26)
+- **Respuesta:** *Single Best Solver*, el término habitual en selección de algoritmos.
+  - **Qué es:** la configuración del portafolio con mejor rendimiento medio en los problemas de
+    entrenamiento, es decir, la que se usaría siempre sin caracterizar el problema nuevo (el
+    generalista).
+  - **Cómo se calcula:** solo con los problemas de entrenamiento de cada partición, así que no ve el
+    destino.
+  - **Su contrapunto:** el VBS (*Virtual Best Solver*), la mejor configuración para cada problema
+    por separado, que en el estudio es el donante oráculo. El hueco entre SBS y VBS es el margen
+    máximo que puede aprovechar cualquier recomendador (lo medía G2).
+  - **En la fase 3:** es c*_ZDT3 en 31 de los 32 grupos de LOGO.
+
 ## Preguntas pendientes
 
 ### Para el usuario
