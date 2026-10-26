@@ -93,6 +93,11 @@ en [`question1.md`](question1.md).
     - (3) Pasar a un benchmark más difícil y variado: COCO bbob-biobj, ZCAT en sus variantes
       difíciles, más variables o tres objetivos. Supone un catálogo nuevo y unas 40 h de irace.
 
+4f. Recomendación de Claude: (1) estratos más una regla de consenso (generalista por defecto,
+    desviarse solo si los k vecinos coinciden), como exploración sobre la matriz actual; (2) diseñar
+    y pre-registrar un estudio con COCO bbob-biobj, con el generalista ajustado sobre todo el
+    entrenamiento; (3) ejecutarlo. ¿Empiezo por el paso 1? (2026-10-26)
+
 ### Planteadas antes, sin respuesta
 
 5. ¿Ampliar el portafolio con algoritmos ajustados además de NSGA-II? Se planteó como MOEA/D y
