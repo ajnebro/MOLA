@@ -291,6 +291,32 @@ decidió. Al final están las preguntas pendientes. Las decisiones formales est�
     - el escalado robusto, que depende de cada partición de entrenamiento y por eso no debe
       precalcularse.
 
+### 29. ¿Cómo se compara si una tabla (un problema) es distinta de otra? ¿Con qué distancia? (2026-10-26)
+- **Respuesta:** no se comparan tablas enteras. Se comparan vectores de 49 features:
+  - una muestra del problema destino;
+  - la media de las 5 muestras de cada problema de entrenamiento.
+- **Distancia principal (`landscape_1nn`):** euclídea sobre las features escaladas de forma
+  robusta, d(Q, P) = √Σ_f ((x_Qf − x̄_Pf) / IQR_f)².
+  - El IQR se calcula solo con las muestras de entrenamiento.
+  - Se descartan las features indefinidas en alguna muestra y las constantes. Quedan 46.
+  - Es una euclídea ponderada por 1/IQR², porque la mediana se cancela.
+- **Otras distancias** (son los comparadores de la RQ1):
+  - **Metadatos:** euclídea estandarizada sobre log D y sobre la media y la desviación del log del
+    rango de las cotas.
+  - **Tesis (ec. 4.1):** Σ |1 − min/max| sobre 19 features.
+  - **`loss_predictor`:** aprende una distancia ponderada (ridge sobre |z_A − z_B|) que predice la
+    pérdida de transferencia.
+  - **`knn_selector`:** usa la distancia principal para tomar los 3 vecinos.
+- **Cómo se valida:** la distancia no se valida por sí misma, sino por la pérdida de transferencia
+  del donante que elige (G3). El reconocimiento de la fase 2 fue del 63 %.
+- **Debilidad conocida:** las features están muy correlacionadas (dimensión efectiva ~5,
+  `FEATURE_ANALYSIS.md`), así que los grupos de features redundantes pesan más.
+- **Ejemplos (LOGO):**
+  - zdt1 → zdt3 (3.6), zdt2 y dtlz2 (7.0);
+  - dtlz2 → dtlz3 (5.7);
+  - re21 → rwa1 (11.2);
+  - el más lejano siempre es re24 (≈ 40–45).
+
 ## Preguntas pendientes
 
 ### Para el usuario
