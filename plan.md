@@ -280,7 +280,15 @@ Detalles:
     no son invariantes ante cambios de unidades;
   - el frente de referencia de UF6 está incompleto.
 - **Comunicación con Aldana-Martín y Nebro:** al terminar la fase 0, describiendo exactamente lo
-  demostrado (E12 y E13) y proponiendo coautoría.
+  demostrado (E12 y E13) y proponiendo coautoría. Preguntas para ellos (antes en
+  `research/decisions/questions.md`):
+  - ¿Aceptan que MOLA use por defecto la geometría `bound` y conserve `raw` para reproducir lo
+    publicado?
+  - ¿Qué versión de moorphology generó los números de la tesis y del grafo de moody? (E13)
+  - ¿El artículo se plantea como transferencia de configuraciones ajustadas por problema? Es la
+    línea de la tesis y la que sigue el estudio (D2).
+- **Comprobación pendiente: cotas de RE24.** VAMOS pone x2 ∈ [4, 50] y jMetal x2 ∈ [0.5, 50]; hay
+  que contrastarlo con el código de referencia de Tanabe e Ishibuchi.
 - **Invariancia de los operadores de VAMOS:** es la condición de la RQ2 y hay que verificarla
   antes de usarla.
 - **Calendario:** GECCO 2027, cuyo plazo suele caer a finales de enero (confirmarlo). Si no llega,
