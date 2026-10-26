@@ -18,7 +18,7 @@ Borrador del 2026-10-19, actualizado el 2026-10-20 y el 2026-10-26 (orden de las
     la matriz: `research/phase3/preregistration.md`.
 - **Fase 3 en Evolver (D6):** después de la de VAMOS, la fase 3 se repite entera en Evolver/jMetal,
   con el espacio completo de NSGA-II (`NSGAIIDouble.yaml`) e irace.
-- Las decisiones están en `research/decisions/decisions.md` (D1–D7, T1–T8).
+- Las decisiones están en `research/decisions/decisions.md` (D1–D8, T1–T8).
 
 ---
 
@@ -113,7 +113,8 @@ Orden fijado el 2026-10-26 (D7):
 2. después las dos que acotan cuándo se sostiene: las unidades y el muestreo;
 3. al final la que decide cuándo recomendar, que usa las señales y las pérdidas de las anteriores.
 
-Las tres últimas se miden con la pérdida de transferencia que define la RQ1.
+La RQ2, la RQ3 y la RQ4 se miden con la pérdida de transferencia que define la RQ1. La RQ5, añadida
+el mismo día (D8), lleva la hipótesis de la RQ1 de un solo destino a un conjunto de test.
 
 **Correspondencia con la numeración anterior.** Hasta el 2026-10-26 las RQ seguían el flujo del
 recomendador: caracterizar, recuperar, recomendar y decidir. Los documentos anteriores a esa fecha
@@ -127,6 +128,7 @@ actual; su regla no cambia.
 | RQ2 | RQ1 | Invariancia y geometría | Caracterizar |
 | RQ3 | RQ2 | Incertidumbre del muestreo | Recuperar |
 | RQ4 | RQ4 | Cuándo recomendar | Decidir |
+| RQ5 | (nueva) | Selección del conjunto de entrenamiento | Recuperar un conjunto y ajustar sobre él |
 
 **RQ1. Transferencia (pregunta central).** ¿Devuelve el vecino más similar una configuración mejor
 que las alternativas siguientes, en formulaciones y familias no vistas?
@@ -195,6 +197,38 @@ perjudiciales con el mismo presupuesto total?
 - **Ampliación para un segundo artículo:** poder comprar otro bloque de muestras, es decir, una
   política secuencial. Se aborda solo si el piloto muestra margen.
 
+**RQ5. Selección del conjunto de entrenamiento.** Dado un conjunto de problemas de test, ¿da mejor
+resultado en el test una configuración ajustada sobre los problemas de entrenamiento más parecidos
+por paisaje que otra ajustada sobre estos conjuntos?
+- todos los problemas de entrenamiento;
+- los más parecidos por metadatos;
+- una selección aleatoria del mismo tamaño.
+
+Detalles:
+- **Relación con la RQ1:** misma hipótesis de similitud y misma dirección (de los destinos a los
+  problemas conocidos). Cambian dos cosas:
+  - se recupera un conjunto de problemas;
+  - sobre él se ajusta una configuración nueva, en lugar de reutilizar la de un donante.
+- **Primera evidencia, sin coste adicional:** `knn_selector` de la fase 3, que elige la
+  configuración del portafolio con mejor HVn medio sobre los 3 problemas más cercanos.
+- **Diseño:** se pre-registra después de G3.
+  - **Pliegues:** se deja fuera una familia en cada uno (LOFO).
+  - **Cuatro brazos de irace con el mismo presupuesto** (20 000 experimentos, D5): todos los
+    problemas de entrenamiento, los k más parecidos por paisaje, los k más parecidos por metadatos
+    y k al azar.
+  - **Evaluación:** HVn en los problemas de test con las semillas 5001–5010.
+  - **Se fijan en el pre-registro:** cómo se agrega la similitud sobre varios destinos, el valor de
+    k y el framework.
+- **Medidas:** HVn en test frente al generalista, distancia al VBS y sensibilidad a k.
+- **Coste:** unas 32 ejecuciones de irace por framework, alrededor de 1.5–2 días en NicoVM.
+- **Riesgos:**
+  - Con un k pequeño, irace sobreajusta.
+  - Si el test es heterogéneo, la selección tiende al conjunto completo y equivale al generalista.
+  - De los problemas de test solo se usan sus features, nunca su rendimiento.
+- **Aplicación final:** en la fase 5, elegir entre los 37 problemas de desarrollo el conjunto de
+  entrenamiento para los 17 reservados. También da un criterio para elegir los conjuntos de
+  entrenamiento en estudios de meta-optimización como el de Evolver, donde hoy se eligen a mano.
+
 ## 5. Diseño experimental
 
 | Elemento | Decisión |
@@ -218,6 +252,7 @@ perjudiciales con el mismo presupuesto total?
 | 1. Núcleo verificable | Corregir los defectos confirmados (prueba de soporte exacta, perfil de geometría versionado, contrato de normalización, estados de indefinido, validación de no finitos, `k` explícito, CI y `pom`), sin regenerar todavía los CSV históricos | **G1:** tests verdes y concordancia con referencias exactas |
 | 2. Piloto | Estabilidad, escalado, coste y complementariedad del portafolio con unos 40 problemas y 5 semillas | **G2:** hueco SBS–VBS suficiente, con umbral fijado antes. Si no lo hay, se diversifica el portafolio |
 | 3. Transferencia | Matriz de rendimiento con VAMOS y comparación de métodos con particiones agrupadas frente a aleatorias | **G3** (RQ1): ¿supera el paisaje a los metadatos? Si no, el resultado negativo se publica |
+| 3s. Selección del conjunto de entrenamiento | Pre-registro tras G3; LOFO con cuatro brazos de irace (paisaje, metadatos, todos, al azar) | RQ5 respondida en desarrollo; se aplica a los 17 reservados en la fase 5 |
 | 4. Confianza y presupuesto | Calibrar la política de recomendación o alternativa generalista | RQ4 respondida con presupuesto total |
 | 5. Evaluación final y artículo | Congelar el método, ejecutar los grupos reservados y preparar datos, código y manuscrito | Resultados reproducibles, incluidos los negativos |
 
@@ -235,8 +270,9 @@ perjudiciales con el mismo presupuesto total?
   2026-10-20 a las 10:27 UTC al 2026-10-22 a las 05:41 UTC.
 - **Decidido el 2026-10-20 y el 2026-10-21:** réplica de la fase 3 en Evolver/jMetal con el espacio
   de NSGA-II sin los cuatro operadores no invariantes (D6).
-- **Decidido el 2026-10-26:** nuevo orden de las preguntas de investigación, con la transferencia
-  como RQ1 (D7, §4).
+- **Decidido el 2026-10-26:**
+  - nuevo orden de las preguntas de investigación, con la transferencia como RQ1 (D7, §4);
+  - nueva RQ5, la selección del conjunto de entrenamiento, que se pre-registra tras G3 (D8, §4).
 - **Fallos de VAMOS 1.0.0 encontrados, a comunicar al proyecto:**
   - `racing/refill.py:25` falla con parámetros condicionales en el racing iterado;
   - PCX, UNDX, la mutación gaussiana, la de Cauchy, la reparación `round` y el inicializador Halton

@@ -213,3 +213,25 @@ alternativas completas para D1–D3 están en [`question1.md`](question1.md).
   - Los documentos anteriores conservan la numeración antigua, porque están congelados: los
     pre-registros, los informes de las fases 0 a 3e, D1–D6 y T1–T8, y el prompt de la §9 del plan.
   - La regla de G3 no cambia, solo su etiqueta.
+
+## D8 — RQ5: selección del conjunto de entrenamiento
+
+- **Fecha y autor:** 2026-10-26, decisión del usuario ("si, rq5"), a partir de su propuesta: "dados
+  unos problemas de test, obtengamos los problemas de training del conjunto de problemas que
+  tenemos".
+- **Decisión:** se añade la RQ5 (`plan.md` §4) y la fase 3s (§6).
+  - **Pregunta:** dado un conjunto de test, ¿es mejor ajustar con irace sobre los problemas de
+    entrenamiento más parecidos por paisaje que sobre todos, sobre los más parecidos por metadatos
+    o sobre una selección al azar del mismo tamaño?
+  - **Cuándo se pre-registra:** después de G3.
+  - **Primera evidencia:** `knn_selector` en la matriz de la fase 3.
+- **Motivo:**
+  - Lleva la hipótesis de la RQ1 de un donante a un conjunto de entrenamiento.
+  - Da un criterio para elegir conjuntos de entrenamiento, que en meta-optimización se eligen a
+    mano.
+  - Encaja con la fase 5: elegir, entre los 37 de desarrollo, el entrenamiento para los 17
+    reservados.
+- **Pendiente para el pre-registro:**
+  - cómo se agrega la similitud sobre varios destinos;
+  - el valor de k;
+  - el framework: VAMOS, Evolver o ambos.
