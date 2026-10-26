@@ -390,6 +390,28 @@ decidió. Al final están las preguntas pendientes. Las decisiones formales est�
   - La sensibilidad de las fases 2 y 2b a IBEA deja todos los resultados idénticos.
   - El artículo de Overleaf está actualizado (`dc3eb97`).
 
+### 35. ¿Qué diferencia hay entre el vecino por paisaje y el vecino por metadatos? ¿Son mucho mejores que al azar? (2026-10-26)
+- **Respuesta:**
+  - **Paisaje:** las 49 features de MOLA, sobre una muestra LHS de 200·D evaluaciones. Distancia
+    euclídea con escalado robusto.
+  - **Metadatos:** 3 números que se conocen sin evaluar: log D y la media y la desviación del log
+    del rango de las cotas. M = 2 en todos los problemas. Es la línea base gratuita.
+  - **Frente a un donante al azar** (el valor esperado de un donante uniforme). Es un análisis
+    descriptivo, no pre-registrado. Media por destino:
+
+    | Partición | Al azar | Metadatos | Paisaje | SBS |
+    |---|---|---|---|---|
+    | LOGO | 0.771 | 0.807 (+0.036; supera al azar en 26/32 grupos, p = 0.001) | 0.844 (+0.073; 27/32, p = 1·10⁻⁵) | 0.895 |
+    | LOFO | 0.760 | 0.842 (+0.082) | 0.778 (+0.018) | 0.880 |
+    | Aleatoria 80/20 | 0.769 | 0.791 | 0.848 | 0.876 |
+
+  - **Lectura:**
+    - Los dos superan claramente al azar, pero el paisaje recupera solo algo más de la mitad del
+      hueco entre el azar y el SBS (LOGO), y los metadatos menos de un tercio.
+    - Al dejar fuera una familia entera, el paisaje apenas mejora al azar y en DTLZ queda por debajo
+      (0.425 frente a 0.564).
+    - El generalista, que no cuesta caracterizar, supera a ambos.
+
 ## Preguntas pendientes
 
 ### Para el usuario
