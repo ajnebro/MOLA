@@ -1,0 +1,148 @@
+{
+  "note": "Exploratory, not pre-registered; p-values uncorrected. G3 is unchanged.",
+  "pca_variance_kept": 0.95,
+  "logo_vs_metadata_1nn": {
+    "euclidean": {
+      "mean": 0.0491,
+      "wins_losses_ties": [
+        17,
+        12,
+        3
+      ],
+      "p_greater": 0.0783
+    },
+    "thesis": {
+      "mean": 0.0362,
+      "wins_losses_ties": [
+        13,
+        16,
+        3
+      ],
+      "p_greater": 0.4612
+    },
+    "learned": {
+      "mean": 0.0066,
+      "wins_losses_ties": [
+        9,
+        23,
+        0
+      ],
+      "p_greater": 0.9615
+    },
+    "l1": {
+      "mean": 0.057,
+      "wins_losses_ties": [
+        17,
+        12,
+        3
+      ],
+      "p_greater": 0.0722
+    },
+    "pca_whitened": {
+      "mean": 0.0464,
+      "wins_losses_ties": [
+        19,
+        10,
+        3
+      ],
+      "p_greater": 0.049
+    },
+    "rank": {
+      "mean": 0.0443,
+      "wins_losses_ties": [
+        17,
+        11,
+        4
+      ],
+      "p_greater": 0.046
+    }
+  },
+  "logo_vs_sbs": {
+    "euclidean": {
+      "mean": -0.0474,
+      "wins_losses_ties": [
+        16,
+        15,
+        1
+      ],
+      "p_greater": 0.7217
+    },
+    "thesis": {
+      "mean": -0.0603,
+      "wins_losses_ties": [
+        15,
+        16,
+        1
+      ],
+      "p_greater": 0.9179
+    },
+    "learned": {
+      "mean": -0.0899,
+      "wins_losses_ties": [
+        3,
+        29,
+        0
+      ],
+      "p_greater": 1.0
+    },
+    "l1": {
+      "mean": -0.0395,
+      "wins_losses_ties": [
+        17,
+        14,
+        1
+      ],
+      "p_greater": 0.5078
+    },
+    "pca_whitened": {
+      "mean": -0.05,
+      "wins_losses_ties": [
+        15,
+        16,
+        1
+      ],
+      "p_greater": 0.7834
+    },
+    "rank": {
+      "mean": -0.0522,
+      "wins_losses_ties": [
+        15,
+        16,
+        1
+      ],
+      "p_greater": 0.7474
+    }
+  },
+  "logo_loss_vs_oracle_median": {
+    "random": 0.0792,
+    "default": 0.0124,
+    "metadata_1nn": 0.0171,
+    "euclidean": 0.0021,
+    "thesis": 0.0064,
+    "learned": 0.0081,
+    "l1": 0.0016,
+    "pca_whitened": 0.0007,
+    "rank": 0.0027,
+    "sbs": 0.0046,
+    "oracle": 0.0
+  },
+  "logo_loss_vs_oracle_share_above_0.10": {
+    "random": 0.405,
+    "default": 0.189,
+    "metadata_1nn": 0.216,
+    "euclidean": 0.184,
+    "thesis": 0.238,
+    "learned": 0.254,
+    "l1": 0.162,
+    "pca_whitened": 0.141,
+    "rank": 0.184,
+    "sbs": 0.027,
+    "oracle": 0.0
+  },
+  "spearman_distance_vs_donor_hvn": {
+    "euclidean": -0.397,
+    "l1": -0.391,
+    "pca_whitened": -0.42,
+    "rank": -0.37
+  }
+}

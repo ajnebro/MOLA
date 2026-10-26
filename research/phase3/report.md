@@ -237,3 +237,46 @@ tan bueno. Script: `scripts/diagnose_transfer.py`. Salidas: `data/diagnosis.json
    convergen. Cerca del frente, el HV distingue poco, así que las diferencias se concentran en una
    decena de problemas difíciles. Los puntos de control de 5 000 y 10 000 evaluaciones ya están en
    la matriz y permitirían ver si con menos presupuesto la transferencia importa más.
+
+## 9. Una columna por distancia (2026-10-26, exploratorio)
+
+Se hizo a petición del usuario. Script: `scripts/distance_table.py`. Salidas:
+`data/distance_table.csv`, `data/distance_table.json` y `data/distance_table_long.csv`.
+- Cada columna elige un donante por destino y muestra, como `landscape_1nn`, y lee su HVn de la
+  matriz existente.
+- Las tres distancias nuevas usan las mismas 49 features escaladas por muestra:
+  - **L1:** Manhattan sobre las features con escalado robusto.
+  - **PCA blanqueada:** PCA sobre las muestras de entrenamiento, conservando el 95 % de la varianza,
+    con cada componente dividido por su desviación.
+  - **Rangos:** percentil de cada feature entre las muestras de entrenamiento, y luego euclídea.
+
+HVn medio por destino:
+
+| Método | LOGO | LOFO | Aleatoria 80/20 |
+|---|---|---|---|
+| Al azar | 0.771 | 0.760 | 0.769 |
+| NSGA-II por defecto | 0.846 | 0.846 | 0.841 |
+| Metadatos | 0.807 | 0.842 | 0.791 |
+| Paisaje, euclídea (pre-registrada) | 0.844 | 0.778 | 0.848 |
+| Paisaje, tesis | 0.830 | 0.778 | 0.823 |
+| Paisaje, aprendida (`loss_predictor`) | 0.810 | 0.786 | 0.830 |
+| Paisaje, L1 | 0.849 | 0.771 | 0.851 |
+| Paisaje, PCA blanqueada | 0.848 | 0.784 | 0.848 |
+| Paisaje, rangos | 0.847 | **0.820** | 0.849 |
+| SBS | **0.895** | **0.880** | **0.876** |
+| Oráculo | 0.909 | 0.902 | 0.904 |
+
+- **La distancia apenas importa.** En LOGO, las cuatro variantes geométricas quedan entre 0.844 y
+  0.849. Su correlación con la calidad del donante es parecida en todas: entre −0.37 (rangos) y −0.42
+  (PCA).
+- **Frente a los metadatos** (LOGO, Wilcoxon unilateral sobre grupos, sin corregir):
+  - euclídea, p = 0.078; L1, p = 0.072;
+  - PCA, p = 0.049 (19/10/3); rangos, p = 0.046 (17/11/4).
+
+  Con 6 distancias probadas, una corrección de Bonferroni deja todas por encima de 0.05. Es una
+  exploración, no un resultado.
+- **La cola mejora un poco con PCA.** Fallan por más de 0.10 en el 14 % de los casos con PCA, el
+  16 % con L1 y el 18 % con la euclídea; el SBS, en el 2.7 %.
+- **Con familias nuevas (LOFO), los rangos son la única variante que se acerca a los metadatos y al
+  valor por defecto:** 0.820, frente a 0.778 de la euclídea.
+- **Ninguna distancia se acerca al SBS.** La conclusión de G3 no depende de la distancia elegida.
