@@ -441,6 +441,16 @@ decidió. Al final están las preguntas pendientes. Las decisiones formales est�
 - **Pendiente:** citar ASlib en el artículo, y quizá informar del "hueco cerrado" (todos los métodos
   quedan en negativo).
 
+### 38. ¿El SBS no es la configuración estándar de NSGA-II, sino la mejor de las nuestras obtenidas con irace? (2026-10-26)
+- **Respuesta:** sí, el SBS es la mejor de nuestras c*_P obtenidas con irace.
+  - **Qué no es:** no es NSGA-II por defecto, el de libro (población 100, SBX 1.0/20, mutación
+    polinómica 1/n/20, torneo binario). Ese entra aparte como referencia `default`.
+  - **En la fase 3:** NSGA-II por defecto obtiene 0.846 de media y el SBS (c*_ZDT3) 0.895. El valor
+    por defecto no es candidato a SBS: los candidatos son solo las c*_P de entrenamiento.
+  - **Matiz:** c*_ZDT3 se ajustó solo en ZDT3 y resulta ser la que mejor generaliza. Una
+    configuración ajustada con irace sobre todos los problemas de entrenamiento a la vez sería un
+    generalista distinto, quizá más fuerte. Es el brazo "todos" de la RQ5.
+
 ## Preguntas pendientes
 
 ### Para el usuario
