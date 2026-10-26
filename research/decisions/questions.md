@@ -163,6 +163,24 @@ decidió. Al final están las preguntas pendientes. Las decisiones formales est�
 ### 21. "En un fichero aparte, guarda todas las preguntas y respuestas, las hechas y las que vienen" (2026-10-21)
 - **Resultado:** este fichero.
 
+### 22. ¿Cuáles son las preguntas de investigación de MOLA? (2026-10-26)
+- **Respuesta:** son las cuatro de `plan.md` §4. Son del artículo de continuación, no de la
+  herramienta, y siguen el flujo del recomendador (caracterizar, recuperar, recomendar, decidir).
+  - **RQ1, invariancia y geometría:** ¿cambian el vecino recuperado y la configuración recomendada
+    al cambiar las unidades de las variables o de los objetivos? La invariancia ya está verificada
+    en las features, en VAMOS y en jMetal. Falta el estudio completo de factores (k, solo el grafo
+    o también las medidas, escalado del vector).
+  - **RQ2, incertidumbre del muestreo:** ¿cuánta variabilidad del muestreo llega a la
+    recomendación? En la fase 2, con 5 muestras: mediana de la proporción de varianza entre
+    problemas de 0.99, reconocimiento del 63 % y donante estable en 21 de 37 problemas. Falta la
+    malla de tamaños de muestra.
+  - **RQ3, transferencia (la central):** ¿da el vecino más similar una configuración mejor que el
+    SBS, el vecino por metadatos, un donante aleatorio, la distancia de la tesis o un selector
+    directo, en formulaciones y familias no vistas? Se decide con G3 (fase 3, y su réplica 3e).
+  - **RQ4, cuándo recomendar:** ¿reduce una política calibrada (recomendar o recurrir a la
+    alternativa generalista) las transferencias perjudiciales con el mismo presupuesto total?
+    Es la fase 4, aún sin empezar.
+
 ## Preguntas pendientes
 
 ### Para el usuario
