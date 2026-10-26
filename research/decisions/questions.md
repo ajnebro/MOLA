@@ -271,6 +271,26 @@ decidió. Al final están las preguntas pendientes. Las decisiones formales est�
   - Queda un núcleo libre para el sistema, ssh y el proceso coordinador.
   - Medido a las 18:01 UTC: 31 procesos por encima del 50 % de CPU y carga media de 30.8.
 
+### 28. ¿Se guardan las metacaracterísticas en una tabla? (2026-10-26)
+- **Respuesta:** sí, en CSV.
+  - **Formato:** una fila por problema y muestra LHS (37 × 5 semillas, 1001–1005, son 185 filas).
+    Cada fila lleva la procedencia (problema, semilla, n, D, M, geometría, k, |ND|, tiempos,
+    versión de MOLA, escalado de objetivos) y las causas de cada feature indefinida (JSON), además
+    de las 49 features.
+  - **VAMOS:**
+    - `research/phase3/data/features_sample_scaled.csv`: MOLA 0.4.0, `sample`, la representación
+      principal.
+    - `research/phase2/data/pilot_features.csv`: objetivos sin escalar, MOLA 0.3.0, sin columna de
+      versión.
+  - **Evolver/jMetal:** `research/phase3e/data/features_sample_scaled.csv` y
+    `features_raw_objectives.csv`.
+  - **No están en tabla:**
+    - los metadatos de `metadata_1nn` (log D, media y desviación del log del rango de las cotas),
+      que `analyze_transfer.py` calcula a partir de las cotas;
+    - el vector medio de cada problema;
+    - el escalado robusto, que depende de cada partición de entrenamiento y por eso no debe
+      precalcularse.
+
 ## Preguntas pendientes
 
 ### Para el usuario
