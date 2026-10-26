@@ -17,6 +17,15 @@ Borrador del 2026-10-19, actualizado el 2026-10-20 y el 2026-10-26 (orden de las
     - la 1, escalado de objetivos (D4);
     - la 2, IBEA en lugar de SMS-EMOA (D9).
   - El artículo (borrador en Overleaf) recoge el resultado negativo.
+- **Fase 3c (bbob-biobj):** pre-registrada el 2026-10-26 (`research/phase3c/preregistration.md`),
+  después de los análisis a posteriori de la fase 3: estratos, consenso, distancias y
+  configuraciones aleatorias.
+  - **Problemas:** 165 de bbob-biobj con D = 10, con la similitud controlada (misma función, función
+    fuera y grupo fuera).
+  - **Referencias:** generalistas ajustados con irace sobre el entrenamiento.
+  - **Puertas:** G4 y G5.
+  - **Estado:** la campaña de irace corre en NicoVM desde las 21:12 UTC del 2026-10-26 (61
+    ajustes, unas 70 h).
 - **Fase 3 en Evolver (D6):** después de la de VAMOS, la fase 3 se repite entera en Evolver/jMetal,
   con el espacio completo de NSGA-II (`NSGAIIDouble.yaml`) e irace.
 - Las decisiones están en `research/decisions/decisions.md` (D1–D9, T1–T8).

@@ -73,6 +73,16 @@ en [`question1.md`](question1.md).
   - Una tarea horaria en la sesión (id `a9636817`) retoma el trabajo.
   - En NicoVM se lanza solo cuando está libre, con 31 procesos.
 
+### 13. ¿Añado al artículo de Overleaf la comparación con NSGA-II por defecto, la cita de ASlib y la métrica de hueco SBS–VBS cerrado? (2026-10-26)
+- **Respuesta:** incluida en "procede con todo" (pregunta 12).
+- **Resultado:** se añade al artículo junto con los análisis a posteriori de la fase 3.
+
+### 14. ¿Ajusto un generalista "de verdad" (irace sobre todo el entrenamiento)? ¿Los problemas son demasiado fáciles; qué hago? (2026-10-26)
+- **Respuesta:** "procede con todo" (pregunta 12).
+- **Resultado:** la fase 3c incluye los generalistas ajustados sobre el entrenamiento y un benchmark
+  menos saturado (bbob-biobj, D = 10). Está pre-registrada en el commit `0ea3209` y lanzada en
+  NicoVM.
+
 ## Pendientes
 
 ### Hechas tras la fase 3, sin respuesta todavía (2026-10-26)
@@ -84,21 +94,6 @@ en [`question1.md`](question1.md).
    final con los 17 problemas reservados?
 3. ¿Planteo el artículo abiertamente como resultado negativo, con la lección del generalista
    dominante?
-4. ¿Añado al artículo de Overleaf la comparación con NSGA-II por defecto, la cita de ASlib y la
-   métrica de hueco SBS–VBS cerrado?
-4d. ¿Ajusto un generalista "de verdad", es decir, irace sobre todos los problemas de
-    entrenamiento a la vez, como referencia? (2026-10-26)
-    - Es la referencia principal en configuración por instancia (ISAC, Hydra).
-    - Opciones: solo para LOFO (5 ajustes, unas 6 h en NicoVM) o también para LOGO (32 ajustes,
-      unas 37 h).
-
-4e. ¿Los problemas son demasiado fáciles? Con 20 000 evaluaciones hay 13 fáciles, 7 muy difíciles y
-    17 intermedios. ¿Qué hago? (2026-10-26)
-    - (1) Solo informar por estratos con los datos actuales.
-    - (2) Volver a ajustar con un presupuesto menor (p. ej. 5 000 evaluaciones; unas 10–12 h de
-      irace y una matriz nueva).
-    - (3) Pasar a un benchmark más difícil y variado: COCO bbob-biobj, ZCAT en sus variantes
-      difíciles, más variables o tres objetivos. Supone un catálogo nuevo y unas 40 h de irace.
 
 ### Planteadas antes, sin respuesta
 
