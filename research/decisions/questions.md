@@ -85,6 +85,14 @@ en [`question1.md`](question1.md).
     - Opciones: solo para LOFO (5 ajustes, unas 6 h en NicoVM) o también para LOGO (32 ajustes,
       unas 37 h).
 
+4e. ¿Los problemas son demasiado fáciles? Con 20 000 evaluaciones hay 13 fáciles, 7 muy difíciles y
+    17 intermedios. ¿Qué hago? (2026-10-26)
+    - (1) Solo informar por estratos con los datos actuales.
+    - (2) Volver a ajustar con un presupuesto menor (p. ej. 5 000 evaluaciones; unas 10–12 h de
+      irace y una matriz nueva).
+    - (3) Pasar a un benchmark más difícil y variado: COCO bbob-biobj, ZCAT en sus variantes
+      difíciles, más variables o tres objetivos. Supone un catálogo nuevo y unas 40 h de irace.
+
 ### Planteadas antes, sin respuesta
 
 5. ¿Ampliar el portafolio con algoritmos ajustados además de NSGA-II? Se planteó como MOEA/D y
