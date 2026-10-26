@@ -376,6 +376,20 @@ decidió. Al final están las preguntas pendientes. Las decisiones formales est�
   - los coautores, el destino de publicación y la declaración de uso de IA;
   - 3 referencias por verificar.
 
+### 34. "¿Subo la rama de IBEA a VAMOS y abro un pull request?" → "Sí, sube IBEA a VAMOS y abre PR" (2026-10-26)
+- **Resultado:** PR vamos-optimization/VAMOS#115 con dos commits:
+  - `3089157e`, el escalado de ε;
+  - `c4569f25`, κ = 0.05.
+- **Validación previa:** `health` en el entorno canónico, `pytest` completo (2 884 tests) y
+  `mkdocs --strict`.
+- **Uso en la fase 3:** IBEA se ejecutó en la matriz con ese commit (enmienda 2, D9).
+- **Resultado de G3 (fase 3, `research/phase3/report.md`):** no se supera.
+  - `landscape_1nn` frente a `metadata_1nn` en LOGO: +0.049 de media, mediana ≈ 0, 17/12/3,
+    p = 0.078.
+  - Ningún método supera al generalista, c*_ZDT3, que es el SBS en 31 de 32 grupos.
+  - La sensibilidad de las fases 2 y 2b a IBEA deja todos los resultados idénticos.
+  - El artículo de Overleaf está actualizado (`dc3eb97`).
+
 ## Preguntas pendientes
 
 ### Para el usuario
@@ -423,15 +437,19 @@ decidió. Al final están las preguntas pendientes. Las decisiones formales est�
 
 ### Que llegarán con los resultados de la fase 3
 
-13. **Si G3 se supera en VAMOS:** ¿se mantiene `landscape_1nn` como método del recomendador, o se
-    adopta el que mejor rinda en los análisis secundarios (`knn_selector`, `loss_predictor`)? Esto
-    último exigiría un nuevo pre-registro antes de la evaluación final.
-14. **Si G3 no se supera:** ¿se publica como resultado negativo (`plan.md` §6) o se exploran
-    representaciones distintas, por ejemplo MO-ELA, con un pre-registro nuevo?
+13. ~~Si G3 se supera en VAMOS~~: ya no aplica, porque G3 no se superó (2026-10-26).
+14. **G3 no se ha superado (2026-10-26). ¿Qué se hace?** Opciones (`research/phase3/report.md` §7):
+    - publicarlo como resultado negativo (`plan.md` §6), con la lección del generalista dominante;
+    - pre-registrar `knn_selector` como método principal para la evaluación final (fue el mejor en
+      el análisis exploratorio);
+    - pre-registrar la RQ5;
+    - explorar otras representaciones (MO-ELA) con un pre-registro nuevo.
+14b. **¿Se ejecuta la réplica 3e en Evolver tal como está pre-registrada?** Replicar el negativo dice
+    si depende del framework. Son unas 40 h de irace.
 15. **Si VAMOS y Evolver discrepan en G3:** ¿cuál se toma como principal en el artículo?
 16. **¿Cuándo se abren los 17 problemas reservados** (fase 5) y con qué método congelado?
-17. **RQ1 y RQ2 completas:** malla de tamaños de muestra, k ∈ {1, D, 10} y transformaciones de
-    unidades. ¿Antes o después de la evaluación final?
+17. **RQ2 y RQ3 completas** (numeración nueva): malla de tamaños de muestra, k ∈ {1, D, 10} y
+    transformaciones de unidades. ¿Antes o después de la evaluación final?
 18. **Validación con tres objetivos** (`plan.md` §5): ¿qué problemas y en qué fase?
 19. **RQ4:** la política de recomendar o recurrir a la alternativa generalista, y la contabilidad del
     presupuesto total.

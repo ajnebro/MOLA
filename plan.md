@@ -10,15 +10,16 @@ Borrador del 2026-10-19, actualizado el 2026-10-20 y el 2026-10-26 (orden de las
   problemas multimodales; `research/phase2/report.md`.
 - **Fase 2b:** irace frente a F-Race, el 2026-10-20. Con el mismo presupuesto, irace da mejores
   configuraciones en 32 de 37 problemas; `research/phase2b/report.md`.
-- **Fase 3 (transferencia, RQ1; RQ3 en su pre-registro):** en curso en la rama
-  `research/phase3`.
-  - El ajuste con irace (20 000 experimentos por problema) terminó en NicoVM el 2026-10-22. Falta
-    la matriz de rendimiento.
-  - El pre-registro y su enmienda 1 (escalado de objetivos, D4) se fijaron antes de que existiera
-    la matriz: `research/phase3/preregistration.md`.
+- **Fase 3 (transferencia, RQ1; RQ3 en su pre-registro):** ejecutada el 2026-10-26.
+  - **G3 no se supera:** en LOGO, +0.049 de media, mediana ≈ 0, p = 0.078.
+  - Ningún método supera al generalista c*_ZDT3. Detalle en `research/phase3/report.md`.
+  - El pre-registro tiene dos enmiendas, ambas anteriores a la matriz o a su análisis:
+    - la 1, escalado de objetivos (D4);
+    - la 2, IBEA en lugar de SMS-EMOA (D9).
+  - El artículo (borrador en Overleaf) recoge el resultado negativo.
 - **Fase 3 en Evolver (D6):** después de la de VAMOS, la fase 3 se repite entera en Evolver/jMetal,
   con el espacio completo de NSGA-II (`NSGAIIDouble.yaml`) e irace.
-- Las decisiones están en `research/decisions/decisions.md` (D1–D8, T1–T8).
+- Las decisiones están en `research/decisions/decisions.md` (D1–D9, T1–T8).
 
 ---
 
