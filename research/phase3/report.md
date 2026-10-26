@@ -1,0 +1,196 @@
+# Informe de la fase 3 — Transferencia de configuraciones (RQ1, puerta G3)
+
+Fecha: 2026-10-26 · Rama `research/phase3` · MOLA 0.4.0 · VAMOS 1.0.0 (`0a8bbb0`, motor numpy), más
+IBEA reparado (VAMOS `c4569f25`, PR #115) · Pre-registro: `preregistration.md`, con sus enmiendas 1
+(escalado de objetivos) y 2 (IBEA en lugar de SMS-EMOA), todas anteriores a la matriz o a su
+análisis.
+
+La pregunta se llamaba RQ3 en el pre-registro; desde D7 es la RQ1.
+
+## 1. Resultado
+
+**G3 no se supera.** Es un resultado negativo pre-registrado: en LOGO, el vecino más cercano por
+paisaje no supera de forma significativa al vecino más cercano por metadatos.
+
+| Medida (LOGO, 32 grupos) | Valor |
+|---|---|
+| Media por grupo de HVn(`landscape_1nn`) − HVn(`metadata_1nn`) | +0.049 |
+| Mediana | +0.00007 |
+| Victorias / derrotas / empates | 17 / 12 / 3 |
+| Wilcoxon de rangos con signo unilateral | p = 0.078 (umbral 0.05) |
+
+**Lo que más pesa en la práctica:** ningún método de transferencia supera al generalista (SBS).
+
+| LOGO (media por grupo) | HVn | Diferencia con el SBS (media por destino) | Regret frente al oráculo (media por destino) |
+|---|---|---|---|
+| Propia c*_Q (referencia) | 0.928 | +0.023 | −0.009 |
+| Donante oráculo (referencia) | 0.918 | +0.014 | 0 |
+| **SBS** | **0.903** | — | **0.014** |
+| `knn_selector` | 0.885 | −0.018 | 0.032 |
+| `landscape_1nn` (principal) | 0.856 | −0.051 | 0.065 |
+| NSGA-II por defecto | 0.853 | −0.049 | 0.063 |
+| `thesis_1nn` | 0.843 | −0.065 | 0.079 |
+| `loss_predictor` | 0.814 | −0.084 | 0.099 |
+| `landscape_1nn_raw_objectives` | 0.810 | −0.085 | 0.099 |
+| `metadata_1nn` | 0.807 | −0.088 | 0.102 |
+| Donante aleatorio | 0.773 | −0.124 | 0.138 |
+
+Las columnas segunda y tercera son medias por destino, como `transfer_summary.csv`; la primera es
+la media por grupo de G3.
+
+## 2. Qué se hizo
+
+| Etapa | Resultado | Commit o fichero |
+|---|---|---|
+| Ajuste | 37 ejecuciones de irace 4.5, cada una con 19 994–20 000 experimentos, 11–24 iteraciones y 2 582–3 932 configuraciones. 43 h en NicoVM (2026-10-20 10:27 → 2026-10-22 05:41 UTC) | `data/tuned_configs.json` (`f8fe9a3`) |
+| Matriz | 37 c*_P + NSGA-II + MOEA/D por defecto: 1 443 pares × 10 semillas, unos 60 min con 31 procesos. IBEA por defecto (VAMOS `c4569f25`): 37 pares, 23 s | `data/matrix_fronts_SHA256SUMS`, `data/evaluation_runs*.csv` |
+| Enmienda 2 | IBEA en lugar de SMS-EMOA, antes de cualquier análisis | `3fa6476` |
+| G3 | `analyze_transfer.py`, sin cambios salvo la lista de algoritmos por defecto de la enmienda 2 | `data/g3_result.json`, `data/transfer_summary.csv`, `data/transfer_long.csv` |
+| Análisis secundarios | `secondary_transfer.py`, escrito después de G3 | `data/g3_secondary.json`, `data/g3_groups.csv` |
+
+## 3. Hallazgos
+
+### 3.1 Un generalista dominante
+
+- **La configuración ajustada para ZDT3 es el SBS en 31 de los 32 grupos** (en el otro, la de
+  ZCAT11). Su HVn medio sobre los 37 problemas es 0.895. Le siguen NSGA-II por defecto (0.846) y
+  las configuraciones ajustadas para ZCAT11, DTLZ1, UF7 y ZDT1 (0.844–0.845).
+- **Cómo es:** NSGA-II casi estacionario.
+  - población 200 y `offspring_ratio = 0`;
+  - torneo de tamaño 9;
+  - SBX (0.85, η = 15.3);
+  - mutación polinómica enlazada con un factor de probabilidad 2.1 y η = 6.2;
+  - inicialización LHS y reparación por recorte.
+- **Comparadores sin ajustar:** IBEA por defecto (reparado) obtiene 0.822 y MOEA/D 0.690.
+
+Con 20 000 experimentos por problema, irace especializa mucho: no hay ningún problema en el que
+todas las c*_P alcancen HVn ≥ 0.99. Por eso, elegir cualquier donante que no sea el generalista
+cuesta de media unos 0.05.
+
+### 3.2 Paisaje frente a metadatos: pocas diferencias grandes
+
+La media positiva viene de unos pocos grupos en los que los metadatos eligen un donante
+catastrófico, mientras que el paisaje acierta o queda cerca.
+
+| Grupo | `landscape_1nn` | `metadata_1nn` | SBS | Oráculo | Donante del paisaje (veces en 5 muestras) |
+|---|---|---|---|---|---|
+| DTLZ1 | 0.979 | 0.000 | 0.972 | 0.979 | DTLZ3 (5) |
+| DTLZ6 | 0.995 | 0.412 | 0.996 | 0.996 | UF4 (5) |
+| UF6 | 0.485 | 0.262 | 0.568 | 0.568 | UF5 (4), UF7 (1) |
+| UF5 | 0.234 | 0.165 | 0.478 | 0.483 | UF7 (4), UF6 (1) |
+| UF3 | 0.460 | 0.396 | 0.535 | 0.766 | LZ09_F7 (5) |
+
+Y unos pocos en los que el paisaje elige un donante peor que los metadatos:
+
+| Grupo | `landscape_1nn` | `metadata_1nn` | SBS | Oráculo | Donante del paisaje |
+|---|---|---|---|---|---|
+| DTLZ2 (+DTLZ4) | 0.729 | 0.978 | 0.994 | 0.996 | DTLZ3 (5), ZCAT10 (5) |
+| UF7 | 0.626 | 0.726 | 0.776 | 0.806 | UF5 (4), UF6 (1) |
+| ZDT2 | 0.932 | 0.996 | 0.996 | 0.996 | UF6 (3), ZCAT6 (2) |
+| ZDT4 | 0.981 | 0.995 | 0.966 | 0.996 | DTLZ3 (5) |
+| UF4 | 0.874 | 0.876 | 0.950 | 0.950 | DTLZ6 (5) |
+
+En los demás grupos, la diferencia es casi nula: la mediana es 7·10⁻⁵.
+
+Incluso donde el paisaje gana a los metadatos, rara vez llega al SBS. El donante del paisaje es el
+donante oráculo solo en el 10 % de los pares destino–muestra, y es al menos tan bueno como el SBS en
+el 50 %.
+
+### 3.3 Análisis secundarios pre-registrados (§7)
+
+**Estrato discriminativo.** Son los 6 grupos en los que el oráculo supera al SBS en al menos 0.01:
+UF2+LZ09_F5, UF3, UF7, LZ09_F3, LZ09_F7+LZ09_F8 y ZDT4. HVn medio en ellos:
+
+| Método | HVn |
+|---|---|
+| SBS | 0.796 |
+| `knn_selector` | 0.783 |
+| `thesis_1nn` | 0.771 |
+| `metadata_1nn` | 0.751 |
+| `landscape_1nn` | 0.747 |
+| Oráculo | 0.856 |
+
+Justo donde transferir podría compensar, ningún método se acerca al oráculo.
+
+**Fuga.** La ganancia de `landscape_1nn` sobre el SBS es:
+
+| Partición | Ganancia |
+|---|---|
+| Aleatoria 80/20 | −0.028 |
+| LOGO | −0.051 |
+| LOFO | −0.101 |
+
+La partición aleatoria que usa MO-ELA embellece el resultado en 0.023 frente a LOGO y en 0.073
+frente a LOFO, en el sentido que se esperaba.
+
+**Estabilidad del donante (RQ3 parcial).** El donante de `landscape_1nn` es el mismo en las 5
+muestras para el 49 % de los destinos.
+
+**Comparaciones exploratorias.** Son en LOGO, sobre los grupos, con Wilcoxon unilateral y sin
+corregir por multiplicidad:
+
+| Método | Frente a `metadata_1nn`: media, V/D/E, p | Frente al SBS: media, V/D/E, p |
+|---|---|---|
+| `knn_selector` | +0.078, 25/7/0, **p = 0.004** | −0.018, 17/11/4, p = 0.44 |
+| `thesis_1nn` | +0.036, 13/16/3, p = 0.46 | −0.060, 15/16/1, p = 0.92 |
+| `loss_predictor` | +0.007, 9/23/0, p = 0.96 | −0.090, 3/29/0, p ≈ 1 |
+| `landscape_1nn_raw_objectives` | +0.003, 19/11/2, p = 0.030 | −0.094, 17/14/1, p = 0.79 |
+
+- **`knn_selector`** es el único método que supera a los metadatos de forma clara, pero no al SBS.
+  Elige la configuración con mejor HVn medio sobre los 3 problemas más cercanos. Es la versión
+  barata de la RQ5.
+- **Escalado de objetivos (enmienda 1).** Con las features sin escalar, `landscape_1nn` queda peor
+  en LOGO (0.810 frente a 0.856) y mucho peor en LOFO (0.651 frente a 0.778).
+
+## 4. Interpretación (a posteriori, no pre-registrada)
+
+1. **El portafolio contiene un generalista muy fuerte.** Con c*_ZDT3 disponible, la transferencia
+   solo puede compensar donde el generalista falla, es decir, en el estrato discriminativo (6 de 32
+   grupos). Ahí el vecino por paisaje no identifica al donante oráculo.
+2. **Un solo vecino es una apuesta de alta varianza.** El ajuste con un presupuesto grande produce
+   configuraciones especializadas que fallan fuera de su problema. Equivocarse de donante cuesta
+   mucho: en DTLZ2, elegir el de DTLZ3 o ZCAT10 cuesta 0.27. Promediar sobre varios vecinos, como
+   hace `knn_selector`, reduce esa varianza, y por eso es el mejor método no oráculo.
+3. **La cercanía en features no coincide con lo que necesita la configuración.** DTLZ2 se parece a
+   DTLZ3 en el paisaje muestreado, pero la configuración ajustada para la convergencia multimodal de
+   DTLZ3 no le sirve.
+4. **Los metadatos fallan de otra manera.** Aciertan casi siempre lo mismo que el paisaje, pero
+   cuando fallan lo hacen de forma catastrófica (DTLZ1, DTLZ6). La media favorece al paisaje y la
+   mediana no.
+
+## 5. Desviaciones
+
+1. **SMS-EMOA sustituido por IBEA (enmienda 2, D9).** La matriz se paró y se relanzó a las
+   18:16 UTC del 2026-10-26, antes de ejecutar ningún algoritmo por defecto. Los 259 pares ya
+   guardados se comprobaron íntegros. Al parar se perdieron las filas de tiempos de 8 pares; sus
+   frentes están completos.
+2. **IBEA se ejecutó aparte, con VAMOS `c4569f25`.** Los 37 problemas son idénticos en ese VAMOS y en
+   `0a8bbb0` (solo cambian CF1, welded beam y RE9x, que no están en el piloto).
+3. **`secondary_transfer.py` se escribió después de ver G3.** Cubre los análisis del §7, más la tabla
+   por grupo y la fracción de aciertos del oráculo, que son adicionales y descriptivos.
+4. **Coste.** El ajuste tardó 43 h, frente a las 20 h estimadas. La matriz tardó unos 60 min, frente a
+   los 30 estimados; MOEA/D por defecto tarda 28 s por ejecución.
+
+## 6. Qué no se debe afirmar
+
+- **Que la similitud de paisaje no sirve para recomendar.** Lo que no se sostiene es la transferencia
+  desde un solo donante con este portafolio: NSGA-II ajustado por problema con irace, 37 problemas
+  biobjetivo y distancia euclídea sobre las 49 features escaladas.
+- **Que `knn_selector` es mejor que los metadatos.** Es una comparación exploratoria sin corregir;
+  habría que pre-registrarla y comprobarla en los problemas reservados.
+- **Que c*_ZDT3 es un buen generalista en general.** Lo es en estos 37 problemas.
+- **Que el resultado vale en jMetal/Evolver.** La réplica 3e está pre-registrada pero no se ha
+  ejecutado.
+
+## 7. Decisiones pendientes para el usuario
+
+1. **¿Se ejecuta la réplica 3e en Evolver tal como está pre-registrada?** Replicar un resultado
+   negativo sigue siendo informativo: dice si depende del framework. Cuesta otra campaña de irace de
+   unas 40 h.
+2. **RQ4.** Con un SBS tan fuerte, la política de recomendar o recurrir al generalista se reduce casi
+   a usar siempre el generalista. ¿Se evalúa igualmente, con un pre-registro nuevo y la misma
+   matriz?
+3. **RQ5 y `knn_selector`.** Agregar sobre varios problemas ayuda. ¿Se pre-registra la RQ5, o
+   `knn_selector` como método principal, para la evaluación final con los 17 reservados?
+4. **El artículo.** Se escribe como resultado negativo (`plan.md` §6), con el análisis de por qué y
+   la lección del generalista.

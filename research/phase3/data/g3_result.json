@@ -1,0 +1,53 @@
+{
+  "g3_rule": "LOGO: landscape_1nn > metadata_1nn, one-sided Wilcoxon over groups, p < 0.05",
+  "groups": 32,
+  "mean_difference": 0.049077456867804195,
+  "median_difference": 6.539725886750558e-05,
+  "wins_losses_ties": [
+    17,
+    12,
+    3
+  ],
+  "wilcoxon_p": 0.07834096470174344,
+  "g3_passes": false,
+  "logo_mean_hvn": {
+    "sbs": 0.9034,
+    "metadata_1nn": 0.807,
+    "random": 0.7727,
+    "thesis_1nn": 0.8432,
+    "landscape_1nn": 0.856,
+    "loss_predictor": 0.8136,
+    "knn_selector": 0.8852,
+    "landscape_1nn_raw_objectives": 0.8096,
+    "oracle": 0.9175,
+    "self": 0.9277,
+    "default": 0.8529
+  },
+  "logo_discriminative_groups": [
+    "cec2009_uf2+lz09_f5",
+    "cec2009_uf3",
+    "cec2009_uf7",
+    "lz09_f3",
+    "lz09_f7+lz09_f8",
+    "zdt4"
+  ],
+  "logo_mean_hvn_discriminative": {
+    "sbs": 0.796,
+    "metadata_1nn": 0.7507,
+    "random": 0.6743,
+    "thesis_1nn": 0.7708,
+    "landscape_1nn": 0.747,
+    "loss_predictor": 0.6169,
+    "knn_selector": 0.7829,
+    "landscape_1nn_raw_objectives": 0.6287,
+    "oracle": 0.856,
+    "self": 0.8426,
+    "default": 0.7957
+  },
+  "landscape_donor_identical_across_samples": 0.4864864864864865,
+  "gain_vs_sbs_by_split": {
+    "LOGO": -0.05090005573475076,
+    "LOFO": -0.1012978760215351,
+    "random": -0.02816854400972874
+  }
+}
