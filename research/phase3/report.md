@@ -194,3 +194,46 @@ corregir por multiplicidad:
    `knn_selector` como método principal, para la evaluación final con los 17 reservados?
 4. **El artículo.** Se escribe como resultado negativo (`plan.md` §6), con el análisis de por qué y
    la lección del generalista.
+
+## 8. Diagnóstico a posteriori (2026-10-26, no pre-registrado)
+
+Se hizo a raíz de la pregunta del usuario de por qué el paisaje sale tan débil y el donante al azar
+tan bueno. Script: `scripts/diagnose_transfer.py`. Salidas: `data/diagnosis.json` y
+`data/donor_spread.csv`.
+
+1. **"Al azar" no elige una configuración aleatoria del espacio.** Elige una de las 36 c*_P ya
+   ajustadas con irace, y casi todas funcionan bien en casi todos los problemas.
+   - En 13 de los 37 problemas, el donante mediano queda a menos de 0.01 del mejor.
+   - El HVn medio del azar es alto porque muchos problemas son fáciles para casi cualquier
+     configuración ajustada (ZCAT, ZDT1–3, RE/RWA, DTLZ2).
+   - En pérdida frente al oráculo, el azar es malo: pierde de media 0.138 (el SBS, 0.014), y en el
+     41 % de los casos pierde más de 0.10.
+2. **La distancia en features sí contiene señal.** Por destino, la correlación de Spearman entre la
+   distancia a cada problema y el HVn de su c*_P en el destino es −0.40 con el paisaje y −0.26 con
+   los metadatos, en media sobre destinos.
+3. **El paisaje es muy bueno en el caso típico y malo en la cola.** Pérdida frente al oráculo, sobre
+   las 185 combinaciones de destino y muestra:
+
+   | LOGO | Mediana | Media | Pérdida > 0.10 | Media del peor 10 % |
+   |---|---|---|---|---|
+   | Al azar | 0.079 | 0.138 | 41 % | 0.51 |
+   | `metadata_1nn` | 0.017 | 0.102 | 22 % | 0.65 |
+   | `landscape_1nn` | **0.002** | 0.065 | 18 % | 0.43 |
+   | `knn_selector` | **0.0002** | 0.032 | 9 % | 0.26 |
+   | SBS | 0.005 | **0.014** | **3 %** | **0.10** |
+   | NSGA-II por defecto | 0.012 | 0.063 | 19 % | 0.40 |
+
+   - En mediana, el paisaje supera al SBS. Unos pocos fallos catastróficos (DTLZ2, UF7, ZDT2)
+     hunden su media.
+   - En LOFO, con una familia nueva, el paisaje empeora también en mediana (0.023) y en la cola
+     (0.76).
+4. **Lectura.** El problema no es que la distancia no sirva, sino su fiabilidad. Un solo vecino
+   acierta casi siempre, pero cuando falla lo hace por mucho, y el SBS casi nunca falla. Es justo la
+   distinción del título ("reliable").
+   - **Lo que cabe esperar:** promediar sobre vecinos (`knn_selector`) reduce la cola a la mitad, y
+     una política que detecte cuándo recurrir al SBS (RQ4) podría combinar las dos virtudes.
+   - **Lo que falta mostrar:** que exista una señal que anticipe esos fallos.
+5. **Saturación.** Con 20 000 evaluaciones en problemas biobjetivo de D ≤ 30, muchas configuraciones
+   convergen. Cerca del frente, el HV distingue poco, así que las diferencias se concentran en una
+   decena de problemas difíciles. Los puntos de control de 5 000 y 10 000 evaluaciones ya están en
+   la matriz y permitirían ver si con menos presupuesto la transferencia importa más.

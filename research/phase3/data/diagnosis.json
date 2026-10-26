@@ -1,0 +1,78 @@
+{
+  "note": "Post hoc, not pre-registered.",
+  "targets_with_median_donor_within_0.01_of_best": 13,
+  "spearman_distance_vs_donor_hvn_mean_over_targets": {
+    "rho_landscape": -0.402,
+    "rho_metadata": -0.258
+  },
+  "loss_against_oracle_over_target_samples": {
+    "LOGO": {
+      "median": {
+        "random": 0.0792,
+        "metadata_1nn": 0.0171,
+        "landscape_1nn": 0.0021,
+        "knn_selector": 0.0002,
+        "sbs": 0.0046,
+        "default": 0.0124
+      },
+      "mean": {
+        "random": 0.1376,
+        "metadata_1nn": 0.102,
+        "landscape_1nn": 0.0649,
+        "knn_selector": 0.0319,
+        "sbs": 0.014,
+        "default": 0.0629
+      },
+      "share_above_0.10": {
+        "random": 0.405,
+        "metadata_1nn": 0.216,
+        "landscape_1nn": 0.184,
+        "knn_selector": 0.092,
+        "sbs": 0.027,
+        "default": 0.189
+      },
+      "cvar90": {
+        "random": 0.5081,
+        "metadata_1nn": 0.647,
+        "landscape_1nn": 0.4301,
+        "knn_selector": 0.2551,
+        "sbs": 0.0977,
+        "default": 0.3947
+      }
+    },
+    "LOFO": {
+      "median": {
+        "random": 0.0863,
+        "metadata_1nn": 0.0054,
+        "landscape_1nn": 0.0233,
+        "knn_selector": 0.0115,
+        "sbs": 0.0024,
+        "default": 0.0119
+      },
+      "mean": {
+        "random": 0.142,
+        "metadata_1nn": 0.0601,
+        "landscape_1nn": 0.1236,
+        "knn_selector": 0.0697,
+        "sbs": 0.0223,
+        "default": 0.0564
+      },
+      "share_above_0.10": {
+        "random": 0.459,
+        "metadata_1nn": 0.135,
+        "landscape_1nn": 0.216,
+        "knn_selector": 0.146,
+        "sbs": 0.054,
+        "default": 0.162
+      },
+      "cvar90": {
+        "random": 0.5022,
+        "metadata_1nn": 0.4834,
+        "landscape_1nn": 0.7584,
+        "knn_selector": 0.4481,
+        "sbs": 0.1995,
+        "default": 0.3913
+      }
+    }
+  }
+}
