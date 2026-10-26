@@ -280,3 +280,34 @@ HVn medio por destino:
 - **Con familias nuevas (LOFO), los rangos son la única variante que se acerca a los metadatos y al
   valor por defecto:** 0.820, frente a 0.778 de la euclídea.
 - **Ninguna distancia se acerca al SBS.** La conclusión de G3 no depende de la distancia elegida.
+
+## 10. Configuraciones aleatorias del espacio (2026-10-26, a posteriori)
+
+Se hizo a petición del usuario. El protocolo quedó fijado antes de ejecutar (commit `9a917db`).
+Script: `scripts/random_configs.py`. Salidas: `data/random_configs_*.csv` y
+`data/random_configs_summary.json`.
+- 37 configuraciones muestreadas del espacio invariante que exploró irace, con la semilla 20261026.
+- Se ejecutaron en los 37 problemas con las semillas 5001–5010, en NicoVM: 13 690 ejecuciones en
+  26 min.
+- Se puntúan con la normalización de la matriz y no entran en su unión.
+
+| Referencia | HVn medio | Pérdida media frente al oráculo |
+|---|---|---|
+| Configuración aleatoria del espacio (media de las 37) | 0.669 | 0.240 |
+| Donante ajustado al azar (`random`) | 0.771 | 0.138 |
+| NSGA-II por defecto | 0.846 | 0.063 |
+| `landscape_1nn` | 0.844 | 0.065 |
+| SBS | 0.895 | 0.014 |
+| Oráculo | 0.909 | 0 |
+
+- **El "azar" de la tabla no es azar sobre el espacio, sino sobre configuraciones ya ajustadas.**
+  Una configuración aleatoria del espacio rinde 0.10 menos. En ningún problema su media supera a la
+  del donante ajustado al azar.
+- **La mitad de las configuraciones aleatorias** pierde más de 0.10 frente al oráculo.
+- **NSGA-II por defecto** es mejor que todas menos una: la mejor de las 37 obtiene 0.852 de media.
+- **Implicación:** ajustar con irace ya captura casi todo lo que se puede ganar. Pasar de una
+  configuración aleatoria a una ajustada cualquiera aporta +0.10, y elegir bien entre las ajustadas
+  aporta, como mucho, +0.14 hasta el oráculo. Casi todo eso lo consigue ya el SBS (0.895).
+
+En la tabla del §9 corresponde a una columna más, "configuración aleatoria del espacio": 0.669 en
+LOGO, 0.669 en LOFO y 0.667 en la aleatoria.

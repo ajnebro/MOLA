@@ -1,0 +1,23 @@
+{
+  "note": "Post hoc, not pre-registered. Mean over the 37 targets; LOGO references.",
+  "mean_hvn": {
+    "random_space_config_mean": 0.6688021324254433,
+    "random_space_config_median": 0.6862566539843631,
+    "random_tuned_donor": 0.7711117050369484,
+    "default_nsgaii": 0.8457480576780606,
+    "sbs": 0.8946195839322211,
+    "landscape_1nn": 0.8437195281974704,
+    "oracle": 0.9086624275144634
+  },
+  "mean_loss_vs_oracle": {
+    "random_space_config": 0.2399,
+    "random_tuned_donor": 0.1376,
+    "landscape_1nn": 0.0649,
+    "default": 0.0629,
+    "sbs": 0.014
+  },
+  "share_of_random_space_configs_losing_more_than_0.10": 0.5025566106647188,
+  "best_random_space_config_mean_hvn": 0.8522358816994366,
+  "random_space_configs_beating_default_on_average": 1,
+  "targets_where_random_space_mean_beats_random_tuned_donor": 0
+}
