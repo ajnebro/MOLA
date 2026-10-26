@@ -60,6 +60,12 @@ en [`question1.md`](question1.md).
 - **Respuesta:** "si, sube IBEA a VAMOS y abre PR".
 - **Resultado:** PR vamos-optimization/VAMOS#115.
 
+### 11. Tras el diagnóstico de la fase 3, ¿qué análisis hago: (a) 5 000 y 10 000 evaluaciones, (b) configuraciones aleatorias del espacio como referencia, (c) pre-registrar la RQ4 contra la cola, o (d) contarlo así en el artículo? (2026-10-26)
+- **Respuesta:** "haz b)".
+- **Resultado:** 37 configuraciones muestreadas del espacio invariante (`phase3/scripts/random_configs.py`,
+  protocolo en el commit `9a917db`), ejecutadas en NicoVM sobre los 37 problemas con las semillas
+  5001–5010.
+
 ## Pendientes
 
 ### Hechas tras la fase 3, sin respuesta todavía (2026-10-26)
@@ -73,15 +79,6 @@ en [`question1.md`](question1.md).
    dominante?
 4. ¿Añado al artículo de Overleaf la comparación con NSGA-II por defecto, la cita de ASlib y la
    métrica de hueco SBS–VBS cerrado?
-4b. Tras el diagnóstico a posteriori: el paisaje es muy bueno en mediana y malo en la cola. ¿Qué
-    análisis hago a continuación? (2026-10-26)
-    - (a) Repetir el análisis con 5 000 y 10 000 evaluaciones, que ya están en la matriz y pueden
-      saturar menos.
-    - (b) Una referencia con configuraciones aleatorias de verdad, muestreadas del espacio, en lugar
-      del "azar entre configuraciones ajustadas". Requiere una matriz nueva, de alrededor de 1 h en
-      NicoVM.
-    - (c) Pre-registrar la RQ4 como política que detecte los fallos de la cola y recurra al SBS.
-    - (d) Contarlo así en el artículo: la debilidad del paisaje es de fiabilidad, no de señal.
 
 ### Planteadas antes, sin respuesta
 
