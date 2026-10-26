@@ -79,11 +79,6 @@ en [`question1.md`](question1.md).
    dominante?
 4. ¿Añado al artículo de Overleaf la comparación con NSGA-II por defecto, la cita de ASlib y la
    métrica de hueco SBS–VBS cerrado?
-4c. ¿Preparo una tabla exploratoria con una columna por distancia? Columnas: azar, default,
-    metadatos, paisaje con la euclídea pre-registrada, tesis, aprendida, L1, PCA o blanqueada y
-    rangos, SBS y oráculo, para LOGO, LOFO y la partición aleatoria. Más adelante, también la
-    configuración aleatoria del espacio. Sale de la matriz existente y apenas cuesta nada.
-    (2026-10-26)
 
 ### Planteadas antes, sin respuesta
 
