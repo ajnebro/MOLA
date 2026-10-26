@@ -85,3 +85,17 @@ Es la regla pre-registrada de la fase 2, aplicada al portafolio de cada brazo.
   UF6, ZDT4 y DTLZ1, 400 ejecuciones no bastan para separar señal de ruido.
 - **Seguir informando por estrato:** la mayoría de los problemas están saturados con cualquier
   configuración.
+
+## Adenda (2026-10-26): sensibilidad a IBEA en lugar de SMS-EMOA (D9)
+
+**Qué se cambió.** IBEA por defecto (VAMOS reparado, `c4569f25`) sustituye a SMS-EMOA en la unión
+que normaliza HVn en cada brazo. Se evaluó en NicoVM con las semillas 2001–2005
+(`data/runs_C_ibea.csv`) y se copió a los brazos A, B y C, igual que los demás algoritmos por
+defecto. Salidas en `data/sensitivity_ibea/`.
+
+**El resultado es idéntico:**
+- G2 por brazo: C 11/36, A 11/36, B 14/36;
+- el mismo SBS por brazo;
+- B − A: 32/5, +0.026, p = 6.5·10⁻⁷;
+- A − C: 4/4, p = 1;
+- B − C: 32/5, p = 3.1·10⁻⁷.

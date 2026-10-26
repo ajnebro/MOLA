@@ -168,3 +168,20 @@ memoria comprometida ≤ 85 %).
 - Que los resultados valgan para tres objetivos: el piloto es solo biobjetivo.
 
 **PHASE2_COMPLETE.**
+
+## Adenda (2026-10-26): sensibilidad a IBEA en lugar de SMS-EMOA (D9)
+
+**Qué se cambió.** SMS-EMOA por defecto formaba parte de la unión de frentes que fija el ideal, el
+nadir y el HV de referencia de HVn. Se sustituyó por IBEA por defecto, en su versión reparada de
+VAMOS (PR #115, `c4569f25`), con las mismas semillas 2001–2005. Con eso se repitieron
+`analyze_g2.py` y `secondary_g2.py`:
+- salidas en `data/sensitivity_ibea/`;
+- ejecuciones en `data/evaluation_runs_ibea.csv`;
+- los resultados pre-registrados no se tocan.
+
+**G2 no cambia:** 12 de 36 grupos (33 %), la misma sensibilidad al umbral y al presupuesto, el mismo
+intervalo bootstrap (0.19–0.47) y el mismo SBS (c*_ZDT1 en 34 de 37 destinos).
+
+**Lo único que cambia es el comparador descriptivo:**
+- IBEA por defecto queda de media 0.025 por debajo del SBS (SMS-EMOA quedaba 0.002 por debajo);
+- supera al SBS en al menos 0.01 en ZDT4, DTLZ6, LZ09_F8, UF3 y UF6.
