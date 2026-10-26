@@ -193,6 +193,26 @@ decidió. Al final están las preguntas pendientes. Las decisiones formales est�
     - recomendar → RQ3 (transferencia);
     - decidir → RQ4 (cuándo recomendar).
 
+### 24. ¿Es correcto el orden de las RQ? ¿La RQ3 debería ser la primera, la segunda, la cuarta o seguir tercera? (2026-10-26)
+- **Respuesta (recomendación):** la transferencia debería ser la primera. Orden propuesto:
+  1. transferencia (la actual RQ3);
+  2. invariancia (la actual RQ1);
+  3. incertidumbre del muestreo (la actual RQ2);
+  4. cuándo recomendar (la actual RQ4).
+- **Motivos:**
+  - Es la pregunta del título, la que tiene la puerta pre-registrada (G3) y el resultado principal.
+  - Las otras tres se miden con la pérdida de transferencia, que se define en ella.
+  - La invariancia está asegurada en gran parte por diseño (D1, D4, T5, D6). Queda como análisis de
+    sensibilidad: cuánto cambiaría la recomendación con las definiciones publicadas.
+  - El muestreo enlaza con la última: la estabilidad entre muestras es una señal de confianza.
+  - Decidir cuándo recomendar tiene que ir al final, porque usa las señales y las pérdidas de las
+    anteriores.
+- **Si se adopta:**
+  - Se renumera solo en `plan.md` y en el artículo, con una tabla de correspondencia.
+  - Los pre-registros y los informes ya escritos conservan la numeración antigua, porque están
+    congelados.
+- **Estado:** pendiente de la decisión del usuario.
+
 ## Preguntas pendientes
 
 ### Para el usuario
