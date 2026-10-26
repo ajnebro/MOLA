@@ -492,6 +492,24 @@ decidió. Al final están las preguntas pendientes. Las decisiones formales est�
   - menos los duplicados exactos: DTLZ5 ≡ DTLZ2 con M = 2, y 5 grupos de ZCAT.
 - **Grupos:** 32 grupos de formulación en LOGO y 5 familias en LOFO.
 
+### 41. Explica la tabla de azar, metadatos, paisaje y SBS por partición (2026-10-26)
+- **Respuesta:** es la tabla de la pregunta 35.
+  - **Valores:** HVn medio que obtiene, en el problema "nuevo", la configuración que elige cada
+    método. HVn = 1 equivale al mejor frente conocido para ese problema en la matriz. Se promedia
+    sobre 10 ejecuciones, las 5 muestras LHS y todos los destinos.
+  - **Filas:** cómo se separan los problemas conocidos de los nuevos.
+    - LOGO: fuera un grupo de formulación; distancia intermedia.
+    - LOFO: fuera una familia entera; la transferencia más lejana.
+    - 80/20 aleatoria: pueden quedar parientes en el entrenamiento; es la más optimista.
+  - **Paréntesis:** la mejora sobre el azar.
+- **Lectura:**
+  - todo mejora al azar;
+  - el paisaje gana a los metadatos en LOGO y en la aleatoria, pero pierde en LOFO, porque con una
+    familia nueva sus vecinos engañan;
+  - el paisaje parece mejor cuantos más parientes hay en el entrenamiento (0.848 en la aleatoria,
+    0.844 en LOGO y 0.778 en LOFO): la partición aleatoria sobrestima;
+  - el SBS gana en las tres filas.
+
 ## Preguntas pendientes
 
 ### Para el usuario
