@@ -31,16 +31,17 @@ from analyze_g2 import FINAL, X_THRESHOLD, Y_FRACTION, gaps  # noqa: E402
 from common import DATA as PHASE2_DATA  # noqa: E402
 from common import PHASE as PHASE2  # noqa: E402
 from common import pilot_problems  # noqa: E402
-from evaluate_pilot import EVALUATION_SEEDS  # noqa: E402
+from evaluate_pilot import EVALUATION_SEEDS, default_algorithms  # noqa: E402
 from runs import CHECKPOINTS  # noqa: E402
 from tune_pilot import REFERENCE  # noqa: E402
 
 PHASE2B = HERE.parent
 ARMS_DIR = Path(os.environ.get("MOLA_PHASE2B_ARMS", r"C:\tmp\mola-phase2b"))
+OUT = Path(os.environ.get("MOLA_ARMS_OUT", PHASE2B / "data"))  # a sensitivity rerun writes elsewhere (D9)
 ARMS = {"C": PHASE2_DATA / "tuned_configs.json",
         "A": PHASE2B / "data" / "tuned_frace_refnorm.json",
         "B": PHASE2B / "data" / "tuned_irace.json"}
-DEFAULTS = ("default__nsgaii", "default__moead", "default__smsemoa")
+DEFAULTS = tuple(f"default__{a}" for a in default_algorithms())  # IBEA instead of SMS-EMOA since D9
 OPERATORS = ("crossover", "mutation", "repair", "initializer", "selection")
 
 
@@ -129,10 +130,11 @@ def main() -> None:
                                     and tuned[p]["config"].get("mutation") == "polynomial" for p in pilot_problems()),
             "tuning_runs": _tuning_runs(arm, tuned),
         }
-    pd.concat(per_arm).to_csv(PHASE2B / "data" / "arms_gaps.csv", index=False)
+    OUT.mkdir(parents=True, exist_ok=True)
+    pd.concat(per_arm).to_csv(OUT / "arms_gaps.csv", index=False)
 
     common = self_tuned_common()
-    common.to_csv(PHASE2B / "data" / "arms_self_tuned.csv", index=False)
+    common.to_csv(OUT / "arms_self_tuned.csv", index=False)
     for a, b in (("B", "A"), ("A", "C"), ("B", "C")):
         difference = common[a] - common[b]
         result[f"self_tuned_{a}_minus_{b}"] = {
@@ -140,7 +142,7 @@ def main() -> None:
             "wins": int((difference > 1e-6).sum()), "losses": int((difference < -1e-6).sum()),
             "wilcoxon_p": float(wilcoxon(common[a], common[b]).pvalue),
         }
-    (PHASE2B / "data" / "arms_result.json").write_text(json.dumps(result, indent=2) + "\n")
+    (OUT / "arms_result.json").write_text(json.dumps(result, indent=2) + "\n")
     print(json.dumps(result, indent=2))
     print(common.round(3).to_string(index=False))
 

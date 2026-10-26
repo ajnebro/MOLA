@@ -92,7 +92,7 @@ def run(problem_name: str, assignment: dict | None, budget: int, seed: int,
         checkpoints=CHECKPOINTS, algorithm: str = "nsgaii") -> dict:
     """Run one configuration and return its fronts per checkpoint, time and evaluations.
 
-    `assignment=None` runs `algorithm` (nsgaii, moead or smsemoa) with VAMOS defaults and
+    `assignment=None` runs `algorithm` (nsgaii, moead, smsemoa or ibea) with VAMOS defaults and
     population 100; otherwise the assignment is an NSGA-II configuration.
     """
     from vamos import optimize

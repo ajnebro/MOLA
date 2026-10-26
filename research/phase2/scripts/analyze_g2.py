@@ -20,11 +20,14 @@ The group gap is the mean gap over the group's pilot problems.
 G2 passes iff at least Y = 25 % of the formulation groups have a group gap >= X = 0.01.
 
 Run:  python research/phase2/scripts/analyze_g2.py
-Writes data/hvn.csv, data/g2_gaps.csv, data/transfer_loss.csv and data/g2_result.json.
+Writes data/hvn.csv, data/g2_gaps.csv, data/transfer_loss.csv and data/g2_result.json, or to
+MOLA_G2_OUT for a sensitivity rerun (e.g. IBEA instead of SMS-EMOA, decision D9).
 """
 
 import json
+import os
 from itertools import combinations
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
@@ -37,6 +40,7 @@ from tune_pilot import REFERENCE
 X_THRESHOLD = 0.01
 Y_FRACTION = 0.25
 FINAL = CHECKPOINTS[-1]
+OUT = Path(os.environ.get("MOLA_G2_OUT", DATA))
 
 
 def _hv(points: np.ndarray, reference: np.ndarray) -> float:
@@ -100,10 +104,11 @@ def main() -> None:
     catalogue = pd.read_csv(PHASE / "catalogue.csv").set_index("problem")
     group_of = catalogue["group"].to_dict()
     hvn = hvn_table()
-    hvn.to_csv(DATA / "hvn.csv", index=False)
+    OUT.mkdir(parents=True, exist_ok=True)
+    hvn.to_csv(OUT / "hvn.csv", index=False)
 
     per_problem = pd.concat([gaps(hvn, group_of, e) for e in CHECKPOINTS])
-    per_problem.to_csv(DATA / "g2_gaps.csv", index=False)
+    per_problem.to_csv(OUT / "g2_gaps.csv", index=False)
     final = per_problem[per_problem.evaluations == FINAL]
     per_group = final.groupby("group").gap_oracle_donor_vs_sbs.mean()
     fraction = float((per_group >= X_THRESHOLD).mean())
@@ -112,7 +117,7 @@ def main() -> None:
     own = {p: mean_final.loc[f"tuned__{p}", p] for p in pilot_problems()}
     loss = pd.DataFrame({q: {p: own[q] - mean_final.loc[f"tuned__{p}", q] for p in pilot_problems()}
                          for q in pilot_problems()})  # rows: donor P, columns: target Q
-    loss.to_csv(DATA / "transfer_loss.csv")
+    loss.to_csv(OUT / "transfer_loss.csv")
 
     result = {
         "rule": f"G2 passes iff >= {Y_FRACTION:.0%} of groups have gap >= {X_THRESHOLD}",
@@ -124,7 +129,7 @@ def main() -> None:
                                               .groupby("group").gap_oracle_donor_vs_sbs.mean() >= X_THRESHOLD).mean())
                                for e in CHECKPOINTS},
     }
-    (DATA / "g2_result.json").write_text(json.dumps(result, indent=2) + "\n")
+    (OUT / "g2_result.json").write_text(json.dumps(result, indent=2) + "\n")
     print(json.dumps(result, indent=2))
 
 

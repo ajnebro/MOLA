@@ -1,7 +1,8 @@
 """Phase 2, stage C: run every portfolio configuration on every pilot problem.
 
 Configurations: the 37 tuned c*_P (data/tuned_configs.json), NSGA-II's textbook default, and
-VAMOS's MOEA/D and SMS-EMOA defaults (population 100) as untuned comparators. Each runs on each of
+VAMOS's MOEA/D and SMS-EMOA defaults (population 100) as untuned comparators; phase 3 replaced
+SMS-EMOA with IBEA (decision D9) through PHASE2_DEFAULT_ALGORITHMS. Each runs on each of
 the 37 pilot problems with evaluation seeds 2001-2005 and 20 000 evaluations, keeping the
 non-dominated front of the population at 5 000, 10 000 and 20 000 evaluations.
 
@@ -29,15 +30,19 @@ WORKERS = int(os.environ.get("PHASE2_WORKERS", 8))
 FRONTS = RAW / "fronts"
 
 
+def default_algorithms() -> list[str]:
+    """The untuned comparators run with VAMOS defaults: nsgaii, moead and smsemoa in phase 2."""
+    return os.environ.get("PHASE2_DEFAULT_ALGORITHMS", "nsgaii,moead,smsemoa").split(",")
+
+
 def portfolio() -> dict[str, tuple[str, dict | None]]:
     """config id -> (algorithm, NSGA-II assignment or None for that algorithm's defaults)."""
     tuned = json.loads(Path(os.environ.get("PHASE2_TUNED", DATA / "tuned_configs.json")).read_text())
     configs = {f"tuned__{p}": ("nsgaii", tuned[p]["config"]) for p in pilot_problems()}
     if os.environ.get("PHASE2_WITH_DEFAULTS", "1") == "0":  # phase 2b arms reuse the defaults
         return configs
-    configs["default__nsgaii"] = ("nsgaii", None)
-    configs["default__moead"] = ("moead", None)
-    configs["default__smsemoa"] = ("smsemoa", None)
+    for algorithm in default_algorithms():
+        configs[f"default__{algorithm}"] = (algorithm, None)
     return configs
 
 

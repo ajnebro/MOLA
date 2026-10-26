@@ -10,8 +10,12 @@ categorical choice of the invariant NSGA-II space one at a time from the textboo
 ZDT1 and UF1 (D = 30), seeds 1 and 2, 5 000 evaluations.
 
 Run locally:  python research/phase3/scripts/objective_invariance.py  ->  data/objective_invariance.csv
+
+Environment: MOLA_INVARIANCE_DEFAULTS (untuned algorithms, default "moead,smsemoa"; "ibea" since
+D9), MOLA_INVARIANCE_NSGAII=0 to skip the NSGA-II variants, MOLA_INVARIANCE_OUT for the CSV.
 """
 
+import os
 import sys
 from pathlib import Path
 
@@ -50,7 +54,9 @@ def _scaled_objectives(name: str, factors: np.ndarray):
 def main() -> None:
     rng = np.random.default_rng(19)
     variants = [(label, a, "nsgaii") for label, a in _variants(invariant_nsgaii_space(), rng)]
-    variants += [("moead_default", None, "moead"), ("smsemoa_default", None, "smsemoa")]
+    if os.environ.get("MOLA_INVARIANCE_NSGAII", "1") == "0":
+        variants = []
+    variants += [(f"{a}_default", None, a) for a in os.environ.get("MOLA_INVARIANCE_DEFAULTS", "moead,smsemoa").split(",")]
     rows = []
     for problem_name in PROBLEMS:
         factors = 2.0 ** np.random.default_rng(11).integers(-4, 5, 2)
@@ -65,8 +71,9 @@ def main() -> None:
                              "identical_X": bool(same_shape and np.array_equal(x0, x1)),
                              "identical_F_over_a": bool(same_shape and np.array_equal(f0, f1 / factors))})
     frame = pd.DataFrame(rows)
-    (PHASE3 / "data").mkdir(parents=True, exist_ok=True)
-    frame.to_csv(PHASE3 / "data" / "objective_invariance.csv", index=False)
+    out = Path(os.environ.get("MOLA_INVARIANCE_OUT", PHASE3 / "data" / "objective_invariance.csv"))
+    out.parent.mkdir(parents=True, exist_ok=True)
+    frame.to_csv(out, index=False)
     summary = frame.groupby("variant").identical_X.agg(lambda s: "all" if s.all() else ("none" if not s.any() else "some"))
     print(summary.to_string())
     print("budget", BUDGET)

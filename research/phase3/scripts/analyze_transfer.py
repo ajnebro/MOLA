@@ -2,7 +2,7 @@
 
 Inputs
 - The performance matrix: each portfolio configuration (the 37 irace-tuned c*_P and the NSGA-II,
-  MOEA/D and SMS-EMOA defaults) on each development problem, evaluation seeds 5001-5010,
+  MOEA/D and IBEA defaults; IBEA replaced SMS-EMOA, amendment 2) on each development problem, evaluation seeds 5001-5010,
   20 000 evaluations (MATRIX/<config>__<problem>.npz).
 - MOLA features of each problem from 5 independent LHS samples (bound geometry, k = D). Since
   amendment 1 (preregistration.md section 9) every landscape method uses the features computed
@@ -70,7 +70,7 @@ SEEDS = tuple(range(5001, 5011))
 FINAL = 20_000
 REFERENCE = 1.1
 DEFAULTS = tuple(os.environ.get("MOLA_TRANSFER_DEFAULTS",
-                                "default__nsgaii,default__moead,default__smsemoa").split(","))
+                                "default__nsgaii,default__moead,default__ibea").split(","))
 META = {"problem", "seed", "n", "D", "M", "geometry", "k", "nd_count", "evaluation_seconds",
         "characterization_seconds", "undefined", "objective_scaling", "mola_version"}
 PRIMARY_FEATURES = DATA_DIR / "features_sample_scaled.csv"

@@ -12,7 +12,13 @@ at a time from a fixed baseline, on ZDT1 (D = 30) and UF1 (D = 30), seeds 1 and 
 evaluations.
 
 Run:  python research/phase2/scripts/invariance.py   ->  data/invariance.csv
+
+Environment: MOLA_INVARIANCE_DEFAULTS (untuned algorithms, default "moead,smsemoa"; "ibea" since
+D9), MOLA_INVARIANCE_NSGAII=0 to skip the NSGA-II variants, MOLA_INVARIANCE_OUT for the CSV.
 """
+
+import os
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
@@ -83,7 +89,9 @@ def main() -> None:
     rng = np.random.default_rng(19)
     space = nsgaii_space()
     variants = [(label, a, "nsgaii") for label, a in _variants(space, rng)]
-    variants += [("moead_default", None, "moead"), ("smsemoa_default", None, "smsemoa")]
+    if os.environ.get("MOLA_INVARIANCE_NSGAII", "1") == "0":
+        variants = []
+    variants += [(f"{a}_default", None, a) for a in os.environ.get("MOLA_INVARIANCE_DEFAULTS", "moead,smsemoa").split(",")]
     rows = []
     for problem_name in PROBLEMS:
         n_var = instantiate(problem_name).n_var
@@ -104,7 +112,7 @@ def main() -> None:
                 print(row, flush=True)
     frame = pd.DataFrame(rows)
     DATA.mkdir(parents=True, exist_ok=True)
-    frame.to_csv(DATA / "invariance.csv", index=False)
+    frame.to_csv(Path(os.environ.get("MOLA_INVARIANCE_OUT", DATA / "invariance.csv")), index=False)
     summary = frame.groupby("variant").identical_F.agg(lambda s: "all" if s.all() else ("none" if not s.any() else "some"))
     print(summary.to_string())
 

@@ -19,16 +19,17 @@ from itertools import combinations
 import numpy as np
 import pandas as pd
 
-from analyze_g2 import FINAL, X_THRESHOLD
-from common import DATA, PHASE, pilot_problems
-from evaluate_pilot import EVALUATION_SEEDS
+from analyze_g2 import FINAL, OUT, X_THRESHOLD
+from common import PHASE, pilot_problems
+from evaluate_pilot import EVALUATION_SEEDS, default_algorithms
 
 
 def main() -> None:
     problems = pilot_problems()
     catalogue = pd.read_csv(PHASE / "catalogue.csv").set_index("problem")
     group_of, family_of = catalogue["group"].to_dict(), catalogue["family"].to_dict()
-    hvn = pd.read_csv(DATA / "hvn.csv")
+    others = [a for a in default_algorithms() if a != "nsgaii"]  # moead, smsemoa (ibea since D9)
+    hvn = pd.read_csv(OUT / "hvn.csv")
     hvn = hvn[hvn.evaluations == FINAL]
     mean = hvn.groupby(["config", "problem"]).hvn.mean().unstack()
     table = hvn.pivot_table(index=["config", "problem"], columns="seed", values="hvn")
@@ -40,7 +41,7 @@ def main() -> None:
         sbs = mean.loc[donors, training].mean(axis=1).idxmax()
         oracle = mean.loc[donors, target].idxmax()
         comparators = {}
-        for name in ("default__moead", "default__smsemoa", "default__nsgaii"):
+        for name in [f"default__{a}" for a in others] + ["default__nsgaii"]:
             split = []
             for selection in combinations(EVALUATION_SEEDS, 3):
                 sel = list(selection)
@@ -56,9 +57,9 @@ def main() -> None:
                      "hvn_sbs": mean.loc[sbs, target], "hvn_oracle": mean.loc[oracle, target],
                      "hvn_self_tuned": mean.loc[f"tuned__{target}", target], **comparators})
     donors_frame = pd.DataFrame(rows)
-    donors_frame.to_csv(DATA / "g2_donors.csv", index=False)
+    donors_frame.to_csv(OUT / "g2_donors.csv", index=False)
 
-    gaps = pd.read_csv(DATA / "g2_gaps.csv")
+    gaps = pd.read_csv(OUT / "g2_gaps.csv")
     gaps = gaps[gaps.evaluations == FINAL].groupby("group").gap_oracle_donor_vs_sbs.mean()
     rng = np.random.default_rng(20261020)
     values = gaps.to_numpy()
@@ -73,16 +74,13 @@ def main() -> None:
                                            "p50": float(np.quantile(boot, 0.5)),
                                            "p95": float(np.quantile(boot, 0.95)),
                                            "share_at_or_above_0.25": float((boot >= 0.25).mean())},
-        "mean_gap_moead_default_vs_sbs": float(donors_frame.gap_default__moead_vs_sbs.mean()),
-        "mean_gap_smsemoa_default_vs_sbs": float(donors_frame.gap_default__smsemoa_vs_sbs.mean()),
-        "problems_where_smsemoa_default_beats_sbs_by_0.01": donors_frame.loc[
-            donors_frame.gap_default__smsemoa_vs_sbs >= X_THRESHOLD, "problem"].tolist(),
-        "problems_where_moead_default_beats_sbs_by_0.01": donors_frame.loc[
-            donors_frame.gap_default__moead_vs_sbs >= X_THRESHOLD, "problem"].tolist(),
+        **{f"mean_gap_{a}_default_vs_sbs": float(donors_frame[f"gap_default__{a}_vs_sbs"].mean()) for a in others},
+        **{f"problems_where_{a}_default_beats_sbs_by_0.01": donors_frame.loc[
+            donors_frame[f"gap_default__{a}_vs_sbs"] >= X_THRESHOLD, "problem"].tolist() for a in others},
         "mean_hvn_over_problems": mean.mean(axis=1).sort_values(ascending=False).head(5).round(4).to_dict(),
-        "mean_hvn_defaults": mean.loc[["default__nsgaii", "default__moead", "default__smsemoa"]].mean(axis=1).round(4).to_dict(),
+        "mean_hvn_defaults": mean.loc[[f"default__{a}" for a in default_algorithms()]].mean(axis=1).round(4).to_dict(),
     }
-    (DATA / "g2_secondary.json").write_text(json.dumps(summary, indent=2, default=float) + "\n")
+    (OUT / "g2_secondary.json").write_text(json.dumps(summary, indent=2, default=float) + "\n")
     print(json.dumps(summary, indent=2, default=float))
     print(donors_frame[["problem", "sbs", "oracle_donor", "hvn_sbs", "hvn_oracle", "hvn_self_tuned"]]
           .sort_values("hvn_oracle", ascending=False).round(3).head(14).to_string(index=False))
