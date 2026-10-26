@@ -263,6 +263,14 @@ decidió. Al final están las preguntas pendientes. Las decisiones formales est�
     sobre 37 problemas y con 10 semillas (5001–5010), con 31 procesos. Arrancó el 2026-10-26 a las
     17:56 UTC.
 
+### 27. ¿Se usan todos los núcleos disponibles menos uno? (2026-10-26)
+- **Respuesta:** sí.
+  - NicoVM tiene 32 núcleos y la matriz usa 31 procesos (`PHASE2_WORKERS=31`).
+  - Cada proceso está limitado a un hilo (`OMP_NUM_THREADS=1` y equivalentes de BLAS), para no
+    sobresuscribir.
+  - Queda un núcleo libre para el sistema, ssh y el proceso coordinador.
+  - Medido a las 18:01 UTC: 31 procesos por encima del 50 % de CPU y carga media de 30.8.
+
 ## Preguntas pendientes
 
 ### Para el usuario
