@@ -42,7 +42,17 @@ EXCLUDED = {"zdt5": "binary encoding", "re22": "mixed encoding", "re23": "mixed 
 
 
 def instantiate(name: str):
-    """A VAMOS problem instance by registry name, with two objectives where that is a parameter."""
+    """A VAMOS problem instance by registry name, with two objectives where that is a parameter.
+
+    COCO bbob-biobj ids ("bbob-biobj_f20_i01_d10", phase 3c) are wrapped over [-5, 5]^D.
+    """
+    if name.startswith("bbob-biobj_"):
+        import sys
+
+        sys.path.insert(0, str(REPO / "research" / "phase3c" / "scripts"))
+        from coco_problems import make_problem
+
+        return make_problem(name)
     from vamos.foundation.problem.registry import make_problem_selection
 
     if name.startswith(("dtlz", "wfg", "zcat")):

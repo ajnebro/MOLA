@@ -34,7 +34,8 @@ sys.path.insert(0, str(RESEARCH / "phase2" / "scripts"))
 sys.path.insert(0, str(RESEARCH / "phase2b" / "scripts"))
 
 BUDGET = 20_000
-BOUNDS_FILE = HERE.parent / "data" / "tuning_bounds.json"
+# Phase 3c serves bbob-biobj problems with its own bounds (MOLA_TUNING_BOUNDS).
+BOUNDS_FILE = Path(os.environ.get("MOLA_TUNING_BOUNDS", HERE.parent / "data" / "tuning_bounds.json"))
 _bounds: dict = {}
 
 
