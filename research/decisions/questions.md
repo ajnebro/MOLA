@@ -211,6 +211,45 @@ decidió. Al final están las preguntas pendientes. Las decisiones formales est�
   - Se renumera solo en `plan.md` y en el artículo, con una tabla de correspondencia.
   - Los pre-registros y los informes ya escritos conservan la numeración antigua, porque están
     congelados.
+- **Decisión (2026-10-26):** "aplica el nuevo orden" (D7). Renumerado `plan.md` §4.
+
+### 25. Dados unos problemas de test, ¿tiene sentido obtener de nuestro conjunto los problemas de entrenamiento? (2026-10-26)
+- **Pregunta:** "¿tiene sentido que dados unos problemas, pongamos de test, obtengamos los problemas,
+  pongamos de training, del conjunto de problemas que tenemos? Un poco al revés que la RQ1, o
+  similar al menos."
+- **Respuesta:** sí. Es la misma hipótesis de similitud, aplicada al conjunto de entrenamiento en
+  lugar de a un solo donante.
+  - **No es la dirección inversa.** Se va igualmente del destino a los problemas conocidos.
+    Cambian dos cosas:
+    - se parte de un conjunto de destinos, no de uno solo;
+    - con los problemas recuperados se ajusta una configuración nueva, en lugar de reutilizar la
+      del donante.
+  - **Tres variantes, de menor a mayor coste:**
+    - (a) 1 destino → 1 donante → su c*_P. Es `landscape_1nn`, la RQ1.
+    - (b) 1 destino → sus k problemas más cercanos → la c*_P con mejor HVn medio sobre ellos. Es
+      `knn_selector`, ya pre-registrado como análisis secundario de la fase 3. No cuesta ajuste
+      adicional.
+    - (c) Conjunto de test → subconjunto de entrenamiento más parecido → irace sobre ese
+      subconjunto. Es la propuesta completa.
+  - **Diseño propuesto para (c):** se deja fuera una familia en cada pliegue (LOFO) y se
+    comparan cuatro brazos con el mismo presupuesto de irace (20 000 experimentos):
+    - irace sobre todos los problemas de entrenamiento (generalista);
+    - irace sobre los k más parecidos por paisaje;
+    - irace sobre los k más parecidos por metadatos;
+    - irace sobre k problemas al azar.
+  - **Coste estimado de (c):** unas 32 ejecuciones de irace, alrededor de 1.5–2 días en NicoVM
+    por framework. La campaña de la fase 3 tardó 43 h para 37 ejecuciones.
+  - **Riesgos:**
+    - Con pocos problemas de entrenamiento se sobreajusta.
+    - Si el conjunto de test es heterogéneo, la selección acaba cogiendo casi todo y equivale al
+      generalista.
+    - Las features de test solo se usan para seleccionar, nunca su rendimiento.
+  - **Encaje:** la fase 5, en la que los 17 problemas reservados harían de conjunto de test,
+    seleccionando entre los 37 de desarrollo. También justificaría la elección del conjunto de
+    entrenamiento en el artículo de Evolver, que hoy se hace a mano.
+- **Recomendación:**
+  - Mirar primero (b) en la matriz de la fase 3.
+  - Pre-registrar (c) como RQ5 tras G3, con su propia campaña.
 - **Estado:** pendiente de la decisión del usuario.
 
 ## Preguntas pendientes
