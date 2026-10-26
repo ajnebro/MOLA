@@ -477,6 +477,21 @@ decidió. Al final están las preguntas pendientes. Las decisiones formales est�
 - **Propuesta:** añadir al artículo la comparación con NSGA-II por defecto y la cita de ASlib.
   Pendiente de que el usuario lo confirme.
 
+### 40. ¿Qué benchmark estamos usando? (2026-10-26)
+- **Respuesta:** los 37 problemas de desarrollo, todos biobjetivo, continuos y con restricciones
+  solo de caja, con las implementaciones de VAMOS 1.0.0 (en la fase 3e, las de jMetal). Por familia:
+  - **ZDT:** ZDT1–3 (D = 30) y ZDT4 (D = 10).
+  - **DTLZ** con M = 2: DTLZ1 (D = 6) y DTLZ2, 3, 4 y 6 (D = 11).
+  - **LZ09/UF:** LZ09 F1, F7 y F8 (D = 10); F2–F5 y F9 (D = 30); UF1–UF7 (D = 30).
+  - **ZCAT:** 1, 3, 5, 6, 8, 10, 11, 12, 13 y 19, todos con D = 30.
+  - **RE/RWA:** RE21 (D = 4), RE24 (D = 2) y RWA1 (D = 5).
+- **De dónde salen:**
+  - un catálogo de 59 problemas (`phase2/catalogue.csv`);
+  - menos 17 reservados para la evaluación final, con hash: todo WFG y alrededor de un 25 % de los
+    grupos de ZDT, DTLZ y ZCAT;
+  - menos los duplicados exactos: DTLZ5 ≡ DTLZ2 con M = 2, y 5 grupos de ZCAT.
+- **Grupos:** 32 grupos de formulación en LOGO y 5 familias en LOFO.
+
 ## Preguntas pendientes
 
 ### Para el usuario
