@@ -181,6 +181,18 @@ decidió. Al final están las preguntas pendientes. Las decisiones formales est�
     alternativa generalista) las transferencias perjudiciales con el mismo presupuesto total?
     Es la fase 4, aún sin empezar.
 
+### 23. ¿El título y los pasos "caracterizar, buscar, recomendar, decidir" son las preguntas de investigación? (2026-10-26)
+- **Respuesta:** no, son tres niveles distintos.
+  - **El título** es la pregunta general del artículo: *cuándo* es fiable transferir configuraciones
+    por similitud del paisaje.
+  - **Los cuatro pasos** son el flujo del sistema (el objetivo operativo, `plan.md` §1). No son
+    preguntas, solo ordenan las RQ.
+  - **Las preguntas de investigación** son RQ1–RQ4, una por paso:
+    - caracterizar → RQ1 (invariancia);
+    - buscar → RQ2 (incertidumbre del muestreo);
+    - recomendar → RQ3 (transferencia);
+    - decidir → RQ4 (cuándo recomendar).
+
 ## Preguntas pendientes
 
 ### Para el usuario
