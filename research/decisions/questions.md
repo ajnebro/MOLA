@@ -66,6 +66,13 @@ en [`question1.md`](question1.md).
   protocolo en el commit `9a917db`), ejecutadas en NicoVM sobre los 37 problemas con las semillas
   5001–5010.
 
+### 12. Plan recomendado tras la fase 3: (1) estratos y regla de consenso sobre la matriz actual; (2) diseñar y pre-registrar un estudio con COCO bbob-biobj, con el generalista ajustado sobre todo el entrenamiento; (3) ejecutarlo. ¿Empiezo? (2026-10-26)
+- **Respuesta:** "revisa cada hora si tienes tokens para seguir, procede con todo, y recuerda lanzar
+  en nicovm cuando esté libre y en todos los núcleos -1".
+- **Decisión:** se ejecuta el plan completo.
+  - Una tarea horaria en la sesión (id `a9636817`) retoma el trabajo.
+  - En NicoVM se lanza solo cuando está libre, con 31 procesos.
+
 ## Pendientes
 
 ### Hechas tras la fase 3, sin respuesta todavía (2026-10-26)
@@ -92,11 +99,6 @@ en [`question1.md`](question1.md).
       irace y una matriz nueva).
     - (3) Pasar a un benchmark más difícil y variado: COCO bbob-biobj, ZCAT en sus variantes
       difíciles, más variables o tres objetivos. Supone un catálogo nuevo y unas 40 h de irace.
-
-4f. Recomendación de Claude: (1) estratos más una regla de consenso (generalista por defecto,
-    desviarse solo si los k vecinos coinciden), como exploración sobre la matriz actual; (2) diseñar
-    y pre-registrar un estudio con COCO bbob-biobj, con el generalista ajustado sobre todo el
-    entrenamiento; (3) ejecutarlo. ¿Empiezo por el paso 1? (2026-10-26)
 
 ### Planteadas antes, sin respuesta
 
