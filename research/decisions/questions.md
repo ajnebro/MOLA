@@ -250,7 +250,18 @@ decidió. Al final están las preguntas pendientes. Las decisiones formales est�
 - **Recomendación:**
   - Mirar primero (b) en la matriz de la fase 3.
   - Pre-registrar (c) como RQ5 tras G3, con su propia campaña.
-- **Estado:** pendiente de la decisión del usuario.
+- **Decisión (2026-10-26):** "si, rq5" (D8). Añadida como RQ5 en `plan.md` §4 y como fase 3s en
+  §6. Se pre-registra después de G3.
+
+### 26. "Lanza la matriz" (2026-10-26)
+- **Respuesta:** se lanza tras comprobar que NicoVM está libre (carga 0, 29 GB disponibles).
+  - **Ajuste previo:** irace terminó el 2026-10-22 a las 05:41 UTC (43 h), y se recogieron las 37
+    elites en `research/phase3/data/tuned_configs.json`.
+  - **Cada irace:** entre 19 994 y 20 000 experimentos, 11–24 iteraciones y 2 582–3 932
+    configuraciones.
+  - **Matriz:** 40 configuraciones (las 37 ajustadas más NSGA-II, MOEA/D y SMS-EMOA por defecto),
+    sobre 37 problemas y con 10 semillas (5001–5010), con 31 procesos. Arrancó el 2026-10-26 a las
+    17:56 UTC.
 
 ## Preguntas pendientes
 
