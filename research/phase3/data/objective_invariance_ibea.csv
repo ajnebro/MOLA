@@ -1,0 +1,5 @@
+problem,variant,seed,factors,identical_X,identical_F_over_a
+zdt1,ibea_default,1,"[0.125, 0.125]",True,True
+zdt1,ibea_default,2,"[0.125, 0.125]",True,True
+cec2009_uf1,ibea_default,1,"[0.125, 0.125]",True,True
+cec2009_uf1,ibea_default,2,"[0.125, 0.125]",True,True

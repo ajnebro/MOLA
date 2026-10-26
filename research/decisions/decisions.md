@@ -235,3 +235,28 @@ alternativas completas para D1–D3 están en [`question1.md`](question1.md).
   - cómo se agrega la similitud sobre varios destinos;
   - el valor de k;
   - el framework: VAMOS, Evolver o ambos.
+
+## D9 — IBEA sustituye a SMS-EMOA como comparador sin ajustar
+
+- **Fecha y autor:** 2026-10-26, decisión del usuario ("sustituye SMS-EMOA por IBEA donde se use el
+  primero, para la ejecución, o repite donde sea necesario") y "repara el IBEA en VAMOS".
+- **Decisión:**
+  - En la fase 3, IBEA por defecto ocupa el lugar de SMS-EMOA en la matriz (enmienda 2 del
+    pre-registro).
+  - Se usa el IBEA reparado en VAMOS (PR #115, `c4569f25`): indicador ε con el escalado adaptativo
+    de Zitzler y Künzli y κ = 0.05.
+  - En las fases 2 y 2b, SMS-EMOA entraba en la unión que normaliza HVn. Allí se repiten G2 y la
+    comparación de brazos con IBEA, como análisis de sensibilidad. Los resultados pre-registrados no
+    se sobrescriben (`phase2/data/sensitivity_ibea/`, `phase2b/data/sensitivity_ibea/`).
+- **Motivo:**
+  - IBEA es un comparador habitual en la literatura de rasgos de paisaje multiobjetivo (Liefooghe et
+    al., EMO 2023).
+  - SMS-EMOA de VAMOS no es invariante a las unidades de los objetivos y es el más caro de los tres.
+- **Hallazgo:**
+  - El IBEA de VAMOS 1.0.0/1.1.0 colapsaba en problemas con objetivos de escalas muy distintas (RE21:
+    un solo punto distinto) y no era invariante.
+  - La reparación lo hace invariante. Su coste es una convergencia más lenta en ZDT4 y DTLZ1: los
+    puntos muy dominados estiran la normalización, igual que en jMetal.
+- **Scripts:** el algoritmo por defecto, la salida de G2, la de los brazos y las variantes de
+  invariancia se eligen por entorno (`PHASE2_DEFAULT_ALGORITHMS`, `MOLA_G2_OUT`, `MOLA_ARMS_OUT` y
+  `MOLA_INVARIANCE_*`). Sin esas variables reproducen exactamente lo publicado.

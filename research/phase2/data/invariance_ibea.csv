@@ -1,0 +1,5 @@
+problem,variant,seed,identical_F,identical_X_over_a,max_abs_F_difference
+zdt1,ibea_default,1,True,True,0.0
+zdt1,ibea_default,2,True,True,0.0
+cec2009_uf1,ibea_default,1,True,True,0.0
+cec2009_uf1,ibea_default,2,True,True,0.0

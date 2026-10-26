@@ -123,3 +123,42 @@ los objetivos. Las de dominancia, rangos y Spearman no cambian.
   escalar, para mostrar qué cambia la enmienda.
 - **La regla de G3 no cambia** (§6): `landscape_1nn` frente a `metadata_1nn` en LOGO, con Wilcoxon
   unilateral sobre los grupos y p < 0.05.
+
+## 10. Enmienda 2 (2026-10-26): IBEA sustituye a SMS-EMOA como comparador sin ajustar
+
+**Cuándo.**
+- La decidió el usuario el 2026-10-26 ("sustituye SMS-EMOA por IBEA donde se use").
+- La matriz ya tenía 259 pares de configuraciones ajustadas y ningún algoritmo por defecto.
+- SMS-EMOA nunca llegó a ejecutarse en esta matriz: se paró y se relanzó sin él.
+- Se registra antes de cualquier análisis o inspección de la matriz: no se ha calculado ningún HVn,
+  ninguna pérdida de transferencia ni G3.
+
+**Hallazgo y reparación.** El IBEA de VAMOS calculaba su indicador ε por defecto sobre los objetivos
+sin escalar, con κ = 1.
+- En VAMOS 1.0.0 (`0a8bbb0`) además ponía a 0 las contribuciones que se desbordaban.
+- En RE21 la población colapsa en un solo punto: HV 0.110 frente a 0.881 de NSGA-II.
+- Tampoco era invariante a las unidades de los objetivos (`data/objective_invariance_ibea_vamos0a8bbb0.csv`).
+
+Se reparó en VAMOS, en la rama `fix/ibea-epsilon-scaling` (PR vamos-optimization/VAMOS#115):
+- `3089157e`: el escalado adaptativo de Zitzler y Künzli (2004) para los dos indicadores;
+- `c4569f25`: κ = 0.05 por defecto.
+
+El IBEA reparado es invariante bit a bit a las unidades de objetivos y variables
+(`data/objective_invariance_ibea.csv` y `phase2/data/invariance_ibea.csv`).
+
+**Cambio.**
+- **Matriz:** las 37 c*_P, NSGA-II por defecto y MOEA/D por defecto (VAMOS 1.0.0, `0a8bbb0`), más
+  IBEA por defecto (población 100) con el VAMOS de `c4569f25`. Son 40 configuraciones.
+  - IBEA se ejecuta aparte, después del resto, con las mismas semillas (5001–5010) y 20 000
+    evaluaciones (`scripts`: `evaluate_pilot.py` con `PHASE2_DEFAULT_ALGORITHMS=ibea` y ese VAMOS
+    por delante en `PYTHONPATH`).
+  - Los 37 problemas de desarrollo son idénticos en los dos VAMOS. Los cambios reales entre ambos
+    solo afectan a CF1, welded beam y RE9x, que no están en el piloto.
+- **HVn:** la unión de frentes que lo normaliza incluye IBEA en lugar de SMS-EMOA.
+- **`analyze_transfer.py`:** usa `default__nsgaii`, `default__moead` y `default__ibea`.
+
+**Lo que no cambia:**
+- la regla de G3 (§6);
+- los métodos (§4): ninguno usa los algoritmos por defecto, salvo la referencia `default`, que es
+  NSGA-II;
+- las particiones y los análisis secundarios.
