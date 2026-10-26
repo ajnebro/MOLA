@@ -192,3 +192,24 @@ alternativas completas para D1–D3 están en [`question1.md`](question1.md).
       (1e-14) del SBX de jMetal con padres casi idénticos. Se mantiene.
     - **Diferencia con VAMOS:** en Evolver el tamaño de la población está fijo en 100, que es la
       convención de Evolver y de su artículo; en VAMOS se ajustaba en [20, 200].
+
+## D7 — Orden de las preguntas de investigación
+
+- **Fecha y autor:** 2026-10-26, decisión del usuario ("aplica el nuevo orden").
+- **Decisión:** la transferencia pasa a ser la primera RQ. Orden nuevo:
+  1. transferencia (antes RQ3);
+  2. invariancia y geometría (antes RQ1);
+  3. incertidumbre del muestreo (antes RQ2);
+  4. cuándo recomendar (sin cambios).
+- **Motivo:**
+  - Es la pregunta del título y del resultado principal, y la única con una puerta pre-registrada
+    (G3).
+  - Las otras tres se miden con la pérdida de transferencia que ella define.
+  - La invariancia está asegurada casi toda por diseño (D1, D4, T5, D6). Queda como análisis de
+    sensibilidad.
+  - El muestreo alimenta la última: la estabilidad entre muestras es una señal de confianza.
+- **Alcance:**
+  - Se renumera `plan.md` §4, que incluye la tabla de correspondencia.
+  - Los documentos anteriores conservan la numeración antigua, porque están congelados: los
+    pre-registros, los informes de las fases 0 a 3e, D1–D6 y T1–T8, y el prompt de la §9 del plan.
+  - La regla de G3 no cambia, solo su etiqueta.

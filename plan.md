@@ -1,6 +1,6 @@
 # Plan — Recomendación de configuraciones por similitud de paisajes (continuación de MOLA)
 
-Borrador del 2026-10-19, actualizado el 2026-10-20.
+Borrador del 2026-10-19, actualizado el 2026-10-20 y el 2026-10-26 (orden de las RQ, D7).
 
 **Estado:**
 - **Fase 0:** ejecutada el 2026-10-19. Resultados en `research/phase0/report.md`; el registro
@@ -10,13 +10,15 @@ Borrador del 2026-10-19, actualizado el 2026-10-20.
   problemas multimodales; `research/phase2/report.md`.
 - **Fase 2b:** irace frente a F-Race, el 2026-10-20. Con el mismo presupuesto, irace da mejores
   configuraciones en 32 de 37 problemas; `research/phase2b/report.md`.
-- **Fase 3 (transferencia, RQ3):** en curso en la rama `research/phase3`. El ajuste con irace
-  (20 000 experimentos por problema) se ejecuta en NicoVM. El pre-registro y su enmienda 1
-  (escalado de objetivos, D4) se fijaron antes de que existiera la matriz:
-  `research/phase3/preregistration.md`.
+- **Fase 3 (transferencia, RQ1; RQ3 en su pre-registro):** en curso en la rama
+  `research/phase3`.
+  - El ajuste con irace (20 000 experimentos por problema) terminó en NicoVM el 2026-10-22. Falta
+    la matriz de rendimiento.
+  - El pre-registro y su enmienda 1 (escalado de objetivos, D4) se fijaron antes de que existiera
+    la matriz: `research/phase3/preregistration.md`.
 - **Fase 3 en Evolver (D6):** después de la de VAMOS, la fase 3 se repite entera en Evolver/jMetal,
   con el espacio completo de NSGA-II (`NSGAIIDouble.yaml`) e irace.
-- Las decisiones están en `research/decisions/decisions.md` (D1–D6, T1–T8).
+- Las decisiones están en `research/decisions/decisions.md` (D1–D7, T1–T8).
 
 ---
 
@@ -106,9 +108,48 @@ terminar la sesión**; si se quieren conservar, hay que copiarlos a `research/ev
 
 ## 4. Preguntas de investigación
 
-Están ordenadas según el flujo del recomendador: caracterizar, recuperar, recomendar y decidir.
+Orden fijado el 2026-10-26 (D7):
+1. primero la pregunta central, la del título;
+2. después las dos que acotan cuándo se sostiene: las unidades y el muestreo;
+3. al final la que decide cuándo recomendar, que usa las señales y las pérdidas de las anteriores.
 
-**RQ1. Invariancia y geometría.** ¿Cambian el vecino recuperado y la configuración recomendada
+Las tres últimas se miden con la pérdida de transferencia que define la RQ1.
+
+**Correspondencia con la numeración anterior.** Hasta el 2026-10-26 las RQ seguían el flujo del
+recomendador: caracterizar, recuperar, recomendar y decidir. Los documentos anteriores a esa fecha
+conservan la numeración antigua, porque están congelados: los pre-registros, los informes de las
+fases 0 a 3e, D1–D6 y T1–T8 en `decisions.md` y el prompt de la §9. La puerta G3 contesta la RQ1
+actual; su regla no cambia.
+
+| Actual | Anterior | Pregunta | Paso del sistema |
+|---|---|---|---|
+| RQ1 | RQ3 | Transferencia | Recomendar |
+| RQ2 | RQ1 | Invariancia y geometría | Caracterizar |
+| RQ3 | RQ2 | Incertidumbre del muestreo | Recuperar |
+| RQ4 | RQ4 | Cuándo recomendar | Decidir |
+
+**RQ1. Transferencia (pregunta central).** ¿Devuelve el vecino más similar una configuración mejor
+que las alternativas siguientes, en formulaciones y familias no vistas?
+- **Comparadores:**
+  1. Configuración generalista (el SBS de entrenamiento).
+  2. Vecino por metadatos (D, M y cotas).
+  3. Donante aleatorio.
+  4. Distancia de la tesis, documentando sus casos indefinidos.
+  5. Distancia adaptada a cada tipo de feature.
+  6. Pesos aprendidos o un predictor sencillo de la pérdida de transferencia.
+  7. **Un selector directo de configuraciones con las mismas features**, para ver si recuperar
+     donantes aporta algo más que explicación.
+- **Medidas:**
+  - La pérdida de transferencia L(P→Q; b) = H_Q(c*_Q, b) − H_Q(c*_P, b), que puede ser asimétrica y
+    depender del presupuesto.
+  - El regret frente al VBS y la mejora frente al SBS.
+  - Acertar el ganador queda como medida secundaria, porque hay casi empates.
+- **Control de fuga:** el mismo pipeline con 80/20 aleatorio y con particiones agrupadas. Todas
+  las semillas, cambios de unidades, alias (E11) y variantes van al mismo grupo.
+- **Lo que debilitaría la hipótesis:** que la ventaja desaparezca al agrupar o que los metadatos
+  den lo mismo. Sería un resultado negativo publicable.
+
+**RQ2. Invariancia y geometría.** ¿Cambian el vecino recuperado y la configuración recomendada
 cuando se cambian las unidades de las variables o de los objetivos sin cambiar el problema?
 - **Estado (2026-10-20):**
   - **Variables:** las 49 features con geometría `bound` (fase 1) y el portafolio de NSGA-II de
@@ -130,7 +171,7 @@ cuando se cambian las unidades de las variables o de los objetivos sin cambiar e
   de la configuración elegida.
 - **Resultado que también sería informativo:** que el grafo cambie mucho y la recomendación apenas.
 
-**RQ2. Incertidumbre del muestreo.** ¿Cuánta variabilidad del muestreo llega a la recomendación?
+**RQ3. Incertidumbre del muestreo.** ¿Cuánta variabilidad del muestreo llega a la recomendación?
 - **Tamaños de muestra:** 100, 200, 500, 1000 (alineados con MO-ELA) y 200·D, con LHS
   independientes para cada tamaño y nunca prefijos de un LHS mayor.
 - **Hay que separar:** la variabilidad de la caracterización, la del algoritmo y las diferencias
@@ -142,27 +183,6 @@ cuando se cambian las unidades de las variables o de los objetivos sin cambiar e
   - Relación entre la confianza estimada y la pérdida observada.
 - **Hipótesis:** estas señales predicen la fiabilidad mejor que la normalidad de cada descriptor.
   Una recomendación puede ser estable y aun así estar equivocada.
-
-**RQ3. Transferencia (pregunta central).** ¿Devuelve el vecino más similar una configuración mejor
-que las alternativas siguientes, en formulaciones y familias no vistas?
-- **Comparadores:**
-  1. Configuración generalista (el SBS de entrenamiento).
-  2. Vecino por metadatos (D, M y cotas).
-  3. Donante aleatorio.
-  4. Distancia de la tesis, documentando sus casos indefinidos.
-  5. Distancia adaptada a cada tipo de feature.
-  6. Pesos aprendidos o un predictor sencillo de la pérdida de transferencia.
-  7. **Un selector directo de configuraciones con las mismas features**, para ver si recuperar
-     donantes aporta algo más que explicación.
-- **Medidas:**
-  - La pérdida de transferencia L(P→Q; b) = H_Q(c*_Q, b) − H_Q(c*_P, b), que puede ser asimétrica y
-    depender del presupuesto.
-  - El regret frente al VBS y la mejora frente al SBS.
-  - Acertar el ganador queda como medida secundaria, porque hay casi empates.
-- **Control de fuga:** el mismo pipeline con 80/20 aleatorio y con particiones agrupadas. Todas
-  las semillas, cambios de unidades, alias (E11) y variantes van al mismo grupo.
-- **Lo que debilitaría la hipótesis:** que la ventaja desaparezca al agrupar o que los metadatos
-  den lo mismo. Sería un resultado negativo publicable.
 
 **RQ4. Cuándo recomendar.** ¿Reduce una política de recomendación calibrada las transferencias
 perjudiciales con el mismo presupuesto total?
@@ -197,7 +217,7 @@ perjudiciales con el mismo presupuesto total?
 | 0. Evidencias y contrato | Recuperar scripts, fijar versiones, verificar E1–E18 con ejemplos mínimos, escribir el contrato de features y del recomendador, y definir el protocolo del piloto (prompt en §9) | `PHASE0_COMPLETE` o `PHASE0_PARTIAL`, con los hallazgos trazables |
 | 1. Núcleo verificable | Corregir los defectos confirmados (prueba de soporte exacta, perfil de geometría versionado, contrato de normalización, estados de indefinido, validación de no finitos, `k` explícito, CI y `pom`), sin regenerar todavía los CSV históricos | **G1:** tests verdes y concordancia con referencias exactas |
 | 2. Piloto | Estabilidad, escalado, coste y complementariedad del portafolio con unos 40 problemas y 5 semillas | **G2:** hueco SBS–VBS suficiente, con umbral fijado antes. Si no lo hay, se diversifica el portafolio |
-| 3. Transferencia | Matriz de rendimiento con VAMOS y comparación de métodos con particiones agrupadas frente a aleatorias | **G3:** ¿supera el paisaje a los metadatos? Si no, el resultado negativo se publica |
+| 3. Transferencia | Matriz de rendimiento con VAMOS y comparación de métodos con particiones agrupadas frente a aleatorias | **G3** (RQ1): ¿supera el paisaje a los metadatos? Si no, el resultado negativo se publica |
 | 4. Confianza y presupuesto | Calibrar la política de recomendación o alternativa generalista | RQ4 respondida con presupuesto total |
 | 5. Evaluación final y artículo | Congelar el método, ejecutar los grupos reservados y preparar datos, código y manuscrito | Resultados reproducibles, incluidos los negativos |
 
@@ -210,8 +230,13 @@ perjudiciales con el mismo presupuesto total?
   - ajuste siempre con irace, con ≥ 20 000 experimentos (D5);
   - el cálculo pesado se hace en NicoVM, comprobando antes que está libre.
 
-  Con los tiempos medidos, el ajuste de los 37 problemas de desarrollo cuesta unas 20 h en NicoVM y
-  la matriz cruzada, unos 30 min.
+  Con los tiempos medidos se estimaron unas 20 h para el ajuste de los 37 problemas de desarrollo
+  en NicoVM, y unos 30 min para la matriz cruzada. El ajuste tardó en realidad 43 h, del
+  2026-10-20 a las 10:27 UTC al 2026-10-22 a las 05:41 UTC.
+- **Decidido el 2026-10-20 y el 2026-10-21:** réplica de la fase 3 en Evolver/jMetal con el espacio
+  de NSGA-II sin los cuatro operadores no invariantes (D6).
+- **Decidido el 2026-10-26:** nuevo orden de las preguntas de investigación, con la transferencia
+  como RQ1 (D7, §4).
 - **Fallos de VAMOS 1.0.0 encontrados, a comunicar al proyecto:**
   - `racing/refill.py:25` falla con parámetros condicionales en el racing iterado;
   - PCX, UNDX, la mutación gaussiana, la de Cauchy, la reparación `round` y el inicializador Halton
@@ -219,7 +244,7 @@ perjudiciales con el mismo presupuesto total?
   - el frente de referencia de UF6 está incompleto.
 - **Comunicación con Aldana-Martín y Nebro:** al terminar la fase 0, describiendo exactamente lo
   demostrado (E12 y E13) y proponiendo coautoría.
-- **Invariancia de los operadores de VAMOS:** es la condición de la RQ1 y hay que verificarla
+- **Invariancia de los operadores de VAMOS:** es la condición de la RQ2 y hay que verificarla
   antes de usarla.
 - **Calendario:** GECCO 2027, cuyo plazo suele caer a finales de enero (confirmarlo). Si no llega,
   una revista (ECJ o TELO).
