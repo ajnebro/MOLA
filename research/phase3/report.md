@@ -311,3 +311,48 @@ Script: `scripts/random_configs.py`. Salidas: `data/random_configs_*.csv` y
 
 En la tabla del §9 corresponde a una columna más, "configuración aleatoria del espacio": 0.669 en
 LOGO, 0.669 en LOFO y 0.667 en la aleatoria.
+
+## 11. Estratos y regla de consenso (2026-10-26, exploratorio; paso 1 del plan aprobado)
+
+Script: `scripts/consensus_strata.py`. Salidas: `data/consensus_strata.json`,
+`data/consensus_long.csv` y `data/strata.csv`. La rejilla de la regla se fijó antes de ejecutarla.
+
+**Estratos.** Se definen con 20 000 evaluaciones y con la propia matriz, así que son descriptivos:
+- **fáciles (13):** el donante mediano queda a menos de 0.01 del mejor;
+- **muy difíciles (7):** ni el mejor donante llega a 0.8;
+- **intermedios (17):** el resto.
+
+HVn medio en LOGO:
+
+| Estrato | Al azar | Default | Metadatos | Paisaje | `knn_selector` | Consenso k = 3, δ = 0.05 | SBS | Oráculo |
+|---|---|---|---|---|---|---|---|---|
+| Fáciles (13) | 0.954 | 0.990 | 0.993 | 0.995 | 0.990 | 0.993 | 0.994 | 0.997 |
+| Intermedios (17) | 0.788 | 0.881 | 0.840 | 0.898 | 0.931 | 0.944 | 0.943 | 0.951 |
+| Muy difíciles (7) | 0.390 | 0.492 | 0.379 | 0.432 | 0.534 | 0.596 | 0.593 | 0.642 |
+
+Incluso donde la elección importa (los intermedios), el SBS queda a solo 0.008 del oráculo. En los
+muy difíciles, a 0.05.
+
+**Regla de consenso.**
+- **Por defecto,** el SBS.
+- **Cuándo cambia:** si, en los k problemas de entrenamiento más cercanos (distancia euclídea
+  pre-registrada), la mejor configuración supera de media al SBS en al menos δ, se usa esa.
+- **Rejilla:** k ∈ {3, 5} y δ ∈ {0, 0.01, 0.02, 0.05}. Con k = 3 y δ = 0 es `knn_selector`.
+
+| LOGO | HVn medio | Frente al SBS (grupos: media, V/D/E, p) | Pérdida > 0.10 | Peor 10 % | Se desvía del SBS |
+|---|---|---|---|---|---|
+| `landscape_1nn` | 0.844 | −0.047, 16/15/1, p = 0.72 | 18 % | 0.43 | — |
+| k = 3, δ = 0 (`knn_selector`) | 0.877 | −0.018, 17/11/4, p = 0.44 | 9 % | 0.26 | 75 % |
+| k = 3, δ = 0.02 | 0.891 | −0.004, 4/7/21, p = 0.84 | 3.8 % | 0.13 | 24 % |
+| k = 3, δ = 0.05 | **0.895** | +0.0007, 4/1/27, p = 0.11 | **2.7 %** | **0.09** | 16 % |
+| k = 5, δ = 0.05 | 0.895 | — | — | — | — |
+| SBS | 0.895 | — | 2.7 % | 0.10 | 0 % |
+
+- **La regla elimina la cola del vecino único** y, con un δ exigente, iguala al SBS.
+  - Con una familia nueva (LOFO) queda algo por debajo: 0.872 frente a 0.880.
+  - Con la partición aleatoria queda algo por encima: 0.879 frente a 0.876.
+- **No hay margen para superar al SBS.** En este benchmark, con este portafolio y 20 000
+  evaluaciones, la distancia entre el SBS y el oráculo es 0.014 de media. La similitud de paisaje
+  puede, como mucho, igualar al generalista.
+- **Esto refuerza el paso 2 del plan:** un benchmark con más margen (COCO bbob-biobj), una similitud
+  conocida de antemano y el generalista ajustado sobre todo el entrenamiento como referencia.
