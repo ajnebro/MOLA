@@ -9,7 +9,8 @@ Configurations:
 
 Seeds 5001-5010 and 20 000 evaluations, with fronts kept at 5 000, 10 000 and 20 000 evaluations.
 Output: RAW/fronts/<config>__<problem>.npz, resumable, with run times in RAW/evaluation_runs.csv.
-PHASE3C_CONFIGS filters the kinds (comma list of tuned, gen, nsgaii, moead, ibea).
+PHASE3C_CONFIGS filters the kinds (comma list of tuned, gen, nsgaii, moead, ibea, random;
+random = phase 3's 37 random configurations of the space, amendment 1).
 
 Run on NicoVM:  MOLA_PHASE3C_RAW=~/mola-phase3c/matrix PHASE2_WORKERS=31 python evaluate_3c.py
 """
@@ -45,6 +46,9 @@ def configurations() -> dict[str, tuple[str, dict | None]]:
     for algorithm in ("nsgaii", "moead", "ibea"):
         if algorithm in KINDS:
             configs[f"default__{algorithm}"] = (algorithm, None)
+    if "random" in KINDS:  # amendment 1: phase 3's 37 random configurations of the space
+        sampled = json.loads((HERE.parents[1] / "phase3" / "data" / "random_configs.json").read_text())
+        configs.update({config_id: ("nsgaii", assignment) for config_id, assignment in sampled.items()})
     return configs
 
 

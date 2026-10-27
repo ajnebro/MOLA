@@ -124,3 +124,22 @@ ni los parámetros de la regla para repetir la prueba.
   VAMOS reparado.
 - **Uso de NicoVM:** se lanza solo cuando está libre, con todos los núcleos menos uno.
 - **Cualquier desviación** de este documento se registra en el informe de la fase.
+
+## 8. Enmienda 1 (2026-10-27): referencia de configuraciones aleatorias del espacio
+
+**Cuándo.** La pidió el usuario el 2026-10-27 para la tabla comparativa. Se registra mientras dura la
+campaña de irace, antes de que exista ninguna c*_P, matriz o análisis de esta fase.
+
+**Qué se añade.** Una referencia descriptiva, como la del §10 del informe de la fase 3:
+- **Configuraciones:** las 37 que se muestrearon allí del mismo espacio invariante
+  (`phase3/data/random_configs.json`, semilla 20261026).
+- **Ejecución:** en los 165 problemas, con las semillas 5001–5010 y 20 000 evaluaciones
+  (`evaluate_3c.py` con `PHASE3C_CONFIGS=random`).
+- **Puntuación:** con el HVn de la matriz. No entran en la unión de frentes que lo normaliza, así que
+  no cambian ningún otro valor ni las puertas.
+
+**Qué se informa** (`scripts/random_configs_3c.py`): por partición, la media y la mediana de las
+configuraciones aleatorias junto a los métodos, y la fracción de configuraciones aleatorias que
+pierden más de 0.10 frente al oráculo.
+
+**Lo que no cambia:** las puertas G4 y G5, los métodos y las particiones.
