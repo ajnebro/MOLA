@@ -639,6 +639,12 @@ reproducen sus números. Con particiones por problema, ni siquiera su tarea supe
      distribución.
    - **Prager:** antes de ajustar sus hiperparámetros, la mayoría de sus cadenas de modelos pierden
      frente al SBS, y en F15–F19 gana el SBS.
+   - **Cenikj et al. 2025** (*Swarm and Evolutionary Computation*), en un objetivo: con datos fuera de
+     la distribución, ningún selector con features (ELA, TLA ni representaciones profundas) supera
+     al SBS. Es el resultado publicado más parecido al nuestro.
+   - **Auto-sklearn 2.0** (Feurer et al., JMLR 2022), en AutoML: sustituyó el arranque por los
+     conjuntos de datos más parecidos según meta-features por una cartera fija y diversa, y la
+     cartera gana. Es el análogo de nuestra hipótesis y de nuestro resultado en otro campo.
 5. **Sus huecos también son pequeños, y el hueco cerrado los agranda.**
    - Los huecos son del mismo orden que el nuestro (0.014 entre el SBS y el oráculo):
      - **Liefooghe 2021:** un hueco SBS–VBS de en torno al 3 %.
@@ -729,6 +735,17 @@ Hueco cerrado por los selectores, del peor al mejor:
 - [Tesis de Belkhir (ROADEF)](https://roadef.org/app/posts/9f17268b-a430-4ed0-a213-dd554746301c)
 - [Prager et al., Per-Instance Configuration of the Modularized CMA-ES](https://research.utwente.nl/en/publications/per-instance-configuration-of-the-modularized-cma-es-by-means-of-/)
 - [van der Blom y Vermetten, arXiv 2605.04954](https://arxiv.org/abs/2605.04954)
+- [Cenikj et al., Have we hit a wall in algorithm selection generalization?, arXiv 2501.17663](https://arxiv.org/abs/2501.17663); *Swarm Evol. Comput.* 94, 101894 (2025)
+- [Nikolikj et al., Generalization ability of feature-based performance prediction models, arXiv 2405.12259](https://arxiv.org/abs/2405.12259)
+- [Gjorgjieva et al., Structural (dis)agreement of landscape representations, arXiv 2605.28121](https://arxiv.org/abs/2605.28121)
+- [Feurer et al., Auto-sklearn 2.0, arXiv 2007.04074](https://arxiv.org/abs/2007.04074)
+- [Lindauer y Hutter, Warmstarting of model-based algorithm configuration, AAAI 2018](https://ojs.aaai.org/index.php/AAAI/article/view/11532)
+- [Long et al., Landscape-aware automated algorithm configuration, arXiv 2409.01446](https://arxiv.org/abs/2409.01446)
+- [Rook et al., MO-SMAC, *Evolutionary Computation* 2025](https://doi.org/10.1162/evco_a_00371)
+- [Seiler, Kerschke y Trautmann, Deep-ELA, arXiv 2401.01192](https://arxiv.org/abs/2401.01192)
+- [Seiler, Preuß y Trautmann, RandOptGen, GECCO 2025](https://doi.org/10.1145/3712256.3726478)
+- **Estado de MO-ELA (comprobado el 2026-10-27):** sigue siendo un preprint (solo la v1, sin
+  referencia de revista) y no enlaza código. Detalle en `research/references/state_of_the_art.md`.
 - Sin enlace comprobado:
   - Cosson et al., EvoCOP 2021;
   - Kadioglu et al., ISAC, ECAI 2010;

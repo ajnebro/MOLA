@@ -161,3 +161,34 @@ en `plan.md`, §10.
   - filtrar por (n_obj, n_var) antes de buscar similitud;
   - pesos aprendidos para las features.
 - **Advertencias:** reconoce que las features de distancia vecinal son inestables, pero las mantiene.
+
+## Comprobación de publicación y trabajos afines (2026-10-27)
+
+### Estado de MO-ELA
+- **Sigue siendo un preprint:** arXiv 2602.00098, solo la v1, del 24 de enero de 2026. No tiene
+  referencia de revista ni comentario de envío en arXiv. Un buscador atribuye el comentario
+  "submitted to Computational Optimization and Applications", pero no aparece ni en la ficha ni en el
+  listado de arXiv, así que queda **sin confirmar**.
+- **Código:** el texto no incluye ningún enlace a repositorio ni declaración de disponibilidad. Solo
+  cita las herramientas que usa (ecr, moeadr, mlxtend, scikit-learn y XGBoost).
+- **Consecuencia:** no podemos usar sus features como representación alternativa (L4 y la vía 3)
+  mientras no publiquen el código. En el artículo hay que citarlo como preprint.
+
+### Trabajos afines que faltaban
+
+| Trabajo | Qué aporta | Relevancia para nosotros |
+|---|---|---|
+| Cenikj, Petelin, Seiler, Cenikj y Eftimov, "Landscape features in single-objective continuous optimization: have we hit a wall in algorithm selection generalization?", *Swarm and Evolutionary Computation* 94, 101894 (2025), doi:10.1016/j.swevo.2025.101894 | Con datos fuera de la distribución, "none of the feature-based AS models outperform a simple baseline model, i.e., a Single Best Solver". Lo prueban con ELA, TLA y representaciones profundas (DeepELA, TransOptAS y Doe2Vec) | **El resultado más cercano al nuestro**, en un objetivo y con selección de algoritmos. Nuestro negativo con particiones agrupadas no es una anomalía |
+| Nikolikj, Kostovska, Cenikj, Doerr y Eftimov, "Generalization ability of feature-based performance prediction models: a statistical analysis across benchmarks", IEEE CEC 2024 (arXiv 2405.12259) | La generalización de un modelo depende de lo parecidas que sean las distribuciones de features de entrenamiento y test | Sostiene la puerta de confianza por distancia (L7 y L8): se puede medir antes si el destino está "dentro de la distribución" |
+| Gjorgjieva, Tuba, Koroušić Seljak, Doerr y Eftimov, "On the structural (dis)agreement of landscape representations in black-box optimization", IEEE CEC 2026 (arXiv 2605.28121) | ELA, DeepELA, TransOptAS y DoE2Vec organizan los mismos problemas de forma distinta, y ninguna captura del todo el rendimiento | La similitud depende de la representación. Apoya la RQ7 y el cribado de features (L9) |
+| Feurer et al., "Auto-sklearn 2.0: hands-free AutoML via meta-learning", JMLR (2022), arXiv 2007.04074 | En AutoML, sustituyen el arranque por los k conjuntos de datos más parecidos según meta-features por una cartera fija y diversa, construida de forma voraz, y la cartera gana | **El análogo en AutoML de nuestra hipótesis y de nuestro resultado.** Justifica el portafolio complementario (L6) frente a la recuperación por similitud |
+| Lindauer y Hutter, "Warmstarting of model-based algorithm configuration", AAAI 2018 | Reutilizan el rendimiento en conjuntos de instancias anteriores para arrancar la configuración en uno nuevo (SAT; hasta 165 veces más rápido) | Una alternativa a transferir la configuración: transferir conocimiento para **arrancar** irace en el problema nuevo |
+| Long, Frenzel, Krause, Gitterle, Bäck y van Stein, "Landscape-aware automated algorithm configuration using multi-output mixed regression and classification", PPSN 2024 (arXiv 2409.01446) | Una red predice la configuración a partir de features, entrenada con funciones generadas al azar y MA-BBOB, y probada en BBOB. Suele superar a la configuración por defecto y a veces compite con el SBS | Configuración por instancia con features, un objetivo. Igual que nosotros: supera al default, no claramente al SBS |
+| Rook, Benjamins, Bossek, Trautmann, Hoos y Lindauer, "MO-SMAC: multi-objective sequential model-based algorithm configuration", *Evolutionary Computation* (2025), doi:10.1162/evco_a_00371 | Configuración con varios criterios a la vez | Es configuración, no transferencia. Sus autores sugieren usar features de paisaje dentro del modelo sustituto |
+| Seiler, Kerschke y Trautmann, "Deep-ELA", *Evolutionary Computation* (2025), doi:10.1162/evco_a_00367 | Features aprendidas por un transformer, para uno y varios objetivos | Una representación alternativa con código publicado (a comprobar) |
+| Seiler, Preuß y Trautmann, "RandOptGen", GECCO 2025, doi:10.1145/3712256.3726478 | Generador aleatorio de problemas de uno y varios objetivos | Una vía para generar muchas instancias si se quiere ampliar S1 o probar el régimen de la literatura |
+
+**No se encontró** ningún trabajo que transfiera configuraciones ajustadas entre problemas
+multiobjetivo según la similitud de su paisaje. El hueco que ocupa nuestro artículo sigue abierto.
+La búsqueda no es sistemática; antes de enviar conviene revisar las actas de GECCO 2026, EMO 2025 y
+CEC 2026.
