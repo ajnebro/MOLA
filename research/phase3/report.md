@@ -356,3 +356,83 @@ muy difíciles, a 0.05.
   puede, como mucho, igualar al generalista.
 - **Esto refuerza el paso 2 del plan:** un benchmark con más margen (COCO bbob-biobj), una similitud
   conocida de antemano y el generalista ajustado sobre todo el entrenamiento como referencia.
+
+## 12. Control positivo: la tarea y el protocolo de la literatura (2026-10-27, exploratorio)
+
+**Por qué.** La revisión del estado del arte (`plan.md`, §10) plantea una pregunta: los trabajos de
+selección con meta-características (Liefooghe 2021, MO-ELA) obtienen buenos resultados y nosotros
+no. ¿Se debe a nuestras features, a la tarea o al protocolo? Este control separa las tres cosas con
+los mismos 37 problemas, las mismas features (MOLA 0.4.0, `sample`) y la misma matriz.
+
+**Scripts:**
+- `scripts/algorithm_selection_control.py`: particiones por problema, las mismas de la §3;
+- `scripts/algorithm_selection_leaky.py`: el protocolo de MO-ELA.
+
+Los resultados están en `data/algorithm_selection_control.json`, con scikit-learn 1.9.1.
+
+**Tareas:**
+- **Selección de algoritmos (la tarea de la literatura).** Elegir entre NSGA-II, MOEA/D e IBEA
+  (reparado) por defecto. El SBS es NSGA-II por defecto (0.846). El mejor por problema es IBEA en 17
+  problemas, NSGA-II en 16 y MOEA/D en 4. El hueco entre el SBS y el VBS es 0.025.
+- **Transferencia de configuraciones (la nuestra).** Las c*_P, como en la §3.
+
+**Selectores:**
+- `nn1`: el mejor algoritmo del problema más cercano.
+- `knn3`: el mejor algoritmo de media en los 3 problemas más cercanos.
+- `rf_class`: un random forest de 500 árboles que clasifica el mejor algoritmo.
+- `rf_regr`: un random forest por algoritmo que predice su HVn; se elige el máximo.
+
+Todos se entrenan solo con el entrenamiento de cada partición.
+
+**Particiones:**
+- **Filas al azar, con fuga (como MO-ELA):** 100 particiones 80/20 de las 185 muestras (37
+  problemas × 5 LHS), con la semilla 20261027. Las otras muestras del problema destino están casi
+  siempre en el entrenamiento.
+- **Problemas al azar:** 80/20 por problema, con las 100 particiones de la §3.
+- **LOGO y LOFO:** como en la §3.
+
+Hueco cerrado = (selector − SBS)/(VBS − SBS). Entre paréntesis va el acierto: la fracción de
+muestras cuya elección queda a menos de 0.01 del VBS.
+
+| Selección entre algoritmos por defecto | `nn1` | `knn3` | `rf_class` | `rf_regr` | Acierto del SBS |
+|---|---|---|---|---|---|
+| Filas al azar (con fuga) | **0.93** (96 %) | **0.91** (94 %) | **0.98** (98 %) | **0.79** (87 %) | 79 % |
+| Problemas al azar | −0.89 (74 %) | −0.22 (80 %) | −0.47 (78 %) | −0.72 (74 %) | 79 % |
+| LOGO | −1.64 (69 %) | −0.61 (76 %) | −0.85 (77 %) | −1.20 (70 %) | 78 % |
+| LOFO | −1.81 (74 %) | −1.08 (79 %) | −1.52 (75 %) | −0.81 (86 %) | 78 % |
+
+| Transferencia de configuraciones ajustadas | Hueco SBS–oráculo | `landscape_1nn` | `knn_selector` |
+|---|---|---|---|
+| Filas al azar (con fuga) | 0.031 | **0.49** (0.908 frente a 0.892 del SBS) | — |
+| Problemas al azar | 0.028 | −0.99 | −0.55 |
+| LOGO | 0.014 | −3.63 | −1.27 |
+| LOFO | 0.022 | −4.54 | −2.12 |
+
+**Lectura:**
+- **Con el protocolo de MO-ELA, nuestras features reproducen sus números.**
+  - `rf_class` cierra el 98 % del hueco con un 98 % de acierto. MO-ELA da un 96.3 % en el global
+    biobjetivo.
+  - Incluso la transferencia de configuraciones ajustadas supera al SBS: el vecino por paisaje
+    cierra el 49 % del hueco.
+  - Las features distinguen los problemas: el vecino más cercano es otra muestra del mismo problema
+    en el 61 % de las filas de test. El resto son problemas parecidos con el mismo ganador.
+- **En cuanto el problema destino sale del entrenamiento, todo cae por debajo del SBS,** incluso en
+  la tarea de la literatura y con 80/20 aleatorio.
+- **La diferencia está en el protocolo, no en las features ni en la tarea.**
+  - Elegir entre algoritmos por defecto es algo menos malo que transferir configuraciones (−0.2 a
+    −1.8 frente a −0.5 a −4.5), pero tampoco supera al SBS.
+  - Lo que "funciona" en la literatura es reconocer el problema y devolver lo que ya se sabe de él.
+    Con la fuga, la transferencia de configuraciones devuelve casi siempre la c*_Q del propio
+    destino o la de un pariente.
+- **El acierto engaña cuando hay colas.**
+  - En LOFO, `rf_regr` acierta más que el SBS (86 % frente a 78 %), pero su HVn medio es peor
+    (0.825 frente a 0.846).
+  - Los fallos son caros: MOEA/D por defecto rinde de media 0.15 menos que NSGA-II.
+  - Por eso conviene informar siempre del HVn, o del hueco absoluto, junto al acierto (L3 del plan).
+
+**Límites:**
+- Son 37 problemas, frente a los ~1 000 de la literatura. Con más instancias de cada familia, la
+  partición por problema se parecería más a la de Liefooghe 2021, que tiene hermanos del mismo
+  generador en el entrenamiento.
+- La fase 3c, con instancias de la misma función (S1), mide justo ese caso intermedio.
+- Es exploratorio y no cambia G3.

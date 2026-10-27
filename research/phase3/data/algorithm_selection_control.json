@@ -1,0 +1,214 @@
+{
+  "note": "Exploratory, not pre-registered.",
+  "algorithm_selection_defaults": {
+    "LOFO": {
+      "vbs_minus_sbs": 0.0251,
+      "sbs": {
+        "mean_hvn": 0.8457,
+        "closed_gap": 0.0
+      },
+      "nn1": {
+        "mean_hvn": 0.8003,
+        "closed_gap": -1.811
+      },
+      "knn3": {
+        "mean_hvn": 0.8186,
+        "closed_gap": -1.081
+      },
+      "rf_class": {
+        "mean_hvn": 0.8077,
+        "closed_gap": -1.515
+      },
+      "rf_regr": {
+        "mean_hvn": 0.8254,
+        "closed_gap": -0.81
+      }
+    },
+    "LOGO": {
+      "vbs_minus_sbs": 0.0251,
+      "sbs": {
+        "mean_hvn": 0.8457,
+        "closed_gap": 0.0
+      },
+      "nn1": {
+        "mean_hvn": 0.8045,
+        "closed_gap": -1.642
+      },
+      "knn3": {
+        "mean_hvn": 0.8305,
+        "closed_gap": -0.608
+      },
+      "rf_class": {
+        "mean_hvn": 0.8244,
+        "closed_gap": -0.85
+      },
+      "rf_regr": {
+        "mean_hvn": 0.8157,
+        "closed_gap": -1.198
+      }
+    },
+    "random": {
+      "vbs_minus_sbs": 0.0249,
+      "sbs": {
+        "mean_hvn": 0.8406,
+        "closed_gap": 0.0
+      },
+      "nn1": {
+        "mean_hvn": 0.8184,
+        "closed_gap": -0.893
+      },
+      "knn3": {
+        "mean_hvn": 0.8352,
+        "closed_gap": -0.219
+      },
+      "rf_class": {
+        "mean_hvn": 0.8289,
+        "closed_gap": -0.468
+      },
+      "rf_regr": {
+        "mean_hvn": 0.8228,
+        "closed_gap": -0.715
+      }
+    }
+  },
+  "algorithm_selection_accuracy": {
+    "LOFO": {
+      "sbs": 0.784,
+      "nn1": 0.735,
+      "knn3": 0.789,
+      "rf_class": 0.751,
+      "rf_regr": 0.859
+    },
+    "LOGO": {
+      "sbs": 0.784,
+      "nn1": 0.686,
+      "knn3": 0.757,
+      "rf_class": 0.768,
+      "rf_regr": 0.703
+    },
+    "random": {
+      "sbs": 0.786,
+      "nn1": 0.738,
+      "knn3": 0.802,
+      "rf_class": 0.779,
+      "rf_regr": 0.743
+    }
+  },
+  "best_default_counts": {
+    "default__nsgaii": 16,
+    "default__moead": 4,
+    "default__ibea": 17
+  },
+  "mean_hvn_defaults": {
+    "default__nsgaii": 0.8457,
+    "default__moead": 0.6901,
+    "default__ibea": 0.8219
+  },
+  "configuration_transfer_tuned": {
+    "LOFO": {
+      "vbs_minus_sbs": 0.0223,
+      "sbs": {
+        "mean_hvn": 0.8798,
+        "closed_gap": 0.0
+      },
+      "metadata_1nn": {
+        "mean_hvn": 0.842,
+        "closed_gap": -1.692
+      },
+      "landscape_1nn": {
+        "mean_hvn": 0.7785,
+        "closed_gap": -4.537
+      },
+      "knn_selector": {
+        "mean_hvn": 0.8324,
+        "closed_gap": -2.124
+      }
+    },
+    "LOGO": {
+      "vbs_minus_sbs": 0.014,
+      "sbs": {
+        "mean_hvn": 0.8946,
+        "closed_gap": 0.0
+      },
+      "metadata_1nn": {
+        "mean_hvn": 0.8067,
+        "closed_gap": -6.26
+      },
+      "landscape_1nn": {
+        "mean_hvn": 0.8437,
+        "closed_gap": -3.625
+      },
+      "knn_selector": {
+        "mean_hvn": 0.8768,
+        "closed_gap": -1.272
+      }
+    },
+    "random": {
+      "vbs_minus_sbs": 0.0283,
+      "sbs": {
+        "mean_hvn": 0.876,
+        "closed_gap": 0.0
+      },
+      "metadata_1nn": {
+        "mean_hvn": 0.7907,
+        "closed_gap": -3.01
+      },
+      "landscape_1nn": {
+        "mean_hvn": 0.8478,
+        "closed_gap": -0.994
+      },
+      "knn_selector": {
+        "mean_hvn": 0.8605,
+        "closed_gap": -0.545
+      }
+    }
+  },
+  "leaky_sample_split": {
+    "note": "Exploratory, not pre-registered. Random 80/20 over sample rows, as in MO-ELA.",
+    "features_used": 46,
+    "same_problem_nearest": 0.614,
+    "algorithm_selection_defaults": {
+      "vbs_minus_sbs": 0.0249,
+      "sbs": {
+        "mean_hvn": 0.8441,
+        "closed_gap": 0.0,
+        "accuracy": 0.787
+      },
+      "nn1": {
+        "mean_hvn": 0.8672,
+        "closed_gap": 0.927,
+        "accuracy": 0.96
+      },
+      "knn3": {
+        "mean_hvn": 0.8667,
+        "closed_gap": 0.91,
+        "accuracy": 0.939
+      },
+      "rf_class": {
+        "mean_hvn": 0.8684,
+        "closed_gap": 0.977,
+        "accuracy": 0.984
+      },
+      "rf_regr": {
+        "mean_hvn": 0.8638,
+        "closed_gap": 0.79,
+        "accuracy": 0.868
+      }
+    },
+    "configuration_transfer_tuned": {
+      "oracle_minus_sbs": 0.0314,
+      "sbs": {
+        "mean_hvn": 0.8922,
+        "closed_gap": 0.0
+      },
+      "landscape_1nn": {
+        "mean_hvn": 0.9076,
+        "closed_gap": 0.49
+      },
+      "oracle": {
+        "mean_hvn": 0.9236,
+        "closed_gap": 1.0
+      }
+    }
+  }
+}
