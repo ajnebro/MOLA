@@ -95,6 +95,12 @@ en [`question1.md`](question1.md).
 3. ¿Planteo el artículo abiertamente como resultado negativo, con la lección del generalista
    dominante?
 
+4. La campaña de irace de la fase 3c tardará unos 9 días en NicoVM, hasta el 4 de noviembre
+   aproximadamente, en lugar de los ~3 previstos. irace converge a configuraciones estacionarias con
+   poblaciones grandes, cuyas ejecuciones son lentas. ¿La sigo tal como está pre-registrada, o enmiendo
+   ahora el pre-registro, antes de cualquier resultado, para reducir el coste? Por ejemplo, con 28
+   funciones equilibradas por grupo. Recomendación de Claude: seguir. (2026-10-27)
+
 ### Planteadas antes, sin respuesta
 
 5. ¿Ampliar el portafolio con algoritmos ajustados además de NSGA-II? Se planteó como MOEA/D y
