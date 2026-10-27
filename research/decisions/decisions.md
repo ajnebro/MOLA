@@ -260,3 +260,20 @@ alternativas completas para D1–D3 están en [`question1.md`](question1.md).
 - **Scripts:** el algoritmo por defecto, la salida de G2, la de los brazos y las variantes de
   invariancia se eligen por entorno (`PHASE2_DEFAULT_ALGORITHMS`, `MOLA_G2_OUT`, `MOLA_ARMS_OUT` y
   `MOLA_INVARIANCE_*`). Sin esas variables reproducen exactamente lo publicado.
+
+## D10 — RQ6 y RQ7, al final del plan
+
+- **Fecha y autor:** 2026-10-27, decisión del usuario ("añade al plan, pero al final si"), sobre dos
+  preguntas que él mismo planteó.
+- **Decisión:** se añaden al final de `plan.md`, en la §11, sin cambiar el orden, las puertas ni los
+  pre-registros de las RQ1–RQ5.
+  - **RQ6:** ¿transfiere lo ajustado con suites sintéticas a familias no vistas y a problemas
+    reales? El primer paso es medir cuántos problemas RE y RWA biobjetivo no están saturados.
+  - **RQ7:** ¿qué eligen las configuraciones ajustadas, y lo explican los rasgos de los problemas?
+    Es un análisis exploratorio de las élites de las fases 3 y 3c (test de Mantel y predicción por
+    parámetro), sin ejecuciones nuevas.
+- **Motivo:**
+  - La RQ6 cubre el caso práctico que el diseño actual no cubre: los únicos 3 problemas reales están
+    saturados y ninguno está reservado.
+  - La RQ7 es el diagnóstico de la RQ1. Si problemas parecidos no reciben configuraciones parecidas,
+    ninguna transferencia por similitud puede funcionar.

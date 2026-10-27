@@ -83,6 +83,12 @@ en [`question1.md`](question1.md).
   menos saturado (bbob-biobj, D = 10). Está pre-registrada en el commit `0ea3209` y lanzada en
   NicoVM.
 
+### 15. ¿Incorporo al plan la transferencia de lo sintético a lo real y el análisis de qué eligen las configuraciones ajustadas? (2026-10-27)
+- **Respuesta:** "añade al plan, pero al final si".
+- **Resultado:** RQ6 y RQ7 en `plan.md` §11, al final y sin tocar las RQ1–RQ5 (D10).
+  - **RQ6:** primero se mide cuántos problemas RE y RWA biobjetivo no están saturados.
+  - **RQ7:** análisis exploratorio de las élites, sin ejecuciones nuevas.
+
 ## Pendientes
 
 ### Hechas tras la fase 3, sin respuesta todavía (2026-10-26)
@@ -138,20 +144,3 @@ en [`question1.md`](question1.md).
 16. ¿Qué problemas y en qué fase para la validación con tres objetivos?
 17. RQ4: con un generalista que domina, ¿se evalúa igualmente la política de recomendar o recurrir al
     generalista, con un pre-registro nuevo sobre la misma matriz?
-
-### Hechas el 2026-10-27, sin respuesta todavía
-
-18. ¿Incorporo al plan dos preguntas que el usuario planteó: (a) si lo ajustado con suites
-    sintéticas transfiere a familias no vistas y a problemas reales, y (b) qué eligen las
-    configuraciones ajustadas y si los rasgos de los problemas lo explican?
-    - **(a)** Ya se mide en parte: familias no vistas con LOFO y S2. Para problemas reales faltan
-      datos: solo hay 3 en desarrollo (RE21, RE24, RWA1), están saturados y ninguno está reservado.
-      Propuesta de Claude: medir cuántos problemas RE/RWA biobjetivo no están saturados antes de
-      decidir.
-    - **(b)** No se ha analizado.
-      - Propuesta de Claude: un análisis exploratorio, sin ejecuciones nuevas, de las 37 élites de
-        la fase 3 y después de las 61 de la 3c.
-      - Primero, qué eligen.
-      - Después, si la distancia entre features predice la distancia entre configuraciones (test de
-        Mantel).
-      - Por último, si cada parámetro se predice desde las features, con particiones agrupadas.

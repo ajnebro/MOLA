@@ -33,7 +33,7 @@ Borrador del 2026-10-19, actualizado el 2026-10-20 y el 2026-10-26 (orden de las
   Las notas por trabajo están en `research/references/state_of_the_art.md`.
 - **Fase 3 en Evolver (D6):** después de la de VAMOS, la fase 3 se repite entera en Evolver/jMetal,
   con el espacio completo de NSGA-II (`NSGAIIDouble.yaml`) e irace.
-- Las decisiones están en `research/decisions/decisions.md` (D1–D9, T1–T8).
+- Las decisiones están en `research/decisions/decisions.md` (D1–D10, T1–T8).
 
 ---
 
@@ -246,6 +246,9 @@ Detalles:
 - **Aplicación final:** en la fase 5, elegir entre los 37 problemas de desarrollo el conjunto de
   entrenamiento para los 17 reservados. También da un criterio para elegir los conjuntos de
   entrenamiento en estudios de meta-optimización como el de Evolver, donde hoy se eligen a mano.
+
+**RQ6 y RQ7** se añadieron el 2026-10-27 (D10) y están al final del plan, en la §11. Son la
+transferencia de lo sintético a lo real y qué eligen las configuraciones ajustadas.
 
 ## 5. Diseño experimental
 
@@ -731,3 +734,99 @@ Hueco cerrado por los selectores, del peor al mejor:
   - Kadioglu et al., ISAC, ECAI 2010;
   - Xu, Hoos y Leyton-Brown, Hydra, AAAI 2010;
   - Aldana-Martín, tesis doctoral, 2024.
+
+---
+
+## 11. Preguntas añadidas al final: RQ6 y RQ7 (2026-10-27, D10)
+
+Las planteó el usuario el 2026-10-27 y decidió añadirlas al final del plan ("añade al plan, pero al
+final"). Van después de las RQ1–RQ5 y no cambian su orden, sus puertas ni sus pre-registros.
+
+### RQ6. Transferencia de lo sintético a lo real
+
+**Pregunta:** ¿transfiere lo ajustado con suites sintéticas a familias no vistas y a problemas reales?
+
+**Lo que ya se mide.** Las familias no vistas están en LOFO (fase 3) y S2 (fase 3c). HVn medio con la
+familia fuera, en la fase 3:
+
+| Familia excluida | SBS | `landscape_1nn` | NSGA-II por defecto | Oráculo |
+|---|---|---|---|---|
+| ZDT | 0.850 | 0.966 | 0.985 | 0.997 |
+| DTLZ | 0.900 | 0.425 | 0.666 | 0.902 |
+| LZ09/UF | 0.782 | 0.662 | 0.744 | 0.795 |
+| ZCAT | 0.993 | 0.990 | 0.990 | 0.997 |
+| RE/RWA (reales) | 0.997 | 0.996 | 0.992 | 0.998 |
+
+La transferencia a familias no vistas es irregular. Con DTLZ, el SBS casi iguala al oráculo. Con
+ZDT pierde 0.15 y queda por debajo de NSGA-II por defecto.
+
+**Lo que falta: los problemas reales.**
+- Solo hay 3 en desarrollo (RE21, RE24 y RWA1) y están saturados: todos los métodos superan 0.975.
+- Ninguno de los 17 reservados es real, y la fase 3c es toda sintética.
+- Con estos datos, la respuesta sería trivial.
+
+**Plan:**
+1. **Medir la saturación** de los problemas RE y RWA biobjetivo disponibles, sin duplicados (E11).
+   - Se mide con NSGA-II por defecto, el SBS de la fase 3 y unas configuraciones aleatorias del
+     espacio.
+   - Se usa el criterio de los estratos del informe de la fase 3, §11: el problema está saturado si
+     la mejor menos la mediana es menor que 0.01.
+   - Coste: pocas horas en NicoVM.
+2. **Si hay bastantes problemas no saturados, una partición "sintético → real".**
+   - El entrenamiento son las familias sintéticas: ZDT, DTLZ, LZ09/UF y ZCAT, y opcionalmente
+     bbob-biobj.
+   - El test son los problemas reales no saturados. Se reservan antes de mirar su rendimiento con los
+     métodos y no se usan para desarrollar ninguno.
+   - Comparadores:
+     - los de la RQ1;
+     - un generalista ajustado con irace sobre todo el entrenamiento sintético, como `gen_all` en
+       la 3c;
+     - como techo, la configuración ajustada sobre el propio problema real.
+3. **Medidas:** las de la RQ1 por problema real, más la pérdida frente a la configuración ajustada
+   sobre el propio problema.
+
+**Riesgo:** si quedan pocos problemas reales no saturados, el resultado será solo descriptivo.
+
+### RQ7. Qué eligen las configuraciones ajustadas
+
+**Pregunta:** ¿qué eligen las configuraciones ajustadas, y lo explican los rasgos de los problemas?
+
+**Por qué importa.** Es el diagnóstico de la RQ1.
+- Si problemas parecidos no reciben configuraciones parecidas, ninguna transferencia por similitud
+  puede funcionar.
+- Si las reciben, el fallo está en otra parte, por ejemplo en un generalista que domina.
+
+**Primer vistazo a las 37 élites de la fase 3:**
+- 25 son de estado estacionario (proporción de descendientes 0);
+- la población mediana es 198, pegada al límite de 200 del espacio, que quizá recorta lo que irace
+  elegiría;
+- 24 usan SBX;
+- 30 seleccionan por SUS o torneo;
+- 21 usan mutación polinómica, enlazada o simple.
+
+**Análisis (exploratorio, sin ejecuciones nuevas):**
+1. **Qué eligen:**
+   - la distribución de cada parámetro, por familia y por estrato;
+   - los parámetros que quedan en el límite del espacio.
+2. **Distancia entre features frente a distancia entre configuraciones.** Se usa un test de Mantel
+   (Spearman), con permutaciones dentro de los grupos de formulación. La distancia entre
+   configuraciones se mide de dos formas:
+   - **por parámetros:** la distancia de Gower;
+   - **por comportamiento:** 1 − la correlación de sus vectores de HVn en la matriz. Dos
+     configuraciones se parecen si rinden parecido.
+3. **Predicción de cada parámetro desde las features.**
+   - Un random forest por parámetro, con particiones agrupadas (LOGO).
+   - Se compara con predecir la moda o la mediana del entrenamiento, como en Belkhir y Prager.
+   - Es la versión por parámetro de la variante de Belkhir de L4 (§10.4).
+4. **Importancia de las features** en las predicciones que superen a esa línea base.
+
+**Advertencia.** Cada élite sale de una sola ejecución de irace, y muchas configuraciones rinden casi
+igual. Lo que elige irace puede estar poco determinado. Por eso las elecciones se leen junto a la
+matriz, y por eso existe la distancia por comportamiento.
+
+**Datos:**
+- las 37 élites de la fase 3, ya disponibles;
+- las 61 de la fase 3c, cuando termine la campaña: 55 por función, ajustadas en la instancia 1, y
+  6 generalistas.
+
+**Coste:** unas horas de análisis por conjunto de élites.
