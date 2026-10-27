@@ -711,6 +711,8 @@ Hueco cerrado por los selectores, del peor al mejor:
   - función o grupo fuera.
 
   Así el gradiente de similitud de la 3c tiene también el punto de referencia de la literatura.
+  Quedó registrado como enmienda 2 de su pre-registro (`research/phase3c/preregistration.md`, §9,
+  `scripts/positive_control_3c.py`), antes de que exista la matriz.
 - **El artículo** puede afirmar, con datos propios, que el éxito publicado de las meta-características
   depende de tener el problema o sus hermanos en el entrenamiento.
 

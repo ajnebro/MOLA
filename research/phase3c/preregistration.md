@@ -143,3 +143,39 @@ configuraciones aleatorias junto a los métodos, y la fracción de configuracion
 pierden más de 0.10 frente al oráculo.
 
 **Lo que no cambia:** las puertas G4 y G5, los métodos y las particiones.
+
+## 9. Enmienda 2 (2026-10-27): control positivo con cuatro protocolos, exploratorio
+
+**Cuándo.** Se registra durante la campaña de irace, antes de que exista ninguna c*_P, matriz o
+análisis de esta fase. Sigue al control positivo de la fase 3 (`phase3/report.md`, §12) y al punto
+L2 de `plan.md`, §10.4.
+
+**Por qué.** En la fase 3, la selección con features solo funcionó cuando el problema destino estaba
+en el entrenamiento:
+- con la partición por filas de MO-ELA, las features cerraron el 79–98 % del hueco;
+- con el problema fuera, ningún selector superó al SBS.
+
+En bbob-biobj la similitud se conoce, así que se puede medir la caída entre los dos casos.
+
+**Qué se añade** (`scripts/positive_control_3c.py`). Dos tareas sobre las mismas filas y particiones:
+- **selección entre NSGA-II, MOEA/D e IBEA por defecto,** con `sbs`, `nn1`, `knn3`, `rf_class` y
+  `rf_regr`;
+- **transferencia entre las c*_f** de las funciones presentes en el entrenamiento, con `sbs`,
+  `landscape_1nn`, `knn_selector` y el oráculo.
+
+Se aplican cuatro protocolos, de más a menos fuga:
+
+| Protocolo | Entrenamiento | Equivale a |
+|---|---|---|
+| `rows` | 80/20 aleatorio de las 825 filas, 100 veces, semilla 20261027 | MO-ELA |
+| `instance_out` | Todo salvo el problema destino; las otras instancias de su función se quedan | Los hermanos de Liefooghe 2021 |
+| `function_out` | Todo salvo las tres instancias de la función destino | S3 |
+| `group_out` | Los cinco pliegues por grupo de bbob | S2 |
+
+**Qué se informa:** la media sobre funciones de:
+- el HVn;
+- el hueco cerrado, junto al hueco absoluto;
+- el acierto (a menos de 0.01 del VBS);
+- la fracción de filas cuyo vecino más cercano es de la misma función.
+
+**Lo que no cambia:** las puertas G4 y G5, los métodos y las particiones de los §3–5.
