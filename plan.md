@@ -25,7 +25,12 @@ Borrador del 2026-10-19, actualizado el 2026-10-20 y el 2026-10-26 (orden de las
   - **Referencias:** generalistas ajustados con irace sobre el entrenamiento.
   - **Puertas:** G4 y G5.
   - **Estado:** la campaña de irace corre en NicoVM desde las 21:12 UTC del 2026-10-26 (61
-    ajustes, estimadas en unas 70 h; al ritmo medido en la primera hora, unas 32 h).
+    ajustes). Se estimaron unas 70 h, pero irace converge a configuraciones de estado estacionario,
+    que son lentas. A las 12:08 UTC del 2026-10-27 las 12 primeras tareas llevaban entre 5 300 y
+    11 500 de sus 20 000 experimentos, lo que da unos 6–9 días en total (fin hacia el 2026-11-02 a
+    11-04).
+- **Estado del arte:** revisado el 2026-10-27, con las lecciones y lo que se incorpora en la §10.
+  Las notas por trabajo están en `research/references/state_of_the_art.md`.
 - **Fase 3 en Evolver (D6):** después de la de VAMOS, la fase 3 se repite entera en Evolver/jMetal,
   con el espacio completo de NSGA-II (`NSGAIIDouble.yaml`) e irace.
 - Las decisiones están en `research/decisions/decisions.md` (D1–D9, T1–T8).
@@ -67,6 +72,9 @@ aporta explicación: "tu problema se parece a RE37".
 | MO-ELA, Preuß, Rook, Bossek y Trautmann, [arXiv 2602.00098](https://arxiv.org/html/2602.00098v1) | Escala X a [0,1] por cotas y F con min-max sobre la muestra. Usa 4 tamaños de muestra (100–1000) con 20 semillas, grafos kNN con k=1 y descuenta el coste de muestreo. Selecciona entre NSGA-II, SMS-EMOA y MOEA/D por defecto. Evalúa con una partición aleatoria 80/20 y **elige el modelo final en test** | Normalizar y descontar el coste **no son novedad**, son controles. Su protocolo de evaluación deja espacio para las particiones agrupadas |
 | van der Blom y Vermetten, [arXiv 2605.04954](https://arxiv.org/abs/2605.04954) | Estudia el presupuesto dedicado a features en selección por instancia: compensa en la mayoría de escenarios, incluso con el 25 % del presupuesto | La contabilidad del coste forma parte del protocolo desde el principio |
 | Liefooghe et al., EMO 2023 | 945 configuraciones *del generador de problemas* (28 350 instancias); NSGA-II, IBEA, MOEA/D y búsqueda aleatoria | Antecedente para la relación entre propiedades, algoritmo y presupuesto |
+
+La revisión completa del 2026-10-27, con la tabla de líneas vecinas y lo que se toma de cada
+trabajo, está en la §10.
 
 **Novedad posible:**
 1. Una recomendación basada en recuperar instancias, que puede abstenerse, evaluada por la calidad
@@ -529,3 +537,195 @@ Devuelve un resumen con los hallazgos prioritarios, las versiones, el coste real
 reproducción y el alcance de la fase 1. No declares correcto MOLA porque pasen sus tests, ni inválida
 la tesis porque se reproduzca un defecto.
 ```
+
+---
+
+## 10. Estado del arte y lecciones (2026-10-27)
+
+El usuario pidió revisar cada referencia y ver qué se puede incorporar, porque a esos trabajos les
+funcionan las meta-características y a nosotros no. Se leyó el texto completo de cada trabajo. Las
+notas por trabajo están en `research/references/state_of_the_art.md`.
+
+### 10.1 Encuadre del artículo: negativo o condicional
+
+La hipótesis principal pre-registrada de la fase 3 no se cumplió: el vecino por paisaje no supera de
+forma significativa al vecino por metadatos, y ningún método supera al generalista. Hay dos formas de
+contarlo:
+- **Como resultado negativo.** El mensaje sería: "en estas condiciones, la similitud de paisaje no
+  permite transferir configuraciones de forma fiable, y estas son las causas".
+  - **Las causas:** el generalista dominante, las configuraciones ajustadas muy especializadas, los
+    problemas saturados y la cola de fallos grandes del vecino único.
+  - **A favor:** es publicable, sobre todo en revista (ECJ, TELO), porque está pre-registrado y
+    viene con una auditoría y un diagnóstico cuidadosos.
+  - **En contra:** rebaja la ambición del artículo.
+- **Como resultado condicional,** que es lo que pide el título ("*When does…*"). El mensaje sería:
+  "funciona en tales condiciones y no en tales otras".
+  - Para eso hace falta la fase 3c.
+  - Por ejemplo, si G4 (misma función en otra instancia) se supera y G5 (otro grupo) no, la
+    respuesta sería que la similitud ayuda cuando el problema nuevo es un pariente cercano de uno
+    conocido, y no entre familias.
+
+**No se decide todavía:** depende de la fase 3c. Es la pregunta pendiente 3 de
+`research/decisions/questions.md`.
+
+### 10.2 Líneas vecinas
+
+Para exactamente lo que hacemos no hay una línea establecida. Lo que hacemos es transferir
+configuraciones ajustadas entre problemas multiobjetivo según la similitud de su paisaje. Lo más
+cercano son estas líneas; la última columna es la que explica la mayor parte de la diferencia (§10.3).
+
+| Línea | Trabajo | Qué hace | Benchmark | Cómo parte los datos |
+|---|---|---|---|---|
+| Antecedente directo | Tesis de Aldana-Martín (recommoonder, 2024) | Recomienda la configuración ajustada del problema más parecido (1-NN sobre 21 descriptores) | 66 problemas en la base y 4 casos de prueba | Sin partición; compara frentes con NSGA-II por defecto |
+| Selección de algoritmos multiobjetivo con features | Liefooghe et al., GECCO 2021 (las 49 features de MOLA) | Elige entre cuatro MOEA con sus ajustes recomendados | 1 200 problemas MO-ICOP generados (interpolados) | 80/20 aleatorio, con 50 problemas por celda (d, k) del mismo generador |
+| | Liefooghe et al., EMO 2023 | Rasgos del problema y presupuesto frente a NSGA-II, IBEA, MOEA/D y búsqueda aleatoria. Usa los parámetros del generador, no features de paisaje | 945 configuraciones del generador DBMOPP (28 350 instancias) | Validación cruzada de 10 pliegues dentro del generador |
+| | **MO-ELA** (Preuß et al., 2026), el más reciente | Elige entre NSGA-II, SMS-EMOA y MOEA/D **por defecto, sin ajustar**; mide F1 y el hueco SBS–VBS cerrado | **bbob-biobj (92 funciones), ZDT, DTLZ y MPM2**; 2 y 3 objetivos; d ∈ {2, 5, 10, 20}; 15 000 evaluaciones con m = 2 y d = 10 | 80/20 aleatorio sobre filas, así que la misma función está en entrenamiento y test; el modelo final se elige en test |
+| Configuración por instancia en optimización continua (un objetivo) | Belkhir et al. (CMA-ES); Prager et al. 2020 (CMA-ES modular con ELA) | Eligen los parámetros de CMA-ES a partir de features | BBOB | Belkhir: funciones fuera y funciones nuevas. Prager: instancia fuera |
+| Configuración por instancia en combinatoria | ISAC, Hydra | Ajustan configuraciones por grupos de instancias (ISAC) o un portafolio complementario (Hydra) | SAT y MIP | Dentro de la misma distribución |
+| Presupuesto de las features (un objetivo) | van der Blom y Vermetten, 2026 | Cuánto presupuesto compensa dedicar a las features en la selección por instancia | BBOB, MA-BBOB y RandOptGen | Instancia fuera |
+
+**Dónde encaja nuestro trabajo:** en la intersección de tres de ellas.
+- Toma la configuración por instancia, como en CMA-ES sobre BBOB.
+- Toma las features multiobjetivo de Liefooghe y MO-ELA.
+- Toma la transferencia por similitud de recommoonder.
+
+Los trabajos multiobjetivo seleccionan entre unos pocos algoritmos por defecto; no transfieren
+configuraciones ajustadas.
+
+**El benchmark de referencia es bbob-biobj,** el que usa MO-ELA, el trabajo más cercano y reciente.
+Eso refuerza la elección de la fase 3c: bbob-biobj con D = 10 es uno de sus casos y nos hace
+directamente comparables. Hay una diferencia de presupuesto: ellos usan 15 000 evaluaciones con
+D = 10 y nosotros 20 000, con frentes guardados a 5 000, 10 000 y 20 000.
+
+### 10.3 Por qué a ellos les funcionan las meta-características y a nosotros no
+
+Hay cinco diferencias, ordenadas de más a menos importante. Ninguna indica que nuestras features
+estén mal: indican que la literatura mide otra tarea con otro protocolo. El control positivo (§10.5)
+confirma que **la que decide es la partición**. Con el protocolo de MO-ELA, nuestras features
+reproducen sus números. Con particiones por problema, ni siquiera su tarea supera al SBS.
+
+1. **Las particiones interpolan dentro de una familia, en lugar de generalizar fuera de ella.**
+   - **Liefooghe 2021:** hay 50 problemas por celda (d, k) del mismo generador, con 80/20
+     aleatorio. Siempre hay hermanos del destino en el entrenamiento.
+   - **MO-ELA:** la etiqueta es por función, y cada fila es una combinación de función, d, tamaño de
+     muestra y semilla. Con 80/20 aleatorio, la misma función queda en entrenamiento y test con
+     features casi idénticas, así que la prueba mide reconocimiento. Con nuestras features el
+     reconocimiento también funciona (E15: 100 % en 1-NN tras remuestrear). Además, el modelo
+     final se elige en el conjunto de test.
+   - **Nosotros:** LOGO y LOFO dejan fuera la formulación o la familia entera. Eso es
+     generalización fuera de la distribución.
+2. **La tarea es elegir entre algoritmos distintos, no entre configuraciones de un mismo
+   algoritmo.**
+   - NSGA-II, MOEA/D y SMS-EMOA se comportan de forma muy distinta. Qué algoritmo gana depende de
+     rasgos gruesos del problema, como el número de objetivos, la forma del frente o la
+     multimodalidad, y las features los captan.
+   - Nuestras candidatas son 37 configuraciones de NSGA-II, cada una ajustada a su problema. Muchas
+     son casi equivalentes, y cuál gana depende de detalles que las features no ven.
+   - Además, nuestro SBS es una configuración ajustada (c*_ZDT3) que queda a 0.014 del oráculo.
+   - **Por sí sola no basta.** Con nuestras particiones, la selección entre algoritmos por defecto
+     es algo menos mala que la transferencia, pero tampoco supera al SBS (§10.5).
+3. **La escala de datos y el modelo son otros:** unas 1 000 instancias con random forest o XGBoost,
+   frente a nuestros 37 problemas con 1-NN.
+4. **Donde la literatura prueba funciones no vistas, también falla:**
+   - **MO-ELA:** cierra el 96.3 % del hueco en el global biobjetivo, pero el 44.6 % en bbob-biobj y
+     el 27.2 % en triobjetivo. En MPM2 triobjetivo queda por debajo del SBS (−0.11).
+   - **Belkhir:** falla en funciones sin nada parecido en el entrenamiento ("the training set
+     should cover all the foreseeable difficulties") y fuera del rango de d.
+   - **van der Blom y Vermetten:** en MA-BBOB, con un SBS fuerte, el selector pierde frente al SBS.
+     Evitan a propósito dejar problemas fuera, porque eso mide la generalización fuera de la
+     distribución.
+   - **Prager:** antes de ajustar sus hiperparámetros, la mayoría de sus cadenas de modelos pierden
+     frente al SBS, y en F15–F19 gana el SBS.
+5. **Sus huecos también son pequeños, y el hueco cerrado los agranda.**
+   - Los huecos son del mismo orden que el nuestro (0.014 entre el SBS y el oráculo):
+     - **Liefooghe 2021:** un hueco SBS–VBS de en torno al 3 %.
+     - **Liefooghe 2023:** un regret de 0.0016–0.0044.
+     - **Cosson 2021:** casi todo son empates. El error frente al mejor de media es del 36 %, pero
+       frente al estadísticamente mejor es solo del 3 %. Su mérito, (RS − VBS)/(SBS − VBS), es de
+       0.29–0.37, así que cierra unos dos tercios de un hueco pequeño.
+   - Un cociente sobre un hueco pequeño parece grande.
+   - El hueco cerrado global es un cociente de sumas, así que lo dominan los pocos casos con huecos
+     grandes.
+
+**Lectura:** nuestro resultado negativo no contradice la literatura. Cae en la zona que ella no
+evalúa (configuraciones ajustadas y familias fuera) o en la que también falla (funciones no vistas).
+Lo que "funciona" en la literatura es, en gran parte, reconocer un problema ya visto y devolver lo
+que se sabe de él. Es un matiz publicable y conviene decirlo en el artículo, con el control positivo
+como prueba.
+
+### 10.4 Qué se incorpora
+
+Ninguna incorporación toca las puertas G3, G4 o G5 ni los métodos pre-registrados. Son análisis
+exploratorios, comparadores para pre-registros futuros o diseño de fases posteriores.
+
+| # | Qué | De dónde | Dónde entra | Coste |
+|---|---|---|---|---|
+| L1 | **Control positivo:** la tarea de la literatura, elegir entre NSGA-II, MOEA/D e IBEA por defecto, con nuestras features y particiones | MO-ELA, Liefooghe 2021 | Fase 3, ya ejecutado (§10.5); en la 3c, con su matriz | Nulo: las tres configuraciones por defecto ya están en las matrices |
+| L2 | **Control de fuga explícito:** el mismo pipeline con 80/20 aleatorio y con particiones agrupadas | MO-ELA, Liefooghe 2021 | Ya está en la RQ1 ("Control de fuga") y se informa junto a L1. En la 3c, S1 hace de partición cercana | Nulo |
+| L3 | **Métricas comparables:** el hueco cerrado por familia o grupo, siempre junto al hueco absoluto SBS–VBS, y el error frente al "estadísticamente mejor" (Mann-Whitney con Bonferroni), que trata los casi empates | Liefooghe 2021, Cosson 2021, ASlib | Informes de las fases 3 y 3c, como análisis secundario | Nulo |
+| L4 | **Selector por regresión del rendimiento:** un random forest predice el HVn de cada candidata a partir de las features, con la selección de features anidada en los pliegues de entrenamiento. Variante de Belkhir: un modelo de (features, θ) → HVn, que puede puntuar configuraciones fuera del portafolio | Liefooghe 2021, Belkhir 2016–2017, Prager 2020 | Exploratorio en la 3c con su matriz: 101 configuraciones (64 de la matriz y 37 aleatorias) × 165 problemas, unas 16 700 filas. Si funciona, comparador pre-registrado en la evaluación final | Bajo |
+| L5 | **Líneas base de caja blanca y de dimensión:** elegir por el grupo de bbob de los componentes y elegir solo por d | Liefooghe 2021, con parámetros ocultos del generador y solo d | 3c, secundario. `same_function` ya es el techo de caja blanca en S1 | Nulo |
+| L6 | **Portafolio complementario (Hydra):** varias rondas de irace sobre todo el entrenamiento, puntuando max(candidata, portafolio); después se selecciona entre esas pocas configuraciones | Hydra; van der Blom y Vermetten (los portafolios pequeños y complementarios recuperan terreno frente al SBS) | Fase nueva (3d o segundo artículo). Ataca la causa principal: el generalista domina y el donante oráculo casi nunca es el vecino | Alto: una campaña de irace por ronda |
+| L7 | **Agrupar, ajustar y filtrar por distancia (ISAC):** una configuración por grupo de problemas. El grupo más cercano se usa solo si el destino está dentro de la media + 2 desviaciones de las distancias del grupo; si no, el generalista | ISAC | RQ5, cuyos brazos de "k más parecidos" son ISAC sin agrupamiento, y RQ4, para la puerta | El de la RQ5 |
+| L8 | **Puerta de confianza por remuestreo:** recomendar solo si la distancia al vecino es comparable a la distancia entre muestras de un mismo problema | Tesis (umbral de confianza), E15 | RQ4; se calcula con las 5 muestras de cada problema | Nulo |
+| L9 | **Cribado de features por estabilidad:** quitar las features que separan poco los problemas frente a lo que varían entre muestras (por ejemplo, con el ICC de las 5 muestras), dentro de los pliegues | Tesis (inestabilidad reconocida), E14, `FEATURE_ANALYSIS.md` | Exploratorio en las fases 3 y 3c; pre-registrable para la evaluación final | Nulo |
+| L10 | **Vecino jerárquico:** filtrar primero por metadatos (M, D) y después por paisaje | Tesis | Fase 3; en la 3c los metadatos no distinguen ningún problema | Nulo |
+| L11 | **Contabilidad del presupuesto de features:** la pérdida total incluye las 200·D evaluaciones de la caracterización, el 10 % del presupuesto con D = 10 | van der Blom y Vermetten (del 11 al 28 % de la pérdida) | Ya en la §5 ("Presupuesto"); se informa en la 3c y en la RQ4 | Nulo |
+| L12 | **Varios presupuestos:** comparar también a 5 000 y 10 000 evaluaciones (MO-ELA usa 15 000 con d = 10) | MO-ELA, Liefooghe 2023 | 3c, secundario, ya pre-registrado (§6 de su pre-registro) | Nulo |
+
+**Para el artículo:** la sección de trabajo previo debe recoger la tabla de la §10.2 y el argumento
+de la §10.3. El control positivo (L1 y L2) es el experimento que lo demuestra con nuestros datos.
+
+### 10.5 Control positivo (L1, fase 3, exploratorio)
+
+Se ejecutó el 2026-10-27 con los 37 problemas, las features y la matriz de la fase 3. El detalle
+está en `research/phase3/report.md`, §12, y los scripts son `algorithm_selection_control.py` y
+`algorithm_selection_leaky.py`.
+- **Tarea de la literatura:** elegir entre NSGA-II, MOEA/D e IBEA por defecto. El SBS es NSGA-II,
+  con 0.846, y el hueco SBS–VBS es 0.025.
+- **Selectores:** el mejor del vecino más cercano, el de los 3 más cercanos, un random forest
+  clasificador y un random forest de regresión por algoritmo.
+
+Hueco cerrado por los selectores, del peor al mejor:
+
+| Partición | Selección entre algoritmos por defecto | Transferencia de configuraciones ajustadas (`landscape_1nn`) |
+|---|---|---|
+| Filas al azar, con fuga (como MO-ELA) | **0.79 a 0.98** (random forest clasificador: 98 % de acierto) | **0.49** (0.908 frente a 0.892 del SBS) |
+| Problemas al azar 80/20 | −0.89 a −0.22 | −0.99 |
+| LOGO | −1.64 a −0.61 | −3.63 |
+| LOFO | −1.81 a −0.81 | −4.54 |
+
+**Qué demuestra:**
+- **Las features no son el problema.** Con el protocolo de MO-ELA, cierran el 98 % del hueco (MO-ELA:
+  96.3 %), e incluso la transferencia de configuraciones supera al SBS.
+- **El protocolo lo decide todo.** En cuanto el problema destino sale del entrenamiento, ningún
+  selector supera al SBS, en ninguna de las dos tareas.
+- **El acierto engaña.** En LOFO, el random forest de regresión acierta más que el SBS (86 % frente a
+  78 %), pero rinde menos de media, porque sus fallos son caros. Por eso L3 exige informar siempre
+  del HVn o del hueco absoluto.
+
+**Consecuencias para el plan:**
+- **L2 se amplía.** En la 3c se repite el control con los tres protocolos:
+  - filas al azar;
+  - instancia fuera, que es la S1 y se parece a Liefooghe 2021, con hermanos en el entrenamiento;
+  - función o grupo fuera.
+
+  Así el gradiente de similitud de la 3c tiene también el punto de referencia de la literatura.
+- **El artículo** puede afirmar, con datos propios, que el éxito publicado de las meta-características
+  depende de tener el problema o sus hermanos en el entrenamiento.
+
+### 10.6 Fuentes
+
+- [MO-ELA, arXiv 2602.00098 (texto completo)](https://arxiv.org/html/2602.00098v1)
+- [Liefooghe et al., GECCO 2021 (best paper)](https://cristal.univ-lille.fr/en/news/2021-06-26-904/)
+- [Repositorio RGU, Liefooghe et al.](https://rgu-repository.worktribe.com/output/1324031)
+- [Liefooghe et al., EMO 2023 (Feature-Based Benchmarking of Distance-Based Problems)](https://jyx.jyu.fi/handle/123456789/87040)
+- [Belkhir et al., Per instance algorithm configuration of CMA-ES with limited budget (HAL)](https://hal.archives-ouvertes.fr/hal-01613753)
+- [Tesis de Belkhir (ROADEF)](https://roadef.org/app/posts/9f17268b-a430-4ed0-a213-dd554746301c)
+- [Prager et al., Per-Instance Configuration of the Modularized CMA-ES](https://research.utwente.nl/en/publications/per-instance-configuration-of-the-modularized-cma-es-by-means-of-/)
+- [van der Blom y Vermetten, arXiv 2605.04954](https://arxiv.org/abs/2605.04954)
+- Sin enlace comprobado:
+  - Cosson et al., EvoCOP 2021;
+  - Kadioglu et al., ISAC, ECAI 2010;
+  - Xu, Hoos y Leyton-Brown, Hydra, AAAI 2010;
+  - Aldana-Martín, tesis doctoral, 2024.
