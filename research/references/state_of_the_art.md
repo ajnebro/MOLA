@@ -192,3 +192,32 @@ en `plan.md`, §10.
 multiobjetivo según la similitud de su paisaje. El hueco que ocupa nuestro artículo sigue abierto.
 La búsqueda no es sistemática; antes de enviar conviene revisar las actas de GECCO 2026, EMO 2025 y
 CEC 2026.
+
+### Detalle de Cenikj et al. 2025 (leído el 2026-10-28, texto completo de arXiv 2501.17663v1)
+- **Tarea:** selección entre variantes configuradas de DE y PSO (portafolios 5DE, 5PSO, 5DE+5PSO y
+  2DE+2PSO), con presupuesto fijo de 100 iteraciones. Un objetivo.
+- **Problemas:** 8 280 combinaciones afines de pares de funciones de BBOB (5 instancias de las 24
+  clases, α ∈ {0.25, 0.5, 0.75}).
+- **Features:** ELA (62, flacco), TinyTLA, Doe2Vec, TransOptAS y DeepELA, sobre un LHS de 50·d.
+- **Modelo:** random forest de regresión multisalida (scikit-learn, 100 árboles, sin ajustar).
+- **Línea base:** un modelo "dummy" que predice el rendimiento medio de cada algoritmo en
+  entrenamiento, es decir, el SBS. No informan del VBS.
+- **Cuatro particiones, de fácil a difícil:** instancia fuera, aleatoria, combinación con una clase
+  fuera y clases fuera (ninguna de las dos clases del test aparece en entrenamiento).
+- **Mejora mediana de ELA sobre el SBS** (métrica en [0, 1], mayor es mejor):
+
+  | Partición | 5DE+5PSO | 2DE+2PSO | 5DE | 5PSO |
+  |---|---|---|---|---|
+  | Instancia fuera | +0.041 | +0.067 | +0.032 | +0.011 |
+  | Aleatoria | +0.039 | +0.064 | +0.033 | +0.007 |
+  | Combinación con una clase fuera | +0.032 | +0.030 | +0.013 | +0.001 |
+  | Clases fuera | −0.011 | −0.009 | +0.006 | −0.004 |
+
+- **Matiz:** la frase "ninguno supera al SBS" se refiere a la partición más difícil, y es
+  aproximada: en 5DE, ELA queda +0.006 por encima, una diferencia despreciable. Las demás
+  representaciones quedan por debajo de ELA, y combinarlas no mejora.
+- **Su explicación:** la similitud de features solo coincide con la similitud de rendimiento cuando
+  es muy alta, así que los modelos funcionan casi solo con casi duplicados del entrenamiento.
+- **Relevancia:** su escalera de particiones coincide con la nuestra (instancia fuera ≈ S1, función
+  fuera ≈ S3, grupo fuera ≈ S2), y su tarea (variantes configuradas de una misma familia) está más
+  cerca de la nuestra que la de MO-ELA.
