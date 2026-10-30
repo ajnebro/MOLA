@@ -144,3 +144,15 @@ en [`question1.md`](question1.md).
 16. ¿Qué problemas y en qué fase para la validación con tres objetivos?
 17. RQ4: con un generalista que domina, ¿se evalúa igualmente la política de recomendar o recurrir al
     generalista, con un pre-registro nuevo sobre la misma matriz?
+
+### Hechas el 2026-10-30, sin respuesta todavía
+
+18. Tras leer entero Cenikj et al. 2025 (`Descargas/landscape.pdf`), ¿hago el análisis del umbral
+    de similitud (L13 en `plan.md`, §10.4)?
+    - **Qué es:** para cada par de problemas, la similitud de features frente a la de rendimiento,
+      para ver a partir de qué similitud se parecen en rendimiento.
+    - **Propuesta de Claude:**
+      - hacerlo ya, de forma exploratoria, con la matriz de la fase 3, sin ejecuciones nuevas;
+      - registrarlo en la 3c como enmienda 3, antes de que exista su matriz.
+    - **Para qué sirve:** da una respuesta cuantitativa al "cuándo" del título y una regla de
+      abstención para la RQ4.

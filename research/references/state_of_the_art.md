@@ -221,3 +221,54 @@ CEC 2026.
 - **Relevancia:** su escalera de particiones coincide con la nuestra (instancia fuera ≈ S1, función
   fuera ≈ S3, grupo fuera ≈ S2), y su tarea (variantes configuradas de una misma familia) está más
   cerca de la nuestra que la de MO-ELA.
+
+### Cenikj et al. 2025, versión publicada (leída entera el 2026-10-30, `Descargas/landscape.pdf`)
+
+Confirma las cifras de la sección anterior y añade lo siguiente.
+- **Mecanismo (§4.3, Fig. 5).** En 1 000 000 de pares de problemas, la similitud de rendimiento
+  solo crece con la de features cuando la similitud del coseno de las features supera **0.98**.
+  Por debajo, la línea es plana. Casi todos los pares tienen una similitud de features de 0.80–0.90,
+  con todas las representaciones.
+- **Correlación de cada feature con el rendimiento de cada algoritmo:** está siempre entre −0.30 y
+  0.30 (Fig. 6). Ninguna feature, por sí sola, sigue el rendimiento.
+- **Portafolios.**
+  - Con 5PSO, cinco configuraciones del mismo algoritmo, la ganancia es mínima incluso con la
+    instancia fuera (+0.011).
+  - Con 2DE+2PSO, el portafolio más complementario, es máxima (+0.067).
+  - Los autores: "including similar algorithms in the algorithm portfolio … may hide the
+    discriminatory power of some features".
+- **Robustez.** Repiten con un portafolio que incluye CMA-ES y con otros presupuestos, y las
+  conclusiones no cambian. Con 1 000 muestras de ELA ([8], Petelin y Cenikj, SSCI 2023) tampoco
+  funciona con problemas fuera.
+- **Trabajo previo que citan** ([9], Cenikj, Petelin y Eftimov, *Swarm Evol. Comput.* 87, 101534,
+  2024): "when the training and testing benchmarks … share the same single-best solver, the
+  feature-based AS models cannot outperform a simple baseline". Es nuestro caso: c*_ZDT3 es el SBS
+  en 31 de 32 grupos.
+- **Su diagnóstico.** Como representaciones muy distintas fallan igual, "the features themselves are
+  not the cause"; el modelo solo infiere bien el rendimiento si ya vio un problema casi idéntico.
+  - **Causas abiertas:** el tamaño de muestra, los datos de entrenamiento de las representaciones
+    profundas y el diseño de BBOB. Con BBOB, dejar fuera la instancia es trivial y dejar fuera el
+    problema es extremo: "with existing benchmarks, it is not possible to measure generalizability
+    properly".
+  - **Propuestas:** features de trayectoria (DynamoRep, Opt2Vec y las *probing trajectories* de
+    Renau y Hart, EvoApplications 2024), el escenario de objetivo fijo y problemas reales.
+- **Correspondencia con nuestra fase 3c.** Las funciones de bbob-biobj son parejas de 10 funciones
+  de bbob, igual que sus problemas son combinaciones afines de pares de clases de BBOB:
+
+  | Su partición | Mejora mediana de ELA | Nuestra partición |
+  |---|---|---|
+  | Instancia fuera | +0.011 a +0.067 | S1 |
+  | Combinación con una clase fuera (un padre visto, otro no) | +0.001 a +0.032 | S2 (los componentes del grupo g no se ven) |
+  | Ambas clases fuera | −0.011 a +0.006 | Las funciones de S2 con los dos componentes en g |
+
+  Nuestra S3 deja fuera solo la función, y sus dos componentes se ven en otras parejas, así que es
+  más fácil que su partición intermedia.
+- **Referencias que citan y nos interesan:**
+  - Tanabe, "Benchmarking feature-based algorithm selection systems for black-box numerical
+    optimization", IEEE TEVC 26(6), 2022: la elección entre dejar fuera la instancia o el problema
+    cambia los resultados;
+  - Dietrich, Vermetten, Doerr y Kerschke, "Impact of training instance selection on automated
+    algorithm selection models for numerical black-box optimization", GECCO 2024: relevante para la
+    RQ5;
+  - Renau y Hart, "On the utility of probing trajectories for algorithm-selection",
+    EvoApplications 2024.

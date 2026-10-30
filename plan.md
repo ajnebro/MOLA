@@ -681,6 +681,9 @@ exploratorios, comparadores para pre-registros futuros o diseño de fases poster
 | L10 | **Vecino jerárquico:** filtrar primero por metadatos (M, D) y después por paisaje | Tesis | Fase 3; en la 3c los metadatos no distinguen ningún problema | Nulo |
 | L11 | **Contabilidad del presupuesto de features:** la pérdida total incluye las 200·D evaluaciones de la caracterización, el 10 % del presupuesto con D = 10 | van der Blom y Vermetten (del 11 al 28 % de la pérdida) | Ya en la §5 ("Presupuesto"); se informa en la 3c y en la RQ4 | Nulo |
 | L12 | **Varios presupuestos:** comparar también a 5 000 y 10 000 evaluaciones (MO-ELA usa 15 000 con d = 10) | MO-ELA, Liefooghe 2023 | 3c, secundario, ya pre-registrado (§6 de su pre-registro) | Nulo |
+| L13 | **Umbral de similitud:** como la Fig. 5 de Cenikj et al. 2025, para cada par de problemas se compara la similitud de features con la de su vector de rendimiento en la matriz. ¿A partir de qué similitud se parecen también en rendimiento? Ese umbral es una respuesta cuantitativa al "cuándo" del título y la base de una regla de abstención | Cenikj et al. 2025 | Propuesta, pendiente de decisión: exploratorio en la fase 3 ahora; en la 3c, como enmienda 3 antes de la matriz; RQ4 | Nulo |
+| L14 | **Features de trayectoria:** gastar el presupuesto de caracterización en una ejecución corta de sondeo (por ejemplo, NSGA-II por defecto) en lugar de en un LHS, y describir su trayectoria | Cenikj et al. 2025; Renau y Hart 2024 | Segundo artículo | Medio |
+| L15 | **Selección de instancias de entrenamiento:** comparar el diseño de la RQ5 con Dietrich et al., GECCO 2024 | Dietrich et al. 2024 | RQ5 | Nulo |
 
 **Para el artículo:** la sección de trabajo previo debe recoger la tabla de la §10.2 y el argumento
 de la §10.3. El control positivo (L1 y L2) es el experimento que lo demuestra con nuestros datos.
