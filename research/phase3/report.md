@@ -436,3 +436,59 @@ muestras cuya elección queda a menos de 0.01 del VBS.
   generador en el entrenamiento.
 - La fase 3c, con instancias de la misma función (S1), mide justo ese caso intermedio.
 - Es exploratorio y no cambia G3.
+
+## 13. RQ7: qué eligen las configuraciones ajustadas (2026-10-31, exploratorio)
+
+Responde a la RQ7 (`plan.md`, §11, D10) con las 37 élites de la fase 3, sin ejecuciones nuevas.
+Script: `scripts/rq7_tuned_configs.py`. Salida: `data/rq7_tuned_configs.json`.
+
+**1. Qué eligen.**
+- **24 de 37 élites tienen una población pegada al límite superior del espacio** (≥ 95 % del rango
+  logarítmico de [20, 200]); la mediana es 198. El límite de 200 probablemente recorta lo que irace
+  elegiría.
+- **25 son de estado estacionario** (proporción de descendientes 0). Son las ejecuciones lentas que
+  alargan las campañas.
+- **Los operadores varían mucho:**
+  - SBX en 24 élites;
+  - mutación polinómica, simple o enlazada, en 21;
+  - las cinco reparaciones y los cinco inicializadores aparecen todos.
+
+**2. ¿Reciben configuraciones parecidas los problemas parecidos?** Test de Mantel (Spearman,
+unilateral, 9 999 permutaciones) entre la distancia entre problemas y tres distancias entre sus
+configuraciones.
+
+| Distancia entre problemas | Configuraciones: parámetros (Gower) | Configuraciones: comportamiento (1 − ρ del HVn en los 37 problemas) | Pérdida de transferencia mutua |
+|---|---|---|---|
+| Paisaje, todos los pares | ρ = 0.06 (p = 0.24) | **ρ = 0.32 (p = 0.001)** | **ρ = 0.38 (p = 0.001)** |
+| Paisaje, solo familias distintas | ρ = −0.17 (p = 0.97) | **ρ = 0.22 (p = 0.02)** | **ρ = 0.23 (p = 0.03)** |
+| Metadatos, todos los pares | ρ = 0.00 (p = 0.50) | ρ = 0.18 (p = 0.01) | ρ = 0.15 (p = 0.05) |
+| Metadatos, solo familias distintas | ρ = −0.21 (p = 0.99) | ρ = 0.05 (p = 0.26) | ρ = −0.03 (p = 0.59) |
+
+**3. ¿Se predice cada parámetro desde las features?** Con LOGO (32 pliegues), un random forest y el
+vecino más cercano frente a dos líneas base: la clase mayoritaria, o la mediana en los numéricos, y
+un sorteo con las frecuencias del entrenamiento.
+- **Ningún parámetro se predice mejor que la clase mayoritaria o la mediana.** Por ejemplo, el cruce
+  acierta un 54 % con el random forest frente al 65 % de la mayoritaria. En la población, el error
+  absoluto medio en [0, 1] es 0.169 frente a 0.179.
+- **El random forest supera al sorteo por frecuencias** (por ejemplo, en la selección, 0.60 frente a
+  0.32), pero eso es lo mínimo exigible.
+- En la selección y el inicializador, la mayoritaria acierta un 0 % por un artefacto de dejar uno
+  fuera con dos clases empatadas. Por eso se añadió el sorteo.
+
+**Lectura:**
+- **Los problemas que se parecen en paisaje reciben configuraciones que se comportan parecido y que
+  se transfieren bien entre sí,** incluso entre familias distintas (ρ ≈ 0.23). No reciben
+  configuraciones que se parezcan en sus parámetros.
+  - irace llega a un rendimiento equivalente con parámetros muy distintos, así que *qué* elige está
+    poco determinado y no se puede predecir desde las features.
+  - Lo que sí tiene estructura es *cómo rinde* lo que elige.
+- **Esto favorece recuperar configuraciones sobre predecir parámetros,** el enfoque de Belkhir y
+  Prager. También explica que agregar vecinos ayude: la señal es real pero moderada, y un solo
+  vecino es frágil.
+- **El paisaje lleva señal que los metadatos no tienen.** Entre familias distintas, los metadatos no
+  relacionan nada (ρ ≈ 0) y el paisaje sí (ρ ≈ 0.23).
+- **El límite de población del espacio** merece revisarse en estudios futuros. Cambiarlo ahora
+  rompería la comparabilidad con las fases 3, 3c y 3g.
+
+**Límites:** son 37 problemas y una sola ejecución de irace por problema. Es exploratorio, y los
+valores p no se corrigen por las 12 pruebas.

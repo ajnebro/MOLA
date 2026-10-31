@@ -1,0 +1,365 @@
+{
+  "note": "Exploratory (RQ7, D10). n = 37 problems: low power.",
+  "choices": {
+    "categorical": {
+      "offspring_ratio": {
+        "0.0": 25,
+        "1.0": 6,
+        "0.75": 4,
+        "0.5": 2
+      },
+      "selection": {
+        "sus": 15,
+        "tournament": 15,
+        "boltzmann": 3,
+        "ranking": 2,
+        "random": 2
+      },
+      "initializer": {
+        "random": 11,
+        "obl": 11,
+        "lhs": 5,
+        "scatter": 5,
+        "sobol": 5
+      },
+      "crossover": {
+        "sbx": 24,
+        "arithmetic": 4,
+        "blx_alpha": 3,
+        "laplace": 2,
+        "fuzzy": 2,
+        "whole_arithmetic": 2
+      },
+      "mutation": {
+        "linked_polynomial": 15,
+        "polynomial": 6,
+        "levy_flight": 6,
+        "non_uniform": 4,
+        "uniform": 3,
+        "power_law": 3
+      },
+      "repair": {
+        "clip": 14,
+        "reflect": 9,
+        "random": 5,
+        "midpoint": 5,
+        "wrap": 4
+      }
+    },
+    "numeric": {
+      "pop_size": {
+        "median": 198.0,
+        "q25": 99.0,
+        "q75": 200.0,
+        "at_lower_bound": 1,
+        "at_upper_bound": 24
+      },
+      "crossover_prob": {
+        "median": 0.887,
+        "q25": 0.781,
+        "q75": 0.943,
+        "at_lower_bound": 2,
+        "at_upper_bound": 6
+      },
+      "mutation_prob_factor": {
+        "median": 0.872,
+        "q25": 0.459,
+        "q75": 1.566,
+        "at_lower_bound": 5,
+        "at_upper_bound": 1
+      }
+    },
+    "by_family": {
+      "offspring_ratio": {
+        "DTLZ": {
+          "0.0": 5
+        },
+        "LZ09/UF": {
+          "1.0": 6,
+          "0.75": 4,
+          "0.0": 3,
+          "0.5": 2
+        },
+        "RE/RWA": {
+          "0.0": 3
+        },
+        "ZCAT": {
+          "0.0": 10
+        },
+        "ZDT": {
+          "0.0": 4
+        }
+      },
+      "selection": {
+        "DTLZ": {
+          "boltzmann": 2,
+          "tournament": 1,
+          "sus": 1,
+          "ranking": 1
+        },
+        "LZ09/UF": {
+          "sus": 10,
+          "tournament": 3,
+          "ranking": 1,
+          "random": 1
+        },
+        "RE/RWA": {
+          "sus": 2,
+          "random": 1
+        },
+        "ZCAT": {
+          "tournament": 10
+        },
+        "ZDT": {
+          "sus": 2,
+          "boltzmann": 1,
+          "tournament": 1
+        }
+      },
+      "initializer": {
+        "DTLZ": {
+          "random": 2,
+          "sobol": 1,
+          "obl": 1,
+          "scatter": 1
+        },
+        "LZ09/UF": {
+          "obl": 5,
+          "sobol": 4,
+          "random": 3,
+          "lhs": 2,
+          "scatter": 1
+        },
+        "RE/RWA": {
+          "obl": 2,
+          "lhs": 1
+        },
+        "ZCAT": {
+          "random": 4,
+          "obl": 3,
+          "scatter": 2,
+          "lhs": 1
+        },
+        "ZDT": {
+          "random": 2,
+          "lhs": 1,
+          "scatter": 1
+        }
+      },
+      "crossover": {
+        "DTLZ": {
+          "sbx": 4,
+          "fuzzy": 1
+        },
+        "LZ09/UF": {
+          "sbx": 7,
+          "blx_alpha": 3,
+          "arithmetic": 2,
+          "whole_arithmetic": 2,
+          "fuzzy": 1
+        },
+        "RE/RWA": {
+          "arithmetic": 2,
+          "laplace": 1
+        },
+        "ZCAT": {
+          "sbx": 10
+        },
+        "ZDT": {
+          "sbx": 3,
+          "laplace": 1
+        }
+      },
+      "mutation": {
+        "DTLZ": {
+          "polynomial": 2,
+          "linked_polynomial": 2,
+          "power_law": 1
+        },
+        "LZ09/UF": {
+          "linked_polynomial": 6,
+          "non_uniform": 3,
+          "levy_flight": 3,
+          "polynomial": 1,
+          "power_law": 1,
+          "uniform": 1
+        },
+        "RE/RWA": {
+          "uniform": 1,
+          "power_law": 1,
+          "non_uniform": 1
+        },
+        "ZCAT": {
+          "linked_polynomial": 4,
+          "polynomial": 3,
+          "levy_flight": 3
+        },
+        "ZDT": {
+          "linked_polynomial": 3,
+          "uniform": 1
+        }
+      },
+      "repair": {
+        "DTLZ": {
+          "reflect": 2,
+          "random": 1,
+          "wrap": 1,
+          "clip": 1
+        },
+        "LZ09/UF": {
+          "clip": 5,
+          "midpoint": 3,
+          "reflect": 3,
+          "random": 2,
+          "wrap": 2
+        },
+        "RE/RWA": {
+          "clip": 3
+        },
+        "ZCAT": {
+          "reflect": 3,
+          "random": 2,
+          "midpoint": 2,
+          "clip": 2,
+          "wrap": 1
+        },
+        "ZDT": {
+          "clip": 3,
+          "reflect": 1
+        }
+      }
+    }
+  },
+  "mantel": {
+    "landscape": {
+      "parameters_gower": {
+        "all_pairs": {
+          "rho": 0.063,
+          "p": 0.2401,
+          "pairs": 666
+        },
+        "between_families": {
+          "rho": -0.167,
+          "p": 0.968,
+          "pairs": 497
+        }
+      },
+      "behaviour": {
+        "all_pairs": {
+          "rho": 0.319,
+          "p": 0.0009,
+          "pairs": 666
+        },
+        "between_families": {
+          "rho": 0.221,
+          "p": 0.0182,
+          "pairs": 497
+        }
+      },
+      "mutual_transfer_loss": {
+        "all_pairs": {
+          "rho": 0.381,
+          "p": 0.0009,
+          "pairs": 666
+        },
+        "between_families": {
+          "rho": 0.232,
+          "p": 0.0306,
+          "pairs": 497
+        }
+      }
+    },
+    "metadata": {
+      "parameters_gower": {
+        "all_pairs": {
+          "rho": -0.004,
+          "p": 0.4966,
+          "pairs": 666
+        },
+        "between_families": {
+          "rho": -0.207,
+          "p": 0.9947,
+          "pairs": 497
+        }
+      },
+      "behaviour": {
+        "all_pairs": {
+          "rho": 0.176,
+          "p": 0.0104,
+          "pairs": 666
+        },
+        "between_families": {
+          "rho": 0.051,
+          "p": 0.2579,
+          "pairs": 497
+        }
+      },
+      "mutual_transfer_loss": {
+        "all_pairs": {
+          "rho": 0.147,
+          "p": 0.0501,
+          "pairs": 666
+        },
+        "between_families": {
+          "rho": -0.029,
+          "p": 0.589,
+          "pairs": 497
+        }
+      }
+    }
+  },
+  "prediction_logo": {
+    "note": "categorical: accuracy (higher is better); numeric: mean absolute error on the [0, 1]-scaled range (lower is better)",
+    "crossover": {
+      "rf": 0.541,
+      "nn1": 0.486,
+      "baseline": 0.649,
+      "baseline_frequency": 0.429
+    },
+    "crossover_prob": {
+      "rf": 0.249,
+      "nn1": 0.271,
+      "baseline": 0.25
+    },
+    "initializer": {
+      "rf": 0.243,
+      "nn1": 0.243,
+      "baseline": 0.0,
+      "baseline_frequency": 0.21
+    },
+    "mutation": {
+      "rf": 0.351,
+      "nn1": 0.351,
+      "baseline": 0.405,
+      "baseline_frequency": 0.219
+    },
+    "mutation_prob_factor": {
+      "rf": 0.168,
+      "nn1": 0.172,
+      "baseline": 0.214
+    },
+    "offspring_ratio": {
+      "rf": 0.649,
+      "nn1": 0.649,
+      "baseline": 0.676,
+      "baseline_frequency": 0.478
+    },
+    "pop_size": {
+      "rf": 0.169,
+      "nn1": 0.211,
+      "baseline": 0.179
+    },
+    "repair": {
+      "rf": 0.324,
+      "nn1": 0.405,
+      "baseline": 0.378,
+      "baseline_frequency": 0.229
+    },
+    "selection": {
+      "rf": 0.595,
+      "nn1": 0.541,
+      "baseline": 0.0,
+      "baseline_frequency": 0.317
+    }
+  }
+}

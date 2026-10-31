@@ -855,6 +855,15 @@ ZDT pierde 0.15 y queda por debajo de NSGA-II por defecto.
 
 ### RQ7. Qué eligen las configuraciones ajustadas
 
+**Primer resultado (2026-10-31, fase 3, exploratorio; `research/phase3/report.md`, §13):**
+- Los problemas parecidos en paisaje reciben configuraciones que *se comportan* parecido y se
+  transfieren bien entre sí. El Mantel con la pérdida mutua da ρ = 0.38 en todos los pares y 0.23
+  entre familias distintas.
+- No reciben configuraciones *con parámetros* parecidos (ρ ≈ 0), y ningún parámetro se predice
+  desde las features mejor que la clase mayoritaria.
+- Los metadatos no relacionan nada entre familias distintas.
+- 24 de 37 élites tienen la población en el límite del espacio (200).
+
 **Pregunta:** ¿qué eligen las configuraciones ajustadas, y lo explican los rasgos de los problemas?
 
 **Por qué importa.** Es el diagnóstico de la RQ1.
