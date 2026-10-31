@@ -1,5 +1,6 @@
-"""RQ7, exploratory (plan.md section 11, D10; 2026-10-31): what do the tuned configurations choose,
-and do the problem features explain it?
+"""RQ7, exploratory: what do the tuned configurations choose, and do the features explain it?
+
+plan.md section 11, D10; 2026-10-31.
 
 Data: the 37 elites of phase 3 (data/tuned_configs.json), the 49 features (MOLA 0.4.0, `sample`
 objective scaling; problem means over the 5 LHS samples) and the phase 3 matrix.
@@ -12,7 +13,8 @@ objective scaling; problem means over the 5 LHS samples) and the phase 3 matrix.
    analyze_transfer). Configuration distances:
    - parameters: Gower over the 9 top-level parameters (pop_size on a log scale);
    - behaviour: 1 - Spearman correlation of the two configurations' HVn over the 37 problems;
-   - mutual transfer loss: (L(a -> b) + L(b -> a)) / 2, with L(a -> b) = HVn(c*_b, b) - HVn(c*_a, b).
+   - mutual transfer loss: (L(a -> b) + L(b -> a)) / 2,
+     with L(a -> b) = HVn(c*_b, b) - HVn(c*_a, b).
    Each test runs on all pairs and on the pairs from different families only (the pair set is
    fixed by the true labels; the permutation moves the configuration matrix).
 3. Prediction of each parameter from the features, leaving one formulation group out (32 folds):
