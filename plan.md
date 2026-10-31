@@ -45,7 +45,8 @@ Borrador del 2026-10-19, actualizado el 2026-10-20, el 2026-10-26 (orden de las 
     - **Duración:** faltan unos 6 días de cálculo desde la reanudación.
 - **Estado del arte:** revisado el 2026-10-27, con las lecciones y lo que se incorpora en la §10.
   Las notas por trabajo están en `research/references/state_of_the_art.md`.
-- **Generalistas irace de la fase 3 (fase 3g, D11):** pendientes de pre-registro y lanzamiento.
+- **Generalistas irace de la fase 3 (fase 3g, D11):** pre-registrada el 2026-10-31
+  (`research/phase3g/preregistration.md`, puerta G6); falta lanzarla.
   - **Qué:** 5 ajustes con irace sobre el entrenamiento, uno por familia excluida, y 1 sobre los 37
     problemas.
   - **Para qué:** son la línea base 1 de la evaluación (§4, RQ1).
@@ -306,7 +307,7 @@ transferencia de lo sintético a lo real y qué eligen las configuraciones ajust
 | 2. Piloto | Estabilidad, escalado, coste y complementariedad del portafolio con unos 40 problemas y 5 semillas | **G2:** hueco SBS–VBS suficiente, con umbral fijado antes. Si no lo hay, se diversifica el portafolio |
 | 3. Transferencia | Matriz de rendimiento con VAMOS y comparación de métodos con particiones agrupadas frente a aleatorias | **G3** (RQ1): ¿supera el paisaje a los metadatos? Si no, el resultado negativo se publica |
 | 3c. Transferencia con similitud controlada | bbob-biobj con D = 10: 165 problemas, 55 ajustes por función y 6 generalistas irace. Pre-registro con dos enmiendas | **G4** (S1, `landscape_1nn` > `gen_all`) y **G5** (S2, consenso > `gen_g`). Campaña parada el 2026-10-28; se reanuda cuando NicoVM quede libre |
-| 3g. Generalistas irace de la fase 3 (D11) | 5 ajustes LOFO y 1 sobre los 37 problemas; comparación pre-registrada antes de lanzarlos | Línea base 1 para la fase 3 y para la evaluación final |
+| 3g. Generalistas irace de la fase 3 (D11) | 5 ajustes LOFO y 1 sobre los 37 problemas. Pre-registrada el 2026-10-31 (`research/phase3g/preregistration.md`) | **G6** (LOFO: `knn_selector` > generalista). Línea base 1 para la fase 3 y para la evaluación final |
 | 3e. Réplica en Evolver (D6) | La fase 3 entera en Evolver/jMetal | Pendiente de decisión; la recomendación es aplazarla a la versión de revista |
 | 3s. Selección del conjunto de entrenamiento | Pre-registro tras G3; LOFO con cuatro brazos de irace (paisaje, metadatos, todos, al azar) | RQ5 respondida en desarrollo; se aplica a los 17 reservados en la fase 5 |
 | 4. Confianza y presupuesto | Calibrar la política de recomendación o alternativa generalista, con el umbral de similitud (L13) | RQ4 respondida con presupuesto total |
