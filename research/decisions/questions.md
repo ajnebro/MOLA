@@ -167,4 +167,9 @@ en [`question1.md`](question1.md).
       - Pre-registrar la comparación antes de lanzarlo.
       - Lanzarlo en NicoVM cuando acaben la campaña y la matriz de la 3c.
     - **En la 3c ya está** (`gen_all` y `gen_g1`–`gen_g5`).
-    - **Tercera línea base:** pendiente; Claude propone el donante ajustado al azar. (2026-10-31)
+    - **Tercer elemento:** el usuario propone que no sea una línea base, sino la recomendación por
+      similitud para cada instancia, que es lo que se evalúa.
+      - Claude está de acuerdo, y propone mantener el donante al azar como control de ablación, no
+        como línea base.
+      - También propone informar, instancia a instancia, de la ganancia frente a las líneas base
+        según la distancia al vecino. (2026-10-31)
