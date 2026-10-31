@@ -169,3 +169,20 @@ en [`question1.md`](question1.md).
       - registrarlo en la 3c como enmienda 3, antes de que exista su matriz.
     - **Para qué sirve:** da una respuesta cuantitativa al "cuándo" del título y una regla de
       abstención para la RQ4.
+
+20. El usuario propone una política de tres niveles según la distancia normalizada: si se parecen
+    mucho, transferir la configuración; si se parecen algo, irace arrancado desde la configuración
+    más próxima; si no se parecen, irace desde cero. ¿La añado a la RQ4 y preparo el experimento de
+    arranque en caliente? (2026-10-31)
+    - **Propuesta de Claude:**
+      - **Unidad de distancia:** el ruido de remuestreo, es decir, la distancia mediana entre dos
+        muestras del mismo problema.
+      - **Umbrales calibrados en entrenamiento:**
+        - t1, para transferir: la mayor distancia con una pérdida ≤ ε en al menos el 1 − α de los
+          pares. Los datos de la fase 3 apuntan a unas 1.5 unidades.
+        - t2: a partir de qué distancia el arranque en caliente deja de ganar al arranque en frío
+          con el mismo presupuesto. Hace falta un experimento nuevo.
+      - **Tercer nivel:** sin presupuesto, el generalista; con presupuesto, irace completo arrancado
+        desde el generalista.
+      - **Experimento:** en caliente frente a en frío con 5 000 experimentos, en los 37 problemas.
+        Son unos 370 000 experimentos, 1–3 días en NicoVM, después de la 3c y de la 3g.
