@@ -1,6 +1,7 @@
 # Plan — Recomendación de configuraciones por similitud de paisajes (continuación de MOLA)
 
-Borrador del 2026-10-19, actualizado el 2026-10-20 y el 2026-10-26 (orden de las RQ, D7).
+Borrador del 2026-10-19, actualizado el 2026-10-20, el 2026-10-26 (orden de las RQ, D7), el
+2026-10-27 (estado del arte, RQ6 y RQ7) y el 2026-10-31 (diseño de la evaluación, D11).
 
 **Estado:**
 - **Fase 0:** ejecutada el 2026-10-19. Resultados en `research/phase0/report.md`; el registro
@@ -17,6 +18,13 @@ Borrador del 2026-10-19, actualizado el 2026-10-20 y el 2026-10-26 (orden de las
     - la 1, escalado de objetivos (D4);
     - la 2, IBEA en lugar de SMS-EMOA (D9).
   - El artículo (borrador en Overleaf) recoge el resultado negativo.
+  - **Análisis a posteriori** (`research/phase3/report.md`, §8–12), todos exploratorios:
+    - la cola de fallos del vecino único;
+    - las configuraciones aleatorias del espacio;
+    - una columna por distancia;
+    - los estratos y la regla de consenso;
+    - el control positivo. Con la partición por filas de MO-ELA, las features cierran el 79–98 % del
+      hueco; con el problema fuera del entrenamiento, nada supera al SBS (§10.5).
 - **Fase 3c (bbob-biobj):** pre-registrada el 2026-10-26 (`research/phase3c/preregistration.md`),
   después de los análisis a posteriori de la fase 3: estratos, consenso, distancias y
   configuraciones aleatorias.
@@ -24,6 +32,9 @@ Borrador del 2026-10-19, actualizado el 2026-10-20 y el 2026-10-26 (orden de las
     fuera y grupo fuera).
   - **Referencias:** generalistas ajustados con irace sobre el entrenamiento.
   - **Puertas:** G4 y G5.
+  - **Enmiendas,** las dos registradas antes de cualquier resultado:
+    - la 1, las configuraciones aleatorias como referencia;
+    - la 2, el control positivo con cuatro protocolos.
   - **Estado:** la campaña de irace empezó en NicoVM a las 21:12 UTC del 2026-10-26.
     - **Parada:** el 2026-10-28 a las 17:03 UTC se paró, a petición del usuario, para liberar NicoVM
       para otro proyecto. Para entonces habían terminado 8 de los 61 ajustes. No se ha borrado nada,
@@ -34,8 +45,16 @@ Borrador del 2026-10-19, actualizado el 2026-10-20 y el 2026-10-26 (orden de las
     - **Duración:** faltan unos 6 días de cálculo desde la reanudación.
 - **Estado del arte:** revisado el 2026-10-27, con las lecciones y lo que se incorpora en la §10.
   Las notas por trabajo están en `research/references/state_of_the_art.md`.
+- **Generalistas irace de la fase 3 (fase 3g, D11):** pendientes de pre-registro y lanzamiento.
+  - **Qué:** 5 ajustes con irace sobre el entrenamiento, uno por familia excluida, y 1 sobre los 37
+    problemas.
+  - **Para qué:** son la línea base 1 de la evaluación (§4, RQ1).
+  - **Cuándo:** se lanzan después de la 3c.
+- **RQ6 y RQ7 (D10):** añadidas al final del plan (§11): transferencia a problemas reales y qué eligen
+  las configuraciones ajustadas.
 - **Fase 3 en Evolver (D6):** después de la de VAMOS, la fase 3 se repite entera en Evolver/jMetal,
-  con el espacio completo de NSGA-II (`NSGAIIDouble.yaml`) e irace.
+  con el espacio completo de NSGA-II (`NSGAIIDouble.yaml`) e irace. **Pendiente de confirmar**
+  (pregunta pendiente 1). La recomendación de Claude es aplazarla a la versión de revista.
 - Las decisiones están en `research/decisions/decisions.md` (D1–D11, T1–T8).
 
 ---
@@ -153,14 +172,24 @@ actual; su regla no cambia.
 
 **RQ1. Transferencia (pregunta central).** ¿Devuelve el vecino más similar una configuración mejor
 que las alternativas siguientes, en formulaciones y familias no vistas?
-- **Comparadores:**
-  1. Configuración generalista (el SBS de entrenamiento).
-  2. Vecino por metadatos (D, M y cotas).
-  3. Donante aleatorio.
-  4. Distancia de la tesis, documentando sus casos indefinidos.
-  5. Distancia adaptada a cada tipo de feature.
-  6. Pesos aprendidos o un predictor sencillo de la pérdida de transferencia.
-  7. **Un selector directo de configuraciones con las mismas features**, para ver si recuperar
+- **Diseño de la evaluación (D11, 2026-10-31):**
+  - **Lo que se evalúa:** la recomendación por similitud de paisaje, en cada instancia. El método
+    principal es `knn_selector`, la mejor configuración media en los 3 problemas más parecidos. La
+    regla de consenso es la secundaria.
+  - **Línea base 1:** un generalista ajustado con irace sobre el conjunto de entrenamiento. Sustituye
+    al SBS como referencia principal; el SBS se sigue informando.
+  - **Línea base 2:** NSGA-II por defecto.
+  - **Controles, que no son líneas base:**
+    - el donante ajustado al azar, como ablación de la similitud;
+    - como techos, el mejor donante y la configuración ajustada en el propio problema.
+  - **Análisis instancia a instancia:** la ganancia frente a cada línea base, según la distancia al
+    problema más parecido (L13). Es la base de la regla de abstención de la RQ4.
+- **Otros comparadores, secundarios:**
+  1. el vecino por metadatos (D, M y cotas), que es el comparador de G3;
+  2. la distancia de la tesis, documentando sus casos indefinidos;
+  3. otras distancias (L1, PCA blanqueada y rangos);
+  4. pesos aprendidos o un predictor sencillo de la pérdida de transferencia;
+  5. **un selector directo de configuraciones con las mismas features**, para ver si recuperar
      donantes aporta algo más que explicación.
 - **Medidas:**
   - La pérdida de transferencia L(P→Q; b) = H_Q(c*_Q, b) − H_Q(c*_P, b), que puede ser asimétrica y
@@ -260,7 +289,7 @@ transferencia de lo sintético a lo real y qué eligen las configuraciones ajust
 | Problemas | Continuos y deterministas, con restricciones solo de caja. Dos objetivos en el estudio principal y tres como validación |
 | Suites | COCO bbob-biobj, que aporta repetibilidad e instancias identificables; DTLZ, WFG y ZDT; UF y LZ09 mediante el adaptador Java; ZCAT; RE y RWA sin duplicados |
 | Particiones | 1. Mismo problema con otro muestreo (reconocimiento). 2. Misma formulación con otra instancia (transferencia próxima). 3. Formulación excluida (generalización). 4. Familia o suite excluida. Los grupos finales se reservan **antes** de ajustar el método; los casos RE/RWA ya inspeccionados son de desarrollo |
-| Portafolio | **Decidido (D2, D3, D5):** una configuración c*_P ajustada **con irace** (≥ 20 000 experimentos) para cada problema de entrenamiento P; el portafolio es la unión de esas c*_P. Todo se ejecuta en VAMOS 1.0.0 (`0a8bbb0`, motor numpy), sobre el espacio de NSGA-II invariante. La configuración por defecto y la generalista (SBS) son comparadores. **La complementariedad entre la mejor c*_P única y el VBS es una puerta** (§6). Ver `research/decisions/decisions.md` |
+| Portafolio | **Decidido (D2, D3, D5):** una configuración c*_P ajustada **con irace** (≥ 20 000 experimentos) para cada problema de entrenamiento P; el portafolio es la unión de esas c*_P. Todo se ejecuta en VAMOS 1.0.0 (`0a8bbb0`, motor numpy), sobre el espacio de NSGA-II invariante. Las líneas base son un generalista ajustado con irace sobre el entrenamiento y NSGA-II por defecto (D11); el SBS se informa como referencia secundaria. **La complementariedad entre la mejor c*_P única y el VBS es una puerta** (§6). Ver `research/decisions/decisions.md` |
 | Caracterización | MOLA (0.4.0) con geometría `bound`, k = D y escalado de objetivos `sample` (D1, D4), con las 49 features y con el perfil histórico comparable (19 de los 21 descriptores, distancia de la tesis). Como trabajo futuro, un método viable basado en MO-ELA o ELA bajo el mismo protocolo |
 | Presupuesto | B_total = B_caracterización + B_optimización + B_configuración_en_objetivo; el último término es 0 si no se configura sobre el problema nuevo. Las soluciones evaluadas al caracterizar se **conservan** en el archivo final |
 | Controles | La configuración generalista con todo el presupuesto, y **el mismo muestreo inicial con la configuración generalista** y el presupuesto restante. Si la muestra inicializa la población, esa decisión se fija y se controla |
@@ -276,9 +305,13 @@ transferencia de lo sintético a lo real y qué eligen las configuraciones ajust
 | 1. Núcleo verificable | Corregir los defectos confirmados (prueba de soporte exacta, perfil de geometría versionado, contrato de normalización, estados de indefinido, validación de no finitos, `k` explícito, CI y `pom`), sin regenerar todavía los CSV históricos | **G1:** tests verdes y concordancia con referencias exactas |
 | 2. Piloto | Estabilidad, escalado, coste y complementariedad del portafolio con unos 40 problemas y 5 semillas | **G2:** hueco SBS–VBS suficiente, con umbral fijado antes. Si no lo hay, se diversifica el portafolio |
 | 3. Transferencia | Matriz de rendimiento con VAMOS y comparación de métodos con particiones agrupadas frente a aleatorias | **G3** (RQ1): ¿supera el paisaje a los metadatos? Si no, el resultado negativo se publica |
+| 3c. Transferencia con similitud controlada | bbob-biobj con D = 10: 165 problemas, 55 ajustes por función y 6 generalistas irace. Pre-registro con dos enmiendas | **G4** (S1, `landscape_1nn` > `gen_all`) y **G5** (S2, consenso > `gen_g`). Campaña parada el 2026-10-28; se reanuda cuando NicoVM quede libre |
+| 3g. Generalistas irace de la fase 3 (D11) | 5 ajustes LOFO y 1 sobre los 37 problemas; comparación pre-registrada antes de lanzarlos | Línea base 1 para la fase 3 y para la evaluación final |
+| 3e. Réplica en Evolver (D6) | La fase 3 entera en Evolver/jMetal | Pendiente de decisión; la recomendación es aplazarla a la versión de revista |
 | 3s. Selección del conjunto de entrenamiento | Pre-registro tras G3; LOFO con cuatro brazos de irace (paisaje, metadatos, todos, al azar) | RQ5 respondida en desarrollo; se aplica a los 17 reservados en la fase 5 |
-| 4. Confianza y presupuesto | Calibrar la política de recomendación o alternativa generalista | RQ4 respondida con presupuesto total |
-| 5. Evaluación final y artículo | Congelar el método, ejecutar los grupos reservados y preparar datos, código y manuscrito | Resultados reproducibles, incluidos los negativos |
+| 4. Confianza y presupuesto | Calibrar la política de recomendación o alternativa generalista, con el umbral de similitud (L13) | RQ4 respondida con presupuesto total |
+| 5. Evaluación final y artículo | Congelar el método (`knn_selector`, D11), ejecutar los grupos reservados frente a las dos líneas base y preparar datos, código y manuscrito | Resultados reproducibles, incluidos los negativos |
+| RQ6 y RQ7 (§11) | La saturación de los problemas RE y RWA; el análisis de las élites (Mantel y predicción por parámetro) | Exploratorio |
 
 ## 7. Decisiones abiertas y riesgos
 
@@ -296,8 +329,17 @@ transferencia de lo sintético a lo real y qué eligen las configuraciones ajust
   de NSGA-II sin los cuatro operadores no invariantes (D6).
 - **Decidido el 2026-10-26:**
   - nuevo orden de las preguntas de investigación, con la transferencia como RQ1 (D7, §4);
-  - nueva RQ5, la selección del conjunto de entrenamiento, que se pre-registra tras G3 (D8, §4).
-- **Fallos de VAMOS 1.0.0 encontrados, a comunicar al proyecto:**
+  - nueva RQ5, la selección del conjunto de entrenamiento, que se pre-registra tras G3 (D8, §4);
+  - IBEA reparado (VAMOS PR #115) sustituye a SMS-EMOA como comparador sin ajustar (D9);
+  - plan tras la fase 3 ("procede con todo"): estratos y consenso, y la fase 3c.
+- **Decidido el 2026-10-27:**
+  - las lecciones del estado del arte (§10), con el control positivo como L1;
+  - la enmienda 2 de la 3c;
+  - RQ6 y RQ7 al final del plan (D10, §11).
+- **Decidido el 2026-10-31:** el diseño de la evaluación, con dos líneas base, `knn_selector` como
+  método principal, el donante al azar como control y la fase 3g (D11).
+- **Fallos de VAMOS 1.0.0 encontrados, a comunicar al proyecto** (IBEA ya está comunicado y
+  reparado en el PR #115):
   - `racing/refill.py:25` falla con parámetros condicionales en el racing iterado;
   - PCX, UNDX, la mutación gaussiana, la de Cauchy, la reparación `round` y el inicializador Halton
     no son invariantes ante cambios de unidades;
