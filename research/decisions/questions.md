@@ -89,6 +89,21 @@ en [`question1.md`](question1.md).
   - **RQ6:** primero se mide cuántos problemas RE y RWA biobjetivo no están saturados.
   - **RQ7:** análisis exploratorio de las élites, sin ejecuciones nuevas.
 
+### 16. ¿Preparo la comparación con un generalista irace y NSGA-II por defecto como líneas base? ¿Qué método principal se pre-registra? (2026-10-31)
+- **Respuesta:** "ok a tus recomendaciones". Antes, el usuario fijó las dos líneas base: "NSGA-II
+  con valores por defecto es el baseline 2" e "irace para el conjunto de entrenamiento en lugar del
+  SBS". También dijo que el tercer elemento es la recomendación para cada instancia, no una línea
+  base.
+- **Resultado (D11):**
+  - Lo que se evalúa es la recomendación por similitud en cada instancia. El método principal es
+    `knn_selector`, y la regla de consenso queda como secundaria.
+  - Líneas base: el generalista ajustado con irace sobre el entrenamiento y NSGA-II por defecto.
+  - El donante al azar es un control de ablación, y hay análisis instancia a instancia frente a la
+    distancia.
+  - En la fase 3, 5 generalistas LOFO más 1 sobre los 37 problemas, pre-registrados antes de
+    lanzarlos cuando NicoVM quede libre.
+  - Esto responde también a la antigua pendiente 2.
+
 ## Pendientes
 
 ### Hechas tras la fase 3, sin respuesta todavía (2026-10-26)
@@ -96,8 +111,6 @@ en [`question1.md`](question1.md).
 1. ¿Ejecuto la réplica 3e en Evolver tal como está pre-registrada?
    - Replicar el resultado negativo dice si depende del framework.
    - Son unas 40 h de irace en NicoVM.
-2. ¿Pre-registro `knn_selector`, o directamente la RQ5, como método principal para la evaluación
-   final con los 17 problemas reservados?
 3. ¿Planteo el artículo abiertamente como resultado negativo, con la lección del generalista
    dominante?
 
@@ -156,20 +169,3 @@ en [`question1.md`](question1.md).
       - registrarlo en la 3c como enmienda 3, antes de que exista su matriz.
     - **Para qué sirve:** da una respuesta cuantitativa al "cuándo" del título y una regla de
       abstención para la RQ4.
-
-19. El usuario propone tres líneas base: la 1, un generalista ajustado con irace sobre el conjunto de
-    entrenamiento, en lugar del SBS; la 2, NSGA-II por defecto. ¿Lo preparo para la fase 3?
-    - **Propuesta de Claude:**
-      - 5 ejecuciones de irace, una por familia excluida (LOFO), más 1 sobre los 37 problemas,
-        para la evaluación final con los 17 reservados.
-      - Cada generalista LOFO también sirve, sin fuga, para los destinos de LOGO y de la partición
-        aleatoria, porque excluye la familia entera del destino.
-      - Pre-registrar la comparación antes de lanzarlo.
-      - Lanzarlo en NicoVM cuando acaben la campaña y la matriz de la 3c.
-    - **En la 3c ya está** (`gen_all` y `gen_g1`–`gen_g5`).
-    - **Tercer elemento:** el usuario propone que no sea una línea base, sino la recomendación por
-      similitud para cada instancia, que es lo que se evalúa.
-      - Claude está de acuerdo, y propone mantener el donante al azar como control de ablación, no
-        como línea base.
-      - También propone informar, instancia a instancia, de la ganancia frente a las líneas base
-        según la distancia al vecino. (2026-10-31)

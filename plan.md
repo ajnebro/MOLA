@@ -33,7 +33,7 @@ Borrador del 2026-10-19, actualizado el 2026-10-20 y el 2026-10-26 (orden de las
   Las notas por trabajo están en `research/references/state_of_the_art.md`.
 - **Fase 3 en Evolver (D6):** después de la de VAMOS, la fase 3 se repite entera en Evolver/jMetal,
   con el espacio completo de NSGA-II (`NSGAIIDouble.yaml`) e irace.
-- Las decisiones están en `research/decisions/decisions.md` (D1–D10, T1–T8).
+- Las decisiones están en `research/decisions/decisions.md` (D1–D11, T1–T8).
 
 ---
 

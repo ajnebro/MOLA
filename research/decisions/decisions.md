@@ -277,3 +277,36 @@ alternativas completas para D1–D3 están en [`question1.md`](question1.md).
     saturados y ninguno está reservado.
   - La RQ7 es el diagnóstico de la RQ1. Si problemas parecidos no reciben configuraciones parecidas,
     ninguna transferencia por similitud puede funcionar.
+
+## D11 — Diseño de la evaluación: recomendación por instancia frente a dos líneas base
+
+- **Fecha y autor:** 2026-10-31, decisiones del usuario:
+  - "NSGA-II con valores por defecto es el baseline 2";
+  - "para baseline 1, en lugar de SBS, … usar irace para el conjunto de entrenamiento";
+  - el tercer elemento es la recomendación para cada instancia, no una línea base;
+  - "ok a tus recomendaciones".
+- **Decisión:**
+  - **Lo que se evalúa:** la recomendación por similitud de paisaje para cada instancia. El método
+    principal es `knn_selector`, la mejor configuración media en los 3 problemas de entrenamiento
+    más parecidos. La regla de consenso (k = 3, δ = 0.05) queda como secundaria.
+  - **Línea base 1:** un generalista ajustado con irace sobre el conjunto de entrenamiento: 20 000
+    experimentos, el espacio invariante de NSGA-II de la fase 3 y NSGA-II por defecto como
+    candidata inicial. Sustituye al SBS como referencia principal; el SBS se sigue informando.
+  - **Línea base 2:** NSGA-II por defecto.
+  - **Controles, que no son líneas base:**
+    - el donante ajustado al azar, como ablación de la similitud;
+    - como techos, el mejor donante y la configuración ajustada en el propio problema.
+  - **Análisis instancia a instancia:** la ganancia frente a cada línea base según la distancia al
+    problema de entrenamiento más parecido (L13), base de la regla de abstención de la RQ4.
+- **Aplicación:**
+  - **Fase 3:** 5 ejecuciones de irace, una por familia excluida. Cada generalista LOFO sirve sin
+    fuga para los destinos de LOGO, LOFO y la partición aleatoria, porque excluye la familia del
+    destino. Se añade 1 ejecución sobre los 37 problemas para la evaluación final con los 17
+    reservados.
+  - **Calendario:** la comparación se pre-registra antes de lanzar irace, y se lanza en NicoVM
+    cuando terminen la campaña y la matriz de la 3c.
+  - **Fase 3c:** ya tiene los generalistas (`gen_all`, `gen_g1`–`gen_g5`). Sus puertas no cambian.
+- **Motivo:**
+  - El SBS depende de qué problemas hay en el portafolio.
+  - Un irace sobre el entrenamiento es la referencia estándar de la configuración por instancia
+    (ISAC, Hydra, Belkhir) y cuesta un solo ajuste.
