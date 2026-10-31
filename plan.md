@@ -24,11 +24,14 @@ Borrador del 2026-10-19, actualizado el 2026-10-20 y el 2026-10-26 (orden de las
     fuera y grupo fuera).
   - **Referencias:** generalistas ajustados con irace sobre el entrenamiento.
   - **Puertas:** G4 y G5.
-  - **Estado:** la campaña de irace corre en NicoVM desde las 21:12 UTC del 2026-10-26 (61
-    ajustes). Se estimaron unas 70 h, pero irace converge a configuraciones de estado estacionario,
-    que son lentas. A las 12:08 UTC del 2026-10-27 las 12 primeras tareas llevaban entre 5 300 y
-    11 500 de sus 20 000 experimentos, lo que da unos 6–9 días en total (fin hacia el 2026-11-02 a
-    11-04).
+  - **Estado:** la campaña de irace empezó en NicoVM a las 21:12 UTC del 2026-10-26.
+    - **Parada:** el 2026-10-28 a las 17:03 UTC se paró, a petición del usuario, para liberar NicoVM
+      para otro proyecto. Para entonces habían terminado 8 de los 61 ajustes. No se ha borrado nada,
+      y la nota está en `~/mola-phase3c/STOPPED-20261028.txt`.
+    - **Situación a 2026-10-31:** NicoVM sigue ocupado con la cola de Evolver TEVC, a la que le
+      quedan unas 20 h. La campaña se reanudará cuando quede libre: los ajustes terminados se saltan
+      y los interrumpidos siguen desde su `irace.Rdata`.
+    - **Duración:** faltan unos 6 días de cálculo desde la reanudación.
 - **Estado del arte:** revisado el 2026-10-27, con las lecciones y lo que se incorpora en la §10.
   Las notas por trabajo están en `research/references/state_of_the_art.md`.
 - **Fase 3 en Evolver (D6):** después de la de VAMOS, la fase 3 se repite entera en Evolver/jMetal,
