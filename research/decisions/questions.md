@@ -156,3 +156,15 @@ en [`question1.md`](question1.md).
       - registrarlo en la 3c como enmienda 3, antes de que exista su matriz.
     - **Para qué sirve:** da una respuesta cuantitativa al "cuándo" del título y una regla de
       abstención para la RQ4.
+
+19. El usuario propone tres líneas base: la 1, un generalista ajustado con irace sobre el conjunto de
+    entrenamiento, en lugar del SBS; la 2, NSGA-II por defecto. ¿Lo preparo para la fase 3?
+    - **Propuesta de Claude:**
+      - 5 ejecuciones de irace, una por familia excluida (LOFO), más 1 sobre los 37 problemas,
+        para la evaluación final con los 17 reservados.
+      - Cada generalista LOFO también sirve, sin fuga, para los destinos de LOGO y de la partición
+        aleatoria, porque excluye la familia entera del destino.
+      - Pre-registrar la comparación antes de lanzarlo.
+      - Lanzarlo en NicoVM cuando acaben la campaña y la matriz de la 3c.
+    - **En la 3c ya está** (`gen_all` y `gen_g1`–`gen_g5`).
+    - **Tercera línea base:** pendiente; Claude propone el donante ajustado al azar. (2026-10-31)
