@@ -186,3 +186,24 @@ en [`question1.md`](question1.md).
         desde el generalista.
       - **Experimento:** en caliente frente a en frío con 5 000 experimentos, en los 37 problemas.
         Son unos 370 000 experimentos, 1–3 días en NicoVM, después de la 3c y de la 3g.
+
+### Hechas el 2026-11-01, sin respuesta todavía
+
+21. Revisión externa de Fable (`research/review/plan_propuesto_fable.md`, cambios C1–C14 y 10
+    preguntas). ¿Qué cambios se adoptan?
+    - **Recomendación de Claude:**
+      - **Adoptar:**
+        - C1, el encuadre condicional ya;
+        - C2, el reparto entre GECCO y revista;
+        - C3, la RQ4 con dos niveles y s₁ calibrado con la distancia de una muestra a la media de
+          las otras cuatro;
+        - C4, el nivel 2 *anytime* a 20 000 experimentos y fuera del primer artículo;
+        - C5, sin s₂;
+        - C6, ya hecho en la §14 del informe de la fase 3;
+        - C7, el orden de cálculo con la 3e aplazada;
+        - C8, C9, C10 (la parte gratuita), C12 y C13.
+      - **Matizar:** la afirmación de que la señal es "prácticamente falsa" entre familias. Es
+        débil: ρ = 0.09 con la pérdida frente al oráculo y 0.23 con la pérdida mutua.
+      - **Opcionales:** C11 y C14.
+    - **Pregunta de la revisión ya resuelta:** los `irace.Rdata` de los 37 ajustes de la fase 3 se
+      conservan en NicoVM.

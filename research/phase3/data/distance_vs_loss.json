@@ -1,0 +1,170 @@
+{
+  "note": "Exploratory, descriptive. Distances in units of the median same-problem sample-pair distance.",
+  "noise": {
+    "unit": 1.7976,
+    "pair_p95_units": 1.599,
+    "loso_p95_units": 1.248
+  },
+  "all_pairs": {
+    "(3.0, 6.0]": {
+      "pairs": 360,
+      "loss_le_0.01": 0.378,
+      "loss_gt_0.10": 0.317,
+      "median_loss": 0.0253,
+      "same_family": 0.122,
+      "easy_target": 0.275
+    },
+    "(1.5, 3.0]": {
+      "pairs": 260,
+      "loss_le_0.01": 0.181,
+      "loss_gt_0.10": 0.288,
+      "median_loss": 0.0448,
+      "same_family": 0.177,
+      "easy_target": 0.312
+    },
+    "(6.0, inf]": {
+      "pairs": 568,
+      "loss_le_0.01": 0.264,
+      "loss_gt_0.10": 0.458,
+      "median_loss": 0.0755,
+      "same_family": 0.19,
+      "easy_target": 0.377
+    },
+    "(0.0, 1.5]": {
+      "pairs": 144,
+      "loss_le_0.01": 0.701,
+      "loss_gt_0.10": 0.056,
+      "median_loss": 0.0002,
+      "same_family": 0.972,
+      "easy_target": 0.514
+    }
+  },
+  "non_easy_targets": {
+    "(3.0, 6.0]": {
+      "pairs": 261,
+      "loss_le_0.01": 0.257,
+      "loss_gt_0.10": 0.41,
+      "median_loss": 0.0558,
+      "same_family": 0.149,
+      "easy_target": 0.0
+    },
+    "(1.5, 3.0]": {
+      "pairs": 179,
+      "loss_le_0.01": 0.073,
+      "loss_gt_0.10": 0.413,
+      "median_loss": 0.0764,
+      "same_family": 0.246,
+      "easy_target": 0.0
+    },
+    "(6.0, inf]": {
+      "pairs": 354,
+      "loss_le_0.01": 0.088,
+      "loss_gt_0.10": 0.63,
+      "median_loss": 0.1541,
+      "same_family": 0.257,
+      "easy_target": 0.0
+    },
+    "(0.0, 1.5]": {
+      "pairs": 70,
+      "loss_le_0.01": 0.429,
+      "loss_gt_0.10": 0.114,
+      "median_loss": 0.0243,
+      "same_family": 0.971,
+      "easy_target": 0.0
+    }
+  },
+  "different_family": {
+    "(6.0, inf]": {
+      "pairs": 460,
+      "loss_le_0.01": 0.3,
+      "loss_gt_0.10": 0.45,
+      "median_loss": 0.0683,
+      "same_family": 0.0,
+      "easy_target": 0.428
+    },
+    "(3.0, 6.0]": {
+      "pairs": 316,
+      "loss_le_0.01": 0.386,
+      "loss_gt_0.10": 0.316,
+      "median_loss": 0.0249,
+      "same_family": 0.0,
+      "easy_target": 0.297
+    },
+    "(1.5, 3.0]": {
+      "pairs": 214,
+      "loss_le_0.01": 0.168,
+      "loss_gt_0.10": 0.285,
+      "median_loss": 0.0442,
+      "same_family": 0.0,
+      "easy_target": 0.369
+    },
+    "(0.0, 1.5]": {
+      "pairs": 4,
+      "loss_le_0.01": 0.5,
+      "loss_gt_0.10": 0.0,
+      "median_loss": 0.0147,
+      "same_family": 0.0,
+      "easy_target": 0.5
+    }
+  },
+  "spearman_distance_loss": {
+    "all": 0.264,
+    "different_family": 0.086
+  },
+  "logo_d11_comparisons_uncorrected": {
+    "landscape_1nn_vs_random": {
+      "mean": 0.0833,
+      "wins_losses_ties": [
+        27,
+        5,
+        0
+      ],
+      "p_greater": 1.1344440281391144e-05
+    },
+    "landscape_1nn_vs_default": {
+      "mean": 0.0032,
+      "wins_losses_ties": [
+        23,
+        9,
+        0
+      ],
+      "p_greater": 0.25002374965697527
+    },
+    "landscape_1nn_vs_metadata_1nn": {
+      "mean": 0.0491,
+      "wins_losses_ties": [
+        17,
+        12,
+        3
+      ],
+      "p_greater": 0.07834096470174344
+    },
+    "knn_selector_vs_random": {
+      "mean": 0.1125,
+      "wins_losses_ties": [
+        30,
+        2,
+        0
+      ],
+      "p_greater": 4.423782229423523e-09
+    },
+    "knn_selector_vs_default": {
+      "mean": 0.0323,
+      "wins_losses_ties": [
+        25,
+        7,
+        0
+      ],
+      "p_greater": 0.0026796103920787573
+    },
+    "knn_selector_vs_metadata_1nn": {
+      "mean": 0.0782,
+      "wins_losses_ties": [
+        25,
+        7,
+        0
+      ],
+      "p_greater": 0.004142033169046044
+    }
+  }
+}

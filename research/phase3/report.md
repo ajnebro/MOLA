@@ -492,3 +492,45 @@ un sorteo con las frecuencias del entrenamiento.
 
 **Límites:** son 37 problemas y una sola ejecución de irace por problema. Es exploratorio, y los
 valores p no se corrigen por las 12 pruebas.
+
+## 14. Trazabilidad: distancia frente a pérdida y comparaciones de D11 (2026-11-01)
+
+La revisión externa del 2026-11-01 (`research/review/plan_propuesto_fable.md`) detectó dos
+análisis citados en el resumen para la revisión y en la pregunta pendiente 20 que no estaban en el
+repositorio: se habían calculado sobre la marcha el 2026-10-31. Ahora están en
+`scripts/distance_vs_loss.py`, con salida en `data/distance_vs_loss_pairs.csv` y
+`data/distance_vs_loss.json`. Los números coinciden con los citados y con la reproducción
+independiente de la revisión.
+
+**1. Distancia frente a pérdida (1 332 pares ordenados).** La distancia se mide en unidades de
+ruido: la distancia mediana entre dos muestras del mismo problema.
+
+| Distancia | Pares | Pérdida ≤ 0.01 | Pérdida > 0.10 | Misma familia |
+|---|---|---|---|---|
+| ≤ 1.5 | 144 | 70 % | 6 % | 97 % |
+| 1.5–3 | 260 | 18 % | 29 % | 18 % |
+| 3–6 | 360 | 38 % | 32 % | 12 % |
+| > 6 | 568 | 26 % | 46 % | 19 % |
+
+- **Sin los destinos fáciles,** por debajo de 1.5 unidades: un 43 % pierde ≤ 0.01 y un 11 % pierde
+  > 0.10.
+- **Spearman entre distancia y pérdida frente al oráculo:** 0.26 en todos los pares y 0.09 entre
+  familias distintas.
+  - El Mantel de la §13 da 0.23 entre familias, pero con la pérdida *mutua* y simétrica. Las dos
+    medidas coinciden en que la señal entre familias es débil.
+- **Ruido:** el percentil 95 de las distancias entre dos muestras del mismo problema es 1.60
+  unidades. Entre una muestra y la media de las otras cuatro, que es lo que aplica un recomendador,
+  es 1.25. Un umbral de "compatible con el mismo problema" debe calibrarse con la segunda (crítica
+  de la revisión, aceptada).
+- **Contraejemplo:** UF5 y UF7 están a 0.35 unidades, y transferir entre ellos pierde 0.30 en un
+  sentido y 0.18 en el otro.
+
+**2. Comparaciones de D11 en LOGO** (32 grupos, Wilcoxon unilateral, sin corregir):
+
+| Comparación | Diferencia media | V/D/E | p |
+|---|---|---|---|
+| `landscape_1nn` frente al donante al azar | +0.083 | 27/5/0 | 1.1·10⁻⁵ |
+| `landscape_1nn` frente a NSGA-II por defecto | +0.003 | 23/9/0 | 0.25 |
+| `knn_selector` frente al donante al azar | +0.112 | 30/2/0 | 4.4·10⁻⁹ |
+| `knn_selector` frente a NSGA-II por defecto | +0.032 | 25/7/0 | 0.003 |
+| `knn_selector` frente a `metadata_1nn` | +0.078 | 25/7/0 | 0.004 |
