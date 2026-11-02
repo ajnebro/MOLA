@@ -534,3 +534,61 @@ ruido: la distancia mediana entre dos muestras del mismo problema.
 | `knn_selector` frente al donante al azar | +0.112 | 30/2/0 | 4.4·10⁻⁹ |
 | `knn_selector` frente a NSGA-II por defecto | +0.032 | 25/7/0 | 0.003 |
 | `knn_selector` frente a `metadata_1nn` | +0.078 | 25/7/0 | 0.004 |
+
+## 15. Análisis descriptivos de la revisión externa: C9, C10 y C11 (2026-11-02, D12)
+
+Script: `scripts/review_descriptives.py`. Salida: `data/review_descriptives.json`.
+
+**C9. ¿Familia no vista o problema difícil?** En LOFO, la familia excluida y el estrato muy difícil
+van juntos: 6 de los 7 problemas muy difíciles son LZ09/UF. Para separarlos, la penalización de
+LOFO de cada destino es el HVn en LOGO menos el HVn en LOFO, con el mismo método.
+
+| Estrato | Destinos | `knn_selector` | `landscape_1nn` | SBS |
+|---|---|---|---|---|
+| Fácil | 13 | 0.002 | 0.007 | 0.000 |
+| Intermedio | 17 | **0.089** | **0.103** | 0.032 |
+| Muy difícil | 7 | 0.015 | 0.081 | 0.000 |
+
+| Familia excluida | Destinos | `knn_selector` | `landscape_1nn` | SBS |
+|---|---|---|---|---|
+| DTLZ | 5 | **0.165** | **0.262** | 0.000 |
+| LZ09/UF | 15 | 0.043 | 0.066 | 0.000 |
+| ZDT | 4 | 0.027 | 0.012 | **0.137** |
+| ZCAT | 10 | 0.006 | 0.007 | 0.000 |
+| RE/RWA | 3 | 0.000 | 0.000 | 0.000 |
+
+- **La caída en LOFO es un efecto de familia, no de dificultad.** Se concentra en los problemas
+  intermedios, sobre todo en DTLZ, y no en los muy difíciles: dejar fuera LZ09/UF cuesta poco a
+  `knn_selector`.
+- **El SBS solo pierde cuando sale ZDT,** porque su configuración era c*_ZDT3. Se informará por
+  pliegue, no agregado.
+
+**C10. Suelo de ruido del ajuste.** En 5 destinos la configuración ajustada en el propio problema
+queda más de 0.01 por debajo del mejor donante. Son casos en los que una sola ejecución de irace
+dejó margen sin aprovechar.
+
+| Destino | Diferencia |
+|---|---|
+| DTLZ4 | 0.074 |
+| UF3 | 0.046 |
+| ZDT4 | 0.022 |
+| UF7 | 0.017 |
+| LZ09_F3 | 0.012 |
+
+Por eso el techo preferente es el oráculo entre donantes. Los reajustes con otra semilla están en
+el plan (D12, C10).
+
+**C11. El Mantel de la RQ7, con dos controles.** Distancia de paisaje frente a la pérdida mutua y
+frente al comportamiento, con 9 999 permutaciones.
+
+| Control | Pérdida mutua | Comportamiento |
+|---|---|---|
+| Sin el estrato fácil (276 pares) | ρ = 0.34 (p = 0.012) | ρ = 0.16 (p = 0.086) |
+| Permutando solo dentro de cada familia (666 pares) | ρ = 0.38 (p = 0.10) | ρ = 0.32 (p = 0.076) |
+
+- **La relación con la pérdida mutua se mantiene sin los problemas fáciles.** Los ZCAT, cercanos y
+  fáciles, no la explican.
+- **Al permutar solo dentro de familias, deja de ser significativa.** Buena parte de la relación es
+  "misma familia ⇒ features parecidas y configuraciones que se transfieren".
+- Esto matiza la §13: la señal de paisaje más allá de la pertenencia a una familia es débil, y
+  coincide con la §14 (Spearman 0.09 entre familias).

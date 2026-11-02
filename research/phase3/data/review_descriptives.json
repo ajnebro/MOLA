@@ -1,0 +1,180 @@
+{
+  "note": "Descriptive (D12: C9, C10, C11).",
+  "c9_lofo_penalty_by_stratum": {
+    "easy": {
+      "knn_selector": 0.0022,
+      "landscape_1nn": 0.0074,
+      "sbs": 0.0,
+      "targets": 13
+    },
+    "hard": {
+      "knn_selector": 0.0147,
+      "landscape_1nn": 0.0813,
+      "sbs": 0.0,
+      "targets": 7
+    },
+    "intermediate": {
+      "knn_selector": 0.0889,
+      "landscape_1nn": 0.1028,
+      "sbs": 0.0323,
+      "targets": 17
+    }
+  },
+  "c9_lofo_penalty_by_family": {
+    "DTLZ": {
+      "knn_selector": 0.1645,
+      "landscape_1nn": 0.2617,
+      "sbs": 0.0,
+      "targets": 5
+    },
+    "LZ09/UF": {
+      "knn_selector": 0.0433,
+      "landscape_1nn": 0.0659,
+      "sbs": 0.0,
+      "targets": 15
+    },
+    "RE/RWA": {
+      "knn_selector": 0.0001,
+      "landscape_1nn": -0.0,
+      "sbs": 0.0,
+      "targets": 3
+    },
+    "ZCAT": {
+      "knn_selector": 0.0061,
+      "landscape_1nn": 0.0069,
+      "sbs": 0.0,
+      "targets": 10
+    },
+    "ZDT": {
+      "knn_selector": 0.0271,
+      "landscape_1nn": 0.0117,
+      "sbs": 0.1372,
+      "targets": 4
+    }
+  },
+  "c9_strata_by_family": {
+    "DTLZ": {
+      "easy": 1,
+      "hard": 1,
+      "intermediate": 3
+    },
+    "LZ09/UF": {
+      "easy": 1,
+      "hard": 6,
+      "intermediate": 8
+    },
+    "RE/RWA": {
+      "easy": 3,
+      "hard": 0,
+      "intermediate": 0
+    },
+    "ZCAT": {
+      "easy": 8,
+      "hard": 0,
+      "intermediate": 2
+    },
+    "ZDT": {
+      "easy": 0,
+      "hard": 0,
+      "intermediate": 4
+    }
+  },
+  "c9_lofo_by_fold": {
+    "DTLZ": {
+      "sbs": 0.9,
+      "knn_selector": 0.6391,
+      "landscape_1nn": 0.4246,
+      "metadata_1nn": 0.597,
+      "default": 0.6656,
+      "oracle": 0.9019
+    },
+    "LZ09/UF": {
+      "sbs": 0.7824,
+      "knn_selector": 0.7296,
+      "landscape_1nn": 0.6619,
+      "metadata_1nn": 0.7547,
+      "default": 0.7436,
+      "oracle": 0.7947
+    },
+    "RE/RWA": {
+      "sbs": 0.9968,
+      "knn_selector": 0.9755,
+      "landscape_1nn": 0.9964,
+      "metadata_1nn": 0.9881,
+      "default": 0.9924,
+      "oracle": 0.9976
+    },
+    "ZCAT": {
+      "sbs": 0.9925,
+      "knn_selector": 0.9909,
+      "landscape_1nn": 0.99,
+      "metadata_1nn": 0.996,
+      "default": 0.9895,
+      "oracle": 0.9967
+    },
+    "ZDT": {
+      "sbs": 0.8503,
+      "knn_selector": 0.9556,
+      "landscape_1nn": 0.9658,
+      "metadata_1nn": 0.9809,
+      "default": 0.9845,
+      "oracle": 0.997
+    }
+  },
+  "c10_tuning_noise_floor": {
+    "targets": 5,
+    "cases": {
+      "cec2009_uf3": {
+        "self": 0.7199,
+        "oracle": 0.7656,
+        "gap": 0.0457
+      },
+      "cec2009_uf7": {
+        "self": 0.7884,
+        "oracle": 0.8055,
+        "gap": 0.017
+      },
+      "dtlz4": {
+        "self": 0.9218,
+        "oracle": 0.9955,
+        "gap": 0.0737
+      },
+      "lz09_f3": {
+        "self": 0.9205,
+        "oracle": 0.9323,
+        "gap": 0.0118
+      },
+      "zdt4": {
+        "self": 0.9733,
+        "oracle": 0.9957,
+        "gap": 0.0224
+      }
+    }
+  },
+  "c11_mantel_landscape": {
+    "behaviour": {
+      "non_easy_pairs": {
+        "rho": 0.158,
+        "p": 0.0857,
+        "pairs": 276
+      },
+      "within_family_permutations": {
+        "rho": 0.319,
+        "p": 0.0755,
+        "pairs": 666
+      }
+    },
+    "mutual_transfer_loss": {
+      "non_easy_pairs": {
+        "rho": 0.341,
+        "p": 0.0116,
+        "pairs": 276
+      },
+      "within_family_permutations": {
+        "rho": 0.381,
+        "p": 0.1001,
+        "pairs": 666
+      }
+    }
+  }
+}

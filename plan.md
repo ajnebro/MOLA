@@ -867,6 +867,9 @@ ZDT pierde 0.15 y queda por debajo de NSGA-II por defecto.
   desde las features mejor que la clase mayoritaria.
 - Los metadatos no relacionan nada entre familias distintas.
 - 24 de 37 élites tienen la población en el límite del espacio (200).
+- **Matiz (2026-11-02, C11, informe de la fase 3, §15):** con permutaciones dentro de cada familia,
+  el Mantel deja de ser significativo (p ≈ 0.08–0.10). Buena parte de la relación la explica
+  pertenecer a la misma familia.
 
 **Pregunta:** ¿qué eligen las configuraciones ajustadas, y lo explican los rasgos de los problemas?
 
