@@ -64,8 +64,10 @@ def distance_and_s1(values, sample_problem, train, row):
 
 
 def loss_calibrated_threshold(pseudo, epsilon, beta=0.10):
-    """Largest distance t (noise units) with share(loss <= epsilon) >= 1 - beta among the training
-    pseudo-targets with d <= t. `pseudo` holds (d_units, loss) pairs; returns 0 when none qualifies.
+    """Largest distance t (noise units) meeting the loss target among pseudo-targets with d <= t.
+
+    The target is share(loss <= epsilon) >= 1 - beta. `pseudo` holds (d_units, loss) pairs; returns
+    0 when no distance qualifies.
     """
     if len(pseudo) == 0:
         return 0.0

@@ -2,15 +2,16 @@
 
 For every split of phase 3 (LOGO, LOFO, random 80/20 by problem; analyze_transfer.splits) and every
 target sample: the methods of analyze_transfer.recommend (unchanged), the irace generalist of the
-split, d and s1 of policy.py, the policy pi_alpha for alpha in policy.ALPHAS, and the loss-calibrated
-variant pi_eps (epsilon in {0.01, 0.02}, beta = 0.10).
+split, d and s1 of policy.py, the policy pi_alpha for alpha in policy.ALPHAS, and the
+loss-calibrated variant pi_eps (epsilon in {0.01, 0.02}, beta = 0.10).
 
 Generalist (D11, D12): under LOGO, gen__logo_NN of the target's formulation group (its training set
 equals the split's); under LOFO, gen__lofo_<family>; under the random split, gen__lofo_<family>
 (a subset of the split's training set: descriptive only).
 
 Gate G7 (LOGO, the 32 formulation groups; group value = mean over its targets and samples):
-  1. non-inferiority: one-sided Wilcoxon signed-rank of (pi_0.05 - generalist + 0.005) > 0, p < 0.05;
+  1. non-inferiority: one-sided Wilcoxon signed-rank of (pi_0.05 - generalist + 0.005) > 0,
+     p < 0.05;
   2. tail: the share of target samples whose loss against the oracle donor exceeds 0.10 is, under
      pi_0.05, at most half the share under knn_selector.
 G7 passes when both hold.
