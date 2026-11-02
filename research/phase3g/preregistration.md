@@ -90,3 +90,22 @@ Para cada partición (LOFO, LOGO y aleatoria):
   minutos.
 - **Recogida:** `scripts/collect_3g.py` recoge las élites en `data/tuned_configs.json`.
 - **Cualquier desviación** de este documento se registra en el informe de la fase.
+
+## 8. Enmienda 1 (2026-11-02, D12): 32 generalistas LOGO
+
+**Cuándo.** Se registra antes de lanzar ningún ajuste de esta fase.
+
+**Qué se añade:** `gen_logo_NN`, para NN = 01…32.
+- **Entrenamiento:** irace sobre los problemas de desarrollo fuera del grupo de formulación NN, de
+  34 a 36 problemas según el grupo. Los grupos están ordenados como en `analyze_transfer.splits`.
+- **Semillas:** 8200 + NN.
+- **Configuración de irace:** la misma que el resto de la fase. La lista está en
+  `data/generalist_tasks.json`, y `irace/launch.sh` lanza por defecto todas las tareas de esa lista.
+
+**Para qué:** son el generalista de la política de la fase 4 en LOGO (puerta G7, opción C del
+usuario), con el mismo entrenamiento que el pliegue.
+
+**Lo que no cambia:** G6, sus métodos y su análisis (`analyze_3g.py` sigue usando los generalistas
+LOFO).
+
+**Coste añadido:** 32 × 20 000 = 640 000 experimentos, unos 1.5 días en NicoVM.

@@ -179,3 +179,33 @@ Se aplican cuatro protocolos, de más a menos fuga:
 - la fracción de filas cuyo vecino más cercano es de la misma función.
 
 **Lo que no cambia:** las puertas G4 y G5, los métodos y las particiones de los §3–5.
+
+## 10. Enmienda 3 (2026-11-02, D12): réplica de la puerta G7 de la fase 4
+
+**Cuándo.** Se registra mientras la campaña de irace está parada. Todavía no existe ninguna matriz
+ni análisis con rendimiento de esta fase.
+
+**Qué se añade** (`research/phase4/scripts/analyze_g7_3c.py`): la política π₀.₀₅ de la fase 4
+(`research/phase4/preregistration.md`) sobre las particiones de esta fase.
+- **Política:** `knn_selector` si s₁ ≥ 0.05; si no, el generalista de la partición:
+  - **S1:** `gen_all`;
+  - **S2:** `gen_g<g>`;
+  - **S3:** `gen_g<g>`, con g el menor grupo de los componentes de la función. `gen_all` vio la
+    función que se deja fuera.
+- **Lo que se informa, por partición y sobre las 55 funciones:**
+  - las dos condiciones de G7: no inferioridad con margen 0.005, y la cola reducida a la mitad
+    frente a `knn_selector`;
+  - la tabla de cobertura y riesgo.
+- **Estatus:** es un análisis secundario pre-registrado. No entra en la corrección de Holm de G4 y
+  G5.
+
+**Expectativa declarada,** a partir solo de las features, sin rendimiento:
+- **El destino más cercano está dentro del ruido.** En esta fase, el problema de entrenamiento más
+  cercano está dentro del ruido de remuestreo en la mayoría de las muestras destino. La distancia
+  mediana es de 0.80 unidades en S1, 0.91 en S2 y 0.83 en S3.
+- **Así que π transferiría casi siempre:** la cobertura con α = 0.05 es del 97 % en S1, el 89 % en
+  S2 y el 96 % en S3.
+- **Las features de MOLA casi no separan las funciones de bbob-biobj más allá del ruido.** En la 3c,
+  la réplica de G7 pone a prueba sobre todo a `knn_selector` frente al generalista, no la abstención.
+
+**Lo que no cambia:** las puertas G4 y G5, los métodos y las particiones.

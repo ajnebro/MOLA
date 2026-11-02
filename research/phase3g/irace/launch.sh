@@ -6,6 +6,9 @@
 #   gen_lofo_<family>  generalist over the development problems outside <family>, seed 8101-8105
 #                      (dtlz, lz09uf, rerwa, zcat, zdt, in that order)
 #   gen_all            generalist over the 37 development problems, seed 8100 (final evaluation)
+#   gen_logo_NN        generalist over the development problems outside formulation group NN
+#                      (32 groups, sorted as in analyze_transfer.splits), seed 8200 + NN
+#                      (amendment 1, D12: the fallback of the phase 4 policy under LOGO)
 # Same space, default candidate, target runner and tuning bounds as phase 3's per-problem tunings.
 # The persistent run_server.py serves every experiment (WORKERS warm VAMOS processes); CONCURRENT
 # irace runs at a time, each with --parallel PARALLEL. A task whose directory holds DONE is skipped;
@@ -35,10 +38,10 @@ trap 'kill $SERVER 2>/dev/null || true; wait $SERVER 2>/dev/null || true' EXIT
 for _ in $(seq 120); do grep -q listening "$RUNS/server.log" 2>/dev/null && break; sleep 1; done
 grep -q listening "$RUNS/server.log" || { echo "run_server did not start" >&2; cat "$RUNS/server.log" >&2; exit 1; }
 
-TASKS=("$@")
-[ ${#TASKS[@]} -eq 0 ] && TASKS=(gen_lofo_dtlz gen_lofo_lz09uf gen_lofo_rerwa gen_lofo_zcat gen_lofo_zdt gen_all)
-
 TASK_FILE="$HERE/../data/generalist_tasks.json"
+TASKS=("$@")
+[ ${#TASKS[@]} -eq 0 ] && mapfile -t TASKS < <("$PY" -c 'import json, sys; [print(k) for k in json.load(open(sys.argv[1]))]' "$TASK_FILE")
+
 instances_of() {  # the irace instances (development problems) of a task, one per line
     "$PY" -c 'import json, sys; [print(p) for p in json.load(open(sys.argv[1]))[sys.argv[2]]["instances"]]' "$TASK_FILE" "$1"
 }

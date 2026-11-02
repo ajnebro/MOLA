@@ -962,8 +962,11 @@ réplica en Evolver se hace. Donde esta sección difiere de las anteriores, prev
   Se añaden a la 3g como enmienda, antes de lanzarla.
 - **Réplica en la 3c** (S1, S3, S2) como enmienda 3 de su pre-registro, antes de su matriz.
 - **s₂** queda solo como columna descriptiva.
-- **El pre-registro va en `research/phase4/preregistration.md`.** Se sube antes de la matriz de la
-  3c y antes de ver los generalistas de la 3g.
+- **Pre-registrado el 2026-11-02** (`research/phase4/preregistration.md`), junto con la enmienda 3
+  de la 3c (réplica) y la enmienda 1 de la 3g (32 generalistas LOGO).
+- **Expectativa declarada en la 3c,** a partir solo de las features: el problema más cercano está
+  dentro del ruido en el 89–97 % de las muestras, también con el grupo fuera. Allí π transferiría
+  casi siempre, porque las features apenas separan las funciones de bbob-biobj.
 
 ### 12.3 Nivel 2: irace en caliente (C4)
 - **Diseño dentro de D5:**
