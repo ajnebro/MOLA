@@ -1,0 +1,499 @@
+{
+  "zdt1": {
+    "seed": 8300,
+    "stratum": "intermediate",
+    "warm_donor": "zdt3",
+    "votes": 4,
+    "d_units_median": 1.8965,
+    "warm_config": {
+      "pop_size": 200,
+      "offspring_ratio": 0,
+      "selection": "tournament",
+      "initializer": "lhs",
+      "crossover": "sbx",
+      "crossover_prob": 0.8476,
+      "mutation": "linked_polynomial",
+      "mutation_prob_factor": 2.0981,
+      "mutation_eta": 6.1796,
+      "repair": "clip",
+      "selection_size": 9,
+      "crossover_eta": 15.2984
+    }
+  },
+  "zdt2": {
+    "seed": 8301,
+    "stratum": "intermediate",
+    "warm_donor": "zdt3",
+    "votes": 3,
+    "d_units_median": 2.876,
+    "warm_config": {
+      "pop_size": 200,
+      "offspring_ratio": 0,
+      "selection": "tournament",
+      "initializer": "lhs",
+      "crossover": "sbx",
+      "crossover_prob": 0.8476,
+      "mutation": "linked_polynomial",
+      "mutation_prob_factor": 2.0981,
+      "mutation_eta": 6.1796,
+      "repair": "clip",
+      "selection_size": 9,
+      "crossover_eta": 15.2984
+    }
+  },
+  "zdt3": {
+    "seed": 8302,
+    "stratum": "intermediate",
+    "warm_donor": "lz09_f2",
+    "votes": 5,
+    "d_units_median": 1.8652,
+    "warm_config": {
+      "pop_size": 50,
+      "offspring_ratio": 1.0,
+      "selection": "sus",
+      "initializer": "obl",
+      "crossover": "whole_arithmetic",
+      "crossover_prob": 0.7381,
+      "mutation": "non_uniform",
+      "mutation_prob_factor": 1.6477,
+      "repair": "clip",
+      "wa_alpha": 0.003,
+      "nonuniform_perturbation": 0.1915
+    }
+  },
+  "zdt4": {
+    "seed": 8303,
+    "stratum": "intermediate",
+    "warm_donor": "dtlz3",
+    "votes": 5,
+    "d_units_median": 2.9301,
+    "warm_config": {
+      "pop_size": 41,
+      "offspring_ratio": 0,
+      "selection": "sus",
+      "initializer": "random",
+      "crossover": "sbx",
+      "crossover_prob": 0.9915,
+      "mutation": "linked_polynomial",
+      "mutation_prob_factor": 0.9699,
+      "mutation_eta": 14.1653,
+      "repair": "wrap",
+      "crossover_eta": 20.3762
+    }
+  },
+  "dtlz1": {
+    "seed": 8304,
+    "stratum": "intermediate",
+    "warm_donor": "dtlz3",
+    "votes": 5,
+    "d_units_median": 3.7749,
+    "warm_config": {
+      "pop_size": 41,
+      "offspring_ratio": 0,
+      "selection": "sus",
+      "initializer": "random",
+      "crossover": "sbx",
+      "crossover_prob": 0.9915,
+      "mutation": "linked_polynomial",
+      "mutation_prob_factor": 0.9699,
+      "mutation_eta": 14.1653,
+      "repair": "wrap",
+      "crossover_eta": 20.3762
+    }
+  },
+  "dtlz3": {
+    "seed": 8306,
+    "stratum": "hard",
+    "warm_donor": "dtlz1",
+    "votes": 3,
+    "d_units_median": 2.9508,
+    "warm_config": {
+      "pop_size": 198,
+      "offspring_ratio": 0,
+      "selection": "tournament",
+      "initializer": "random",
+      "crossover": "sbx",
+      "crossover_prob": 0.9028,
+      "mutation": "polynomial",
+      "mutation_prob_factor": 0.2708,
+      "mutation_eta": 17.7551,
+      "repair": "reflect",
+      "selection_size": 7,
+      "crossover_eta": 5.2065
+    }
+  },
+  "dtlz4": {
+    "seed": 8307,
+    "stratum": "intermediate",
+    "warm_donor": "zcat6",
+    "votes": 5,
+    "d_units_median": 5.0483,
+    "warm_config": {
+      "pop_size": 199,
+      "offspring_ratio": 0,
+      "selection": "tournament",
+      "initializer": "random",
+      "crossover": "sbx",
+      "crossover_prob": 0.9911,
+      "mutation": "linked_polynomial",
+      "mutation_prob_factor": 0.3626,
+      "mutation_eta": 27.0336,
+      "repair": "midpoint",
+      "selection_size": 10,
+      "crossover_eta": 5.6278
+    }
+  },
+  "dtlz6": {
+    "seed": 8308,
+    "stratum": "intermediate",
+    "warm_donor": "zdt3",
+    "votes": 5,
+    "d_units_median": 3.101,
+    "warm_config": {
+      "pop_size": 200,
+      "offspring_ratio": 0,
+      "selection": "tournament",
+      "initializer": "lhs",
+      "crossover": "sbx",
+      "crossover_prob": 0.8476,
+      "mutation": "linked_polynomial",
+      "mutation_prob_factor": 2.0981,
+      "mutation_eta": 6.1796,
+      "repair": "clip",
+      "selection_size": 9,
+      "crossover_eta": 15.2984
+    }
+  },
+  "lz09_f2": {
+    "seed": 8310,
+    "stratum": "intermediate",
+    "warm_donor": "zdt3",
+    "votes": 5,
+    "d_units_median": 0.9575,
+    "warm_config": {
+      "pop_size": 200,
+      "offspring_ratio": 0,
+      "selection": "tournament",
+      "initializer": "lhs",
+      "crossover": "sbx",
+      "crossover_prob": 0.8476,
+      "mutation": "linked_polynomial",
+      "mutation_prob_factor": 2.0981,
+      "mutation_eta": 6.1796,
+      "repair": "clip",
+      "selection_size": 9,
+      "crossover_eta": 15.2984
+    }
+  },
+  "lz09_f3": {
+    "seed": 8311,
+    "stratum": "intermediate",
+    "warm_donor": "cec2009_uf2",
+    "votes": 3,
+    "d_units_median": 1.3033,
+    "warm_config": {
+      "pop_size": 166,
+      "offspring_ratio": 1.0,
+      "selection": "sus",
+      "initializer": "lhs",
+      "crossover": "blx_alpha",
+      "crossover_prob": 0.9433,
+      "mutation": "linked_polynomial",
+      "mutation_prob_factor": 1.7805,
+      "mutation_eta": 11.7289,
+      "repair": "wrap",
+      "crossover_alpha": 0.1014
+    }
+  },
+  "lz09_f4": {
+    "seed": 8312,
+    "stratum": "intermediate",
+    "warm_donor": "cec2009_uf2",
+    "votes": 5,
+    "d_units_median": 1.6625,
+    "warm_config": {
+      "pop_size": 166,
+      "offspring_ratio": 1.0,
+      "selection": "sus",
+      "initializer": "lhs",
+      "crossover": "blx_alpha",
+      "crossover_prob": 0.9433,
+      "mutation": "linked_polynomial",
+      "mutation_prob_factor": 1.7805,
+      "mutation_eta": 11.7289,
+      "repair": "wrap",
+      "crossover_alpha": 0.1014
+    }
+  },
+  "lz09_f5": {
+    "seed": 8313,
+    "stratum": "intermediate",
+    "warm_donor": "cec2009_uf1",
+    "votes": 2,
+    "d_units_median": 1.3402,
+    "warm_config": {
+      "pop_size": 60,
+      "offspring_ratio": 1.0,
+      "selection": "sus",
+      "initializer": "obl",
+      "crossover": "whole_arithmetic",
+      "crossover_prob": 0.6522,
+      "mutation": "non_uniform",
+      "mutation_prob_factor": 0.8724,
+      "repair": "clip",
+      "wa_alpha": 0.9836,
+      "nonuniform_perturbation": 0.3203
+    }
+  },
+  "lz09_f7": {
+    "seed": 8314,
+    "stratum": "hard",
+    "warm_donor": "lz09_f4",
+    "votes": 5,
+    "d_units_median": 2.1234,
+    "warm_config": {
+      "pop_size": 87,
+      "offspring_ratio": 0,
+      "selection": "tournament",
+      "initializer": "sobol",
+      "crossover": "sbx",
+      "crossover_prob": 0.6133,
+      "mutation": "linked_polynomial",
+      "mutation_prob_factor": 2.2772,
+      "mutation_eta": 17.819,
+      "repair": "random",
+      "selection_size": 10,
+      "crossover_eta": 15.3354
+    }
+  },
+  "lz09_f8": {
+    "seed": 8315,
+    "stratum": "hard",
+    "warm_donor": "lz09_f4",
+    "votes": 5,
+    "d_units_median": 1.9227,
+    "warm_config": {
+      "pop_size": 87,
+      "offspring_ratio": 0,
+      "selection": "tournament",
+      "initializer": "sobol",
+      "crossover": "sbx",
+      "crossover_prob": 0.6133,
+      "mutation": "linked_polynomial",
+      "mutation_prob_factor": 2.2772,
+      "mutation_eta": 17.819,
+      "repair": "random",
+      "selection_size": 10,
+      "crossover_eta": 15.3354
+    }
+  },
+  "lz09_f9": {
+    "seed": 8316,
+    "stratum": "hard",
+    "warm_donor": "zdt3",
+    "votes": 5,
+    "d_units_median": 1.0571,
+    "warm_config": {
+      "pop_size": 200,
+      "offspring_ratio": 0,
+      "selection": "tournament",
+      "initializer": "lhs",
+      "crossover": "sbx",
+      "crossover_prob": 0.8476,
+      "mutation": "linked_polynomial",
+      "mutation_prob_factor": 2.0981,
+      "mutation_eta": 6.1796,
+      "repair": "clip",
+      "selection_size": 9,
+      "crossover_eta": 15.2984
+    }
+  },
+  "cec2009_uf1": {
+    "seed": 8317,
+    "stratum": "intermediate",
+    "warm_donor": "zdt3",
+    "votes": 5,
+    "d_units_median": 0.8239,
+    "warm_config": {
+      "pop_size": 200,
+      "offspring_ratio": 0,
+      "selection": "tournament",
+      "initializer": "lhs",
+      "crossover": "sbx",
+      "crossover_prob": 0.8476,
+      "mutation": "linked_polynomial",
+      "mutation_prob_factor": 2.0981,
+      "mutation_eta": 6.1796,
+      "repair": "clip",
+      "selection_size": 9,
+      "crossover_eta": 15.2984
+    }
+  },
+  "cec2009_uf2": {
+    "seed": 8318,
+    "stratum": "intermediate",
+    "warm_donor": "cec2009_uf1",
+    "votes": 2,
+    "d_units_median": 1.3174,
+    "warm_config": {
+      "pop_size": 60,
+      "offspring_ratio": 1.0,
+      "selection": "sus",
+      "initializer": "obl",
+      "crossover": "whole_arithmetic",
+      "crossover_prob": 0.6522,
+      "mutation": "non_uniform",
+      "mutation_prob_factor": 0.8724,
+      "repair": "clip",
+      "wa_alpha": 0.9836,
+      "nonuniform_perturbation": 0.3203
+    }
+  },
+  "cec2009_uf3": {
+    "seed": 8319,
+    "stratum": "hard",
+    "warm_donor": "lz09_f8",
+    "votes": 5,
+    "d_units_median": 4.2931,
+    "warm_config": {
+      "pop_size": 134,
+      "offspring_ratio": 1.0,
+      "selection": "sus",
+      "initializer": "scatter",
+      "crossover": "sbx",
+      "crossover_prob": 0.9397,
+      "mutation": "non_uniform",
+      "mutation_prob_factor": 0.813,
+      "repair": "reflect",
+      "crossover_eta": 37.7478,
+      "nonuniform_perturbation": 0.0796,
+      "scatter_base_size_factor": 1.0
+    }
+  },
+  "cec2009_uf4": {
+    "seed": 8320,
+    "stratum": "intermediate",
+    "warm_donor": "zdt3",
+    "votes": 5,
+    "d_units_median": 3.1989,
+    "warm_config": {
+      "pop_size": 200,
+      "offspring_ratio": 0,
+      "selection": "tournament",
+      "initializer": "lhs",
+      "crossover": "sbx",
+      "crossover_prob": 0.8476,
+      "mutation": "linked_polynomial",
+      "mutation_prob_factor": 2.0981,
+      "mutation_eta": 6.1796,
+      "repair": "clip",
+      "selection_size": 9,
+      "crossover_eta": 15.2984
+    }
+  },
+  "cec2009_uf5": {
+    "seed": 8321,
+    "stratum": "hard",
+    "warm_donor": "zdt3",
+    "votes": 4,
+    "d_units_median": 0.7412,
+    "warm_config": {
+      "pop_size": 200,
+      "offspring_ratio": 0,
+      "selection": "tournament",
+      "initializer": "lhs",
+      "crossover": "sbx",
+      "crossover_prob": 0.8476,
+      "mutation": "linked_polynomial",
+      "mutation_prob_factor": 2.0981,
+      "mutation_eta": 6.1796,
+      "repair": "clip",
+      "selection_size": 9,
+      "crossover_eta": 15.2984
+    }
+  },
+  "cec2009_uf6": {
+    "seed": 8322,
+    "stratum": "hard",
+    "warm_donor": "zdt3",
+    "votes": 5,
+    "d_units_median": 0.8105,
+    "warm_config": {
+      "pop_size": 200,
+      "offspring_ratio": 0,
+      "selection": "tournament",
+      "initializer": "lhs",
+      "crossover": "sbx",
+      "crossover_prob": 0.8476,
+      "mutation": "linked_polynomial",
+      "mutation_prob_factor": 2.0981,
+      "mutation_eta": 6.1796,
+      "repair": "clip",
+      "selection_size": 9,
+      "crossover_eta": 15.2984
+    }
+  },
+  "cec2009_uf7": {
+    "seed": 8323,
+    "stratum": "intermediate",
+    "warm_donor": "zdt3",
+    "votes": 3,
+    "d_units_median": 0.5944,
+    "warm_config": {
+      "pop_size": 200,
+      "offspring_ratio": 0,
+      "selection": "tournament",
+      "initializer": "lhs",
+      "crossover": "sbx",
+      "crossover_prob": 0.8476,
+      "mutation": "linked_polynomial",
+      "mutation_prob_factor": 2.0981,
+      "mutation_eta": 6.1796,
+      "repair": "clip",
+      "selection_size": 9,
+      "crossover_eta": 15.2984
+    }
+  },
+  "zcat8": {
+    "seed": 8328,
+    "stratum": "intermediate",
+    "warm_donor": "zcat6",
+    "votes": 3,
+    "d_units_median": 0.5543,
+    "warm_config": {
+      "pop_size": 199,
+      "offspring_ratio": 0,
+      "selection": "tournament",
+      "initializer": "random",
+      "crossover": "sbx",
+      "crossover_prob": 0.9911,
+      "mutation": "linked_polynomial",
+      "mutation_prob_factor": 0.3626,
+      "mutation_eta": 27.0336,
+      "repair": "midpoint",
+      "selection_size": 10,
+      "crossover_eta": 5.6278
+    }
+  },
+  "zcat10": {
+    "seed": 8329,
+    "stratum": "intermediate",
+    "warm_donor": "zcat12",
+    "votes": 3,
+    "d_units_median": 1.1057,
+    "warm_config": {
+      "pop_size": 198,
+      "offspring_ratio": 0,
+      "selection": "tournament",
+      "initializer": "obl",
+      "crossover": "sbx",
+      "crossover_prob": 0.9942,
+      "mutation": "linked_polynomial",
+      "mutation_prob_factor": 0.4096,
+      "mutation_eta": 37.3058,
+      "repair": "reflect",
+      "selection_size": 10,
+      "crossover_eta": 6.964
+    }
+  }
+}

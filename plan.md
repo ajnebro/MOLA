@@ -1008,7 +1008,9 @@ réplica en Evolver se hace. Donde esta sección difiere de las anteriores, prev
     NicoVM.
   - **Lo que se declara:** con 24 problemas, t₂ será impreciso. Se informa con su intervalo
     bootstrap por problema.
-- **Coste:** 1–2 días de NicoVM. Se pre-registra antes de lanzarlo.
+- **Coste:** 1–2 días de NicoVM.
+- **Pre-registrado el 2026-11-02** (`research/phase4b/preregistration.md`). Está encadenado en NicoVM
+  detrás de la 3g (`chain_4b.sh`).
 
 ### 12.4 Orden de cálculo en NicoVM (C7)
 | # | Trabajo | Puerta | NicoVM |
