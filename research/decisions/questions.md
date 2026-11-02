@@ -176,3 +176,12 @@ en [`question1.md`](question1.md).
     unidades) van antes o después de la evaluación final?
 16. ¿Qué problemas y en qué fase para la validación con tres objetivos?
 17. (Resuelta por D12: la RQ4 se evalúa con la puerta G7, pre-registrada en la fase 4.)
+
+### Hechas el 2026-11-02, sin respuesta todavía
+
+22. ¿Encadeno en NicoVM, para que arranque sola al terminar la campaña de la 3c y la repetición de
+    f20, la matriz de la 3c? Es la recogida de élites, la evaluación de las 64 configuraciones,
+    IBEA reparado y las configuraciones aleatorias, ya pre-registrada.
+    - ¿Y después la fase 3g, con sus 38 generalistas y su evaluación?
+    - **Recomendación de Claude:** encadenar la matriz de la 3c, que dura unas 10–20 h. La 3g solo
+      si NicoVM no se necesita para el plan v2 de TEVC; son unos 2–2.5 días más.
