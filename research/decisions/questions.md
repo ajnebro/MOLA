@@ -131,6 +131,12 @@ en [`question1.md`](question1.md).
     - la de la revisión de Fable y las del umbral de similitud y la política de tres niveles, que
       absorben C3 y C4.
 
+### 19. ¿Recupero el segundo umbral expresándolo en unidades de ruido, con la política de tres niveles? (2026-11-02)
+- **Respuesta:** "procede con tu recomendación".
+- **Resultado (D13):** t₂ en unidades de ruido, calibrado con el experimento del nivel 2 y validado
+  con validación cruzada sobre los problemas de desarrollo. No se valida en los reservados (`plan.md`,
+  §12.2 y §12.3).
+
 ## Pendientes
 
 ### Planteadas antes, sin respuesta

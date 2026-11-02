@@ -59,7 +59,7 @@ Borrador del 2026-10-19, actualizado el 2026-10-20, el 2026-10-26 (orden de las 
   (pregunta pendiente 1). La recomendación de Claude es aplazarla a la versión de revista.
 - **Revisión externa (Fable, 2026-11-01), adoptada el 2026-11-02 (D12):** el plan vigente para lo
   que sigue está en la §12. Prevalece sobre las secciones anteriores donde difieran.
-- Las decisiones están en `research/decisions/decisions.md` (D1–D12, T1–T8).
+- Las decisiones están en `research/decisions/decisions.md` (D1–D13, T1–T8).
 
 ---
 
@@ -938,10 +938,16 @@ réplica en Evolver se hace. Donde esta sección difiere de las anteriores, prev
     propuesta de umbrales normalizados del usuario (2026-10-31).
 - **Los tres niveles propuestos,** y qué queda de cada uno:
   - **nivel 1, transferir:** en la RQ4, con s₁;
-  - **nivel 2, irace en caliente:** en la §12.3;
+  - **nivel 2, irace en caliente:** en la §12.3, con su propio umbral t₂ en unidades de ruido (D13);
   - **nivel 3, generalista o irace desde cero:** el generalista es la alternativa de π.
   - **s₂:** el percentil entre pares de problemas del entrenamiento. Se descarta como umbral porque
     cambia con la base de conocimiento (C5).
+  - **Política de tres niveles (D13):** con d la distancia de la muestra destino a la media de
+    entrenamiento más cercana, en unidades de ruido:
+    - d ≤ t₁ (s₁ ≥ 0.05): transferir;
+    - t₁ < d ≤ t₂: irace en caliente;
+    - d > t₂: el generalista, o irace desde cero si hay presupuesto.
+    - La puerta G7 evalúa la versión de dos niveles, sin el nivel 2.
 - **π_α:** `knn_selector` si s₁ ≥ α, con α = 0.05 fijado a priori; si no, el generalista irace de la
   línea base 1.
 - **s₁:** la fracción de la distribución de ruido del entrenamiento del pliegue que supera la
@@ -968,6 +974,21 @@ réplica en Evolver se hace. Donde esta sección difiere de las anteriores, prev
 - **Medida:** curvas *anytime* de la mejor élite tras n experimentos, para n ∈ {1 000, 2 000, 5 000,
   10 000, 20 000}, evaluadas con las semillas 5001–5010. La ventaja del arranque en caliente se
   relaciona con la distancia en unidades de ruido.
+- **Umbral t₂ (D13).** Es la mayor distancia, en unidades de ruido, a la que arrancar en caliente
+  sigue ahorrando al menos 2 000 experimentos (el 10 % del presupuesto) para alcanzar la calidad
+  final del arranque en frío menos 0.005.
+  - **Cálculo:** con una regresión isotónica decreciente del ahorro frente a d.
+  - **Unidades:** se expresa en unidades de ruido, no como percentil, para que valga de un estudio a
+    otro.
+- **Validación sin usar los mismos datos.** No se puede probar en los 17 reservados: haría falta
+  ajustar con irace sobre ellos, y está prohibido.
+  - **Principal:** validación cruzada anidada sobre los 24 problemas de desarrollo. t₂ se calibra en
+    los pliegues de entrenamiento (LOGO) y se comprueba en el problema que queda fuera.
+  - **Opcional, después de G4 y G5:** comprobación externa con los destinos de la 3c (instancias 2 y
+    3, que no son reservados), con sus dos brazos en caliente y en frío. Cuesta unos días más de
+    NicoVM.
+  - **Lo que se declara:** con 24 problemas, t₂ será impreciso. Se informa con su intervalo
+    bootstrap por problema.
 - **Coste:** 1–2 días de NicoVM. Se pre-registra antes de lanzarlo.
 
 ### 12.4 Orden de cálculo en NicoVM (C7)
@@ -996,7 +1017,8 @@ réplica en Evolver se hace. Donde esta sección difiere de las anteriores, prev
   G7.
 - **Antes de abrir los reservados,** Claude verifica en VAMOS sus cotas y frentes de referencia
   (WFG1–9, ZDT6, DTLZ7 y los ZCAT reservados) contra las implementaciones de referencia.
-- No se ajusta c*_Q en los reservados.
+- No se ajusta c*_Q en los reservados. Por eso en ellos se evalúa la política de dos niveles; el
+  nivel 2 necesitaría irace sobre ellos.
 - Comparación frente a las dos líneas base de D11. El entrenamiento son los 37 de desarrollo, con
   `gen_all` como generalista.
 

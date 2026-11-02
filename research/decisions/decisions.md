@@ -355,3 +355,25 @@ alternativas completas para D1–D3 están en [`question1.md`](question1.md).
   - **C14:** reproducibilidad: la nota de parada de la 3c en el repositorio.
 - **Motivo:** la revisión comprobada (respuesta de Claude del 2026-11-01). Sin plazo, los elementos
   que la revisión aplazaba por el calendario (C2, C4, 3e y C10) se incorporan.
+
+## D13 — Segundo umbral t₂ en unidades de ruido: política de tres niveles
+
+- **Fecha y autor:** 2026-11-02, el usuario: "procede con tu recomendación".
+- **Decisión:** se recupera la política de tres niveles del usuario. El segundo umbral se expresa en
+  unidades de ruido, no como percentil (s₂, descartado por C5).
+  - **Política,** con d en unidades de ruido:
+    - d ≤ t₁ (s₁ ≥ 0.05): transferir;
+    - t₁ < d ≤ t₂: irace en caliente;
+    - d > t₂: el generalista, o irace desde cero si hay presupuesto.
+  - **t₂:** la mayor distancia a la que arrancar en caliente sigue ahorrando al menos 2 000
+    experimentos para alcanzar la calidad final del arranque en frío menos 0.005. Se obtiene con una
+    regresión isotónica sobre el experimento del nivel 2 (`plan.md`, §12.3).
+  - **Validación:** validación cruzada anidada (LOGO) sobre los 24 problemas de desarrollo no
+    saturados. Como opcional, comprobación externa con los destinos de la 3c.
+  - **No se valida en los 17 reservados:** exigiría ajustar con irace sobre ellos. Allí se evalúa
+    la política de dos niveles.
+- **Motivo:**
+  - La objeción de la revisión externa era el percentil, no el segundo umbral: las unidades de
+    ruido no cambian con la base de conocimiento.
+  - Claude había dicho que t₂ "se probaría con los reservados"; se corrige por la regla de no
+    ajustar sobre ellos.
