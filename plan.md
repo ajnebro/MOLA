@@ -1038,6 +1038,11 @@ réplica en Evolver se hace. Donde esta sección difiere de las anteriores, prev
   G7.
 - **Antes de abrir los reservados,** Claude verifica en VAMOS sus cotas y frentes de referencia
   (WFG1–9, ZDT6, DTLZ7 y los ZCAT reservados) contra las implementaciones de referencia.
+  **Hecho el 2026-11-02** (`research/phase5/verification.md`), solo con las definiciones, sin
+  ejecutar ningún algoritmo:
+  - las definiciones coinciden con jMetal, salvo una diferencia de 1.4·10⁻³ en WFG9;
+  - los frentes de VAMOS de WFG1 y ZDT6 están mal, y el de DTLZ7 es de tres objetivos;
+  - la propuesta de cotas está en `data/reserved_bounds_proposed.json`.
 - No se ajusta c*_Q en los reservados. Por eso en ellos se evalúa la política de dos niveles; el
   nivel 2 necesitaría irace sobre ellos.
 - Comparación frente a las dos líneas base de D11. El entrenamiento son los 37 de desarrollo, con

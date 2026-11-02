@@ -1,0 +1,950 @@
+{
+  "dtlz7": {
+    "n_var": 21,
+    "lower": [
+      0.0,
+      0.0
+    ],
+    "upper": [
+      1.0,
+      1.0
+    ],
+    "jmetal": {
+      "DTLZ7(21,2)": {
+        "same_dimension_and_bounds": true,
+        "max_relative_objective_difference": 4.3162036174537007e-16
+      }
+    },
+    "jmetalpy_max_relative_objective_difference": 2.1581018087268504e-16,
+    "vamos_front_not_biobjective": 3,
+    "fronts": {
+      "evolver": {
+        "points": 2000,
+        "ideal": [
+          0.0,
+          2.307
+        ],
+        "nadir": [
+          0.859274,
+          4.0
+        ]
+      }
+    }
+  },
+  "wfg1": {
+    "n_var": 24,
+    "lower": [
+      0.0,
+      0.0
+    ],
+    "upper": [
+      2.0,
+      48.0
+    ],
+    "jmetal": {
+      "WFG1(4,20,2)": {
+        "same_dimension_and_bounds": true,
+        "max_relative_objective_difference": 4.138911225043702e-07
+      },
+      "WFG1(2,22,2)": {
+        "same_dimension_and_bounds": true,
+        "max_relative_objective_difference": 0.3822413247330554
+      }
+    },
+    "jmetalpy": "not available in the installed version",
+    "fronts": {
+      "vamos": {
+        "points": 100,
+        "ideal": [
+          0.069464,
+          0.069464
+        ],
+        "nadir": [
+          2.069464,
+          4.069464
+        ]
+      },
+      "evolver": {
+        "points": 885,
+        "ideal": [
+          0.0,
+          -0.0
+        ],
+        "nadir": [
+          1.999998,
+          4.0
+        ]
+      }
+    },
+    "front_distance_vamos_to_evolver": 0.034255899252908575,
+    "front_distance_evolver_to_vamos": 0.03447400947741241,
+    "analytic": {
+      "ideal": [
+        0.0,
+        0.0
+      ],
+      "nadir": [
+        2.0,
+        4.0
+      ]
+    },
+    "vamos_front_vs_analytic_max_gap": 0.03473197675000006
+  },
+  "wfg2": {
+    "n_var": 24,
+    "lower": [
+      0.0,
+      0.0
+    ],
+    "upper": [
+      2.0,
+      48.0
+    ],
+    "jmetal": {
+      "WFG2(4,20,2)": {
+        "same_dimension_and_bounds": true,
+        "max_relative_objective_difference": 7.430071934440832e-07
+      },
+      "WFG2(2,22,2)": {
+        "same_dimension_and_bounds": true,
+        "max_relative_objective_difference": 0.6800414719902995
+      }
+    },
+    "jmetalpy": "not available in the installed version",
+    "fronts": {
+      "vamos": {
+        "points": 32,
+        "ideal": [
+          0.0,
+          0.0
+        ],
+        "nadir": [
+          2.0,
+          4.0
+        ]
+      },
+      "evolver": {
+        "points": 111,
+        "ideal": [
+          0.0,
+          0.084846
+        ],
+        "nadir": [
+          1.976439,
+          4.0
+        ]
+      }
+    },
+    "front_distance_vamos_to_evolver": 0.005332626807833992,
+    "front_distance_evolver_to_vamos": 0.017994547890672355,
+    "analytic": {
+      "ideal": [
+        0.0,
+        0.0
+      ],
+      "nadir": [
+        2.0,
+        4.0
+      ]
+    },
+    "vamos_front_vs_analytic_max_gap": 0.0
+  },
+  "wfg3": {
+    "n_var": 24,
+    "lower": [
+      0.0,
+      0.0
+    ],
+    "upper": [
+      2.0,
+      48.0
+    ],
+    "jmetal": {
+      "WFG3(4,20,2)": {
+        "same_dimension_and_bounds": true,
+        "max_relative_objective_difference": 1.1158641864818573e-07
+      },
+      "WFG3(2,22,2)": {
+        "same_dimension_and_bounds": true,
+        "max_relative_objective_difference": 0.39961165986639335
+      }
+    },
+    "jmetalpy": "not available in the installed version",
+    "fronts": {
+      "vamos": {
+        "points": 10000,
+        "ideal": [
+          0.0,
+          0.0
+        ],
+        "nadir": [
+          2.0,
+          4.0
+        ]
+      },
+      "evolver": {
+        "points": 670,
+        "ideal": [
+          0.0,
+          2e-06
+        ],
+        "nadir": [
+          1.999999,
+          4.0
+        ]
+      }
+    },
+    "front_distance_vamos_to_evolver": 0.001767494756887369,
+    "front_distance_evolver_to_vamos": 3.741036778252276e-05,
+    "analytic": {
+      "ideal": [
+        0.0,
+        0.0
+      ],
+      "nadir": [
+        2.0,
+        4.0
+      ]
+    },
+    "vamos_front_vs_analytic_max_gap": 0.0
+  },
+  "wfg4": {
+    "n_var": 24,
+    "lower": [
+      0.0,
+      0.0
+    ],
+    "upper": [
+      2.0,
+      48.0
+    ],
+    "jmetal": {
+      "WFG4(4,20,2)": {
+        "same_dimension_and_bounds": true,
+        "max_relative_objective_difference": 2.372438706199359e-06
+      },
+      "WFG4(2,22,2)": {
+        "same_dimension_and_bounds": true,
+        "max_relative_objective_difference": 0.5035814426974495
+      }
+    },
+    "jmetalpy": "not available in the installed version",
+    "fronts": {
+      "vamos": {
+        "points": 10000,
+        "ideal": [
+          0.0,
+          0.0
+        ],
+        "nadir": [
+          2.0,
+          4.0
+        ]
+      },
+      "evolver": {
+        "points": 1324,
+        "ideal": [
+          0.082999,
+          0.0
+        ],
+        "nadir": [
+          2.0,
+          3.996554
+        ]
+      }
+    },
+    "front_distance_vamos_to_evolver": 0.002635729867637167,
+    "front_distance_evolver_to_vamos": 3.9059280231240136e-05,
+    "analytic": {
+      "ideal": [
+        0.0,
+        0.0
+      ],
+      "nadir": [
+        2.0,
+        4.0
+      ]
+    },
+    "vamos_front_vs_analytic_max_gap": 0.0
+  },
+  "wfg5": {
+    "n_var": 24,
+    "lower": [
+      0.0,
+      0.0
+    ],
+    "upper": [
+      2.0,
+      48.0
+    ],
+    "jmetal": {
+      "WFG5(4,20,2)": {
+        "same_dimension_and_bounds": true,
+        "max_relative_objective_difference": 3.0695305478743785e-05
+      },
+      "WFG5(2,22,2)": {
+        "same_dimension_and_bounds": true,
+        "max_relative_objective_difference": 0.486794322256394
+      }
+    },
+    "jmetalpy": "not available in the installed version",
+    "fronts": {
+      "vamos": {
+        "points": 10000,
+        "ideal": [
+          0.0,
+          0.0
+        ],
+        "nadir": [
+          2.0,
+          4.0
+        ]
+      },
+      "evolver": {
+        "points": 782,
+        "ideal": [
+          0.156803,
+          0.082771
+        ],
+        "nadir": [
+          1.999572,
+          3.987687
+        ]
+      }
+    },
+    "front_distance_vamos_to_evolver": 0.0032613261492213026,
+    "front_distance_evolver_to_vamos": 3.8914450825787136e-05,
+    "analytic": {
+      "ideal": [
+        0.0,
+        0.0
+      ],
+      "nadir": [
+        2.0,
+        4.0
+      ]
+    },
+    "vamos_front_vs_analytic_max_gap": 0.0
+  },
+  "wfg6": {
+    "n_var": 24,
+    "lower": [
+      0.0,
+      0.0
+    ],
+    "upper": [
+      2.0,
+      48.0
+    ],
+    "jmetal": {
+      "WFG6(4,20,2)": {
+        "same_dimension_and_bounds": true,
+        "max_relative_objective_difference": 3.67888051254382e-07
+      },
+      "WFG6(2,22,2)": {
+        "same_dimension_and_bounds": true,
+        "max_relative_objective_difference": 0.6535401706907359
+      }
+    },
+    "jmetalpy": "not available in the installed version",
+    "fronts": {
+      "vamos": {
+        "points": 10000,
+        "ideal": [
+          0.0,
+          0.0
+        ],
+        "nadir": [
+          2.0,
+          4.0
+        ]
+      },
+      "evolver": {
+        "points": 344,
+        "ideal": [
+          0.0,
+          2e-06
+        ],
+        "nadir": [
+          2.0,
+          4.0
+        ]
+      }
+    },
+    "front_distance_vamos_to_evolver": 0.002652551271740105,
+    "front_distance_evolver_to_vamos": 4.049498494950442e-05,
+    "analytic": {
+      "ideal": [
+        0.0,
+        0.0
+      ],
+      "nadir": [
+        2.0,
+        4.0
+      ]
+    },
+    "vamos_front_vs_analytic_max_gap": 0.0
+  },
+  "wfg7": {
+    "n_var": 24,
+    "lower": [
+      0.0,
+      0.0
+    ],
+    "upper": [
+      2.0,
+      48.0
+    ],
+    "jmetal": {
+      "WFG7(4,20,2)": {
+        "same_dimension_and_bounds": true,
+        "max_relative_objective_difference": 1.117748321466236e-06
+      },
+      "WFG7(2,22,2)": {
+        "same_dimension_and_bounds": true,
+        "max_relative_objective_difference": 0.49151591226154406
+      }
+    },
+    "jmetalpy": "not available in the installed version",
+    "fronts": {
+      "vamos": {
+        "points": 10000,
+        "ideal": [
+          0.0,
+          0.0
+        ],
+        "nadir": [
+          2.0,
+          4.0
+        ]
+      },
+      "evolver": {
+        "points": 2488,
+        "ideal": [
+          0.0,
+          1.5e-05
+        ],
+        "nadir": [
+          2.0,
+          4.0
+        ]
+      }
+    },
+    "front_distance_vamos_to_evolver": 0.0014165397417362936,
+    "front_distance_evolver_to_vamos": 3.960618244253784e-05,
+    "analytic": {
+      "ideal": [
+        0.0,
+        0.0
+      ],
+      "nadir": [
+        2.0,
+        4.0
+      ]
+    },
+    "vamos_front_vs_analytic_max_gap": 0.0
+  },
+  "wfg8": {
+    "n_var": 24,
+    "lower": [
+      0.0,
+      0.0
+    ],
+    "upper": [
+      2.0,
+      48.0
+    ],
+    "jmetal": {
+      "WFG8(4,20,2)": {
+        "same_dimension_and_bounds": true,
+        "max_relative_objective_difference": 2.3780031469678857e-07
+      },
+      "WFG8(2,22,2)": {
+        "same_dimension_and_bounds": true,
+        "max_relative_objective_difference": 0.4867075811151326
+      }
+    },
+    "jmetalpy": "not available in the installed version",
+    "fronts": {
+      "vamos": {
+        "points": 10000,
+        "ideal": [
+          0.0,
+          0.0
+        ],
+        "nadir": [
+          2.0,
+          4.0
+        ]
+      },
+      "evolver": {
+        "points": 329,
+        "ideal": [
+          0.0,
+          5e-06
+        ],
+        "nadir": [
+          2.000001,
+          4.0
+        ]
+      }
+    },
+    "front_distance_vamos_to_evolver": 0.0019632602976768026,
+    "front_distance_evolver_to_vamos": 4.67476721558351e-05,
+    "analytic": {
+      "ideal": [
+        0.0,
+        0.0
+      ],
+      "nadir": [
+        2.0,
+        4.0
+      ]
+    },
+    "vamos_front_vs_analytic_max_gap": 0.0
+  },
+  "wfg9": {
+    "n_var": 24,
+    "lower": [
+      0.0,
+      0.0
+    ],
+    "upper": [
+      2.0,
+      48.0
+    ],
+    "jmetal": {
+      "WFG9(4,20,2)": {
+        "same_dimension_and_bounds": true,
+        "max_relative_objective_difference": 0.0013943003868200764
+      },
+      "WFG9(2,22,2)": {
+        "same_dimension_and_bounds": true,
+        "max_relative_objective_difference": 0.7352931074160379
+      }
+    },
+    "jmetalpy": "not available in the installed version",
+    "fronts": {
+      "vamos": {
+        "points": 10000,
+        "ideal": [
+          0.0,
+          0.0
+        ],
+        "nadir": [
+          2.0,
+          4.0
+        ]
+      },
+      "evolver": {
+        "points": 2600,
+        "ideal": [
+          0.240098,
+          0.139199
+        ],
+        "nadir": [
+          1.998789,
+          3.971072
+        ]
+      }
+    },
+    "front_distance_vamos_to_evolver": 0.005376244942483909,
+    "front_distance_evolver_to_vamos": 3.924553606263291e-05,
+    "analytic": {
+      "ideal": [
+        0.0,
+        0.0
+      ],
+      "nadir": [
+        2.0,
+        4.0
+      ]
+    },
+    "vamos_front_vs_analytic_max_gap": 0.0
+  },
+  "zcat14": {
+    "n_var": 30,
+    "lower": [
+      -15.0,
+      -0.5
+    ],
+    "upper": [
+      0.5,
+      15.0
+    ],
+    "jmetal": {
+      "ZCAT14": {
+        "same_dimension_and_bounds": true,
+        "max_relative_objective_difference": 2.364743520425791e-16
+      }
+    },
+    "jmetalpy": "not available in the installed version",
+    "fronts": {
+      "vamos": {
+        "points": 1000,
+        "ideal": [
+          0.0,
+          0.000331
+        ],
+        "nadir": [
+          1.0,
+          3.999999
+        ]
+      },
+      "evolver": {
+        "points": 1000,
+        "ideal": [
+          0.0,
+          0.000331
+        ],
+        "nadir": [
+          1.0,
+          3.999999
+        ]
+      }
+    },
+    "front_distance_vamos_to_evolver": 0.0,
+    "front_distance_evolver_to_vamos": 0.0,
+    "analytic": {
+      "ideal": [
+        0.0,
+        0.0
+      ],
+      "nadir": [
+        1.0,
+        4.0
+      ]
+    },
+    "vamos_front_vs_analytic_max_gap": 8.275e-05
+  },
+  "zcat16": {
+    "n_var": 30,
+    "lower": [
+      -15.0,
+      -0.5
+    ],
+    "upper": [
+      0.5,
+      15.0
+    ],
+    "jmetal": {
+      "ZCAT16": {
+        "same_dimension_and_bounds": true,
+        "max_relative_objective_difference": 3.397738024341602e-16
+      }
+    },
+    "jmetalpy": "not available in the installed version",
+    "fronts": {
+      "vamos": {
+        "points": 1000,
+        "ideal": [
+          8e-06,
+          1e-05
+        ],
+        "nadir": [
+          1.0,
+          3.999983
+        ]
+      },
+      "evolver": {
+        "points": 1000,
+        "ideal": [
+          8e-06,
+          1e-05
+        ],
+        "nadir": [
+          1.0,
+          3.999983
+        ]
+      }
+    },
+    "front_distance_vamos_to_evolver": 0.0,
+    "front_distance_evolver_to_vamos": 0.0,
+    "analytic": {
+      "ideal": [
+        0.0,
+        0.0
+      ],
+      "nadir": [
+        1.0,
+        4.0
+      ]
+    },
+    "vamos_front_vs_analytic_max_gap": 8e-06
+  },
+  "zcat18": {
+    "n_var": 30,
+    "lower": [
+      -15.0,
+      -0.5
+    ],
+    "upper": [
+      0.5,
+      15.0
+    ],
+    "jmetal": {
+      "ZCAT18": {
+        "same_dimension_and_bounds": true,
+        "max_relative_objective_difference": 2.396268198723372e-16
+      }
+    },
+    "jmetalpy": "not available in the installed version",
+    "fronts": {
+      "vamos": {
+        "points": 1000,
+        "ideal": [
+          2.1e-05,
+          0.000498
+        ],
+        "nadir": [
+          0.999975,
+          3.999587
+        ]
+      },
+      "evolver": {
+        "points": 1000,
+        "ideal": [
+          2.1e-05,
+          0.000498
+        ],
+        "nadir": [
+          0.999975,
+          3.999587
+        ]
+      }
+    },
+    "front_distance_vamos_to_evolver": 0.0,
+    "front_distance_evolver_to_vamos": 0.0,
+    "analytic": {
+      "ideal": [
+        0.0,
+        0.0
+      ],
+      "nadir": [
+        1.0,
+        4.0
+      ]
+    },
+    "vamos_front_vs_analytic_max_gap": 0.0001245
+  },
+  "zcat2": {
+    "n_var": 30,
+    "lower": [
+      -15.0,
+      -0.5
+    ],
+    "upper": [
+      0.5,
+      15.0
+    ],
+    "jmetal": {
+      "ZCAT2": {
+        "same_dimension_and_bounds": true,
+        "max_relative_objective_difference": 2.477160677403526e-16
+      }
+    },
+    "jmetalpy": "not available in the installed version",
+    "fronts": {
+      "vamos": {
+        "points": 1000,
+        "ideal": [
+          0.0,
+          0.0
+        ],
+        "nadir": [
+          0.999554,
+          3.996182
+        ]
+      },
+      "evolver": {
+        "points": 1000,
+        "ideal": [
+          0.0,
+          0.0
+        ],
+        "nadir": [
+          0.999554,
+          3.996182
+        ]
+      }
+    },
+    "front_distance_vamos_to_evolver": 0.0,
+    "front_distance_evolver_to_vamos": 0.0,
+    "analytic": {
+      "ideal": [
+        0.0,
+        0.0
+      ],
+      "nadir": [
+        1.0,
+        4.0
+      ]
+    },
+    "vamos_front_vs_analytic_max_gap": 0.0009544999999999693
+  },
+  "zcat20": {
+    "n_var": 30,
+    "lower": [
+      -15.0,
+      -0.5
+    ],
+    "upper": [
+      0.5,
+      15.0
+    ],
+    "jmetal": {
+      "ZCAT20": {
+        "same_dimension_and_bounds": true,
+        "max_relative_objective_difference": 2.3154226331577807e-16
+      }
+    },
+    "jmetalpy": "not available in the installed version",
+    "fronts": {
+      "vamos": {
+        "points": 1000,
+        "ideal": [
+          4.9e-05,
+          0.000272
+        ],
+        "nadir": [
+          0.999986,
+          3.999021
+        ]
+      },
+      "evolver": {
+        "points": 1000,
+        "ideal": [
+          4.9e-05,
+          0.000272
+        ],
+        "nadir": [
+          0.999986,
+          3.999021
+        ]
+      }
+    },
+    "front_distance_vamos_to_evolver": 0.0,
+    "front_distance_evolver_to_vamos": 0.0,
+    "analytic": {
+      "ideal": [
+        0.0,
+        0.0
+      ],
+      "nadir": [
+        1.0,
+        4.0
+      ]
+    },
+    "vamos_front_vs_analytic_max_gap": 0.0002447500000000158
+  },
+  "zcat7": {
+    "n_var": 30,
+    "lower": [
+      -15.0,
+      -0.5
+    ],
+    "upper": [
+      0.5,
+      15.0
+    ],
+    "jmetal": {
+      "ZCAT7": {
+        "same_dimension_and_bounds": true,
+        "max_relative_objective_difference": 2.1893037793180382e-16
+      }
+    },
+    "jmetalpy": "not available in the installed version",
+    "fronts": {
+      "vamos": {
+        "points": 1000,
+        "ideal": [
+          2.3e-05,
+          0.000365
+        ],
+        "nadir": [
+          0.999982,
+          3.999548
+        ]
+      },
+      "evolver": {
+        "points": 1000,
+        "ideal": [
+          2.3e-05,
+          0.000365
+        ],
+        "nadir": [
+          0.999982,
+          3.999548
+        ]
+      }
+    },
+    "front_distance_vamos_to_evolver": 0.0,
+    "front_distance_evolver_to_vamos": 0.0,
+    "analytic": {
+      "ideal": [
+        0.0,
+        0.0
+      ],
+      "nadir": [
+        1.0,
+        4.0
+      ]
+    },
+    "vamos_front_vs_analytic_max_gap": 0.00011300000000002974
+  },
+  "zdt6": {
+    "n_var": 10,
+    "lower": [
+      0.0,
+      0.0
+    ],
+    "upper": [
+      1.0,
+      1.0
+    ],
+    "jmetal": {
+      "ZDT6": {
+        "same_dimension_and_bounds": true,
+        "max_relative_objective_difference": 3.811874037507196e-16
+      }
+    },
+    "jmetalpy_max_relative_objective_difference": 3.811874037507196e-16,
+    "fronts": {
+      "vamos": {
+        "points": 2990,
+        "ideal": [
+          0.280775,
+          0.000806
+        ],
+        "nadir": [
+          1.0,
+          0.923314
+        ]
+      },
+      "evolver": {
+        "points": 1000,
+        "ideal": [
+          0.280775,
+          0.0
+        ],
+        "nadir": [
+          1.0,
+          0.921165
+        ]
+      }
+    },
+    "front_distance_vamos_to_evolver": 0.0008938832755294169,
+    "front_distance_evolver_to_vamos": 0.0007725624850737629,
+    "analytic": {
+      "ideal": [
+        0.2807753191,
+        0.0
+      ],
+      "nadir": [
+        1.0,
+        0.921165
+      ]
+    },
+    "vamos_front_vs_analytic_max_gap": 0.0023331678277299407
+  }
+}

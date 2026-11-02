@@ -170,6 +170,9 @@ en [`question1.md`](question1.md).
    - el frente de referencia de UF6;
    - las cotas de UF3;
    - el desplazamiento absoluto del punto de referencia de SMS-EMOA.
+   - del 2026-11-02 (`research/phase5/verification.md`): el frente de referencia de WFG1 está
+     desplazado (+0.069), el de ZDT6 está ligeramente fuera, no hay frente biobjetivo de DTLZ7, y
+     WFG9 difiere de jMetal en 1.4·10⁻³.
 8. ¿Se comunican los fallos de jMetal y Evolver, y entran en la respuesta a los revisores del
    artículo de Evolver en ECJ?
    - RWA1 con `10e-3`;

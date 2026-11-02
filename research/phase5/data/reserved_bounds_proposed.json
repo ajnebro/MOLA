@@ -1,0 +1,189 @@
+{
+  "dtlz7": {
+    "ideal": [
+      0.0,
+      2.307
+    ],
+    "nadir": [
+      0.859274,
+      4.0
+    ],
+    "source": "evolver DTLZ7.2D.csv (VAMOS file is three-objective); f2 = 4 - f1 (1 + sin 3 pi f1) on the front"
+  },
+  "wfg1": {
+    "ideal": [
+      0.0,
+      0.0
+    ],
+    "nadir": [
+      2.0,
+      4.0
+    ],
+    "source": "analytic"
+  },
+  "wfg2": {
+    "ideal": [
+      0.0,
+      0.0
+    ],
+    "nadir": [
+      2.0,
+      4.0
+    ],
+    "source": "analytic"
+  },
+  "wfg3": {
+    "ideal": [
+      0.0,
+      0.0
+    ],
+    "nadir": [
+      2.0,
+      4.0
+    ],
+    "source": "analytic"
+  },
+  "wfg4": {
+    "ideal": [
+      0.0,
+      0.0
+    ],
+    "nadir": [
+      2.0,
+      4.0
+    ],
+    "source": "analytic"
+  },
+  "wfg5": {
+    "ideal": [
+      0.0,
+      0.0
+    ],
+    "nadir": [
+      2.0,
+      4.0
+    ],
+    "source": "analytic"
+  },
+  "wfg6": {
+    "ideal": [
+      0.0,
+      0.0
+    ],
+    "nadir": [
+      2.0,
+      4.0
+    ],
+    "source": "analytic"
+  },
+  "wfg7": {
+    "ideal": [
+      0.0,
+      0.0
+    ],
+    "nadir": [
+      2.0,
+      4.0
+    ],
+    "source": "analytic"
+  },
+  "wfg8": {
+    "ideal": [
+      0.0,
+      0.0
+    ],
+    "nadir": [
+      2.0,
+      4.0
+    ],
+    "source": "analytic"
+  },
+  "wfg9": {
+    "ideal": [
+      0.0,
+      0.0
+    ],
+    "nadir": [
+      2.0,
+      4.0
+    ],
+    "source": "analytic"
+  },
+  "zcat14": {
+    "ideal": [
+      0.0,
+      0.000331
+    ],
+    "nadir": [
+      1.0,
+      3.999999
+    ],
+    "source": "vamos reference front (identical to evolver's)"
+  },
+  "zcat16": {
+    "ideal": [
+      8e-06,
+      1e-05
+    ],
+    "nadir": [
+      1.0,
+      3.999983
+    ],
+    "source": "vamos reference front (identical to evolver's)"
+  },
+  "zcat18": {
+    "ideal": [
+      2.1e-05,
+      0.000498
+    ],
+    "nadir": [
+      0.999975,
+      3.999587
+    ],
+    "source": "vamos reference front (identical to evolver's)"
+  },
+  "zcat2": {
+    "ideal": [
+      0.0,
+      0.0
+    ],
+    "nadir": [
+      0.999554,
+      3.996182
+    ],
+    "source": "vamos reference front (identical to evolver's)"
+  },
+  "zcat20": {
+    "ideal": [
+      4.9e-05,
+      0.000272
+    ],
+    "nadir": [
+      0.999986,
+      3.999021
+    ],
+    "source": "vamos reference front (identical to evolver's)"
+  },
+  "zcat7": {
+    "ideal": [
+      2.3e-05,
+      0.000365
+    ],
+    "nadir": [
+      0.999982,
+      3.999548
+    ],
+    "source": "vamos reference front (identical to evolver's)"
+  },
+  "zdt6": {
+    "ideal": [
+      0.2807753191,
+      0.0
+    ],
+    "nadir": [
+      1.0,
+      0.921165
+    ],
+    "source": "analytic"
+  }
+}
