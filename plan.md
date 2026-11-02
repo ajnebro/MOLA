@@ -43,7 +43,13 @@ Borrador del 2026-10-19, actualizado el 2026-10-20, el 2026-10-26 (orden de las 
     - **Situación a 2026-10-31:** NicoVM sigue ocupado con la cola de Evolver TEVC, a la que le
       quedan unas 20 h. La campaña se reanudará cuando quede libre: los ajustes terminados se saltan
       y los interrumpidos siguen desde su `irace.Rdata`.
-    - **Duración:** faltan unos 6 días de cálculo desde la reanudación.
+    - **Reanudada el 2026-11-02 a las 16:10 UTC,** cuando la cola de TEVC se paró (plan v2 de ese
+      proyecto). Los ajustes interrumpidos siguieron desde su `irace.Rdata`, salvo f20: su
+      instantánea no tenía ningún experimento completo, así que la recuperación falló.
+      - El estado de f20 se guardó en `irace/f20/failed-recovery-20261102/`.
+      - f20 se repite desde cero al acabar la campaña (`after_campaign.sh`, que espera además a
+        que NicoVM esté libre, y `run_f20.sh`, con 31 procesos).
+    - **Duración:** unos 6 días desde la reanudación, más f20.
 - **Estado del arte:** revisado el 2026-10-27, con las lecciones y lo que se incorpora en la §10.
   Las notas por trabajo están en `research/references/state_of_the_art.md`.
 - **Generalistas irace de la fase 3 (fase 3g, D11):** pre-registrada el 2026-10-31
