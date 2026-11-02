@@ -357,8 +357,9 @@ transferencia de lo sintético a lo real y qué eligen las configuraciones ajust
   que contrastarlo con el código de referencia de Tanabe e Ishibuchi.
 - **Invariancia de los operadores de VAMOS:** es la condición de la RQ2 y hay que verificarla
   antes de usarla.
-- **Calendario:** GECCO 2027, cuyo plazo suele caer a finales de enero (confirmarlo). Si no llega,
-  una revista (ECJ o TELO).
+- **Calendario:** sin plazo fijo. El 2026-11-02 el usuario dijo: "olvida la parte, ya no hay
+  prisa". GECCO 2027 deja de condicionar el plan, y el lugar de publicación sigue pendiente
+  (pregunta 12).
 - **No regenerar ahora los CSV de `examples/benchmarks/`.** Cada resultado nuevo identifica la
   versión del cálculo y la geometría que lo produjeron.
 

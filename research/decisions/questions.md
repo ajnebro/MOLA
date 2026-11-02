@@ -104,6 +104,14 @@ en [`question1.md`](question1.md).
     lanzarlos cuando NicoVM quede libre.
   - Esto responde también a la antigua pendiente 2.
 
+### 17. ¿Plazo exacto de GECCO 2027? ¿Borro los `hs_err_pid*.log` de la raíz del repositorio? (2026-11-01)
+- **Respuesta:** "olvida la parte, ya no hay prisa, y borra los logs".
+- **Resultado:**
+  - El plazo de GECCO deja de condicionar el plan (`plan.md`, §7, "Calendario").
+  - Los dos registros de fallo de Java se borraron sin subirlos.
+  - Las recomendaciones de la revisión externa que se apoyaban en el plazo cambian; ver la
+    pendiente 21.
+
 ## Pendientes
 
 ### Hechas tras la fase 3, sin respuesta todavía (2026-10-26)
@@ -146,7 +154,8 @@ en [`question1.md`](question1.md).
 10. ¿Cuándo se integran las ramas `research/*` en `main`, y con un pull request a ajnebro/MOLA?
 11. ¿Cuándo se regeneran los CSV históricos, `FEATURE_ANALYSIS.md` y los notebooks con la versión
     actual de MOLA?
-12. ¿Dónde se publica: GECCO 2027 o una revista (ECJ, TELO)? ¿Quiénes son los coautores?
+12. ¿Dónde se publica: GECCO 2027 o una revista (ECJ, TELO)? ¿Quiénes son los coautores? (Sin plazo
+    fijo desde el 2026-11-02.)
 
 ### Que se plantearán más adelante
 
