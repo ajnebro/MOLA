@@ -73,3 +73,14 @@ En NicoVM, cuando termine la campaña de la fase 3 y la máquina esté libre:
   features son las mismas en 34 problemas, así que el donante depende solo de las implementaciones.
 - **Matrices de pérdida de transferencia:** correlación entre la de VAMOS y la de jMetal.
 - **Problemas marcados:** todo se informa con y sin UF3, RE24 y RWA1.
+
+## 6. Nota de ejecución (2026-11-02), sin cambios en el diseño
+
+- **Decisión:** el usuario confirmó la réplica ("ok", D12).
+- **Ejecución:** encadenada en NicoVM detrás de la fase 3r (`irace/chain_3e.sh`), con el despliegue
+  de `~/mola-phase3e` del 2026-10-21. Su copia del repositorio coincide con la local; incluye el
+  jar de Evolver 2.5 y `RunWorker` compilado.
+- **Lo que no cambia:** el pre-registro sigue tal cual. Las decisiones posteriores no tocan esta
+  réplica, cuya puerta sigue siendo G3:
+  - **D9:** aquí el único comparador sin ajustar es NSGA-II por defecto de Evolver.
+  - **D11 y D12:** el generalista irace y la política de la fase 4 son de la fase 3 en VAMOS.

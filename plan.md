@@ -1020,7 +1020,7 @@ réplica en Evolver se hace. Donde esta sección difiere de las anteriores, prev
 | 3 | Fase 4: G7 sobre la fase 3 + 3g y sobre la 3c | G7 | 0 |
 | 4 | Nivel 2, en caliente y *anytime* | Descriptivo | 1–2 días |
 | 5 | C10: reajustar con otra semilla los 5 problemas con c*_Q por debajo del mejor donante (fase 3r, pre-registrada el 2026-11-02 y encadenada detrás de la 4b) | — | ≈ 6–10 h |
-| 6 | 3e: réplica en Evolver/jMetal | G3 en Evolver | ≈ 2 días + preparación |
+| 6 | 3e: réplica en Evolver/jMetal (pre-registrada el 2026-10-21, desplegada en NicoVM y encadenada detrás de la 3r el 2026-11-02) | G3 en Evolver | ≈ 2 días |
 | 7 | Fase 5: evaluación final con los 17 reservados | Confirmatoria | 1–2 h |
 | — | Opcionales: RQ5 (3s), RQ6 y las rejillas de RQ2 y RQ3 | — | Según se decida |
 
