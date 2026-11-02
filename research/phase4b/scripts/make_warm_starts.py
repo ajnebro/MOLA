@@ -86,7 +86,8 @@ def main() -> None:
         donor = problems[train[chosen]]
         config = tuned[donor]["config"]
         (DATA / "initial" / f"{problem}.txt").write_text(
-            "\n".join([default_lines[0], irace_line(config, header), default_lines[1]]) + "\n"
+            "\n".join([default_lines[0], irace_line(config, header), default_lines[1]]) + "\n",
+            newline="\n",  # irace reads these on Linux: no CRLF
         )
         tasks[problem] = {
             "seed": SEED_BASE + q,
