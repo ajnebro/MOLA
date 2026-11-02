@@ -137,6 +137,23 @@ en [`question1.md`](question1.md).
   con validación cruzada sobre los problemas de desarrollo. No se valida en los reservados (`plan.md`,
   §12.2 y §12.3).
 
+### 20. ¿Encadeno en NicoVM la matriz de la 3c y la 3g para que arranquen solas al acabar la campaña? (2026-11-02)
+- **Respuesta:** "encadena todo".
+- **Resultado:** `~/mola-phase3c/chain_after_campaign.sh` (en el repositorio,
+  `research/phase3c/irace/chain_after_campaign.sh`) corre en NicoVM desde las 17:11 UTC del
+  2026-11-02.
+  - **Pasos,** en orden:
+    1. f20;
+    2. la comprobación de los 61 DONE;
+    3. la recogida de élites;
+    4. la matriz de la 3c (64 configuraciones, IBEA reparado y configuraciones aleatorias);
+    5. los 38 generalistas de la 3g;
+    6. la comprobación de sus DONE;
+    7. su recogida y su evaluación.
+  - **Antes de cada paso** espera a que NicoVM esté libre.
+  - **Lo que aún no está preparado** (nivel 2, C10, 3e y fase 5) se añadirá a la cadena cuando
+    esté pre-registrado.
+
 ## Pendientes
 
 ### Planteadas antes, sin respuesta
@@ -176,12 +193,3 @@ en [`question1.md`](question1.md).
     unidades) van antes o después de la evaluación final?
 16. ¿Qué problemas y en qué fase para la validación con tres objetivos?
 17. (Resuelta por D12: la RQ4 se evalúa con la puerta G7, pre-registrada en la fase 4.)
-
-### Hechas el 2026-11-02, sin respuesta todavía
-
-22. ¿Encadeno en NicoVM, para que arranque sola al terminar la campaña de la 3c y la repetición de
-    f20, la matriz de la 3c? Es la recogida de élites, la evaluación de las 64 configuraciones,
-    IBEA reparado y las configuraciones aleatorias, ya pre-registrada.
-    - ¿Y después la fase 3g, con sus 38 generalistas y su evaluación?
-    - **Recomendación de Claude:** encadenar la matriz de la 3c, que dura unas 10–20 h. La 3g solo
-      si NicoVM no se necesita para el plan v2 de TEVC; son unos 2–2.5 días más.

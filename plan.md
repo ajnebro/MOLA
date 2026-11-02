@@ -49,7 +49,14 @@ Borrador del 2026-10-19, actualizado el 2026-10-20, el 2026-10-26 (orden de las 
       - El estado de f20 se guardó en `irace/f20/failed-recovery-20261102/`.
       - f20 se repite desde cero al acabar la campaña (`after_campaign.sh`, que espera además a
         que NicoVM esté libre, y `run_f20.sh`, con 31 procesos).
-    - **Duración:** unos 6 días desde la reanudación, más f20.
+    - **Cadena:** el usuario pidió "encadena todo" (2026-11-02). Desde las 17:11 UTC corre en NicoVM
+      `chain_after_campaign.sh`:
+      - f20;
+      - la matriz de la 3c, con IBEA reparado y las configuraciones aleatorias;
+      - los 38 generalistas de la 3g y su evaluación.
+      - Antes de cada paso espera a que NicoVM esté libre, y se detiene si falta algún ajuste.
+      - El registro está en `~/mola-phase3c/chain.log`.
+    - **Duración:** unos 6 días de campaña, f20, unas 10–20 h de matriz y 2–2.5 días de 3g.
 - **Estado del arte:** revisado el 2026-10-27, con las lecciones y lo que se incorpora en la §10.
   Las notas por trabajo están en `research/references/state_of_the_art.md`.
 - **Generalistas irace de la fase 3 (fase 3g, D11):** pre-registrada el 2026-10-31
