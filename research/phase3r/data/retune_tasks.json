@@ -1,0 +1,22 @@
+{
+  "cec2009_uf3": {
+    "seed": 8419,
+    "phase3_seed": 8019
+  },
+  "cec2009_uf7": {
+    "seed": 8423,
+    "phase3_seed": 8023
+  },
+  "dtlz4": {
+    "seed": 8407,
+    "phase3_seed": 8007
+  },
+  "lz09_f3": {
+    "seed": 8411,
+    "phase3_seed": 8011
+  },
+  "zdt4": {
+    "seed": 8403,
+    "phase3_seed": 8003
+  }
+}
