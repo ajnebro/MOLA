@@ -310,3 +310,48 @@ alternativas completas para D1–D3 están en [`question1.md`](question1.md).
   - El SBS depende de qué problemas hay en el portafolio.
   - Un irace sobre el entrenamiento es la referencia estándar de la configuración por instancia
     (ISAC, Hydra, Belkhir) y cuesta un solo ajuste.
+
+## D12 — Se adopta la revisión externa (C1–C14), sin plazo
+
+- **Fecha y autor:** 2026-11-02, decisiones del usuario:
+  - "olvida la parte, ya no hay prisa";
+  - "Si, adopta los cambios";
+  - "Opción C";
+  - "ok", sobre la verificación de los reservados y sobre la réplica en Evolver;
+  - "coautores Nico, Antonio y Javi, el resto, pendiente".
+- **Decisión:** se adoptan los cambios de `research/review/plan_propuesto_fable.md`, con estos
+  ajustes:
+  - **C1:** artículo condicional, con el resultado negativo en el centro, decidido ya.
+  - **C2:** sin plazo, un único artículo de revista; el lugar sigue pendiente (pregunta 12).
+  - **C3, la RQ4 como política de dos niveles π_α:** `knn_selector` si s₁ ≥ α (α = 0.05); si no, el
+    generalista irace.
+    - **s₁:** la fracción de la distribución de ruido "una muestra frente a la media de las otras
+      cuatro" del entrenamiento que supera la distancia de la muestra destino a su media de
+      entrenamiento más cercana.
+    - **Puerta G7,** en la fase 4: no inferioridad frente al generalista (margen 0.005) y reducción a
+      la mitad de la fracción de pérdidas > 0.10 frente a `knn_selector`.
+    - **En LOGO,** el generalista es el LOGO de su grupo (opción C): 32 ajustes irace adicionales,
+      una enmienda de la 3g.
+    - **Réplica en la 3c:** enmienda 3.
+  - **C4, nivel 2:** irace en caliente con 20 000 experimentos (D5) y análisis *anytime* desde
+    `irace.Rdata`, en los 24 problemas no saturados. Se hace y entra en el artículo.
+  - **C5:** sin s₂.
+  - **C6:** hecho.
+  - **C7, orden de cálculo:**
+    1. 3c;
+    2. 3g con los 32 generalistas LOGO;
+    3. G7;
+    4. nivel 2;
+    5. reajustes de C10;
+    6. 3e;
+    7. fase 5.
+  - **C8:** fase 5 detallada. Claude verifica las cotas y los frentes de referencia de los 17
+    reservados antes de abrirlos.
+  - **C9–C11:** análisis descriptivos gratuitos.
+  - **C10:** también los reajustes con otra semilla de los problemas donde c*_Q queda por debajo
+    del mejor donante.
+  - **C12:** el usuario contacta con los coautores. Coautores: Nico, Antonio y Javi.
+  - **C13:** G3 se declara como prueba de poca potencia.
+  - **C14:** reproducibilidad: la nota de parada de la 3c en el repositorio.
+- **Motivo:** la revisión comprobada (respuesta de Claude del 2026-11-01). Sin plazo, los elementos
+  que la revisión aplazaba por el calendario (C2, C4, 3e y C10) se incorporan.

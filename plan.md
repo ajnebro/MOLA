@@ -1,7 +1,8 @@
 # Plan — Recomendación de configuraciones por similitud de paisajes (continuación de MOLA)
 
 Borrador del 2026-10-19, actualizado el 2026-10-20, el 2026-10-26 (orden de las RQ, D7), el
-2026-10-27 (estado del arte, RQ6 y RQ7) y el 2026-10-31 (diseño de la evaluación, D11).
+2026-10-27 (estado del arte, RQ6 y RQ7), el 2026-10-31 (diseño de la evaluación, D11) y el
+2026-11-02 (revisión externa adoptada, D12; ver §12).
 
 **Estado:**
 - **Fase 0:** ejecutada el 2026-10-19. Resultados en `research/phase0/report.md`; el registro
@@ -56,7 +57,9 @@ Borrador del 2026-10-19, actualizado el 2026-10-20, el 2026-10-26 (orden de las 
 - **Fase 3 en Evolver (D6):** después de la de VAMOS, la fase 3 se repite entera en Evolver/jMetal,
   con el espacio completo de NSGA-II (`NSGAIIDouble.yaml`) e irace. **Pendiente de confirmar**
   (pregunta pendiente 1). La recomendación de Claude es aplazarla a la versión de revista.
-- Las decisiones están en `research/decisions/decisions.md` (D1–D11, T1–T8).
+- **Revisión externa (Fable, 2026-11-01), adoptada el 2026-11-02 (D12):** el plan vigente para lo
+  que sigue está en la §12. Prevalece sobre las secciones anteriores donde difieran.
+- Las decisiones están en `research/decisions/decisions.md` (D1–D12, T1–T8).
 
 ---
 
@@ -615,8 +618,8 @@ contarlo:
     respuesta sería que la similitud ayuda cuando el problema nuevo es un pariente cercano de uno
     conocido, y no entre familias.
 
-**No se decide todavía:** depende de la fase 3c. Es la pregunta pendiente 3 de
-`research/decisions/questions.md`.
+**Decidido el 2026-11-02 (D12, C1):** el artículo es condicional, con el resultado negativo en el
+centro. Los tres desenlaces posibles de G4 y G5 encajan en ese mensaje.
 
 ### 10.2 Líneas vecinas
 
@@ -906,3 +909,86 @@ matriz, y por eso existe la distancia por comportamiento.
   6 generalistas.
 
 **Coste:** unas horas de análisis por conjunto de élites.
+
+---
+
+## 12. Plan vigente tras la revisión externa (2026-11-02, D12)
+
+La revisión de Fable (`research/review/plan_propuesto_fable.md`, cambios C1–C14) se adoptó con tres
+ajustes, porque no hay plazo: un único artículo de revista; el nivel 2 entra en el artículo; y la
+réplica en Evolver se hace. Donde esta sección difiere de las anteriores, prevalece.
+
+### 12.1 Mensaje y alcance
+- **Artículo condicional, con el resultado negativo en el centro** (C1). Con el problema destino
+  fuera del entrenamiento, ningún método por similitud supera a un generalista. La similitud
+  aporta:
+  - frente al azar y a NSGA-II por defecto;
+  - y, si G7 se supera, como transferencia segura cuando hay un pariente cercano.
+- **Un único artículo de revista** (C2). El lugar está pendiente (pregunta 12). Los coautores son
+  Nico, Antonio y Javi; el resto, pendiente.
+- **G3 se presenta como una prueba de poca potencia** (C13): los metadatos casi no distinguen,
+  porque 25 de los 37 problemas tienen D = 30, y la media la dominan DTLZ1 y DTLZ6.
+
+### 12.2 RQ4: política de dos niveles y puerta G7 (C3, C5)
+- **π_α:** `knn_selector` si s₁ ≥ α, con α = 0.05 fijado a priori; si no, el generalista irace de la
+  línea base 1.
+- **s₁:** la fracción de la distribución de ruido del entrenamiento del pliegue que supera la
+  distancia de la muestra destino a la media de entrenamiento más cercana. Esa distribución es la
+  distancia de cada muestra a la media de las otras 4 muestras de su problema; su percentil 95 en
+  la fase 3 es 1.25 unidades.
+- **Puerta G7,** en LOGO de la fase 3, sobre 32 grupos:
+  1. no inferioridad frente al generalista con margen 0.005 (Wilcoxon unilateral, p < 0.05);
+  2. la fracción de pérdidas > 0.10 frente al oráculo, con π, es como mucho la mitad que con
+     `knn_selector`.
+- **En LOGO,** el generalista es un generalista LOGO por grupo (opción C): 32 ajustes irace más.
+  Se añaden a la 3g como enmienda, antes de lanzarla.
+- **Réplica en la 3c** (S1, S3, S2) como enmienda 3 de su pre-registro, antes de su matriz.
+- **s₂** queda solo como columna descriptiva.
+- **El pre-registro va en `research/phase4/preregistration.md`.** Se sube antes de la matriz de la
+  3c y antes de ver los generalistas de la 3g.
+
+### 12.3 Nivel 2: irace en caliente (C4)
+- **Diseño dentro de D5:**
+  - 20 000 experimentos por ajuste;
+  - en los 24 problemas no saturados;
+  - arranque desde la configuración que elegiría `knn_selector` más NSGA-II por defecto.
+- **Brazo frío:** son los ajustes de la fase 3, cuyos `irace.Rdata` se conservan en NicoVM.
+- **Medida:** curvas *anytime* de la mejor élite tras n experimentos, para n ∈ {1 000, 2 000, 5 000,
+  10 000, 20 000}, evaluadas con las semillas 5001–5010. La ventaja del arranque en caliente se
+  relaciona con la distancia en unidades de ruido.
+- **Coste:** 1–2 días de NicoVM. Se pre-registra antes de lanzarlo.
+
+### 12.4 Orden de cálculo en NicoVM (C7)
+| # | Trabajo | Puerta | NicoVM |
+|---|---|---|---|
+| 1 | 3c: reanudar la campaña; matriz, IBEA, configuraciones aleatorias y control positivo | G4, G5 | ≈ 6.5 días |
+| 2 | 3g: 6 generalistas (5 LOFO y 1 sobre los 37) y 32 generalistas LOGO; evaluación | G6; base de G7 | ≈ 2–2.5 días |
+| 3 | Fase 4: G7 sobre la fase 3 + 3g y sobre la 3c | G7 | 0 |
+| 4 | Nivel 2, en caliente y *anytime* | Descriptivo | 1–2 días |
+| 5 | C10: reajustar con otra semilla los 5 problemas con c*_Q por debajo del mejor donante | — | ≈ 1 día |
+| 6 | 3e: réplica en Evolver/jMetal | G3 en Evolver | ≈ 2 días + preparación |
+| 7 | Fase 5: evaluación final con los 17 reservados | Confirmatoria | 1–2 h |
+| — | Opcionales: RQ5 (3s), RQ6 y las rejillas de RQ2 y RQ3 | — | Según se decida |
+
+**Total:** unas 2 semanas de NicoVM, compartida con otros proyectos.
+
+### 12.5 Análisis gratuitos, en paralelo (C9–C11)
+- **C9:** separar "familia no vista" de "estrato difícil" en LOFO. 6 de los 7 problemas muy
+  difíciles son LZ09/UF. Informar por pliegue.
+- **C10:** suelo de ruido del ajuste. En 5 problemas, c*_Q queda > 0.01 por debajo del mejor
+  donante; el oráculo es el techo preferente.
+- **C11:** el Mantel de la RQ7 sin los problemas fáciles y con permutaciones dentro de familia.
+
+### 12.6 Fase 5 (C8)
+- Se congelan el método (π_α con `knn_selector`) y el pre-registro de la fase 5 después de G6 y
+  G7.
+- **Antes de abrir los reservados,** Claude verifica en VAMOS sus cotas y frentes de referencia
+  (WFG1–9, ZDT6, DTLZ7 y los ZCAT reservados) contra las implementaciones de referencia.
+- No se ajusta c*_Q en los reservados.
+- Comparación frente a las dos líneas base de D11. El entrenamiento son los 37 de desarrollo, con
+  `gen_all` como generalista.
+
+### 12.7 Reproducibilidad y comunicación (C12, C14)
+- La nota de parada de la 3c está en `research/phase3c/STOPPED-20261028.txt`.
+- El análisis de los 1 332 pares está en `research/phase3/scripts/distance_vs_loss.py` (C6).
+- El usuario contacta con Nebro y con Javi (C12).

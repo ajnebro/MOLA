@@ -1,0 +1,14 @@
+Phase 3c irace campaign stopped on 2026-10-28T17:03:51Z by Claude Code, at the user request
+("si NicoVM está ocupado, cancela lo que haya ahí"), to free the cores for the RCM36-49 portfolio
+runs of the data article (~/evolver-rcm-portfolio, about one hour).
+
+What was stopped: process group 677633, i.e. "/bin/bash ./run_campaign.sh" (cwd /home/nico/mola-phase3c), started
+2026-10-26 ~21:12 UTC, with launch.sh, run_server.py (31 workers) and the irace R processes.
+Nothing was deleted. Tasks with DONE at the time of stopping: 8
+(f01 f04 f05 f06 f07 f08 f09 f10 ).
+
+To resume (launch.sh skips DONE tasks and resumes the others from their irace.Rdata):
+  cd /home/nico/mola-phase3c && nohup setsid ./run_campaign.sh >> launch.log 2>&1 &
+
+Note: the stale socket ~/mola-phase3c/run.sock was left in place (nothing deleted). If run_server.py
+does not start on resume because the socket exists, remove that file first.

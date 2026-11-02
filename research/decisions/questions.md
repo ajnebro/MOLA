@@ -112,21 +112,26 @@ en [`question1.md`](question1.md).
   - Las recomendaciones de la revisión externa que se apoyaban en el plazo cambian; ver la
     pendiente 21.
 
+### 18. Revisión externa de Fable: ¿qué cambios C1–C14 se adoptan? Y las preguntas que solo puede decidir el autor (2026-11-01 y 2026-11-02)
+- **Respuestas:**
+  - "Si, adopta los cambios" (el paquete que recomendó Claude, sin plazo);
+  - G7 en LOGO: "Opción C", con 32 generalistas LOGO;
+  - verificar los reservados: "ok", lo hace Claude;
+  - la réplica en Evolver: "ok";
+  - "coautores Nico, Antonio y Javi, el resto, pendiente".
+- **Resultado (D12):**
+  - C1–C14 adoptados, con tres ajustes por no haber plazo:
+    - un único artículo de revista;
+    - el nivel 2 *anytime* entra en el artículo;
+    - la 3e se hace.
+  - Quedan respondidas también las antiguas pendientes:
+    - 1, la réplica en Evolver: sí;
+    - 3, el encuadre: condicional, con el resultado negativo en el centro;
+    - 4, la campaña de la 3c: seguir sin enmendar;
+    - la de la revisión de Fable y las del umbral de similitud y la política de tres niveles, que
+      absorben C3 y C4.
+
 ## Pendientes
-
-### Hechas tras la fase 3, sin respuesta todavía (2026-10-26)
-
-1. ¿Ejecuto la réplica 3e en Evolver tal como está pre-registrada?
-   - Replicar el resultado negativo dice si depende del framework.
-   - Son unas 40 h de irace en NicoVM.
-3. ¿Planteo el artículo abiertamente como resultado negativo, con la lección del generalista
-   dominante?
-
-4. La campaña de irace de la fase 3c tardará unos 9 días en NicoVM, hasta el 4 de noviembre
-   aproximadamente, en lugar de los ~3 previstos. irace converge a configuraciones estacionarias con
-   poblaciones grandes, cuyas ejecuciones son lentas. ¿La sigo tal como está pre-registrada, o enmiendo
-   ahora el pre-registro, antes de cualquier resultado, para reducir el coste? Por ejemplo, con 28
-   funciones equilibradas por grupo. Recomendación de Claude: seguir. (2026-10-27)
 
 ### Planteadas antes, sin respuesta
 
@@ -154,8 +159,8 @@ en [`question1.md`](question1.md).
 10. ¿Cuándo se integran las ramas `research/*` en `main`, y con un pull request a ajnebro/MOLA?
 11. ¿Cuándo se regeneran los CSV históricos, `FEATURE_ANALYSIS.md` y los notebooks con la versión
     actual de MOLA?
-12. ¿Dónde se publica: GECCO 2027 o una revista (ECJ, TELO)? ¿Quiénes son los coautores? (Sin plazo
-    fijo desde el 2026-11-02.)
+12. ¿Dónde se publica: una revista (ECJ, TELO) u otra? Sin plazo fijo desde el 2026-11-02. Los
+    coautores ya están decididos: Nico, Antonio y Javi; el resto, pendiente.
 
 ### Que se plantearán más adelante
 
@@ -164,55 +169,4 @@ en [`question1.md`](question1.md).
 15. ¿Las RQ2 y RQ3 completas (malla de tamaños de muestra, k ∈ {1, D, 10} y transformaciones de
     unidades) van antes o después de la evaluación final?
 16. ¿Qué problemas y en qué fase para la validación con tres objetivos?
-17. RQ4: con un generalista que domina, ¿se evalúa igualmente la política de recomendar o recurrir al
-    generalista, con un pre-registro nuevo sobre la misma matriz?
-
-### Hechas el 2026-10-30, sin respuesta todavía
-
-18. Tras leer entero Cenikj et al. 2025 (`Descargas/landscape.pdf`), ¿hago el análisis del umbral
-    de similitud (L13 en `plan.md`, §10.4)?
-    - **Qué es:** para cada par de problemas, la similitud de features frente a la de rendimiento,
-      para ver a partir de qué similitud se parecen en rendimiento.
-    - **Propuesta de Claude:**
-      - hacerlo ya, de forma exploratoria, con la matriz de la fase 3, sin ejecuciones nuevas;
-      - registrarlo en la 3c como enmienda 3, antes de que exista su matriz.
-    - **Para qué sirve:** da una respuesta cuantitativa al "cuándo" del título y una regla de
-      abstención para la RQ4.
-
-20. El usuario propone una política de tres niveles según la distancia normalizada: si se parecen
-    mucho, transferir la configuración; si se parecen algo, irace arrancado desde la configuración
-    más próxima; si no se parecen, irace desde cero. ¿La añado a la RQ4 y preparo el experimento de
-    arranque en caliente? (2026-10-31)
-    - **Propuesta de Claude:**
-      - **Unidad de distancia:** el ruido de remuestreo, es decir, la distancia mediana entre dos
-        muestras del mismo problema.
-      - **Umbrales calibrados en entrenamiento:**
-        - t1, para transferir: la mayor distancia con una pérdida ≤ ε en al menos el 1 − α de los
-          pares. Los datos de la fase 3 apuntan a unas 1.5 unidades.
-        - t2: a partir de qué distancia el arranque en caliente deja de ganar al arranque en frío
-          con el mismo presupuesto. Hace falta un experimento nuevo.
-      - **Tercer nivel:** sin presupuesto, el generalista; con presupuesto, irace completo arrancado
-        desde el generalista.
-      - **Experimento:** en caliente frente a en frío con 5 000 experimentos, en los 37 problemas.
-        Son unos 370 000 experimentos, 1–3 días en NicoVM, después de la 3c y de la 3g.
-
-### Hechas el 2026-11-01, sin respuesta todavía
-
-21. Revisión externa de Fable (`research/review/plan_propuesto_fable.md`, cambios C1–C14 y 10
-    preguntas). ¿Qué cambios se adoptan?
-    - **Recomendación de Claude:**
-      - **Adoptar:**
-        - C1, el encuadre condicional ya;
-        - C2, el reparto entre GECCO y revista;
-        - C3, la RQ4 con dos niveles y s₁ calibrado con la distancia de una muestra a la media de
-          las otras cuatro;
-        - C4, el nivel 2 *anytime* a 20 000 experimentos y fuera del primer artículo;
-        - C5, sin s₂;
-        - C6, ya hecho en la §14 del informe de la fase 3;
-        - C7, el orden de cálculo con la 3e aplazada;
-        - C8, C9, C10 (la parte gratuita), C12 y C13.
-      - **Matizar:** la afirmación de que la señal es "prácticamente falsa" entre familias. Es
-        débil: ρ = 0.09 con la pérdida frente al oráculo y 0.23 con la pérdida mutua.
-      - **Opcionales:** C11 y C14.
-    - **Pregunta de la revisión ya resuelta:** los `irace.Rdata` de los 37 ajustes de la fase 3 se
-      conservan en NicoVM.
+17. (Resuelta por D12: la RQ4 se evalúa con la puerta G7, pre-registrada en la fase 4.)
