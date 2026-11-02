@@ -930,6 +930,18 @@ réplica en Evolver se hace. Donde esta sección difiere de las anteriores, prev
   porque 25 de los 37 problemas tienen D = 30, y la media la dominan DTLZ1 y DTLZ6.
 
 ### 12.2 RQ4: política de dos niveles y puerta G7 (C3, C5)
+- **Normalización de la distancia.**
+  - **Unidad de ruido:** la distancia mediana entre dos muestras LHS del mismo problema, en el
+    espacio de escalado robusto del pliegue.
+  - **Lectura:** "1 unidad" es tan distinto como dos muestras del mismo problema. Así las
+    distancias no dependen de la escala de las features ni de qué problemas haya en la base. Es la
+    propuesta de umbrales normalizados del usuario (2026-10-31).
+- **Los tres niveles propuestos,** y qué queda de cada uno:
+  - **nivel 1, transferir:** en la RQ4, con s₁;
+  - **nivel 2, irace en caliente:** en la §12.3;
+  - **nivel 3, generalista o irace desde cero:** el generalista es la alternativa de π.
+  - **s₂:** el percentil entre pares de problemas del entrenamiento. Se descarta como umbral porque
+    cambia con la base de conocimiento (C5).
 - **π_α:** `knn_selector` si s₁ ≥ α, con α = 0.05 fijado a priori; si no, el generalista irace de la
   línea base 1.
 - **s₁:** la fracción de la distribución de ruido del entrenamiento del pliegue que supera la
