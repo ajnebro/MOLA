@@ -124,6 +124,12 @@ ni los parámetros de la regla para repetir la prueba.
   VAMOS reparado.
 - **Uso de NicoVM:** se lanza solo cuando está libre, con todos los núcleos menos uno.
 - **Cualquier desviación** de este documento se registra en el informe de la fase.
+- **Nota de ejecución (2026-11-07), sin efecto en los resultados:**
+  - A media campaña, el servidor de evaluación se sustituyó, sin parar irace, por uno con el arreglo
+    del `import numba` de `research/phase2/scripts/common.py`. El arreglo es idéntico bit a bit:
+    VAMOS sigue con su camino numpy.
+  - numba no se instaló porque cambia los resultados de SBX en estado estacionario
+    (`scripts/check_numba_sbx.py`).
 
 ## 8. Enmienda 1 (2026-10-27): referencia de configuraciones aleatorias del espacio
 

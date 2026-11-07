@@ -154,6 +154,28 @@ en [`question1.md`](question1.md).
   - **Lo que aún no está preparado** (nivel 2, C10, 3e y fase 5) se añadirá a la cadena cuando
     esté pre-registrado.
 
+### 21. ¿Reinicio ahora la campaña de la 3c para que use el arreglo del `import numba`, que es idéntico bit a bit y puede hacerla hasta el doble de rápida? (2026-11-07)
+- **Respuesta:** "que se instale numba mejor, y reinicia".
+- **Comprobación previa:** numba 0.68.1, instalado en un directorio aparte de NicoVM, frente al
+  arreglo. Se compararon 12 configuraciones × 4 problemas de desarrollo × 2 semillas con 5 000
+  evaluaciones (`research/phase3c/scripts/check_numba_sbx.py`).
+  - **Resultado:** numba no es idéntico. Cambia los frentes de las dos configuraciones de estado
+    estacionario (`offspring_ratio = 0`), que son las únicas que usan su núcleo de SBX. Las otras
+    80 ejecuciones coinciden bit a bit.
+  - **Velocidad:** numba solo acelera esas dos, un 10–17 %, sobre el arreglo.
+- **Decisión de Claude:** no se instala numba. Habría mezclado dos implementaciones de SBX dentro de
+  la misma campaña. También rompería el motor numpy pre-registrado y la comparación con las fases 2
+  y 3.
+- **Reinicio sin parar irace:** a las 18:15 UTC se cambió solo el servidor de evaluación.
+  - Arrancó uno nuevo, con el arreglo, y su socket sustituyó al del viejo con `rename`.
+  - Los 12 irace siguieron sin interrumpirse, así que no hizo falta recuperar ningún
+    `irace.Rdata`.
+  - Los workers nuevos gastan un 0 % de su CPU en el sistema; los viejos, un 40 %.
+  - El viejo termina su cola con el código anterior, que da los mismos resultados.
+  - `~/mola-phase3c/stop_server_after_campaign.sh` para el servidor nuevo cuando acaba
+    `run_campaign.sh`, antes de que la cadena repita f20.
+  - La cadena no se tocó.
+
 ## Pendientes
 
 ### Planteadas antes, sin respuesta
@@ -178,6 +200,9 @@ en [`question1.md`](question1.md).
      cada intento recorre todo `sys.path` (unas 10 llamadas `stat`). En ejecuciones de estado
      estacionario es una búsqueda por generación, y en NicoVM con 31 procesos se llevaba la mitad
      de la CPU. Se evita desde fuera en `research/phase2/scripts/common.py`.
+   - del 2026-11-07: con `engine="numpy"`, el SBX de estado estacionario da otros resultados según
+     esté instalado numba o no (`research/phase3c/scripts/check_numba_sbx.py`). Los resultados de
+     VAMOS dependen, por tanto, de un paquete opcional.
 8. ¿Se comunican los fallos de jMetal y Evolver, y entran en la respuesta a los revisores del
    artículo de Evolver en ECJ?
    - RWA1 con `10e-3`;
@@ -201,15 +226,3 @@ en [`question1.md`](question1.md).
     unidades) van antes o después de la evaluación final?
 16. ¿Qué problemas y en qué fase para la validación con tres objetivos?
 17. (Resuelta por D12: la RQ4 se evalúa con la puerta G7, pre-registrada en la fase 4.)
-
-### Hechas el 2026-11-07, sin respuesta todavía
-
-23. ¿Reinicio ahora la campaña de la 3c para que use el arreglo del `import numba`, que es idéntico bit a
-    bit y puede hacerla hasta el doble de rápida?
-    - **Qué implica:** parar la campaña y la cadena, relanzarlas y volver a armar la cadena. Los
-      ajustes siguen desde su `irace.Rdata`.
-    - **Coste:** se pierde la ronda de carrera en curso de cada ajuste, de horas en algunos. Una tarea
-      recién empezada podría tener que repetirse, como pasó con f20.
-    - **Beneficio:** con el ritmo actual, unos 1 700–2 400 experimentos por hora, quedan 12–17 días;
-      con el arreglo, quizá la mitad.
-    - **Recomendación de Claude:** reiniciar.
