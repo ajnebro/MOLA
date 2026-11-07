@@ -11,6 +11,17 @@ import os
 for _variable in ("OMP_NUM_THREADS", "MKL_NUM_THREADS", "OPENBLAS_NUM_THREADS", "NUMEXPR_NUM_THREADS"):
     os.environ.setdefault(_variable, "1")
 
+import importlib.util  # noqa: E402
+import sys  # noqa: E402
+
+# VAMOS 1.0.0 imports numba inside its SBX crossover on every call (crossover_sbx.py,
+# _get_sbx_single_pair_numba). Without numba installed, each failed import searches the whole of
+# sys.path: one search per generation, which on NicoVM with 31 workers took about half of the CPU
+# time of steady-state runs (2026-11-07). A None entry makes the import fail at once; VAMOS then
+# takes the same numpy fallback, so results are bit-identical (checked on bbob-biobj f14).
+if importlib.util.find_spec("numba") is None:
+    sys.modules["numba"] = None
+
 import json  # noqa: E402
 import time  # noqa: E402
 from pathlib import Path  # noqa: E402

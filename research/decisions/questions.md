@@ -173,6 +173,11 @@ en [`question1.md`](question1.md).
    - del 2026-11-02 (`research/phase5/verification.md`): el frente de referencia de WFG1 está
      desplazado (+0.069), el de ZDT6 está ligeramente fuera, no hay frente biobjetivo de DTLZ7, y
      WFG9 difiere de jMetal en 1.4·10⁻³.
+   - del 2026-11-07: `vamos/engine/operators/impl/real/crossover_sbx.py`, línea 23
+     (`_get_sbx_single_pair_numba`), intenta `import numba` en cada llamada. Sin numba instalado,
+     cada intento recorre todo `sys.path` (unas 10 llamadas `stat`). En ejecuciones de estado
+     estacionario es una búsqueda por generación, y en NicoVM con 31 procesos se llevaba la mitad
+     de la CPU. Se evita desde fuera en `research/phase2/scripts/common.py`.
 8. ¿Se comunican los fallos de jMetal y Evolver, y entran en la respuesta a los revisores del
    artículo de Evolver en ECJ?
    - RWA1 con `10e-3`;
@@ -196,3 +201,15 @@ en [`question1.md`](question1.md).
     unidades) van antes o después de la evaluación final?
 16. ¿Qué problemas y en qué fase para la validación con tres objetivos?
 17. (Resuelta por D12: la RQ4 se evalúa con la puerta G7, pre-registrada en la fase 4.)
+
+### Hechas el 2026-11-07, sin respuesta todavía
+
+23. ¿Reinicio ahora la campaña de la 3c para que use el arreglo del `import numba`, que es idéntico bit a
+    bit y puede hacerla hasta el doble de rápida?
+    - **Qué implica:** parar la campaña y la cadena, relanzarlas y volver a armar la cadena. Los
+      ajustes siguen desde su `irace.Rdata`.
+    - **Coste:** se pierde la ronda de carrera en curso de cada ajuste, de horas en algunos. Una tarea
+      recién empezada podría tener que repetirse, como pasó con f20.
+    - **Beneficio:** con el ritmo actual, unos 1 700–2 400 experimentos por hora, quedan 12–17 días;
+      con el arreglo, quizá la mitad.
+    - **Recomendación de Claude:** reiniciar.
