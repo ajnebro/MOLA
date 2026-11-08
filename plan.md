@@ -68,6 +68,10 @@ Borrador del 2026-10-19, actualizado el 2026-10-20, el 2026-10-26 (orden de las 
       - **Cómo se aplicó:** a las 18:15 UTC se sustituyó solo el servidor de evaluación, sin parar
         irace. `stop_server_after_campaign.sh` para el servidor nuevo al acabar la campaña.
       - Detalle en `research/decisions/questions.md`, respondida 21.
+      - **Efecto (2026-11-08, 14:50 UTC):** 53 de 61 ajustes terminados, 30 de ellos después del
+        cambio. A los 7 que siguen en marcha les quedan unos 35 000 experimentos (el que más,
+        gen_g4, 9 770). La campaña debería acabar en horas, no a finales de noviembre; después
+        viene f20.
 - **Estado del arte:** revisado el 2026-10-27, con las lecciones y lo que se incorpora en la §10.
   Las notas por trabajo están en `research/references/state_of_the_art.md`.
 - **Generalistas irace de la fase 3 (fase 3g, D11):** pre-registrada el 2026-10-31
