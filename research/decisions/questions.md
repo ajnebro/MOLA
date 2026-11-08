@@ -203,6 +203,16 @@ en [`question1.md`](question1.md).
    - del 2026-11-07: con `engine="numpy"`, el SBX de estado estacionario da otros resultados según
      esté instalado numba o no (`research/phase3c/scripts/check_numba_sbx.py`). Los resultados de
      VAMOS dependen, por tanto, de un paquete opcional.
+     - **Causa (2026-11-08):** los hijos son idénticos bit a bit. Lo que cambia es la secuencia de
+       números aleatorios. Cuando el cruce se aplica pero no hay ninguna variable activa (padres
+       iguales, o ninguna variable elegida por `prob_var`), numpy sale antes de sacar sus
+       2 × n_var números y numba los saca igualmente. Desde ahí, las dos ejecuciones divergen.
+   - Los dos fallos del 2026-11-07 parecen ya corregidos en el árbol de VAMOS 1.1.0 (`749aba19`),
+     según la lectura del código, sin ejecutarlo:
+     - `available_variation_kernels()` lleva `@cache`, así que numba se busca una sola vez;
+     - su docstring dice que el núcleo consume los mismos números que numpy, y solo se usa si su
+       aritmética reproduce la de numpy en la máquina.
+     - Solo afectan, por tanto, a 1.0.0, la versión que usan todas las fases.
 8. ¿Se comunican los fallos de jMetal y Evolver, y entran en la respuesta a los revisores del
    artículo de Evolver en ECJ?
    - RWA1 con `10e-3`;
