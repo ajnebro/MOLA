@@ -8,7 +8,12 @@ workers do not oversubscribe the machine.
 
 import os
 
-for _variable in ("OMP_NUM_THREADS", "MKL_NUM_THREADS", "OPENBLAS_NUM_THREADS", "NUMEXPR_NUM_THREADS"):
+for _variable in (
+    "OMP_NUM_THREADS",
+    "MKL_NUM_THREADS",
+    "OPENBLAS_NUM_THREADS",
+    "NUMEXPR_NUM_THREADS",
+):
     os.environ.setdefault(_variable, "1")
 
 import importlib.util  # noqa: E402
@@ -16,9 +21,11 @@ import sys  # noqa: E402
 
 # VAMOS 1.0.0 imports numba inside its SBX crossover on every call (crossover_sbx.py,
 # _get_sbx_single_pair_numba). Without numba installed, each failed import searches the whole of
-# sys.path: one search per generation, which on NicoVM with 31 workers took about half of the CPU
-# time of steady-state runs (2026-11-07). A None entry makes the import fail at once; VAMOS then
-# takes the same numpy fallback, so results are bit-identical (checked on bbob-biobj f14).
+# sys.path: one search per generation, about 0.007 ms per sys.path entry on NicoVM. In the 3c
+# campaign instantiate() below also added an entry per experiment, so after days a server worker
+# searched ~16 000 entries (~100 ms) per generation (2026-11-07/08). A None entry makes the import
+# fail at once; VAMOS then takes the same numpy fallback, so results are bit-identical (checked on
+# bbob-biobj f14).
 if importlib.util.find_spec("numba") is None:
     sys.modules["numba"] = None
 
@@ -48,8 +55,12 @@ SUITES: dict[str, list[str]] = {
     "RE": ["re21", "re24"],
     "RWA": ["rwa1"],
 }
-EXCLUDED = {"zdt5": "binary encoding", "re22": "mixed encoding", "re23": "mixed encoding",
-            "re25": "mixed encoding"}
+EXCLUDED = {
+    "zdt5": "binary encoding",
+    "re22": "mixed encoding",
+    "re23": "mixed encoding",
+    "re25": "mixed encoding",
+}
 
 
 def instantiate(name: str):
@@ -60,7 +71,11 @@ def instantiate(name: str):
     if name.startswith("bbob-biobj_"):
         import sys
 
-        sys.path.insert(0, str(REPO / "research" / "phase3c" / "scripts"))
+        # Once only: this runs on every experiment, and until 2026-11-08 it added one sys.path
+        # entry each time, so a long-lived server worker's every failed import grew slower.
+        scripts = str(REPO / "research" / "phase3c" / "scripts")
+        if scripts not in sys.path:
+            sys.path.insert(0, scripts)
         from coco_problems import make_problem
 
         return make_problem(name)
@@ -103,8 +118,15 @@ def sample_problem(name: str, seed: int, sample_size: int | None = None):
     start = time.perf_counter()
     objectives = evaluate(problem, variables)
     seconds = time.perf_counter() - start
-    sample = Sample(problem=name, variables=variables, objectives=objectives,
-                    lower_bounds=lower, upper_bounds=upper, sampler="lhs", seed=seed)
+    sample = Sample(
+        problem=name,
+        variables=variables,
+        objectives=objectives,
+        lower_bounds=lower,
+        upper_bounds=upper,
+        sampler="lhs",
+        seed=seed,
+    )
     return sample, seconds
 
 
