@@ -61,6 +61,9 @@ Borrador del 2026-10-19, actualizado el 2026-10-20, el 2026-10-26 (orden de las 
       experimentos.
       - **Causa:** el SBX de VAMOS intenta `import numba` en cada generación. Sin numba instalado,
         cada intento recorre `sys.path`, y eso se llevaba un 40 % de la CPU.
+      - **Por qué empeoraba con los días (2026-11-08):** `instantiate()` añadía una entrada a
+        `sys.path` en cada experimento COCO. Tras unos 16 000 experimentos, cada proceso recorría
+        unas 16 000 entradas por generación, unos 100 ms. Corregido en `6846f21`, también en NicoVM.
       - **Arreglo:** `common.py` hace que el import falle al instante, con resultados idénticos bit
         a bit (commit `1ea590e`).
       - **Por qué no se instaló numba:** cambia los resultados de las configuraciones de estado
