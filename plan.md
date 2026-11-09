@@ -77,6 +77,20 @@ Borrador del 2026-10-19, actualizado el 2026-10-20, el 2026-10-26 (orden de las 
       - **Fin de la campaña:** 2026-11-08 a las 15:52 UTC, con 60 de 61 ajustes; falta f20, que la
         cadena repite en cuanto NicoVM queda libre. Fin estimado de toda la cadena (f20, matriz 3c,
         3g, 4b, 3r y 3e): hacia el 14–16 de noviembre.
+    - **f20 y matriz:** f20 se repitió el 2026-11-08 en 36 min; la matriz terminó a las 23:49 UTC.
+    - **Resultado (2026-11-09, `research/phase3c/report.md`): G4 y G5 no se superan.**
+      - **G4:** `landscape_1nn` − `gen_all` = −0.0032 (15 / 40 funciones, p de Holm 1.0).
+      - **G5:** `consensus` − `gen_g<g>` = −0.0005 (19 / 36, p de Holm 1.0).
+      - **Causa principal: casi no hay margen.** Del SBS al oráculo hay 0.007 de HVn. La c*_f de la
+        propia función supera al SBS en solo 0.0002 de media.
+      - El paisaje reconoce la función en el 30 % de las muestras (azar: 1.8 %), pero el donante
+        cambia entre muestras y deja colas. La regla de consenso nunca se activa: su δ = 0.05 es siete
+        veces el hueco.
+      - **G7 no se replica** en ninguna partición: π transfiere en el 89–97 % de las muestras, como se
+        declaró, y se comporta como `knn_selector`.
+      - **Control positivo:** solo la partición por filas cierra algo (30 % de un hueco de 0.002); fuera
+        de la fila, nada supera al SBS. No confirma la fase 3 por falta de hueco, pero tampoco la
+        contradice.
 - **Estado del arte:** revisado el 2026-10-27, con las lecciones y lo que se incorpora en la §10.
   Las notas por trabajo están en `research/references/state_of_the_art.md`.
 - **Generalistas irace de la fase 3 (fase 3g, D11):** pre-registrada el 2026-10-31
@@ -342,7 +356,7 @@ transferencia de lo sintético a lo real y qué eligen las configuraciones ajust
 | 1. Núcleo verificable | Corregir los defectos confirmados (prueba de soporte exacta, perfil de geometría versionado, contrato de normalización, estados de indefinido, validación de no finitos, `k` explícito, CI y `pom`), sin regenerar todavía los CSV históricos | **G1:** tests verdes y concordancia con referencias exactas |
 | 2. Piloto | Estabilidad, escalado, coste y complementariedad del portafolio con unos 40 problemas y 5 semillas | **G2:** hueco SBS–VBS suficiente, con umbral fijado antes. Si no lo hay, se diversifica el portafolio |
 | 3. Transferencia | Matriz de rendimiento con VAMOS y comparación de métodos con particiones agrupadas frente a aleatorias | **G3** (RQ1): ¿supera el paisaje a los metadatos? Si no, el resultado negativo se publica |
-| 3c. Transferencia con similitud controlada | bbob-biobj con D = 10: 165 problemas, 55 ajustes por función y 6 generalistas irace. Pre-registro con dos enmiendas | **G4** (S1, `landscape_1nn` > `gen_all`) y **G5** (S2, consenso > `gen_g`). Campaña parada el 2026-10-28; se reanuda cuando NicoVM quede libre |
+| 3c. Transferencia con similitud controlada | bbob-biobj con D = 10: 165 problemas, 55 ajustes por función y 6 generalistas irace. Pre-registro con dos enmiendas | **G4** (S1, `landscape_1nn` > `gen_all`) y **G5** (S2, consenso > `gen_g`). **No se superan** (2026-11-09): del SBS al oráculo hay solo 0.007 |
 | 3g. Generalistas irace de la fase 3 (D11) | 5 ajustes LOFO y 1 sobre los 37 problemas. Pre-registrada el 2026-10-31 (`research/phase3g/preregistration.md`) | **G6** (LOFO: `knn_selector` > generalista). Línea base 1 para la fase 3 y para la evaluación final |
 | 3e. Réplica en Evolver (D6) | La fase 3 entera en Evolver/jMetal | Pendiente de decisión; la recomendación es aplazarla a la versión de revista |
 | 3s. Selección del conjunto de entrenamiento | Pre-registro tras G3; LOFO con cuatro brazos de irace (paisaje, metadatos, todos, al azar) | RQ5 respondida en desarrollo; se aplica a los 17 reservados en la fase 5 |
@@ -1035,7 +1049,7 @@ réplica en Evolver se hace. Donde esta sección difiere de las anteriores, prev
 ### 12.4 Orden de cálculo en NicoVM (C7)
 | # | Trabajo | Puerta | NicoVM |
 |---|---|---|---|
-| 1 | 3c: reanudar la campaña; matriz, IBEA, configuraciones aleatorias y control positivo | G4, G5 | ≈ 6.5 días |
+| 1 | 3c: reanudar la campaña; matriz, IBEA, configuraciones aleatorias y control positivo. **Hecho el 2026-11-09** | G4, G5 | ≈ 6.5 días (fueron unos 8) |
 | 2 | 3g: 6 generalistas (5 LOFO y 1 sobre los 37) y 32 generalistas LOGO; evaluación | G6; base de G7 | ≈ 2–2.5 días |
 | 3 | Fase 4: G7 sobre la fase 3 + 3g y sobre la 3c | G7 | 0 |
 | 4 | Nivel 2, en caliente y *anytime* | Descriptivo | 1–2 días |

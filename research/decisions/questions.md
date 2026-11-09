@@ -228,6 +228,14 @@ en [`question1.md`](question1.md).
 12. ¿Dónde se publica: una revista (ECJ, TELO) u otra? Sin plazo fijo desde el 2026-11-02. Los
     coautores ya están decididos: Nico, Antonio y Javi; el resto, pendiente.
 
+### Hechas el 2026-11-09
+
+18. La 3c no deja margen para transferir: del SBS al oráculo hay 0.007 de HVn
+    (`research/phase3c/report.md`). ¿Se omite la comprobación externa opcional de t₂ con los
+    destinos de la 3c (`plan.md` §12.3, unos días de NicoVM)?
+    - **Recomendación de Claude:** omitirla. Con tan poco hueco, ni el arranque en caliente ni el frío
+      pueden ahorrar experimentos medibles, así que no informaría sobre t₂.
+
 ### Que se plantearán más adelante
 
 13. Si VAMOS y Evolver discrepan, ¿cuál se toma como principal en el artículo?
