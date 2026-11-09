@@ -1,0 +1,98 @@
+{
+  "S1": {
+    "functions": 55,
+    "mean_difference": 0.0035,
+    "p_noninferiority": 5.603212479921747e-10,
+    "tail_share_pi": 0.0018,
+    "tail_share_knn_selector": 0.0018,
+    "condition_1": true,
+    "condition_2": false,
+    "coverage_risk": {
+      "0.01": {
+        "coverage": 0.973,
+        "mean_hvn": 0.9717,
+        "share_loss_gt_0.10": 0.002
+      },
+      "0.05": {
+        "coverage": 0.969,
+        "mean_hvn": 0.9717,
+        "share_loss_gt_0.10": 0.002
+      },
+      "0.1": {
+        "coverage": 0.967,
+        "mean_hvn": 0.9717,
+        "share_loss_gt_0.10": 0.002
+      },
+      "0.25": {
+        "coverage": 0.685,
+        "mean_hvn": 0.971,
+        "share_loss_gt_0.10": 0.0
+      }
+    },
+    "median_d_units": 0.799
+  },
+  "S2": {
+    "functions": 55,
+    "mean_difference": -0.0055,
+    "p_noninferiority": 0.07015589385989526,
+    "tail_share_pi": 0.0126,
+    "tail_share_knn_selector": 0.0154,
+    "condition_1": false,
+    "condition_2": false,
+    "coverage_risk": {
+      "0.01": {
+        "coverage": 0.913,
+        "mean_hvn": 0.965,
+        "share_loss_gt_0.10": 0.013
+      },
+      "0.05": {
+        "coverage": 0.889,
+        "mean_hvn": 0.9654,
+        "share_loss_gt_0.10": 0.013
+      },
+      "0.1": {
+        "coverage": 0.874,
+        "mean_hvn": 0.9655,
+        "share_loss_gt_0.10": 0.012
+      },
+      "0.25": {
+        "coverage": 0.491,
+        "mean_hvn": 0.9688,
+        "share_loss_gt_0.10": 0.004
+      }
+    },
+    "median_d_units": 0.913
+  },
+  "S3": {
+    "functions": 55,
+    "mean_difference": 0.0002,
+    "p_noninferiority": 2.715938150364445e-07,
+    "tail_share_pi": 0.0073,
+    "tail_share_knn_selector": 0.0073,
+    "condition_1": true,
+    "condition_2": false,
+    "coverage_risk": {
+      "0.01": {
+        "coverage": 0.96,
+        "mean_hvn": 0.9694,
+        "share_loss_gt_0.10": 0.007
+      },
+      "0.05": {
+        "coverage": 0.956,
+        "mean_hvn": 0.9694,
+        "share_loss_gt_0.10": 0.007
+      },
+      "0.1": {
+        "coverage": 0.953,
+        "mean_hvn": 0.9694,
+        "share_loss_gt_0.10": 0.007
+      },
+      "0.25": {
+        "coverage": 0.651,
+        "mean_hvn": 0.9694,
+        "share_loss_gt_0.10": 0.004
+      }
+    },
+    "median_d_units": 0.826
+  }
+}

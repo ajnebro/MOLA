@@ -1,0 +1,28 @@
+{
+  "G4": {
+    "mean": -0.0031968123786978967,
+    "median": -0.0003593044336718254,
+    "wins_losses_ties": [
+      15,
+      40,
+      0
+    ],
+    "p": 0.9966827038572705,
+    "p_holm": 1.0,
+    "passes": false,
+    "rule": "S1: landscape_1nn > generalist (gen__all), one-sided Wilcoxon over 55 functions"
+  },
+  "G5": {
+    "mean": -0.0005352466307510588,
+    "median": -0.0002425591036437913,
+    "wins_losses_ties": [
+      19,
+      36,
+      0
+    ],
+    "p": 0.8426540657161907,
+    "p_holm": 1.0,
+    "passes": false,
+    "rule": "S2: consensus > generalist (gen__g<g>), one-sided Wilcoxon over 55 functions"
+  }
+}

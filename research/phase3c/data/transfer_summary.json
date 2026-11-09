@@ -1,0 +1,134 @@
+{
+  "S1": {
+    "mean_hvn_over_functions": {
+      "sbs": 0.9715,
+      "random": 0.9611,
+      "landscape_1nn": 0.965,
+      "knn_selector": 0.9718,
+      "consensus": 0.9715,
+      "thesis_1nn": 0.963,
+      "loss_predictor": 0.965,
+      "generalist": 0.9682,
+      "default": 0.9601,
+      "oracle": 0.9783,
+      "same_function": 0.9717
+    },
+    "median_loss_vs_oracle": {
+      "sbs": 0.0027,
+      "random": 0.0099,
+      "landscape_1nn": 0.0029,
+      "knn_selector": 0.0023,
+      "consensus": 0.0027,
+      "thesis_1nn": 0.0037,
+      "loss_predictor": 0.0028,
+      "generalist": 0.0028,
+      "default": 0.0099,
+      "oracle": 0.0,
+      "same_function": 0.0008
+    },
+    "share_loss_above_0.10": {
+      "sbs": 0.0,
+      "random": 0.0,
+      "landscape_1nn": 0.024,
+      "knn_selector": 0.002,
+      "consensus": 0.0,
+      "thesis_1nn": 0.022,
+      "loss_predictor": 0.004,
+      "generalist": 0.0,
+      "default": 0.009,
+      "oracle": 0.0,
+      "same_function": 0.009
+    },
+    "landscape_picks_same_function": 0.2963636363636364,
+    "consensus_deviates_from_sbs": 0.0,
+    "landscape_donor_identical_across_samples": 0.24545454545454545
+  },
+  "S2": {
+    "mean_hvn_over_functions": {
+      "sbs": 0.9703,
+      "random": 0.9595,
+      "landscape_1nn": 0.959,
+      "knn_selector": 0.9635,
+      "consensus": 0.9703,
+      "thesis_1nn": 0.9594,
+      "loss_predictor": 0.9641,
+      "generalist": 0.9708,
+      "default": 0.9611,
+      "oracle": 0.9771,
+      "same_function": NaN
+    },
+    "median_loss_vs_oracle": {
+      "sbs": 0.0026,
+      "random": 0.0101,
+      "landscape_1nn": 0.0045,
+      "knn_selector": 0.0031,
+      "consensus": 0.0026,
+      "thesis_1nn": 0.005,
+      "loss_predictor": 0.004,
+      "generalist": 0.0016,
+      "default": 0.01,
+      "oracle": 0.0,
+      "same_function": NaN
+    },
+    "share_loss_above_0.10": {
+      "sbs": 0.0,
+      "random": 0.0,
+      "landscape_1nn": 0.044,
+      "knn_selector": 0.015,
+      "consensus": 0.0,
+      "thesis_1nn": 0.042,
+      "loss_predictor": 0.014,
+      "generalist": 0.0,
+      "default": 0.004,
+      "oracle": 0.0,
+      "same_function": 0.0
+    },
+    "landscape_picks_same_function": 0.0,
+    "consensus_deviates_from_sbs": 0.0,
+    "landscape_donor_identical_across_samples": 0.3508771929824561
+  },
+  "S3": {
+    "mean_hvn_over_functions": {
+      "sbs": 0.9715,
+      "random": 0.9609,
+      "landscape_1nn": 0.9638,
+      "knn_selector": 0.9697,
+      "consensus": 0.9715,
+      "thesis_1nn": 0.9611,
+      "loss_predictor": 0.9643,
+      "generalist": NaN,
+      "default": 0.9601,
+      "oracle": 0.9782,
+      "same_function": NaN
+    },
+    "median_loss_vs_oracle": {
+      "sbs": 0.0026,
+      "random": 0.01,
+      "landscape_1nn": 0.0037,
+      "knn_selector": 0.0024,
+      "consensus": 0.0026,
+      "thesis_1nn": 0.0043,
+      "loss_predictor": 0.0032,
+      "generalist": NaN,
+      "default": 0.0097,
+      "oracle": 0.0,
+      "same_function": NaN
+    },
+    "share_loss_above_0.10": {
+      "sbs": 0.0,
+      "random": 0.0,
+      "landscape_1nn": 0.024,
+      "knn_selector": 0.007,
+      "consensus": 0.0,
+      "thesis_1nn": 0.027,
+      "loss_predictor": 0.004,
+      "generalist": 0.0,
+      "default": 0.009,
+      "oracle": 0.0,
+      "same_function": 0.0
+    },
+    "landscape_picks_same_function": 0.0,
+    "consensus_deviates_from_sbs": 0.0,
+    "landscape_donor_identical_across_samples": 0.21818181818181817
+  }
+}

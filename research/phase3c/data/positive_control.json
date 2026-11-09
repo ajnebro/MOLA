@@ -1,0 +1,187 @@
+{
+  "note": "Exploratory (amendment 2), fixed before the matrix existed.",
+  "rows": {
+    "same_function_nearest": 0.416,
+    "algorithm_selection_defaults": {
+      "vbs_minus_sbs": 0.0022,
+      "sbs": {
+        "mean_hvn": 0.9646,
+        "closed_gap": 0.0,
+        "accuracy": 0.958
+      },
+      "nn1": {
+        "mean_hvn": 0.9616,
+        "closed_gap": -1.345,
+        "accuracy": 0.9
+      },
+      "knn3": {
+        "mean_hvn": 0.9641,
+        "closed_gap": -0.225,
+        "accuracy": 0.94
+      },
+      "rf_class": {
+        "mean_hvn": 0.9649,
+        "closed_gap": 0.125,
+        "accuracy": 0.946
+      },
+      "rf_regr": {
+        "mean_hvn": 0.9653,
+        "closed_gap": 0.297,
+        "accuracy": 0.966
+      }
+    },
+    "configuration_transfer_tuned": {
+      "oracle_minus_sbs": 0.0065,
+      "sbs": {
+        "mean_hvn": 0.9723,
+        "closed_gap": 0.0
+      },
+      "landscape_1nn": {
+        "mean_hvn": 0.9681,
+        "closed_gap": -0.644
+      },
+      "knn_selector": {
+        "mean_hvn": 0.9738,
+        "closed_gap": 0.221
+      }
+    }
+  },
+  "instance_out": {
+    "same_function_nearest": 0.272,
+    "algorithm_selection_defaults": {
+      "vbs_minus_sbs": 0.0023,
+      "sbs": {
+        "mean_hvn": 0.9646,
+        "closed_gap": 0.0,
+        "accuracy": 0.958
+      },
+      "nn1": {
+        "mean_hvn": 0.9609,
+        "closed_gap": -1.643,
+        "accuracy": 0.887
+      },
+      "knn3": {
+        "mean_hvn": 0.9638,
+        "closed_gap": -0.362,
+        "accuracy": 0.918
+      },
+      "rf_class": {
+        "mean_hvn": 0.9611,
+        "closed_gap": -1.539,
+        "accuracy": 0.881
+      },
+      "rf_regr": {
+        "mean_hvn": 0.9639,
+        "closed_gap": -0.323,
+        "accuracy": 0.916
+      }
+    },
+    "configuration_transfer_tuned": {
+      "oracle_minus_sbs": 0.0065,
+      "sbs": {
+        "mean_hvn": 0.9724,
+        "closed_gap": 0.0
+      },
+      "landscape_1nn": {
+        "mean_hvn": 0.9675,
+        "closed_gap": -0.752
+      },
+      "knn_selector": {
+        "mean_hvn": 0.9719,
+        "closed_gap": -0.072
+      }
+    }
+  },
+  "function_out": {
+    "same_function_nearest": 0.0,
+    "algorithm_selection_defaults": {
+      "vbs_minus_sbs": 0.0023,
+      "sbs": {
+        "mean_hvn": 0.9646,
+        "closed_gap": 0.0,
+        "accuracy": 0.958
+      },
+      "nn1": {
+        "mean_hvn": 0.9585,
+        "closed_gap": -2.723,
+        "accuracy": 0.876
+      },
+      "knn3": {
+        "mean_hvn": 0.9609,
+        "closed_gap": -1.658,
+        "accuracy": 0.908
+      },
+      "rf_class": {
+        "mean_hvn": 0.9605,
+        "closed_gap": -1.832,
+        "accuracy": 0.892
+      },
+      "rf_regr": {
+        "mean_hvn": 0.9635,
+        "closed_gap": -0.476,
+        "accuracy": 0.91
+      }
+    },
+    "configuration_transfer_tuned": {
+      "oracle_minus_sbs": 0.0067,
+      "sbs": {
+        "mean_hvn": 0.9721,
+        "closed_gap": 0.0
+      },
+      "landscape_1nn": {
+        "mean_hvn": 0.9663,
+        "closed_gap": -0.87
+      },
+      "knn_selector": {
+        "mean_hvn": 0.9703,
+        "closed_gap": -0.267
+      }
+    }
+  },
+  "group_out": {
+    "same_function_nearest": 0.0,
+    "algorithm_selection_defaults": {
+      "vbs_minus_sbs": 0.0023,
+      "sbs": {
+        "mean_hvn": 0.9646,
+        "closed_gap": 0.0,
+        "accuracy": 0.958
+      },
+      "nn1": {
+        "mean_hvn": 0.9451,
+        "closed_gap": -8.667,
+        "accuracy": 0.832
+      },
+      "knn3": {
+        "mean_hvn": 0.955,
+        "closed_gap": -4.272,
+        "accuracy": 0.87
+      },
+      "rf_class": {
+        "mean_hvn": 0.9525,
+        "closed_gap": -5.376,
+        "accuracy": 0.851
+      },
+      "rf_regr": {
+        "mean_hvn": 0.9631,
+        "closed_gap": -0.684,
+        "accuracy": 0.904
+      }
+    },
+    "configuration_transfer_tuned": {
+      "oracle_minus_sbs": 0.007,
+      "sbs": {
+        "mean_hvn": 0.9701,
+        "closed_gap": 0.0
+      },
+      "landscape_1nn": {
+        "mean_hvn": 0.9607,
+        "closed_gap": -1.35
+      },
+      "knn_selector": {
+        "mean_hvn": 0.962,
+        "closed_gap": -1.161
+      }
+    }
+  }
+}

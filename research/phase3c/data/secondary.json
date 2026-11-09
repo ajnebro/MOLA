@@ -1,0 +1,241 @@
+{
+  "mean_worst_10pct_loss_vs_oracle": {
+    "S1": {
+      "sbs": 0.0258,
+      "random": 0.0552,
+      "landscape_1nn": 0.0769,
+      "knn_selector": 0.0328,
+      "consensus": 0.0258,
+      "thesis_1nn": 0.0781,
+      "loss_predictor": 0.0636,
+      "generalist": 0.0426,
+      "default": 0.0658,
+      "oracle": 0.0,
+      "same_function": 0.0386
+    },
+    "S2": {
+      "sbs": 0.0267,
+      "random": 0.0578,
+      "landscape_1nn": 0.1026,
+      "knn_selector": 0.0683,
+      "consensus": 0.0267,
+      "thesis_1nn": 0.0961,
+      "loss_predictor": 0.0662,
+      "generalist": 0.0317,
+      "default": 0.0587,
+      "oracle": 0.0
+    },
+    "S3": {
+      "sbs": 0.0254,
+      "random": 0.0558,
+      "landscape_1nn": 0.0797,
+      "knn_selector": 0.0457,
+      "consensus": 0.0254,
+      "thesis_1nn": 0.0871,
+      "loss_predictor": 0.0648,
+      "default": 0.0655,
+      "oracle": 0.0
+    }
+  },
+  "ceiling_S1": {
+    "same_function_vs_generalist": {
+      "mean": 0.0035,
+      "median": 0.0007,
+      "wins_losses": [
+        40,
+        15
+      ],
+      "p_two_sided": 0.001022030593458473
+    },
+    "same_function_vs_sbs": {
+      "mean": 0.0002,
+      "median": 0.001,
+      "wins_losses": [
+        41,
+        13
+      ],
+      "p_two_sided": 0.005636943293833139
+    },
+    "sbs_vs_generalist": {
+      "mean": 0.0033,
+      "median": -0.0002,
+      "wins_losses": [
+        22,
+        33
+      ],
+      "p_two_sided": 0.38814270878317314
+    }
+  },
+  "S2_sbs_vs_generalist": {
+    "mean": -0.0005,
+    "median": -0.0002,
+    "wins_losses": [
+      19,
+      36
+    ],
+    "p_two_sided": 0.31469186856761855
+  },
+  "distances_mean_hvn_over_functions": {
+    "S1": {
+      "euclidean": 0.965,
+      "l1": 0.9657,
+      "pca_whitened": 0.9641,
+      "rank": 0.9647,
+      "raw_objectives": 0.9669
+    },
+    "S2": {
+      "euclidean": 0.959,
+      "l1": 0.9592,
+      "pca_whitened": 0.9572,
+      "rank": 0.9577,
+      "raw_objectives": 0.9594
+    },
+    "S3": {
+      "euclidean": 0.9638,
+      "l1": 0.963,
+      "pca_whitened": 0.9622,
+      "rank": 0.9622,
+      "raw_objectives": 0.9649
+    }
+  },
+  "budgets": {
+    "5000": {
+      "mean_hvn_over_functions": {
+        "S1": {
+          "sbs": 0.9563,
+          "random": 0.9413,
+          "landscape_1nn": 0.945,
+          "knn_selector": 0.9556,
+          "consensus": 0.9563,
+          "thesis_1nn": 0.9423,
+          "loss_predictor": 0.9473,
+          "generalist": 0.9506,
+          "default": 0.9415,
+          "oracle": 0.9669,
+          "same_function": 0.9525
+        },
+        "S2": {
+          "sbs": 0.9523,
+          "random": 0.9392,
+          "landscape_1nn": 0.9397,
+          "knn_selector": 0.9476,
+          "consensus": 0.9523,
+          "thesis_1nn": 0.9386,
+          "loss_predictor": 0.9403,
+          "generalist": 0.9494,
+          "default": 0.9426,
+          "oracle": 0.9639,
+          "same_function": NaN
+        },
+        "S3": {
+          "sbs": 0.9567,
+          "random": 0.9411,
+          "landscape_1nn": 0.9437,
+          "knn_selector": 0.9544,
+          "consensus": 0.9567,
+          "thesis_1nn": 0.9401,
+          "loss_predictor": 0.9468,
+          "generalist": NaN,
+          "default": 0.9415,
+          "oracle": 0.9666,
+          "same_function": NaN
+        }
+      },
+      "G4_comparison": {
+        "mean": -0.0056,
+        "median": -0.0023,
+        "wins_losses": [
+          15,
+          40
+        ],
+        "p_two_sided": 0.0008039847202223427
+      },
+      "G5_comparison": {
+        "mean": 0.0028,
+        "median": 0.0036,
+        "wins_losses": [
+          40,
+          15
+        ],
+        "p_two_sided": 0.02639737361079269
+      },
+      "consensus_deviates_from_sbs": 0.0
+    },
+    "10000": {
+      "mean_hvn_over_functions": {
+        "S1": {
+          "sbs": 0.9657,
+          "random": 0.9546,
+          "landscape_1nn": 0.9587,
+          "knn_selector": 0.9668,
+          "consensus": 0.9657,
+          "thesis_1nn": 0.9562,
+          "loss_predictor": 0.9581,
+          "generalist": 0.9632,
+          "default": 0.9534,
+          "oracle": 0.9743,
+          "same_function": 0.9661
+        },
+        "S2": {
+          "sbs": 0.9639,
+          "random": 0.9528,
+          "landscape_1nn": 0.9529,
+          "knn_selector": 0.9552,
+          "consensus": 0.9639,
+          "thesis_1nn": 0.9525,
+          "loss_predictor": 0.956,
+          "generalist": 0.9647,
+          "default": 0.9544,
+          "oracle": 0.9723,
+          "same_function": NaN
+        },
+        "S3": {
+          "sbs": 0.9648,
+          "random": 0.9544,
+          "landscape_1nn": 0.9576,
+          "knn_selector": 0.9639,
+          "consensus": 0.9648,
+          "thesis_1nn": 0.9542,
+          "loss_predictor": 0.9574,
+          "generalist": NaN,
+          "default": 0.9534,
+          "oracle": 0.9741,
+          "same_function": NaN
+        }
+      },
+      "G4_comparison": {
+        "mean": -0.0045,
+        "median": -0.0013,
+        "wins_losses": [
+          13,
+          42
+        ],
+        "p_two_sided": 0.00040662338261753596
+      },
+      "G5_comparison": {
+        "mean": -0.0008,
+        "median": -0.0001,
+        "wins_losses": [
+          23,
+          32
+        ],
+        "p_two_sided": 0.6269985068851047
+      },
+      "consensus_deviates_from_sbs": 0.0
+    }
+  },
+  "seed_standard_error": {
+    "tuned": {
+      "median": 0.00139,
+      "p90": 0.01202
+    },
+    "gen": {
+      "median": 0.00111,
+      "p90": 0.00938
+    },
+    "default": {
+      "median": 0.00197,
+      "p90": 0.01266
+    }
+  }
+}
